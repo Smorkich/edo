@@ -23,6 +23,7 @@
         <module>edo-service</module>
         <module>edo-rest</module>
         <module>edo-repository</module>
+        <module>edo-common</module>
     </modules>
 
     <properties>
@@ -53,11 +54,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.education</groupId>
-            <artifactId>edo-common</artifactId>
-            <version>0.0.1</version>
         </dependency>
     </dependencies>
     <dependencyManagement>
