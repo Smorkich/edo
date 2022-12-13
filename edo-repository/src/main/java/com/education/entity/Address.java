@@ -13,10 +13,6 @@ import lombok.*;
 @Builder(builderMethodName = "builder_address")
 @Table(name = "address")
 public class Address extends BaseEntity{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
-    private Long id;
 
     /**
      * Полный адрес
