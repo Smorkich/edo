@@ -1,8 +1,14 @@
+
 import com.education.entity.Department;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Date;
+
+
+@Getter
+@Setter
 @ApiModel(value = "Обьект для передачи данных")
 public class DepartmentDto {
     @ApiModelProperty(value = "краткое имя")
@@ -18,44 +24,4 @@ public class DepartmentDto {
     @ApiModelProperty(value = "вышестоящий департамент")
     private Department department;
 
-
-    public String getShortName() {
-        return shortName;
-    }
-
-    public void setShortName(String shortName) {
-        this.shortName = shortName;
-    }
-
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public int getPhone() {
-        return phone;
-    }
-
-    public void setPhone(int phone) {
-        this.phone = phone;
-    }
-
-    public Department getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
 }

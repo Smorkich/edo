@@ -10,15 +10,8 @@
             <version>0.0.1</version>
             <scope>compile</scope>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/io.swagger.core.v3/swagger-annotations -->
-        <!-- https://mvnrepository.com/artifact/io.swagger/swagger-annotations -->
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>1.6.2</version>
-        </dependency>
-
     </dependencies>
+
     <parent>
         <groupId>com.education</groupId>
         <artifactId>edo</artifactId>
