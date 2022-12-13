@@ -55,7 +55,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>com.education</groupId>
+            <artifactId>edo-common</artifactId>
+            <version>0.0.1</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>
