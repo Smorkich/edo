@@ -19,7 +19,6 @@
         <module>edo-websocket</module>
         <module>edo-scheduler</module>
         <module>edo-security</module>
-        <module>edo-common</module>
         <module>edo-integration</module>
         <module>edo-service</module>
         <module>edo-rest</module>

@@ -1,11 +1,17 @@
 spring:
   application:
     name: edo-scheduler
+
 server:
   port: 0
+
 eureka:
   client:
     serviceUrl:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
   instance:
     preferIpAddress: true
+
+integration:
+  url:
+    employee: https://8bc15778-921d-471d-ab98-8f59e6dc1c1c.mock.pstmn.io/employees
