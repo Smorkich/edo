@@ -10,12 +10,12 @@ CREATE TABLE file_pool
     creator         VARCHAR
 );
 
-COMMENT ON TABLE file_pool is 'хранилище обращений граждан';
-COMMENT ON COLUMN file_pool.storage_file_id is 'id обращения';
-COMMENT ON COLUMN file_pool.name is 'имя обращения';
+COMMENT ON TABLE file_pool is 'хранилище файлов обращений граждан';
+COMMENT ON COLUMN file_pool.storage_file_id is 'id файла';
+COMMENT ON COLUMN file_pool.name is 'имя файла';
 COMMENT ON COLUMN file_pool.extension is 'продление обращения';
 COMMENT ON COLUMN file_pool.size is 'размер';
 COMMENT ON COLUMN file_pool.page_count is 'количество страниц';
-COMMENT ON COLUMN file_pool.upload_date is 'дата создания';
+COMMENT ON COLUMN file_pool.upload_date is 'дата загрузки';
 COMMENT ON COLUMN file_pool.archived_date is 'дата архивации';
-COMMENT ON COLUMN file_pool.creator is 'создатель обращения';
+COMMENT ON COLUMN file_pool.creator is 'создатель файла';

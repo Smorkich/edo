@@ -7,7 +7,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
-
+/**
+ * @author Nadezhda Pupina
+ */
 @Getter
 @Setter
 @ApiModel(value = "Предназначен для использования вместо FilePool")
@@ -27,10 +29,10 @@ public class FilePoolDTO {
     @ApiModelProperty(value = "Количество страниц", name = "pageCount", dataType = "Long", example = "3")
     private Long pageCount;
 
-    @ApiModelProperty(value = "Дата создания", name = "uploadDate", dataType = "Data", example = "13.12.2022")
+    @ApiModelProperty(value = "Дата создания", name = "uploadDate", dataType = "Date", example = "13.12.2022")
     private Date uploadDate;
 
-    @ApiModelProperty(value = "Дата архивации", name = "archivedDate", dataType = "Data", example = "15.12.2022")
+    @ApiModelProperty(value = "Дата архивации", name = "archivedDate", dataType = "Date", example = "15.12.2022")
     private Date archivedDate;
 
     @ApiModelProperty(value = "user name", name = "name", dataType = "String", example = "Dina")
