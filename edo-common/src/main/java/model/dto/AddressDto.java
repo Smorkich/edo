@@ -1,4 +1,4 @@
-package dto;
+package model.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -7,7 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @ApiModel(value = "Объект для передачи данных")
-public class AddressDTO {
+public class AddressDto {
 
     @ApiModelProperty(value = "id")
     private Long id;
