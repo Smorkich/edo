@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
+@Builder(builderMethodName = "builder_address")
 @Table(name = "address")
 public class Address extends BaseEntity{
     @Id

@@ -12,6 +12,8 @@ create table if not exists address
     country      varchar(30),
     flat         varchar(30)
 );
+comment on table address
+    is 'Адрес проживания';
 
 comment on column address.full_address
     is 'Полный адрес';
