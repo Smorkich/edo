@@ -1,4 +1,5 @@
 
+import com.education.entity.Department;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -20,5 +21,7 @@ public class DepartmentDto {
     private int phone;
     @ApiModelProperty(value = "внешний индификатор, который будем получать из чужого хранилища")
     private long externalId;
+    @ApiModelProperty(value = "вышестоящий департамент")
+    private Department department;
 
 }

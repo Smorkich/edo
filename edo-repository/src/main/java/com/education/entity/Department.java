@@ -1,11 +1,7 @@
 package com.education.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import static jakarta.persistence.FetchType.LAZY;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -51,7 +47,7 @@ public class Department extends BaseEntity {
     private int phone;
 
     /* Поле с вышестоящим департаментом */
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = LAZY)
     @JoinColumn(name = "id")
     private Department department;
 
