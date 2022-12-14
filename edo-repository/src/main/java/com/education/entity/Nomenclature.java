@@ -36,10 +36,4 @@ public class Nomenclature extends BaseEntity {
     @Column(name = "index")
     private int index;
 
-
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
-    private Nomenclature nomenclature;
-
 }
