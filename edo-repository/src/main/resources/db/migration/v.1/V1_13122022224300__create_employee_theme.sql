@@ -1,0 +1,17 @@
+CREATE TABLE IF NOT EXISTS theme(
+    id BIGSERIAL NOT NULL PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    archived_date DATE,
+    creation_date DATE NOT NULL,
+    code BIGINT NOT NULL ,
+
+
+
+);
+COMMENT ON TABLE  theme is 'таблица тем';
+COMMENT  ON COLUMN theme.id is 'идентификатор';
+COMMENT  ON COLUMN theme.name is 'название темы';
+COMMENT  ON COLUMN theme.archived_date is 'дата архивации';
+COMMENT  ON COLUMN theme.creation_date is 'дата создания';
+COMMENT  ON COLUMN theme.code is 'идентификатор темы';
+
