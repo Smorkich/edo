@@ -37,6 +37,6 @@ public class FilePoolDTO {
     @ApiModelProperty(value = "Дата архивации", name = "archivedDate", dataType = "ZonedDateTime", example = "15.12.2022")
     private ZonedDateTime archivedDate;
 
-    @ApiModelProperty(value = "user name", name = "name", dataType = "String", example = "Dina")
+    @ApiModelProperty(value = "id создателя файла", name = "creator", dataType = "EmployeeDTO", example = "3")
     private EmployeeDTO creator;
 }
