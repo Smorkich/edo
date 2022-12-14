@@ -1,16 +1,16 @@
 CREATE TABLE file_pool
 (
-    storage_file_id BIGSERIAL NOT NULL PRIMARY KEY,
-    name            VARCHAR   NOT NULL,
-    extension       VARCHAR   NOT NULL,
-    size            INTEGER   NOT NULL,
-    page_count      INTEGER   NOT NULL,
-    upload_date     DATE      NOT NULL,
-    archived_date   DATE,
-    creator         VARCHAR
+    storage_file_id VARCHAR     NOT NULL,
+    name            VARCHAR     NOT NULL,
+    extension       VARCHAR     NOT NULL,
+    size            INTEGER     NOT NULL,
+    page_count      INTEGER     NOT NULL,
+    upload_date     timestamptz NOT NULL,
+    archived_date   timestamptz,
+    creator_id      BIGSERIAL   NOT NULL PRIMARY KEY
 );
 
-COMMENT ON TABLE file_pool is 'хранилище файлов обращений граждан';
+COMMENT ON TABLE file_pool is 'информация о файле, загруженном в хранилище';
 COMMENT ON COLUMN file_pool.storage_file_id is 'id файла';
 COMMENT ON COLUMN file_pool.name is 'имя файла';
 COMMENT ON COLUMN file_pool.extension is 'продление обращения';
@@ -18,4 +18,4 @@ COMMENT ON COLUMN file_pool.size is 'размер';
 COMMENT ON COLUMN file_pool.page_count is 'количество страниц';
 COMMENT ON COLUMN file_pool.upload_date is 'дата загрузки';
 COMMENT ON COLUMN file_pool.archived_date is 'дата архивации';
-COMMENT ON COLUMN file_pool.creator is 'создатель файла';
+COMMENT ON COLUMN file_pool.creator_id is 'создатель файла';
