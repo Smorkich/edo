@@ -5,7 +5,7 @@ create table if not exists author
     last_name      varchar(20) not null,
     middle_name    varchar(20) not null,
     address        varchar(20) not null,
-    snils          bigserial   not null,
+    snils          varchar(20) not null,
     mobile_phone   int         not null,
     email          varchar(20) not null,
     employment     varchar(20) not null,

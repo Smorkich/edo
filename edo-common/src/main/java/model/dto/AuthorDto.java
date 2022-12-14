@@ -1,11 +1,14 @@
+package model.dto;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import model.enums.Employment;
 
 import java.io.Serializable;
 
 /**
- * Дублирующее DTO "AuthorDto" для сущности "Author"
+ * Дублирующее DTO "model.dto.AuthorDto" для сущности "Author"
  */
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,7 +30,7 @@ public class AuthorDto implements Serializable {
     private String address;
 
     @ApiModelProperty(value = "СНИЛС автора")
-    private Long snils;
+    private String snils;
 
     @ApiModelProperty(value = "номер телефона автора (мобильный)")
     private int mobilePhone;

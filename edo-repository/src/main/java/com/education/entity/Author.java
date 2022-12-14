@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import model.enums.Employment;
 
 /**
  * Класс (сущность) "Author", наследуется от класса "BaseEntity"
@@ -45,7 +46,7 @@ public class Author extends BaseEntity {
      * Поле "snils" - СНИЛС автора
      */
     @Column(name = "snils")
-    private Long snils;
+    private String snils;
 
     /**
      * Поле "mobilePhone" - номер телефона автора (мобильный)
@@ -63,6 +64,7 @@ public class Author extends BaseEntity {
      * Поле "employment" - трудоустройство автора (Безработный, Работник, Учащийся)
      */
     @Column(name = "employment")
+    @Enumerated(EnumType.STRING)
     private Employment employment;
 
     /**
