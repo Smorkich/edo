@@ -11,7 +11,7 @@ CREATE TABLE file_pool
 );
 
 COMMENT ON TABLE file_pool is 'информация о файле, загруженном в хранилище';
-COMMENT ON COLUMN file_pool.storage_file_id is 'id файла';
+COMMENT ON COLUMN file_pool.storage_file_id is 'ключ для получения файла';
 COMMENT ON COLUMN file_pool.name is 'имя файла';
 COMMENT ON COLUMN file_pool.extension is 'продление обращения';
 COMMENT ON COLUMN file_pool.size is 'размер';
