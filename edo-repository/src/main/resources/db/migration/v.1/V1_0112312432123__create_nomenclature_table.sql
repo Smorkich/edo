@@ -1,5 +1,5 @@
 create table if not exists Nomenclature (
-    id int autoincrement primary key,
+    id serial primary key not null,
     creation_date DATE,
     archived_date DATE,
     template varchar(300),
