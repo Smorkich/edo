@@ -1,3 +1,4 @@
+package model.dto;
 
 
 import com.education.entity.Department;
@@ -5,7 +6,6 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
-
 
 
 @Getter

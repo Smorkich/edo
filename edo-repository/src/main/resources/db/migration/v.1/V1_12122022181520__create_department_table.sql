@@ -5,8 +5,8 @@ CREATE TABLE IF NOT EXISTS department(
     address VARCHAR(100) NOT NULL,
     external_id BIGINT NOT NULL ,
     phone INT NOT NULL,
-    creation_date DATE NOT NULL,
-    archived_date DATE
+    creation_date TIMESTAMP WITH TIME ZONE NOT NULL,
+    archived_date TIMESTAMP WITH TIME ZONE
 
 );
 COMMENT ON TABLE  department is 'таблица департаментов';

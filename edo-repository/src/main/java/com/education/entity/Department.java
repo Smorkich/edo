@@ -27,12 +27,12 @@ public class Department extends BaseEntity {
     /* Поле короткое имя*/
     @Column(name = "short_name")
     private String shortName;
-    /* Поле полное имя*/
 
+    /* Поле полное имя*/
     @Column(name = "full_name")
     private String fullName;
-    /* Поле адрес*/
 
+    /* Поле адрес*/
     @Column(name = "address")
     private String address;
 
