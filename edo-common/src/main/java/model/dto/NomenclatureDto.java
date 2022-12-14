@@ -27,8 +27,4 @@ public class NomenclatureDto {
     @ApiModelProperty("Индекс элемента")
     private int index;
 
-    @ApiModelProperty("Связь с БД")
-    private Nomenclature nomenclature;
-
-
 }
