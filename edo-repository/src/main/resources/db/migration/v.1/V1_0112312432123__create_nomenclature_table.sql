@@ -1,9 +1,7 @@
 create table if not exists nomenclature (
     id serial primary key not null,
-    creation_date timestamp with time zone NOT NULL
-   DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
-    archived_date timestamp with time zone NOT NULL
-   DEFAULT (current_timestamp AT TIME ZONE 'UTC'),
+    creation_date timestamp with time zone,
+    archived_date timestamp with time zone ,
     template varchar(300),
     current_value int,
     "index" int
