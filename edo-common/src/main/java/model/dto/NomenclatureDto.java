@@ -10,6 +10,9 @@ import java.time.ZonedDateTime;
 public class NomenclatureDto {
 
 
+    @ApiModelProperty("ID записи")
+    private int id;
+
     @ApiModelProperty("дата создания")
     private ZonedDateTime creationDate;
 
