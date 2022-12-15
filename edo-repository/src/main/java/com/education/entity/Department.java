@@ -49,7 +49,7 @@ public class Department extends BaseEntity {
 
     /* Поле с вышестоящим департаментом */
     @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "department")
     private Department department;
 
     /* Поле с датой создания */
