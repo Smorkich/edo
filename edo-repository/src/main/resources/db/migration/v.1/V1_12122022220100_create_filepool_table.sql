@@ -1,6 +1,6 @@
 CREATE TABLE file_pool
 (
-    id              BIGINT      NOT NULL PRIMARY KEY,
+    id              BIGSERIAL      NOT NULL PRIMARY KEY,
     storage_file_id VARCHAR     NOT NULL,
     name            VARCHAR     NOT NULL,
     extension       VARCHAR     NOT NULL,
@@ -14,6 +14,7 @@ CREATE TABLE file_pool
 
 
 COMMENT ON TABLE file_pool is 'информация о файле, загруженном в хранилище';
+COMMENT ON COLUMN file_pool.id is 'id файла';
 COMMENT ON COLUMN file_pool.storage_file_id is 'ключ для получения файла';
 COMMENT ON COLUMN file_pool.name is 'имя файла';
 COMMENT ON COLUMN file_pool.extension is 'продление обращения';

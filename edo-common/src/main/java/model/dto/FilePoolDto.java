@@ -16,6 +16,8 @@ import java.util.UUID;
 @Setter
 @ApiModel(value = "Класс-обертка для взаимодействия с иными модулями и внешними системами")
 public class FilePoolDto {
+    @ApiModelProperty(value = "id файла", name = "id", dataType = "Long", example = "1")
+    private Long id;
     @ApiModelProperty(value = "Ключ для получения файла из хранилища", name = "storageFileId", dataType = "UUID", example = "2")
     private UUID storageFileId;
 
@@ -39,4 +41,5 @@ public class FilePoolDto {
 
     @ApiModelProperty(value = "id создателя файла", name = "creator", dataType = "EmployeeDTO", example = "3")
     private EmployeeDto creator;
+
 }
