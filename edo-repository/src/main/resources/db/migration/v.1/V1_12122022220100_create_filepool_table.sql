@@ -1,6 +1,6 @@
 CREATE TABLE file_pool
 (
-    id BIGINT NOT NULL PRIMARY KEY,
+    id              BIGINT      NOT NULL PRIMARY KEY,
     storage_file_id VARCHAR     NOT NULL,
     name            VARCHAR     NOT NULL,
     extension       VARCHAR     NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE file_pool
     page_count      INTEGER     NOT NULL,
     upload_date     timestamptz NOT NULL,
     archived_date   timestamptz,
-    creator_id  BIGINT     NOT NULL,
+    creator_id      BIGINT      NOT NULL,
     CONSTRAINT FK_file_pool_Employee FOREIGN KEY (creator_id) REFERENCES employee (id)
 );
 
