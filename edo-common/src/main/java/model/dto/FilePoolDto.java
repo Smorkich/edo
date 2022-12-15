@@ -18,6 +18,7 @@ import java.util.UUID;
 public class FilePoolDto {
     @ApiModelProperty(value = "id файла", name = "id", dataType = "Long", example = "1")
     private Long id;
+
     @ApiModelProperty(value = "Ключ для получения файла из хранилища", name = "storageFileId", dataType = "UUID", example = "2")
     private UUID storageFileId;
 
