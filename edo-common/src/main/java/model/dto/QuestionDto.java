@@ -10,7 +10,7 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 @ApiModel(value = "Класс-обертка для взаимодействия с иными модулями и внешними системами")
-public class QuestionDTO {
+public class QuestionDto {
 
     @ApiModelProperty(value = "Дата создания", name = "creationDate", dataType = "ZonedDateTime", example = "13.12.2022")
     private ZonedDateTime creationDate;
