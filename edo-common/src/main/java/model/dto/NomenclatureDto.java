@@ -1,6 +1,5 @@
 package model.dto;
 
-import com.education.entity.Nomenclature;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
