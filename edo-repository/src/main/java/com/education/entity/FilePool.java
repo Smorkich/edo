@@ -26,8 +26,7 @@ public class FilePool extends BaseEntity {
     /**
      * storageFileId - Key for getting a file from storage
      */
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotEmpty(message = "storageFileId should not be empty")
     @Column(name = "storage_file_id")
     private UUID storageFileId;
 
@@ -83,6 +82,5 @@ public class FilePool extends BaseEntity {
     @Column(name = "creator_id")
     @JoinColumn(name = "id")
     private Employee creator;
-
 
 }

@@ -7,8 +7,10 @@ CREATE TABLE file_pool
     page_count      INTEGER     NOT NULL,
     upload_date     timestamptz NOT NULL,
     archived_date   timestamptz,
-    creator_id      BIGSERIAL   NOT NULL PRIMARY KEY
+    creator_id  BIGINT     NOT NULL,
+    CONSTRAINT FK_file_pool_Employee FOREIGN KEY (creator_id) REFERENCES employee (ID)
 );
+
 
 COMMENT ON TABLE file_pool is 'информация о файле, загруженном в хранилище';
 COMMENT ON COLUMN file_pool.storage_file_id is 'ключ для получения файла';
