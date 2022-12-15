@@ -12,9 +12,9 @@ import java.time.ZonedDateTime;
  */
 @Getter
 @Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @Table(name = "question")
 public class Question extends BaseEntity {
