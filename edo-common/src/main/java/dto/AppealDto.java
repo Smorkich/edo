@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.ZonedDateTime;
+import java.util.Collection;
 
 @Setter
 @Getter
@@ -28,11 +29,11 @@ public class AppealDto {
     private String annotation;
 
     @ApiModelProperty(value = "Обработчик обращения")
-    private Collection<Employee> signer;
+    private Collection<EmployeeDto> signer;
 
     @ApiModelProperty(value = "Создатель обращения")
-    private Employee creator;
+    private EmployeeDto creator;
 
     @ApiModelProperty(value = "Адрес обращения")
-    private Collection<Employee> addressee;
+    private Collection<EmployeeDto> addressee;
 }

@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.ZonedDateTime;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Сущность, описывающая обращение гражданина
@@ -16,7 +16,6 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
 @Table(name = "appeal")
 public class Appeal extends BaseEntity {
 
@@ -51,14 +50,13 @@ public class Appeal extends BaseEntity {
     @JoinTable(name = "appeal_signer",
             joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
-    private Set<Employee> signer = new HashSet<>();
+    private Collection<Employee> signer = new HashSet<>();
 
     /**
      * Создатель обращения
      */
-    @Column(name = "creator_id")
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "creator_id")
     private Employee creator;
 
     /**
@@ -68,6 +66,5 @@ public class Appeal extends BaseEntity {
     @JoinTable(name = "appeal_addressee",
             joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
-    private Set<Employee> addressee = new HashSet<>();
-
+    private Collection<Employee> addressee = new HashSet<>();
 }

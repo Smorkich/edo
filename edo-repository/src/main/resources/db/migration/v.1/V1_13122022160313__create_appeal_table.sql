@@ -5,7 +5,7 @@ create table if not exists appeal
     archived_date timestamp with time zone,
     number varchar(255),
     annotation varchar(255),
-    creator varchar(255)
+    creator_id varchar(255)
 );
 comment on table appeal
     is 'Обращение';
@@ -17,5 +17,5 @@ comment on column appeal.number
     is 'Номер обращения';
 comment on column appeal.annotation
     is 'Заголовок обращения';
-comment on column appeal.creator
+comment on column appeal.creator_id
     is 'Создатель обращения';
