@@ -1,15 +1,14 @@
 CREATE TABLE file_pool
 (
-    id              BIGSERIAL      NOT NULL PRIMARY KEY,
+    id              BIGSERIAL   NOT NULL PRIMARY KEY,
     storage_file_id VARCHAR     NOT NULL,
     name            VARCHAR     NOT NULL,
     extension       VARCHAR     NOT NULL,
-    size            INTEGER     NOT NULL,
-    page_count      INTEGER     NOT NULL,
+    size            INTEGER     NOT NULL CHECK (size > 0),
+    page_count      INTEGER     NOT NULL CHECK (page_count > 0),
     upload_date     timestamptz NOT NULL,
     archived_date   timestamptz,
-    creator_id      BIGINT      NOT NULL,
-    CONSTRAINT FK_file_pool_Employee FOREIGN KEY (creator_id) REFERENCES employee (id)
+    creator_id      BIGINT      NOT NULL
 );
 
 
