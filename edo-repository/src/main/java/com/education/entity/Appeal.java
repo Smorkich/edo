@@ -3,7 +3,7 @@ package com.education.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,28 +20,23 @@ import java.util.Set;
 @Table(name = "appeal")
 public class Appeal extends BaseEntity {
 
-    @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
     /**
      * Дата создания обращения
      */
     @Column(name = "creation_date")
-    private Date creationDate;
+    private ZonedDateTime creationDate;
 
     /**
      * Дата отработанного обращения
      */
     @Column(name = "archived_date")
-    private Date archivedDate;
+    private ZonedDateTime archivedDate;
 
     /**
      * Номер обращения
      */
     @Column(name = "number")
-    private int number;
+    private String number;
 
     /**
      * Заголовок обращения
@@ -52,7 +47,6 @@ public class Appeal extends BaseEntity {
     /**
      * Обработчик обращения
      */
-    @Column(name = "signer")
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "appeal_signer",
             joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
@@ -60,9 +54,9 @@ public class Appeal extends BaseEntity {
     private Set<Employee> signer = new HashSet<>();
 
     /**
-     * Автор обращения
+     * Создатель обращения
      */
-    @Column(name = "creator")
+    @Column(name = "creator_id")
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     private Employee creator;
@@ -70,7 +64,6 @@ public class Appeal extends BaseEntity {
     /**
      * Адрес обращения
      */
-    @Column(name = "addressee")
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "appeal_addressee",
             joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
@@ -78,4 +71,3 @@ public class Appeal extends BaseEntity {
     private Set<Employee> addressee = new HashSet<>();
 
 }
-
