@@ -1,9 +1,9 @@
 CREATE TABLE question
 (
-    id              BIGINT      NOT NULL PRIMARY KEY,
-    creation_date timestamptz      NOT NULL,
+    id            BIGSERIAL   NOT NULL PRIMARY KEY,
+    creation_date timestamptz NOT NULL,
     archived_date timestamptz,
-    summary       VARCHAR   NOT NULL
+    summary       VARCHAR     NOT NULL
 );
 
 COMMENT ON TABLE question is 'информация о вопросе';

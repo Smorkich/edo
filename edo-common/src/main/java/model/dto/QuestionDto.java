@@ -12,6 +12,8 @@ import java.time.ZonedDateTime;
 @ApiModel(value = "Класс-обертка для взаимодействия с иными модулями и внешними системами")
 public class QuestionDto {
 
+    @ApiModelProperty(value = "id вопроса", name = "id", dataType = "Long", example = "1")
+    private Long id;
     @ApiModelProperty(value = "Дата создания", name = "creationDate", dataType = "ZonedDateTime", example = "13.12.2022")
     private ZonedDateTime creationDate;
     @ApiModelProperty(value = "Дата архивации", name = "archivedDate", dataType = "ZonedDateTime", example = "16.12.2022")
