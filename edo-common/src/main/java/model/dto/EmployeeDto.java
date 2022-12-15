@@ -1,4 +1,4 @@
-package dao;
+package model.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -10,10 +10,9 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 @ApiModel(value = "объект для передачи данных")
-public class EmployeeDTO {
-
+public class EmployeeDto {
     @ApiModelProperty(value = "id")
-    private long id;
+    private Long id;
 
     @ApiModelProperty(value = "Имя")
     private String firstName;
@@ -22,7 +21,7 @@ public class EmployeeDTO {
     private String lastName;
 
     @ApiModelProperty(value = "Отчество")
-    private String midlName;
+    private String middleName;
 
     @ApiModelProperty(value = "Адрес")
     private String address;
@@ -37,7 +36,7 @@ public class EmployeeDTO {
     private String fioGenitive;
 
     @ApiModelProperty(value = "Внешний индификатор, который будем получать из чужого хранилища")
-    private long externalId;
+    private Long externalId;
 
     @ApiModelProperty(value = "Номер телефона сотовый")
     private String phone;
@@ -56,5 +55,4 @@ public class EmployeeDTO {
 
     @ApiModelProperty(value = "Дата архивации")
     private ZonedDateTime archivedDate;
-
 }
