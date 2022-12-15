@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS department(
     full_name VARCHAR(100) NOT NULL,
     address VARCHAR(100) NOT NULL,
     external_id BIGINT NOT NULL ,
-    phone INT NOT NULL,
+    phone VARCHAR(20) NOT NULL,
     department BIGINT REFERENCES department(id),
     creation_date TIMESTAMP WITH TIME ZONE NOT NULL,
     archived_date TIMESTAMP WITH TIME ZONE
