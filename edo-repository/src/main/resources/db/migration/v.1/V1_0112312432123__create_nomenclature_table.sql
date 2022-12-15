@@ -1,4 +1,4 @@
-create table if not exists Nomenclature (
+create table if not exists nomenclature (
     id serial primary key not null,
     creation_date DATE,
     archived_date DATE,
