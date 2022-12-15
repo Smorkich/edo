@@ -79,8 +79,6 @@ public class FilePool extends BaseEntity {
      */
     @OneToOne(fetch = FetchType.LAZY)
     @NotEmpty(message = "creator should not be empty")
-    @Column(name = "creator_id")
-    @JoinColumn(name = "id")
+    @PrimaryKeyJoinColumn(name = "creator_id")
     private Employee creator;
-
 }
