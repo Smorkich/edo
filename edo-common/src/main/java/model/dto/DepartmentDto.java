@@ -1,7 +1,4 @@
 package model.dto;
-
-
-import com.education.entity.Department;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
@@ -12,6 +9,8 @@ import lombok.Setter;
 @Setter
 @ApiModel(value = "Обьект для передачи данных")
 public class DepartmentDto {
+    @ApiModelProperty(value = "id")
+    private Long id;
     @ApiModelProperty(value = "краткое имя")
     private String shortName;
     @ApiModelProperty(value = "полное имя")
@@ -19,10 +18,9 @@ public class DepartmentDto {
     @ApiModelProperty(value = "адресс")
     private String address;
     @ApiModelProperty(value = "номер телефона")
-    private int phone;
+    private String phone;
     @ApiModelProperty(value = "внешний индификатор, который будем получать из чужого хранилища")
-    private long externalId;
+    private Long externalId;
     @ApiModelProperty(value = "вышестоящий департамент")
-    private Department department;
-
+    private DepartmentDto departmentDto;
 }

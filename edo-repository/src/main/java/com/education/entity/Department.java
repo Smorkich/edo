@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 
+import java.time.ZonedDateTime;
 import java.util.Date;
 /**
 * @author Usolkin Dmitry
@@ -40,11 +41,11 @@ public class Department extends BaseEntity {
     скачиваем из чужого хранилища)
      */
     @Column(name = "externalId")
-    private long externalId;
+    private Long externalId;
 
     /* Поле с номером телефона*/
     @Column(name = "phone")
-    private int phone;
+    private String phone;
 
     /* Поле с вышестоящим департаментом */
     @OneToOne(fetch = LAZY)
@@ -53,10 +54,10 @@ public class Department extends BaseEntity {
 
     /* Поле с датой создания */
     @Column(name="creation_date")
-    private Date creationDate;
+    private ZonedDateTime creationDate;
 
     /* Поле с датой архивирования */
     @Column(name="archived_date")
-    private Date archivedDate;
+    private ZonedDateTime archivedDate;
 
 }
