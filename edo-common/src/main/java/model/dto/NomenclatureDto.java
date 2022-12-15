@@ -11,7 +11,7 @@ public class NomenclatureDto {
 
 
     @ApiModelProperty("ID записи")
-    private int id;
+    private Integer id;
 
     @ApiModelProperty("дата создания")
     private ZonedDateTime creationDate;
