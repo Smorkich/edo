@@ -20,6 +20,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @ToString
 @Entity
+@Builder(builderMethodName = "builderfilePool")
 @Table(name = "file_pool")
 public class FilePool extends BaseEntity {
 

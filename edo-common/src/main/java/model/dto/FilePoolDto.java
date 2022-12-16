@@ -3,6 +3,7 @@ package model.dto;
 import io.swagger.annotations.ApiModelProperty;
 
 import io.swagger.annotations.ApiModel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,9 +15,10 @@ import java.util.UUID;
  */
 @Getter
 @Setter
+@Builder
 @ApiModel(value = "Класс-обертка для взаимодействия с иными модулями и внешними системами")
 public class FilePoolDto {
-    @ApiModelProperty(value = "id файла", name = "id", dataType = "Long", example = "1")
+    @ApiModelProperty(value = "id файла", name = "id", dataType = "Long", example = "e58ed763-928c-4155-bee9-fdbaaadc15f3")
     private Long id;
 
     @ApiModelProperty(value = "Ключ для получения файла из хранилища", name = "storageFileId", dataType = "UUID", example = "2")
@@ -34,10 +36,10 @@ public class FilePoolDto {
     @ApiModelProperty(value = "Количество страниц", name = "pageCount", dataType = "Long", example = "3")
     private Long pageCount;
 
-    @ApiModelProperty(value = "Дата создания", name = "uploadDate", dataType = "ZonedDateTime", example = "13.12.2022")
+    @ApiModelProperty(value = "Дата создания", name = "uploadDate", dataType = "ZonedDateTime", example = "2021-03-23T16:43:32.010069453")
     private ZonedDateTime uploadDate;
 
-    @ApiModelProperty(value = "Дата архивации", name = "archivedDate", dataType = "ZonedDateTime", example = "15.12.2022")
+    @ApiModelProperty(value = "Дата архивации", name = "archivedDate", dataType = "ZonedDateTime", example = "2021-03-26T16:43:32.010069453")
     private ZonedDateTime archivedDate;
 
     @ApiModelProperty(value = "id создателя файла", name = "creator", dataType = "EmployeeDTO", example = "3")
