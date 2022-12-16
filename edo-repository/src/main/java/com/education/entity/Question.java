@@ -16,6 +16,7 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder(builderMethodName = "builder_question")
 @Table(name = "question")
 public class Question extends BaseEntity {
 
