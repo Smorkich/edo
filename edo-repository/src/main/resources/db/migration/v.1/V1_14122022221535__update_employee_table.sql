@@ -1,23 +1,18 @@
-DROP TABLE IF EXISTS employee CASCADE;
-
-create table if not exists employee
-(
-    id bigint not null primary key,
-    first_name varchar(60),
-    last_name varchar(30),
-    middle_mame varchar(30),
-    address varchar(30),
-    fio_dative varchar(30),
-    fio_nominative varchar(30),
-    fio_genitive varchar(30),
-    externalId bigserial not null,
-    phone varchar(30),
-    workPhone varchar(30),
-    birthDate date,
-    username varchar(30),
-    creationDate timestamptz,
-    archivedDate timestamptz
-);
+alter table if exists employee
+    add first_name varchar(60),
+    add last_name varchar(30),
+    add middle_mame varchar(30),
+    add address varchar(30),
+    add fio_dative varchar(30),
+    add fio_nominative varchar(30),
+    add fio_genitive varchar(30),
+    add externalId bigint not null,
+    add phone varchar(30),
+    add workPhone varchar(30),
+    add birthDate date,
+    add username varchar(30),
+    add creationDate timestamptz,
+    add archivedDate timestamptz;
 
 comment on table employee
     is 'Сотрудник';
