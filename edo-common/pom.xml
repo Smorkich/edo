@@ -10,6 +10,39 @@
     </parent>
     <description>Модуль общей информации, необходимой для всех сервисов</description>
     <artifactId>edo-common</artifactId>
+    <version>0.0.1</version>
+    <packaging>jar</packaging>
+    <description>Модуль общей информации, необходимой для всех сервисов</description>
 
+    <properties>
+        <maven.compiler.source>1.11</maven.compiler.source>
+        <maven.compiler.target>1.11</maven.compiler.target>
+    </properties>
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.24</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.swagger</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>1.6.2</version>
+        </dependency>
+    </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+            </plugin>
+            <plugin>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>
