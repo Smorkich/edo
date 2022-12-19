@@ -6,11 +6,11 @@ import lombok.*;
  * Сущность описывающая адрес проживания пользователя отправившего обращение
  */
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-@Builder(builderMethodName = "builder_address")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder(builderMethodName = "builderAddress")
 @Table(name = "address")
 public class Address extends BaseEntity{
 

@@ -6,6 +6,10 @@ spring:
     url: jdbc:postgresql://localhost:5432/edo_db
     default-schema: edo
     locations: db/migration
+  jpa:
+    properties:
+      hibernate:
+        default_schema: edo
   application:
     name: edo-repository
 server:
