@@ -14,8 +14,12 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 @ApiModel(value = "Автор обращения")
 public class AuthorDto implements Serializable {
+
+    @ApiModelProperty(value = "id")
+    private Long id;
 
     @ApiModelProperty(value = "имя автора")
     private String firstName;
