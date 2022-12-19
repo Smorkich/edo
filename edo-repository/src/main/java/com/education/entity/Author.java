@@ -1,10 +1,7 @@
 package com.education.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import model.enums.Employment;
 
 /**
@@ -15,6 +12,7 @@ import model.enums.Employment;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder(builderMethodName = "authorBuilder")
 @Table(name = "author")
 public class Author extends BaseEntity {
 
