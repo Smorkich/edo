@@ -59,7 +59,9 @@ public class AuthorServiceImpl implements AuthorService {
     /**
      * Список Author`s
      */
+
     @Override
+    @Transactional(readOnly = true, rollbackFor = Exception.class)
     public List<Author> findAll() {
         return authorRepository.findAll();
     }
