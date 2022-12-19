@@ -4,6 +4,11 @@ import com.education.entity.Author;
 import model.dto.AuthorDto;
 import org.springframework.stereotype.Component;
 import java.util.List;
+
+/**
+ * Util класс для реализации вспомогательных методов
+ */
+
 @Component
 public class AuthorUtil {
 

@@ -7,6 +7,10 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+/**
+ * Сервис-класс с методами для реализации API
+ */
+
 @Service
 public class AuthorServiceImpl implements AuthorService {
 

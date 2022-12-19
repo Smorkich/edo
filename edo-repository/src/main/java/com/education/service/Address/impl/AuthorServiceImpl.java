@@ -10,6 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * Сервис-класс с методами для транзакции с БД
+ */
+
 @Service
 @AllArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
@@ -51,6 +55,7 @@ public class AuthorServiceImpl implements AuthorService {
     public List<Author> findAllById(Iterable<Long> ids) {
         return authorRepository.findAllById(ids);
     }
+
     /**
      * Список Author`s
      */

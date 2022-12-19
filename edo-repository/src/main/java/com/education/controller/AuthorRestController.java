@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Рест-контроллер для Author
+ */
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/repository/author")
