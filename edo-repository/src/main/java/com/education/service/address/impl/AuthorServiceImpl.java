@@ -1,10 +1,9 @@
-package com.education.service.Address.impl;
+package com.education.service.address.impl;
 
 import com.education.entity.Author;
 import com.education.repository.AuthorRepository;
-import com.education.service.Address.AuthorService;
+import com.education.service.address.AuthorService;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

@@ -1,7 +1,6 @@
-package com.education.service.Address;
+package com.education.service.address;
 
 import com.education.entity.Author;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 public interface AuthorService {
