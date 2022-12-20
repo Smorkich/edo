@@ -18,7 +18,7 @@ import java.io.Serializable;
 @ApiModel(value = "Автор обращения")
 public class AuthorDto implements Serializable {
 
-    @ApiModelProperty(value = "id")
+    @ApiModelProperty(value = "id автора")
     private Long id;
 
     @ApiModelProperty(value = "имя автора")
