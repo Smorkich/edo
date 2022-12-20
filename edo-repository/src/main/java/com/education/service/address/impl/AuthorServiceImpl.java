@@ -41,7 +41,7 @@ public class AuthorServiceImpl implements AuthorService {
      * Поиск Author по id
      */
     @Override
-    @Transactional(readOnly = true, rollbackFor = Exception.class)
+    @Transactional(readOnly = true)
     public Author findById(Long id) {
         return authorRepository.findById(id).orElse(null);
     }
@@ -50,7 +50,7 @@ public class AuthorServiceImpl implements AuthorService {
      * Поиск Author`s по id`s
      */
     @Override
-    @Transactional(readOnly = true, rollbackFor = Exception.class)
+    @Transactional(readOnly = true)
     public List<Author> findAllById(Iterable<Long> ids) {
         return authorRepository.findAllById(ids);
     }
@@ -60,7 +60,7 @@ public class AuthorServiceImpl implements AuthorService {
      */
 
     @Override
-    @Transactional(readOnly = true, rollbackFor = Exception.class)
+    @Transactional(readOnly = true)
     public List<Author> findAll() {
         return authorRepository.findAll();
     }
