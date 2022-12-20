@@ -1,6 +1,7 @@
 package com.education.service.impl;
 
 import com.education.service.AuthorService;
+import lombok.AllArgsConstructor;
 import model.dto.AuthorDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -12,14 +13,11 @@ import java.util.List;
  */
 
 @Service
+@AllArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
-    String URL = "http://edo-repository/api/repository/author";
+    static final String URL = "http://edo-repository/api/repository/author";
     private final RestTemplate restTemplate;
-
-    public AuthorServiceImpl(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
 
     /**
      * Сохранение Author
