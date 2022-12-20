@@ -2,7 +2,7 @@ package com.education.service.address;
 
 import com.education.entity.Author;
 
-import java.util.List;
+import java.util.Collection;
 public interface AuthorService {
     void save(Author author);
 
@@ -10,7 +10,7 @@ public interface AuthorService {
 
     Author findById(Long id);
 
-    List<Author> findAllById(Iterable<Long> ids);
+    Collection<Author> findAllById(Iterable<Long> ids);
 
-    List<Author> findAll();
+    Collection<Author> findAll();
 }

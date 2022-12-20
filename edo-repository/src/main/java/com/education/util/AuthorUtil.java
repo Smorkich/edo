@@ -2,9 +2,10 @@ package com.education.util;
 
 import com.education.entity.Author;
 import model.dto.AuthorDto;
-import org.springframework.stereotype.Component;
 
-import java.util.List;
+
+import java.util.Collection;
+
 
 /**
  * Util класс для реализации вспомогательных методов
@@ -54,7 +55,7 @@ public class AuthorUtil {
     /**
      * Конвертация коллекции <Author> в коллекцию <AuthorDto>
      */
-    public static List<AuthorDto> ListAuthorDtos(List<Author> authors) {
+    public static Collection<AuthorDto> ListAuthorDtos(Collection<Author> authors) {
         return authors.stream()
                 .map(AuthorUtil::toDto)
                 .toList();

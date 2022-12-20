@@ -10,7 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Рест-контроллер для Author
@@ -24,7 +24,7 @@ public class AuthorRestController {
 
     @ApiOperation(value = "Gets all authors", notes = "Author must exist")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AuthorDto>> getAllAuthors() {
+    public ResponseEntity<Collection<AuthorDto>> getAllAuthors() {
         return new ResponseEntity<>(AuthorUtil.ListAuthorDtos(authorService.findAll()),
                 HttpStatus.OK);
     }

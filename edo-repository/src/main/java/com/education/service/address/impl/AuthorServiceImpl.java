@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Сервис-класс с методами для транзакции с БД
@@ -51,7 +51,7 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Author> findAllById(Iterable<Long> ids) {
+    public Collection<Author> findAllById(Iterable<Long> ids) {
         return authorRepository.findAllById(ids);
     }
 
@@ -61,7 +61,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Author> findAll() {
+    public Collection<Author> findAll() {
         return authorRepository.findAll();
     }
 }
