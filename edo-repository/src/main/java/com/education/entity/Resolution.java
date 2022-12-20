@@ -83,4 +83,5 @@ public class Resolution extends BaseEntity {
     private String serialNumber;
 
 
+
 }
