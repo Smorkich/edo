@@ -9,13 +9,12 @@ import java.util.List;
  * Util класс для реализации вспомогательных методов
  */
 
-@Component
 public class AuthorUtil {
 
     /**
      *Конвертация сущности Author в AuthorDto
      */
-    public AuthorDto toDto(Author author) {
+    public static AuthorDto toDto(Author author) {
         return AuthorDto.builder().
                 id(author.getId()).
                 firstName(author.getFirstName()).
@@ -35,7 +34,7 @@ public class AuthorUtil {
     /**
      *Конвертация AuthorDto в сущность Author
      */
-    public Author toAuthor(AuthorDto authorDto){
+    public static Author toAuthor(AuthorDto authorDto){
         return Author.authorBuilder().
                 firstName(authorDto.getFirstName()).
                 lastName(authorDto.getLastName()).
@@ -54,9 +53,9 @@ public class AuthorUtil {
     /**
      *Конвертация коллекции <Author> в коллекцию <AuthorDto>
      */
-    public List<AuthorDto> ListAuthorDtos(List<Author> authors) {
+    public static List<AuthorDto> ListAuthorDtos(List<Author> authors) {
         return authors.stream().
-                map(this::toDto).
+                map(AuthorUtil::toDto).
                 toList();
     }
 }
