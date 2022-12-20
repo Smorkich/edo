@@ -1,6 +1,6 @@
 package com.education.entity;
 
-import model.enums.Type;
+import model.enums.ResolutonType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,9 +42,9 @@ public class Resolution extends BaseEntity {
     /**
      * Категория - резолюция, направление или запрос
      */
-    @Column(name = "type")
+    @Column(name = "resolution_type")
     @Enumerated(EnumType.STRING)
-    private Type type;
+    private ResolutionType type;
 
     /**
      * Создатель резолюции
@@ -65,7 +65,7 @@ public class Resolution extends BaseEntity {
      */
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "resolution_executor",
-            joinColumns = @JoinColumn(name = "executor_id", referencedColumnName = "id"),
+            joinColumns = @JoinColumn(name = "resolution_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
     private List<Employee> executor;
 
