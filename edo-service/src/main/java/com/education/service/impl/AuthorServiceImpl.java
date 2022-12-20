@@ -49,10 +49,6 @@ public class AuthorServiceImpl implements AuthorService {
     /**
      * Поиск Author`s по id`s
      */
-    @Override
-    public List<AuthorDto> findAllById(Iterable<Long> ids) {
-        return null;
-    }
 
     /**
      * Список Author`s

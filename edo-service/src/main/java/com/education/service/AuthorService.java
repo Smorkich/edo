@@ -10,7 +10,5 @@ public interface AuthorService {
 
     AuthorDto findById(Long id);
 
-    List<AuthorDto> findAllById(Iterable<Long> ids);
-
     List<AuthorDto> findAll();
 }
