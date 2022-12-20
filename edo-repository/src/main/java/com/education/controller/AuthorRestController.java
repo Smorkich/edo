@@ -44,7 +44,7 @@ public class AuthorRestController {
     }
 
     @ApiOperation(value = "Gets authors by ids", notes = "Author must exist")
-    @GetMapping(value = "{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> getAuthorById(@PathVariable Long id) {
         return new ResponseEntity<>(AuthorUtil.toDto(authorService.findById(id)), HttpStatus.OK);
     }
