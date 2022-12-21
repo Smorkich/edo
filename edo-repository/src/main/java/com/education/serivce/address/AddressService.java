@@ -2,7 +2,7 @@ package com.education.serivce.address;
 
 import com.education.entity.Address;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Service в "edo-repository", служит для связи контроллера и репозитория
@@ -27,11 +27,11 @@ public interface AddressService {
     /**
      * Метод, который возвращает адреса по их Id
      */
-    List<Address> findAllById(Iterable<Long> ids);
+    Collection<Address> findAllById(Iterable<Long> ids);
 
     /**
      * Метод, который возвращает все адреса
      */
-    List<Address> findAll();
+    Collection<Address> findAll();
 
 }

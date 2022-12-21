@@ -5,6 +5,8 @@ import com.education.entity.Address;
 import com.education.serivce.address.AddressService;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import model.dto.AddressDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,20 +14,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Rest-контроллер в "edo-repository", служит для отправки запросов
- * от клиента(которым может быть другой микросервис) к БД
+ * от клиента(которым может быть другой микросервис) к БД.
+ * "@Log4j2" нужна для создания логов, для удобной отладки программы
  */
 @RestController
+@Log4j2
+@AllArgsConstructor
 @RequestMapping("/api/repository/address")
 public class AddressController {
-
-    /**
-     * "Logger", нужен для создания логов, для удобной отладки программы
-     */
-    Logger logger = Logger.getLogger(AddressController.class.getName());
 
     /**
      * Поле "addressService" нужно для вызова Service-слоя (edo-repository),
@@ -33,49 +32,51 @@ public class AddressController {
      */
     private final AddressService addressService;
 
-    public AddressController(AddressService addressService) {
-        this.addressService = addressService;
-    }
-
-    //GET ONE
+    //GET ONE /api/repository/address/{id}
     @ApiOperation(value = "Возвращает адрес по id", notes = "Адрес должен существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AddressDto> findById(@PathVariable("id") long id) {
-        logger.info("Get Address from database");
-        return new ResponseEntity<>(toDTO(addressService.findById(id)), HttpStatus.OK);
+        log.info("Send a get-request to get Address with id = " + id + " from database");
+        AddressDto addressDto = toDto(addressService.findById(id));
+        log.info("Response from database: " + addressDto);
+        return new ResponseEntity<>(addressDto, HttpStatus.OK);
     }
 
 
-    //GET ALL
+    //GET ALL /api/repository/address/all
     @ApiOperation(value = "Возвращает все адреса", notes = "Адреса должны существовать")
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<AddressDto>> findAll() {
-        logger.info("Get All Addresse from database");
-        return new ResponseEntity<>(ListAddressDto(addressService.findAll()), HttpStatus.OK);
+        log.info("Send a get-request to get all Addresse from database");
+        List<AddressDto> addressDtos = ListAddressDto((List<Address>) addressService.findAll());
+        log.info("Response from database: " + addressDtos);
+        return new ResponseEntity<>(addressDtos, HttpStatus.OK);
     }
 
-    //POST
+    //POST /api/repository/address
     @ApiOperation(value = "Создает адрес в БД", notes = "Адрес должен существовать")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AddressDto> save(@RequestBody @Valid AddressDto addressDto) {
+        log.info("Send a post-request to post new Address to database");
         addressService.save(toEntity(addressDto));
-        logger.info("Post Address to database");
+        log.info("Response: " + addressDto + " was added to database");
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    //DELETE
+    //DELETE /api/repository/address/{id}
     @ApiOperation(value = "Удаляет адрес из БД", notes = "Адрес должен существовать")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Long> delete(@PathVariable("id") long id) {
+        log.info("Send a delete-request to delete Address with id = " + id + " from database");
         addressService.delete(addressService.findById(id));
-        logger.info("Delete Address to database");
+        log.info("Response: Address with id = " + id + " was deleted from database");
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
     /**
      * Маппинг сущности "Address" в DTO "AddressDto"
      */
-    public AddressDto toDTO(Address address) {
+    public AddressDto toDto(Address address) {
         return new AddressDto(
                 address.getId(),
                 address.getFullAddress(),
@@ -96,7 +97,7 @@ public class AddressController {
      */
     public List<AddressDto> ListAddressDto(List<Address> addresses) {
         return addresses.stream()
-                .map(this::toDTO)
+                .map(this::toDto)
                 .toList();
     }
 

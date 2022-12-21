@@ -14,6 +14,11 @@ import org.springframework.web.client.RestTemplate;
 public class AddressServiceImpl implements AddressService {
 
     /**
+     * Константа "URL" хранит URL по которому мы делаем запрос при помощи RestTemplate
+     */
+    private final String URL = "http://edo-repository/api/repository/address";
+
+    /**
      * Поле "restTemplate" нужно для вызова RestTemplate,
      * который нужен для совершения CRUD-операции по заданному URL
      */
@@ -23,28 +28,28 @@ public class AddressServiceImpl implements AddressService {
      * Метод, который возвращает адрес по Id
      */
     public String findById(long id) {
-        return restTemplate.getForObject("http://edo-repository/api/repository/address/" + id, String.class);
+        return restTemplate.getForObject(URL + "/" + id, String.class);
     }
 
     /**
      * Метод, который возвращает все адреса
      */
     public String findAll() {
-        return restTemplate.getForObject("http://edo-repository/api/repository/address/all", String.class);
+        return restTemplate.getForObject(URL + "/all", String.class);
     }
 
     /**
      * Метод сохранения нового адреса в БД
      */
     public void save(AddressDto addressDto) {
-        restTemplate.postForObject("http://edo-repository/api/repository/address", addressDto, AddressDto.class);
+        restTemplate.postForObject(URL, addressDto, AddressDto.class);
     }
 
     /**
      * Метод удаления адреса из БД
      */
     public void delete(long id) {
-        restTemplate.delete("http://edo-repository/api/repository/address/" + id, AddressDto.class);
+        restTemplate.delete(URL + "/" + id, AddressDto.class);
     }
 
 }

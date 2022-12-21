@@ -4,7 +4,6 @@ import com.education.entity.Address;
 import com.education.repository.address.AddressRepository;
 import com.education.serivce.address.AddressService;
 import lombok.AllArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,25 +43,25 @@ public class AddressServiceImpl implements AddressService {
     /**
      * Метод, который возвращает адрес по Id
      */
-    @Transactional(readOnly = true, rollbackFor = Exception.class)
+    @Transactional(readOnly = true)
     @Override
-    public Address findById(@Param("id") Long id) {
+    public Address findById(Long id) {
         return addressRepository.findById(id).orElse(null);
     }
 
     /**
      * Метод, который возвращает адреса по их Id
      */
-    @Transactional(readOnly = true, rollbackFor = Exception.class)
+    @Transactional(readOnly = true)
     @Override
-    public List<Address> findAllById(@Param("ids") Iterable<Long> ids) {
+    public List<Address> findAllById(Iterable<Long> ids) {
         return addressRepository.findAllById(ids);
     }
 
     /**
      * Метод, который возвращает все адреса
      */
-    @Transactional(readOnly = true, rollbackFor = Exception.class)
+    @Transactional(readOnly = true)
     @Override
     public List<Address> findAll() {
         return addressRepository.findAll();
