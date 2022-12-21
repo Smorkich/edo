@@ -10,8 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.logging.Logger;
+import java.util.Collection;
 
 /**
  * Рест-контроллер для Author
@@ -26,33 +25,37 @@ public class AuthorRestController {
 
     @ApiOperation(value = "Gets all authors", notes = "Author must exist")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AuthorDto>> getAllAuthors() {
-        log.info("GET: /api/service/author");
-        return new ResponseEntity<>(authorService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Collection<AuthorDto>> getAllAuthors() {
+        log.info("Sent GET request to get all authors from the database");
+        Collection<AuthorDto> authorDtoCollection = authorService.findAll();
+        log.info("Response from database:{}", authorDtoCollection);
+        return new ResponseEntity<>(authorDtoCollection, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Add author", notes = "Author not must exist")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> addAuthorAction(@RequestBody AuthorDto authorDto) {
-        log.info("POST: /api/service/author");
+        log.info("Send POST request to add author to databases: {}", authorDto);
         authorService.save(authorDto);
-        log.info("POST request successful");
+        log.info("Author added to database");
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Delete author", notes = "Author must exist")
     @DeleteMapping("/{id}")
     public ResponseEntity<AuthorDto> deleteAuthor(@PathVariable Long id) {
-        log.info("DELETE: /api/service/author/"+id);
+        log.info("Send DELETE request to delete author with id={} to databases", id);
         authorService.delete(id);
-        log.info("DELETE request successful");
+        log.info("Author was deleted from the database");
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
     @ApiOperation(value = "Gets authors by id", notes = "Author must exist")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> getAuthorById(@PathVariable Long id) {
-        log.info("Get: /api/service/author/"+id);
+        log.info("Sent GET request to get author with id={} from the database", id);
+        AuthorDto authorDto = authorService.findById(id);
+        log.info("Response from database:{}", authorDto);
         return new ResponseEntity<>(authorService.findById(id), HttpStatus.OK);
     }
 }

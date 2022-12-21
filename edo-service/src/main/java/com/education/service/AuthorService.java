@@ -1,7 +1,7 @@
 package com.education.service;
 import model.dto.AuthorDto;
 
-import java.util.List;
+import java.util.Collection;
 
 public interface AuthorService {
     void save(AuthorDto author);
@@ -10,5 +10,5 @@ public interface AuthorService {
 
     AuthorDto findById(Long id);
 
-    List<AuthorDto> findAll();
+    Collection<AuthorDto> findAll();
 }

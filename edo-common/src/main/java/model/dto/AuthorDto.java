@@ -15,6 +15,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @Builder
+@ToString
 @ApiModel(value = "Автор обращения")
 public class AuthorDto implements Serializable {
 
