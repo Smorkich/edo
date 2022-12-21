@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import static jakarta.persistence.FetchType.LAZY;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,13 +17,14 @@ import java.util.Date;
 * @author Usolkin Dmitry
 * Сущность Department расширяет сущность BaseEntity
  */
-@Entity
+@Entity(name = "department")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "department")
 @ToString
+@Builder
 public class Department extends BaseEntity {
 
     /* Поле короткое имя*/
@@ -40,7 +42,7 @@ public class Department extends BaseEntity {
     /* Поле с внешним идентификатором, у себя не создаем сущность,
     скачиваем из чужого хранилища)
      */
-    @Column(name = "externalId")
+    @Column(name = "external_id")
     private Long externalId;
 
     /* Поле с номером телефона*/
