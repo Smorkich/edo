@@ -1,6 +1,6 @@
 create table if not exists resolution_executor
 (
-    resolution_id bigint references resolution (id) primary key,
+    resolution_id bigint references resolution (id),
     employee_id bigint references employee (id)
 );
 
