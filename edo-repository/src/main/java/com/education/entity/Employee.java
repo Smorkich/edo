@@ -1,9 +1,7 @@
 package com.education.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
-
-import java.time.ZonedDateTime;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "employee")
