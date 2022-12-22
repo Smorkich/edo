@@ -1,7 +1,7 @@
 package com.education.service.author.impl;
 
 import com.education.entity.Author;
-import com.education.repository.AuthorRepository;
+import com.education.repository.author.AuthorRepository;
 import com.education.service.author.AuthorService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -2,7 +2,7 @@ package com.education.controller.address;
 
 import com.education.entity.Address;
 
-import com.education.serivce.address.AddressService;
+import com.education.service.address.AddressService;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
