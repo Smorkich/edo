@@ -4,7 +4,7 @@ package model.enums;
  * Представляет собой тип обращения
  */
 
-public enum Type {
+public enum ResolutionType {
     RESOLUTION("Резолюция"),
     REFERRAL("Направление"),
     REQUEST("Запрос");
@@ -18,7 +18,7 @@ public enum Type {
     /**
      * Конструктор для передачи значения константы в поле для хранения
      */
-    Type(String category) {
+    ResolutionType(String category) {
         this.category = category;
     }
 

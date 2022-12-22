@@ -3,7 +3,10 @@ package model.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import model.enums.Type;
+import model.enums.ResolutionType;
+
+import java.time.ZonedDateTime;
+import java.util.List;
 
 
 @NoArgsConstructor
@@ -11,7 +14,7 @@ import model.enums.Type;
 @Getter
 @Setter
 @ApiModel(value = "Класс-обертка класса Resolution для передачи данных между модулями и классами")
-public class ResolutionDto ResolutionDto {
+public class ResolutionDto {
 
     @ApiModelProperty(value = "id")
     private Long id;
@@ -26,7 +29,7 @@ public class ResolutionDto ResolutionDto {
     private ZonedDateTime lastActionDate;
 
     @ApiModelProperty(value = "Вид - резолюция, направление или запрос")
-    private Type type;
+    private ResolutionType type;
 
     @ApiModelProperty(value = "Создатель")
     private EmployeeDto creatorDto;
