@@ -41,7 +41,7 @@ public class AddressController {
 
     //GET ALL /api/service/address/getAllAdresseRestTemplate
     @ApiOperation(value = "Возвращает все адреса", notes = "Адреса должны существовать")
-    @GetMapping(value = "/getAllAdresseRestTemplate", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> findAll() {
         log.info("Send a get-request to get all Addresse from edo-repository" +
                 " (RestTemplate on edo-service side)");
