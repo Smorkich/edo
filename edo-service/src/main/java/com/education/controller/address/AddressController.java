@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestOperations;
 
 /**
  * Rest-контроллер в "edo-service", служит для отправки запросов
@@ -33,11 +32,11 @@ public class AddressController {
     @ApiOperation(value = "Возвращает адрес по id", notes = "Адрес должен существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> findById(@PathVariable("id") long id) {
-        log.info("Send a get-request to get Address with id = " + id + " from edo-repository " +
-                "(RestTemplate on edo-service side)");
-        String addressDto = addressService.findById(id);
-        log.info("Response from edo-repository: " + addressDto);
-        return new ResponseEntity<>(addressService.findById(id), HttpStatus.OK);
+        log.info("Send a get-request to get Address with id = {} from edo-repository " +
+                "(RestTemplate on edo-service side)", id);
+        var addressDto = addressService.findById(id);
+        log.info("Response from edo-repository: {}", addressDto);
+        return new ResponseEntity<>(addressDto, HttpStatus.OK);
     }
 
     //GET ALL /api/service/address/getAllAdresseRestTemplate
@@ -46,8 +45,8 @@ public class AddressController {
     public ResponseEntity<String> findAll() {
         log.info("Send a get-request to get all Addresse from edo-repository" +
                 " (RestTemplate on edo-service side)");
-        String addressDtos = addressService.findAll();
-        log.info("Response from edo-repository: " + addressDtos);
+        var addressDtos = addressService.findAll();
+        log.info("Response from edo-repository: {}", addressDtos);
         return new ResponseEntity<>(addressDtos, HttpStatus.OK);
     }
 
@@ -58,7 +57,7 @@ public class AddressController {
         log.info("Send a post-request to edo-repository to post new Address to database" +
                 " (RestTemplate on edo-service side)");
         addressService.save(addressDto);
-        log.info("Response: " + addressDto + " was added to database");
+        log.info("Response: {} was added to database", addressDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -66,10 +65,10 @@ public class AddressController {
     @ApiOperation(value = "Удаляет адрес из БД", notes = "Адрес должен существовать")
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> delete(@PathVariable("id") long id) {
-        log.info("Send a delete-request to edo-repository to delete Address with id = " + id +
-                " from database (RestTemplate on edo-service side)");
+        log.info("Send a delete-request to edo-repository to delete Address with id = {}" +
+                " from database (RestTemplate on edo-service side)", id);
         addressService.delete(id);
-        log.info("Response: Address with id = " + id + " was deleted from database");
+        log.info("Response: Address with id = {} was deleted from database", id);
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 }
