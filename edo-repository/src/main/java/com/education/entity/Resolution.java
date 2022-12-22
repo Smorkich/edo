@@ -1,6 +1,6 @@
 package com.education.entity;
 
-import model.enums.ResolutonType;
+import model.enums.ResolutionType;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
