@@ -1,4 +1,4 @@
-package com.education.serivce.address;
+package com.education.service.address;
 
 import com.education.entity.Address;
 

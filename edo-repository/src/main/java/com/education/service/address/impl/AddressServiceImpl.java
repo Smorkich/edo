@@ -1,8 +1,8 @@
-package com.education.serivce.address.impl;
+package com.education.service.address.impl;
 
 import com.education.entity.Address;
 import com.education.repository.address.AddressRepository;
-import com.education.serivce.address.AddressService;
+import com.education.service.address.AddressService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

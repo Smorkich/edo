@@ -1,4 +1,4 @@
-package com.education.repository;
+package com.education.repository.author;
 
 import com.education.entity.Author;
 import org.springframework.data.jpa.repository.JpaRepository;
