@@ -1,7 +1,8 @@
 package com.education.controller;
 
+import static com.education.util.AuthorUtil.*;
+
 import com.education.service.address.AuthorService;
-import com.education.util.AuthorUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -29,7 +30,7 @@ public class AuthorRestController {
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AuthorDto>> getAllAuthors() {
         log.info("Sent GET request to get all authors from the database");
-        Collection<AuthorDto> authorDtoCollection = AuthorUtil.ListAuthorDtos(authorService.findAll());
+        var authorDtoCollection = listAuthorDtos(authorService.findAll());
         log.info("Response from database:{}", authorDtoCollection);
         return new ResponseEntity<>(authorDtoCollection, HttpStatus.OK);
     }
@@ -38,7 +39,7 @@ public class AuthorRestController {
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> addAuthorAction(@RequestBody AuthorDto authorDto) {
         log.info("Send POST request to add author to databases: {}", authorDto);
-        authorService.save(AuthorUtil.toAuthor(authorDto));
+        authorService.save(toAuthor(authorDto));
         log.info("Author added to database");
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -56,7 +57,7 @@ public class AuthorRestController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> getAuthorById(@PathVariable Long id) {
         log.info("Sent GET request to get author with id={} from the database", id);
-        AuthorDto authorDto = AuthorUtil.toDto(authorService.findById(id));
+        var authorDto = toDto(authorService.findById(id));
         log.info("Response from database:{}", authorDto);
         return new ResponseEntity<>(authorDto, HttpStatus.OK);
     }

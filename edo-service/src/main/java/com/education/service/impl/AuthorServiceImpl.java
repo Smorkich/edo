@@ -33,7 +33,7 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     public void delete(Long id) {
-        restTemplate.delete(URL+"/"+id,AuthorDto.class);
+        restTemplate.delete(URL + "/" + id, AuthorDto.class);
     }
 
     /**
@@ -41,18 +41,14 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     public AuthorDto findById(Long id) {
-        return restTemplate.getForObject(URL+"/"+id,AuthorDto.class);
+        return restTemplate.getForObject(URL + "/" + id, AuthorDto.class);
     }
-
-    /**
-     * Поиск Author`s по id`s
-     */
 
     /**
      * Список Author`s
      */
     @Override
     public List<AuthorDto> findAll() {
-        return restTemplate.getForObject(URL,List.class);
+        return restTemplate.getForObject(URL, List.class);
     }
 }

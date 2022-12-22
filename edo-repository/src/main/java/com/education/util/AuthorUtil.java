@@ -36,7 +36,7 @@ public class AuthorUtil {
     /**
      * Конвертация AuthorDto в сущность Author
      */
-    public static Author toAuthor(AuthorDto authorDto) {
+    public static  Author toAuthor(AuthorDto authorDto) {
         return Author.authorBuilder()
                 .firstName(authorDto.getFirstName())
                 .lastName(authorDto.getLastName())
@@ -55,7 +55,7 @@ public class AuthorUtil {
     /**
      * Конвертация коллекции <Author> в коллекцию <AuthorDto>
      */
-    public static Collection<AuthorDto> ListAuthorDtos(Collection<Author> authors) {
+    public static Collection<AuthorDto> listAuthorDtos(Collection<Author> authors) {
         return authors.stream()
                 .map(AuthorUtil::toDto)
                 .toList();

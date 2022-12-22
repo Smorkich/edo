@@ -27,7 +27,7 @@ public class AuthorRestController {
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AuthorDto>> getAllAuthors() {
         log.info("Sent GET request to get all authors from the database");
-        Collection<AuthorDto> authorDtoCollection = authorService.findAll();
+        var authorDtoCollection = authorService.findAll();
         log.info("Response from database:{}", authorDtoCollection);
         return new ResponseEntity<>(authorDtoCollection, HttpStatus.OK);
     }
@@ -54,7 +54,7 @@ public class AuthorRestController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> getAuthorById(@PathVariable Long id) {
         log.info("Sent GET request to get author with id={} from the database", id);
-        AuthorDto authorDto = authorService.findById(id);
+        var authorDto = authorService.findById(id);
         log.info("Response from database:{}", authorDto);
         return new ResponseEntity<>(authorService.findById(id), HttpStatus.OK);
     }
