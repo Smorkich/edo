@@ -1,4 +1,4 @@
-package com.education.service.address;
+package com.education.service.author;
 
 import com.education.entity.Author;
 

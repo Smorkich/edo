@@ -1,6 +1,6 @@
-package com.education.controller;
+package com.education.controller.author;
 
-import com.education.service.AuthorService;
+import com.education.service.author.AuthorService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;

@@ -1,6 +1,6 @@
-package com.education.service.impl;
+package com.education.service.author.impl;
 
-import com.education.service.AuthorService;
+import com.education.service.author.AuthorService;
 import lombok.AllArgsConstructor;
 import model.dto.AuthorDto;
 import org.springframework.stereotype.Service;
