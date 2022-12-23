@@ -19,7 +19,7 @@ public class Theme extends BaseEntity {
     private String name;
 
     /**
-     * Дата архивации
+     *  Дата архивации
      */
     @Column(name = "archived_date")
     private ZonedDateTime archivedDate;

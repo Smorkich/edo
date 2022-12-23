@@ -3,7 +3,7 @@ CREATE TABLE IF NOT EXISTS theme(
     name VARCHAR(50) NOT NULL,
     archived_date DATE,
     creation_date DATE NOT NULL,
-    code VARCHAR(20) NOT NULL
+    code  VARCHAR(20) NOT NULL
 );
 
 COMMENT ON TABLE  theme is 'таблица тем';

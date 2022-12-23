@@ -15,7 +15,7 @@ import java.time.ZonedDateTime;
 @ApiModel(value = "Тема обращения")
 public class ThemeDto {
 
-    @ApiModelProperty(value = "номер id")
+    @ApiModelProperty(value  = "номер id")
     private Long id;
 
     @ApiModelProperty(value = "название темы")
