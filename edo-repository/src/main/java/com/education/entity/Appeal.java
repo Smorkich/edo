@@ -2,6 +2,7 @@ package com.education.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import model.enums.Employment;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;
@@ -44,7 +45,8 @@ public class Appeal extends BaseEntity {
     private String annotation;
 
     /**
-     * Обработчик обращения
+     * Обработчик обращения (несколько Employee - подписанты)
+     * те из работников, кто будут рассматривать обращение недовольного гражданина
      */
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "appeal_signer",
@@ -53,18 +55,86 @@ public class Appeal extends BaseEntity {
     private Collection<Employee> signer = new HashSet<>();
 
     /**
-     * Создатель обращения
+     * Создатель обращения (Не автор!)
+     * грубо говоря - работник, который принял обращение недовольного гражданина
      */
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "creator_id")
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
     private Employee creator;
 
     /**
-     * Адрес обращения
+     * Несколько Employee "в копию" рассылки обращения
+     * они тоже посмотрят обращение, но подписи их нам не нужны
      */
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "appeal_addressee",
             joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
     private Collection<Employee> addressee = new HashSet<>();
+
+    /**
+     * Поле "appealsStatus" - статус обращения
+     * (Новое, Зарегистрировано, На рассмотрении, В работе, Архив, Ожидает отправки, Выполнено)
+     */
+    @Column(name = "appeals_status")
+    @Enumerated(EnumType.STRING)
+    private Employment appealsStatus;
+
+    /**
+     * Поле "appealsReceiptMethod" - способ получения обращения
+     * (На бумаге, Через электронную почту, Лично в приемной, По телефону)
+     */
+    @Column(name = "appeals_receipt_method")
+    @Enumerated(EnumType.STRING)
+    private Employment appealsReceiptMethod;
+
+    /**
+     * Несколько "Authors" - автор, соавторы обращения
+     */
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "appeal_authors",
+            joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id", referencedColumnName = "id"))
+    private Collection<Author> appealAuthors = new HashSet<>();
+
+    /**
+     * Несколько "FilePool" - несколько файлов
+     * внутри гневное письмо/письма недовольных граждан
+     */
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "appeal_filepool",
+            joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "filepool_id", referencedColumnName = "id"))
+    private Collection<FilePool> appealFilepool = new HashSet<>();
+
+    /**
+     * Несколько "Question" - несколько вопросов
+     * внутри гневные вопросы недовольных граждан
+     */
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "appeal_question",
+            joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"))
+    private Collection<Question> appealQuestion = new HashSet<>();
+
+    /**
+     * Номенклатура
+     */
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nomenclature_id", referencedColumnName = "id")
+    private Nomenclature nomenclature;
+
+    /**
+     * Разрешение
+     */
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "resolution_id", referencedColumnName = "id")
+    private Resolution resolution;
+
+//    /**
+//     * Тема !!!Не создана сущность потом раскомментить!!!
+//     */
+//    @OneToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "thema_id", referencedColumnName = "id")
+//    private Thema thema;
 }
