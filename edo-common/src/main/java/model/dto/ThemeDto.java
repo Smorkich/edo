@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import java.time.ZonedDateTime;
 
 @NoArgsConstructor
@@ -13,9 +14,13 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 @ApiModel(value = "Тема обращения")
+
+/**
+ * @author AlexeySpiridonov
+ */
 public class ThemeDto {
 
-    @ApiModelProperty(value  = "номер id")
+    @ApiModelProperty(value = "номер id")
     private Long id;
 
     @ApiModelProperty(value = "название темы")

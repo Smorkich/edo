@@ -10,6 +10,12 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 @Table(name = "theme")
+
+/**
+ * @author AlexeySpiridonov
+ * Сущность описывающая тему обращения граждан
+ */
+
 public class Theme extends BaseEntity {
 
     /**
@@ -36,7 +42,9 @@ public class Theme extends BaseEntity {
     @Column(name = "code")
     private String code;
 
-    /*  связка с entity Theme */
+    /**
+     *  связка с entity Theme
+    * */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     private Theme parentTheme;
