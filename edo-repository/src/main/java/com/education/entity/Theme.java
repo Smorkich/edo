@@ -4,18 +4,16 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.ZonedDateTime;
 
+/**
+ * @author AlexeySpiridonov
+ * Сущность описывающая тему обращения граждан
+ */
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Table(name = "theme")
-
-/**
- * @author AlexeySpiridonov
- * Сущность описывающая тему обращения граждан
- */
-
 public class Theme extends BaseEntity {
 
     /**
