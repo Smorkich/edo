@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 /**
+ * @author Nadezhda Pupina
  * реализация noFeignClient
  */
 @Component

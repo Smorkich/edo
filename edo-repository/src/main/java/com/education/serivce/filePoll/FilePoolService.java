@@ -2,9 +2,12 @@ package com.education.serivce.filePoll;
 
 import com.education.entity.FilePool;
 
-import java.time.ZonedDateTime;
 import java.util.Collection;
 
+/**
+ * @author Nadezhda Pupina
+ * Интерфейс с методами для FilePool
+ */
 public interface FilePoolService {
 
     /**
@@ -37,12 +40,12 @@ public interface FilePoolService {
     /**
      * findByIdNotArchived - находит файл без архивной даты по id
      */
-    FilePool findByIdNotArchived(Long id);
+    FilePool findByIdAndArchivedDateNull(Long id);
 
     /**
      * findAllByIdNotArchived - находит все файлы без архивной даты по id
      */
-    Collection<FilePool> findAllByIdNotArchived(Iterable<Long> ids);
+    Collection<FilePool> findByIdInAndArchivedDateNull(Iterable<Long> ids);
 
 
 }

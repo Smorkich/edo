@@ -2,15 +2,17 @@ package com.education.repository.filePool;
 
 import com.education.entity.FilePool;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-import java.time.ZonedDateTime;
 import java.util.List;
-
+/**
+ * @author Nadezhda Pupina
+ * Наследует Jpa repository, реализует необходимые методы
+ */
+@Repository
 public interface FilePoolRepository extends JpaRepository<FilePool, Long> {
-    void moveToArchive(Long id);
+    FilePool findByIdAndArchivedDateNull(Long id);
 
-    FilePool findByIdNotArchived(Long id);
-
-    List<FilePool> findAllByIdNotArchived(Iterable<Long> ids);
+    List<FilePool> findByIdInAndArchivedDateNull(Iterable<Long> ids);
 
 }
