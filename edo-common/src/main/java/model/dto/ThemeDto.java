@@ -9,15 +9,14 @@ import lombok.Setter;
 
 import java.time.ZonedDateTime;
 
+/**
+ * @author AlexeySpiridonov
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ApiModel(value = "Тема обращения")
-
-/**
- * @author AlexeySpiridonov
- */
 public class ThemeDto {
 
     @ApiModelProperty(value = "номер id")
