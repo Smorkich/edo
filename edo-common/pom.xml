@@ -12,7 +12,6 @@
     <artifactId>edo-common</artifactId>
     <version>0.0.1</version>
     <packaging>jar</packaging>
-    <description>Модуль общей информации, необходимой для всех сервисов</description>
 
     <properties>
         <maven.compiler.source>1.11</maven.compiler.source>
