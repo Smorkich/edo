@@ -92,7 +92,7 @@ public class Employee extends BaseEntity {
     /**
      * username - Имя пользователя
      */
-    @Column(name = "username")
+    @Column(name = "user_name")
     private String username;
 
     /**
@@ -104,7 +104,7 @@ public class Employee extends BaseEntity {
     /**
      * archivedDate - Дата архивации
      */
-    @Column(name = "archived_date")
+    @Column(name = "archived-date")
     private ZonedDateTime archivedDate;
 
 }
