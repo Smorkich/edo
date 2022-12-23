@@ -1,12 +1,9 @@
-package com.education.serivce.nomenclature.impl;
+package com.education.service.nomenclature.impl;
 
 import com.education.entity.Nomenclature;
-import com.education.repository.NomenclatureRepository;
-import com.education.serivce.nomenclature.NomenclatureService;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
+import com.education.repository.nomenclature.NomenclatureRepository;
+import com.education.service.nomenclature.NomenclatureService;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

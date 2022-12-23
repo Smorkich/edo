@@ -1,17 +1,22 @@
 package model.dto;
 
-import com.education.entity.Nomenclature;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.*;
 
 import java.time.ZonedDateTime;
-
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
 @ApiModel("Объект хранения элементов")
 public class NomenclatureDto {
 
 
     @ApiModelProperty("ID записи")
-    private Integer id;
+    private Long id;
 
     @ApiModelProperty("дата создания")
     private ZonedDateTime creationDate;

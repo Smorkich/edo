@@ -1,4 +1,4 @@
-package com.education.repository;
+package com.education.repository.nomenclature;
 
 import com.education.entity.Nomenclature;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package com.education.controller;
+package com.education.controller.nomenclature;
 
 
 import com.education.service.nomenclature.NomenclatureService;

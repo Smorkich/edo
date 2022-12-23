@@ -1,4 +1,4 @@
-package com.education.Utils;
+package com.education.util;
 
 import com.education.entity.Nomenclature;
 import model.dto.NomenclatureDto;

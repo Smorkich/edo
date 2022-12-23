@@ -1,30 +1,19 @@
-package com.education.controller;
+package com.education.controller.nomenclature;
 
-import com.education.Utils.NomenclatureDTOMapper;
-import com.education.entity.Nomenclature;
-import com.education.repository.NomenclatureRepository;
-import com.education.serivce.nomenclature.NomenclatureService;
-import com.education.serivce.nomenclature.impl.NomenclatureServiceImpl;
-import io.swagger.annotations.Api;
+import com.education.util.NomenclatureDTOMapper;
+import com.education.repository.nomenclature.NomenclatureRepository;
+import com.education.service.nomenclature.NomenclatureService;
 import io.swagger.annotations.ApiOperation;
-import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
-import lombok.extern.flogger.Flogger;
 import lombok.extern.log4j.Log4j2;
 import model.dto.NomenclatureDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.temporal.Temporal;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @RestController

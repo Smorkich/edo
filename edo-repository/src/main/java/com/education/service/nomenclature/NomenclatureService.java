@@ -1,4 +1,4 @@
-package com.education.serivce.nomenclature;
+package com.education.service.nomenclature;
 
 import com.education.entity.Nomenclature;
 
