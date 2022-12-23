@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -17,7 +18,8 @@ import java.util.UUID;
 @Setter
 @Builder
 @ApiModel(value = "Класс-обертка для взаимодействия с иными модулями и внешними системами")
-public class FilePoolDto {
+public class FilePoolDto implements Serializable {
+
     @ApiModelProperty(value = "id файла", name = "id", dataType = "Long", example = "1")
     private Long id;
 

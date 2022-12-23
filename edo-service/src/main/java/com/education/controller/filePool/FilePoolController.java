@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
+@Log4j2
 @RestController
 @AllArgsConstructor
-@Log4j2
 @RequestMapping("/api/service/filePool")
 public class FilePoolController {
 

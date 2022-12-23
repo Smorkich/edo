@@ -1,7 +1,6 @@
 package com.education.service.filePool.impl;
 
 import com.education.service.filePool.FilePoolService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.FilePoolDto;
@@ -10,7 +9,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * @author Nadezhda Pupina

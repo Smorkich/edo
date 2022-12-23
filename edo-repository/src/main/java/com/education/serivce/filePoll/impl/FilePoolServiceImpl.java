@@ -33,7 +33,7 @@ public class FilePoolServiceImpl implements FilePoolService {
     @Override
     @Transactional(readOnly = true)
     public FilePool findById(Long id) {
-        return filePoolRepository.findById(id).get();
+        return filePoolRepository.findById(id).orElse(null);
     }
 
     @Override
