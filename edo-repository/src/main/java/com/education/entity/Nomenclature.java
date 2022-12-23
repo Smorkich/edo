@@ -1,10 +1,7 @@
 package com.education.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.ZonedDateTime;
 
@@ -14,15 +11,23 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
+@Table(name = "nomenclature",schema = "edo")
 public class Nomenclature extends BaseEntity {
+
+
 
     /** Колонка даты создания */
     @Column(name = "creation_date")
     private ZonedDateTime creationDate;
 
+
     /** Колонка даты архивации */
     @Column(name = "archived_date")
     private ZonedDateTime archivedDate;
+
+
+
 
     /** Шаблон записи  */
     @Column(name = "template")
