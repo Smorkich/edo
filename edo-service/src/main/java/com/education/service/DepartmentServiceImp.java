@@ -10,8 +10,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.logging.Logger;
+
 /**
- *@author Usolkin Dmitry
+ * @author Usolkin Dmitry
  * Сервис, который соединяет реализацию двух модулей через RestTemplate
  * Имеет все те же операции, что и service в edo-repository
  */
@@ -30,25 +31,26 @@ public class DepartmentServiceImp implements DepartmentService {
 
     @Override
     public void save(DepartmentDto department) {
-        restTemplate.postForObject(URL,department, String.class);
+        restTemplate.postForObject(URL, department, String.class);
         LOGGER.info("sent a request to save the department in edo - repository");
     }
 
     @Override
     public void removeToArchived(Long id) {
-        restTemplate.postForObject(URL + "/" + id,null, String.class);
+        restTemplate.postForObject(URL + "/" + id, null, String.class);
         LOGGER.info("sent a request to archive the department in edo - repository");
     }
+
     @Override
 
     public DepartmentDto findById(Long id) {
         LOGGER.info("sent a request to receive the department in edo - repository");
-        return restTemplate.getForObject(URL + "/" + id,DepartmentDto.class);
+        return restTemplate.getForObject(URL + "/" + id, DepartmentDto.class);
     }
 
     @Override
 
-    public List<DepartmentDto> findByAllId( String ids) {
+    public List<DepartmentDto> findByAllId(String ids) {
         LOGGER.info("sent a request to receive the departments in edo - repository");
         return restTemplate.getForObject(URL + "/all/" + ids, List.class);
     }
@@ -56,9 +58,10 @@ public class DepartmentServiceImp implements DepartmentService {
     @Override
     public DepartmentDto findByIdNotArchived(Long id) {
         LOGGER.info("sent a request to receive the department not archived in edo - repository");
-        return restTemplate.getForObject(URL + "/NotArchived/" + id,DepartmentDto.class);
+        return restTemplate.getForObject(URL + "/NotArchived/" + id, DepartmentDto.class);
 
     }
+
     @Override
     public List<DepartmentDto> findByAllIdNotArchived(String ids) {
         LOGGER.info("sent a request to receive the departments not archived in edo - repository");

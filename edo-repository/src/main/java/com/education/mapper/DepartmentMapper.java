@@ -9,16 +9,18 @@ import org.mapstruct.factory.Mappers;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-
+/**
+ * @author Usolkin Dmitry
+ * Интерфейс для реализации конвертации департамента в ДТО и обратно
+ */
 @Mapper
 public interface
 DepartmentMapper {
     public static DepartmentMapper mapper = Mappers.getMapper(DepartmentMapper.class);
-    DepartmentDto  toDTO(Department department);
+
+    DepartmentDto toDTO(Department department);
+
     Department toDep(DepartmentDto departmentDto);
 
-    default Timestamp map(Instant instant) {
-        return instant == null ? null : Timestamp.from(instant);
-    }
 
 }

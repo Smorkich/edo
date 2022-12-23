@@ -12,9 +12,5 @@ public class EdoServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(EdoServiceApplication.class, args);
     }
-    @LoadBalanced
-    @Bean
-    RestTemplate restTemplate() {
-        return new RestTemplate();
-    }
+
 }

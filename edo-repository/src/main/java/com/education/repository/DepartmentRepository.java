@@ -14,9 +14,10 @@ import java.util.List;
  * Имеет кастомные методы, используя синтаксис DATA JPA
  */
 @Repository
-public interface DepartmentRepository extends JpaRepository<Department,Long> {
+public interface DepartmentRepository extends JpaRepository<Department, Long> {
     Department findByIdAndArchivedDateNull(Long id);
-//    @Query("SELECT d FROM department d WHERE d.id IN :ids AND d.archivedDate is null ")
+
+    //    @Query("SELECT d FROM department d WHERE d.id IN :ids AND d.archivedDate is null ")
     List<Department> findByIdInAndArchivedDateNull(Iterable<Long> ids);
 
 
