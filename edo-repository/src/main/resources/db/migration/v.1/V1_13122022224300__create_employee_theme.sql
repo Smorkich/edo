@@ -1,8 +1,8 @@
 CREATE TABLE IF NOT EXISTS theme(
     id BIGSERIAL NOT NULL PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
-    archived_date DATE,
-    creation_date DATE NOT NULL,
+    archived_date TIMESTAMP WITH TIME ZONE,
+    creation_date TIMESTAMP WITH TIME ZONE NOT NULL,
     code  VARCHAR(20) NOT NULL
 );
 
