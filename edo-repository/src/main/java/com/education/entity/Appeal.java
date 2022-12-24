@@ -56,7 +56,7 @@ public class Appeal extends BaseEntity {
      * Создатель обращения
      */
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "creator_id")
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
     private Employee creator;
 
     /**
