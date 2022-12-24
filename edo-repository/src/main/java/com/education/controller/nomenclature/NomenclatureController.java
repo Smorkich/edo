@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.List;
 
+/**
+ * RestController of edo-repository. 
+ */
 @AllArgsConstructor
 @RestController
 @Log4j2
@@ -42,7 +45,9 @@ public class NomenclatureController {
     @GetMapping(value = "/find/{id}")
     public ResponseEntity<NomenclatureDto> findById(@PathVariable Long id) {
         log.info("Serching entity with id = {}", id);
-        return new ResponseEntity<>(NomenclatureDTOMapper.toDTO(service.findById(id).get()), HttpStatus.OK);
+        NomenclatureDto nomenclatureDto = NomenclatureDTOMapper.toDTO(service.findById(id).get());
+        log.info("Entity {} has been found",nomenclatureDto);
+        return new ResponseEntity<>(nomenclatureDto, HttpStatus.OK);
     }
 
     /**
