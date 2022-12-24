@@ -12,6 +12,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+
+ /** Implementation of edo-service service */
 @AllArgsConstructor
 @Service
 @Transactional(readOnly = true, rollbackFor = Exception.class)
@@ -19,36 +21,60 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
     private NomenclatureRepository repository;
 
+    /**
+     * Method saves new entity in DB by accepting json-body object
+     */
     @Transactional(rollbackFor = Exception.class)
     public void save(Nomenclature nomenclature) {
         repository.save(nomenclature);
     }
 
+
+
+    /**
+     * the Method fills in the field with the value and set date
+     */
     @Transactional(rollbackFor = Exception.class)
     public void moveToArchive(Long id) {
         repository.moveToArchive(ZonedDateTime.now(), id);
     }
 
+
+    /**
+     * Method searches for an entity of Nomenclature
+     */
     public Optional<Nomenclature> findById(Long id) {
         return repository.findById(id);
     }
 
 
+    /**
+     * Method searches for set of entities of Nomenclature by their ids: "?id = 1,2,3,4,5,6... "
+     */
     public List<Nomenclature> findAllById(Collection<Long> nomenclature) {
         List<Nomenclature> allById = repository.findAllById(nomenclature);
         return allById;
     }
     
+    /**
+     * Method searches for an entity of Nomenclature that archiveDate fild is null
+     */
     @Override
     public Optional<Nomenclature> findByIdNotArchived(Long id) {
         return repository.findByIdNotArchived(id);
     }
 
+    /**
+     * Method searches for set of entities of Nomenclature that archiveDate filds are null
+     */
     @Override
     public List<Nomenclature> findAllByIdNotArchived(Collection<Long> idList) {
         return repository.findAllByIdNotArchived(idList);
     }
 
+    /**
+     * Delete entity of Nomenclature by its id
+     */
     @Transactional
     @Override
     public void deleteById(Long id) {
