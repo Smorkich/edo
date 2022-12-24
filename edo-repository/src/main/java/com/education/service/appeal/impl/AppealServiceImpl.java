@@ -34,7 +34,6 @@ public class AppealServiceImpl implements AppealService {
         return appealRepository.findById(id).orElse(null);
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public Collection<Appeal> findAll() {
@@ -42,19 +41,20 @@ public class AppealServiceImpl implements AppealService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void moveToArchive(Long id, ZonedDateTime zonedDateTime) {
-        appealRepository.moveToArchive(id, ZonedDateTime.now());
+        appealRepository.moveToArchive(id, zonedDateTime);
     }
 
     @Override
-    @Transactional(readOnly = true, rollbackFor=Exception.class)
+    @Transactional(readOnly = true)
     public Appeal findByIdNotArchived(Long id) {
         return appealRepository.findByIdNotArchived(id).orElse(null);
     }
 
     @Override
-    @Transactional(readOnly = true, rollbackFor=Exception.class)
-    public Collection<Appeal> findAllByIdNotArchived(Collection<Long> id) {
-        return appealRepository.findAllByIdNotArchived(id);
+    @Transactional(readOnly = true)
+    public Collection<Appeal> findAllNotArchived() {
+        return appealRepository.findAllNotArchived();
     }
 }

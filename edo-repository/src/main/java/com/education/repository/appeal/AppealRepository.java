@@ -14,15 +14,24 @@ import java.util.Optional;
 @Repository
 public interface AppealRepository extends JpaRepository<Appeal, Long> {
 
+    /**
+     * Метод ставит дату архивации
+     */
     @Modifying
     @Query("update Appeal appeal set appeal.archivedDate =:archivedDate where appeal.id =:id")
     void moveToArchive(@Param("id") Long id, @Param("archivedDate") ZonedDateTime archiveDate);
 
+    /**
+     * Метод достает Appeal, у которого поле archivedDate = null
+     */
     @Query("select u from Appeal u where u.archivedDate is null and u.id =:id")
     Optional<Appeal> findByIdNotArchived(@Param("id") Long id);
 
-    @Query("select u from Appeal u where u.archivedDate not in ?1")
-    Collection<Appeal> findAllByIdNotArchived(Iterable<Long> idList);
+    /**
+     * Метод, который достает всех Appeal, у которых поле archivedDate = null
+     */
+    @Query("from Appeal u where u.archivedDate is null")
+    Collection<Appeal> findAllNotArchived();
 
 }
 

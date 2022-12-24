@@ -12,6 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZonedDateTime;
 import java.util.Collection;
 
 @RestController
@@ -23,11 +24,22 @@ public class AppealRestController {
 
     private EmployeeService employeeService;
 
-//    @PatchMapping(value = "{/id}")
-//    public ResponseEntity<AppealDto> moveToArchive(@PathVariable Long id, AppealDto appealDto) {
-//        appealService.moveToArchive(appealDto.getId(), appealDto.getArchivedDate());
-//        return new ResponseEntity<>(appealDto ,HttpStatus.OK);
-//    }
+    @PatchMapping(value = "/move/{id}")
+    public ResponseEntity<AppealDto> moveToArchive(@PathVariable Long id) {
+        appealService.moveToArchive(id, ZonedDateTime.now());
+        return new ResponseEntity<>(toDto(appealService.findById(id)), HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/findAllNotArchived", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<AppealDto>> findAllNotArchived() {
+        var appealDtoCollection = entityAppealToDto(appealService.findAllNotArchived());
+        return new ResponseEntity<>(appealDtoCollection, HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/findByIdNotArchived/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AppealDto> findByIdNotArchived(@PathVariable Long id) {
+        return new ResponseEntity<>(toDto(appealService.findByIdNotArchived(id)), HttpStatus.OK);
+    }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AppealDto>> getAllAppeal() {

@@ -19,5 +19,5 @@ public interface AppealService {
 
     Appeal findByIdNotArchived(Long id);
 
-    Collection<Appeal> findAllByIdNotArchived(Collection<Long> id);
+    Collection<Appeal> findAllNotArchived();
 }
