@@ -1,7 +1,7 @@
 package com.education.service.department.imp;
 
 import com.education.entity.Department;
-import com.education.repository.DepartmentRepository;
+import com.education.repository.department.DepartmentRepository;
 import com.education.service.department.DepartmentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

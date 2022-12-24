@@ -11,6 +11,7 @@ import lombok.extern.log4j.Log4j2;
 import model.dto.DepartmentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -109,9 +110,11 @@ public class DepartmentController {
      * @return
      */
     @ApiOperation(value = "Добавлнение департамента")
-    @PostMapping("/department")
+    @PostMapping(value = "/department")
     private ResponseEntity<String> saveDepartment(@RequestBody DepartmentDto departmentDto) {
+        System.out.println(departmentDto);
         log.info("Starting the save operation");
+        System.out.println(departmentMapper.toDep(departmentDto));
         departmentService.save(departmentMapper.toDep(departmentDto));
         log.info("saving the department and displaying its full name in the response");
         return new ResponseEntity<>("Added the department to the database", HttpStatus.OK);

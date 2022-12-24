@@ -1,4 +1,4 @@
-package com.education.repository;
+package com.education.repository.department;
 
 import com.education.entity.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
