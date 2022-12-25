@@ -17,9 +17,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
     @Override
     public void save(NomenclatureDto nomenclatureDto) {
-        log.info(" save new entity with json-body");
         restTemplate.postForObject(URL + "/add", nomenclatureDto, NomenclatureDto.class);
-        log.info(" save new entity with json-body");
     }
 
     @Override
@@ -45,7 +43,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     public NomenclatureDto findByIdNotArchived(Long id) {
         return restTemplate.getForObject(URL + "/find_not_archived/" + id, NomenclatureDto.class);
     }
-
 
     @Override
     public List<NomenclatureDto> findAllByIdNotArchived(String ids) {
