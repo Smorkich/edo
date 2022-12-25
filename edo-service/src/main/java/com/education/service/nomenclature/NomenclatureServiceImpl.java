@@ -35,6 +35,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         restTemplate.delete(URL + "/delete/" + id);
     }
 
+    @Override
     public void moveToArchive(Long id) {
         restTemplate.postForObject(URL + "/move/" + id, null, NomenclatureDto.class);
     }
