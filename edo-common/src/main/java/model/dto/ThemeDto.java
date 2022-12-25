@@ -2,10 +2,7 @@ package model.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.ZonedDateTime;
 
@@ -14,6 +11,8 @@ import java.time.ZonedDateTime;
  */
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
+@Builder
 @Getter
 @Setter
 @ApiModel(value = "Тема обращения")

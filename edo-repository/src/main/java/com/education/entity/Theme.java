@@ -46,4 +46,7 @@ public class Theme extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id")
     private Theme parentTheme;
+
+    public Theme(Long id, String name, ZonedDateTime archivedDate, ZonedDateTime creationDate, String code) {
+    }
 }
