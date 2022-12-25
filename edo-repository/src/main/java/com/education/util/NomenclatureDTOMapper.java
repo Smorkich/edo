@@ -7,6 +7,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+* Util class for transform entity to DTO object and DTO to entity object.
+*/
 public class NomenclatureDTOMapper {
 
     /**
