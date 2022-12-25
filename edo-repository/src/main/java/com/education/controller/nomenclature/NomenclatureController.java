@@ -23,7 +23,6 @@ import java.util.List;
 @Log4j2
 @RequestMapping("/api/repository/nomenclature")
 public class NomenclatureController {
-    private final NomenclatureRepository nomenclatureRepository;
     private NomenclatureService service;
 
     /**
@@ -56,10 +55,10 @@ public class NomenclatureController {
     @ApiOperation(value = "MOVE TO ARHCIVE (SET DATE)")
     @GetMapping("/move/{id}")
     public ResponseEntity<NomenclatureDto> move(@PathVariable Long id) {
-        NomenclatureDto nomenclatureDto = NomenclatureDTOMapper.toDTO(service.findById(id).get());
         log.debug("Set field archived_date with actual datetime");
         service.moveToArchive(id);
         log.debug("Set field archived_date with actual datetime");
+        NomenclatureDto nomenclatureDto = NomenclatureDTOMapper.toDTO(service.findById(id).get());
         return new ResponseEntity<>(nomenclatureDto, HttpStatus.OK);
     }
 
