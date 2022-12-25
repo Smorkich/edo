@@ -7,6 +7,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+/**
+*  Service from edo-repository module. For calling another service from edo-repository.
+*/
 public interface NomenclatureService {
 
     /**
