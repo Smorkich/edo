@@ -16,7 +16,7 @@ import java.util.Optional;
  /** Implementation of edo-service service */
 @AllArgsConstructor
 @Service
-@Transactional(readOnly = true, rollbackFor = Exception.class)
+@Transactional(readOnly = true)
 public class NomenclatureServiceImpl implements NomenclatureService {
 
     private NomenclatureRepository repository;
@@ -29,8 +29,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         repository.save(nomenclature);
     }
 
-
-
     /**
      * the Method fills in the field with the value and set date
      */
@@ -38,7 +36,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     public void moveToArchive(Long id) {
         repository.moveToArchive(ZonedDateTime.now(), id);
     }
-
 
     /**
      * Method searches for an entity of Nomenclature
@@ -52,8 +49,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
      * Method searches for set of entities of Nomenclature by their ids: "?id = 1,2,3,4,5,6... "
      */
     public List<Nomenclature> findAllById(Collection<Long> nomenclature) {
-        List<Nomenclature> allById = repository.findAllById(nomenclature);
-        return allById;
+        return repository.findAllById(nomenclature);
     }
     
     /**
