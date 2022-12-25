@@ -7,21 +7,13 @@ import model.dto.NomenclatureDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.ZonedDateTime;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
-
-
 @AllArgsConstructor
 @Service
 @Log4j2
 public class NomenclatureServiceImpl implements NomenclatureService {
 
-
     private final String URL = "http://edo-repository/api/repository/nomenclature";
     private RestTemplate restTemplate;
-
 
     @Override
     public void save(NomenclatureDto nomenclatureDto) {
@@ -30,29 +22,24 @@ public class NomenclatureServiceImpl implements NomenclatureService {
         log.info(" save new entity with json-body");
     }
 
-
     @Override
     public NomenclatureDto findById(Long id) {
         return restTemplate.getForObject(URL + "/find/" + id, NomenclatureDto.class);
     }
-
 
     @Override
     public List<NomenclatureDto> findAllById(String ids) {
         return restTemplate.getForObject(URL+"/allId?id=" + ids, List.class);
     }
 
-
     @Override
     public void deleteById(Long id) {
         restTemplate.delete(URL + "/delete/" + id);
     }
 
-
     public void moveToArchive(Long id) {
         restTemplate.postForObject(URL + "/move/" + id, null, NomenclatureDto.class);
     }
-
 
     @Override
     public NomenclatureDto findByIdNotArchived(Long id) {
@@ -64,6 +51,4 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     public List<NomenclatureDto> findAllByIdNotArchived(String ids) {
         return restTemplate.getForObject(URL + "/find_not_archived_List?id=" + ids,List.class);
     }
-
-
 }
