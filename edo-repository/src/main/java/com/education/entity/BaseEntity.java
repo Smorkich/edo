@@ -13,6 +13,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Builder
+@MappedSuperclass
 public class BaseEntity {
     @Id
     @GeneratedValue
