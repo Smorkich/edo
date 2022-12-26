@@ -25,52 +25,52 @@ import java.util.logging.Logger;
  * @author Usolkin Dmitry
  */
 @RestController
-@RequestMapping("api/service")
+@RequestMapping("api/service/department")
 @AllArgsConstructor
 @Log4j2
 @ApiOperation("DepartmentController in module edo - service ")
 public class DepartmentController {
-    //    private static  final Logger LOGGER = Logger.getLogger(DepartmentController.class.getName());
+
     private final DepartmentService departmentService;
 
     @ApiOperation(value = "Предоставление департамента по индентификатору")
-    @GetMapping(value = "/department/{id}")
+    @GetMapping(value = "/{id}")
     private ResponseEntity<DepartmentDto> getDepartment(@PathVariable(name = "id") Long id) {
         log.info("send a response with the department of the assigned id");
         var departmentDto = departmentService.findById(id);
-        log.info("The operation was successful, we got the department by id ={}",id);
+        log.info("The operation was successful, we got the department by id ={}", id);
         return new ResponseEntity<>(departmentDto, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Предоставление департамента без архивации по идентификатору")
-    @GetMapping("/department/NotArchived/{id}")
+    @GetMapping("/notArchived/{id}")
     private ResponseEntity<DepartmentDto> getDepartmentNotArchived(@PathVariable(name = "id") Long id) {
         log.info("send a response with the department not archived of the assigned ID");
         var depNotArc = departmentService.findByIdNotArchived(id);
-        log.info("The operation was successful, they got the non-archived department by id ={}",id);
+        log.info("The operation was successful, they got the non-archived department by id ={}", id);
         return new ResponseEntity<>(depNotArc, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Предоставление дапартаментов без архивации по назначеным идентификаторам")
-    @GetMapping("/department/NotArchivedAll/{ids}")
+    @GetMapping("/notArchivedAll/{ids}")
     private ResponseEntity<Collection<DepartmentDto>> getDepartmentsNotArchived(@PathVariable(name = "ids") String ids) {
         log.info("send a response with the departments not archived of the assigned IDs");
         var depsNotArc = departmentService.findByAllIdNotArchived(ids);
-        log.info("The operation was successful, they got the non-archived department by id ={}",ids);
+        log.info("The operation was successful, they got the non-archived department by id ={}", ids);
         return new ResponseEntity<>(depsNotArc, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Предоставление дапартаментов  по назначеным идентификаторам")
-    @GetMapping("/department/all/{ids}")
+    @GetMapping("/all/{ids}")
     private ResponseEntity<Collection<DepartmentDto>> getDepartments(@PathVariable(name = "ids") String ids) {
         log.info("send a response with the departments of the assigned IDs");
         var deps = departmentService.findByAllId(ids);
-        log.info("The operation was successful, we got the departments by id ={}",ids);
+        log.info("The operation was successful, we got the departments by id ={}", ids);
         return new ResponseEntity<>(deps, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Добавлнение департамента")
-    @PostMapping(value = "/department")
+    @PostMapping
     private String saveDepartment(@RequestBody DepartmentDto departmentDto) {
         log.info("Starting the save operation");
         departmentService.save(departmentDto);
@@ -79,7 +79,7 @@ public class DepartmentController {
     }
 
     @ApiOperation(value = "Архивация департамента с занесением времени архивации")
-    @PostMapping("/department/{id}")
+    @PostMapping("/{id}")
     private String deleteUser(@PathVariable(name = "id") Long id) {
         log.info("Starting the archiving operation");
         departmentService.removeToArchived(id);

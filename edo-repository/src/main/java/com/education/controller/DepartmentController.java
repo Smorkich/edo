@@ -1,17 +1,13 @@
 package com.education.controller;
 
+import com.education.entity.Department;
 import com.education.mapper.DepartmentMapper;
 import com.education.service.department.DepartmentService;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import model.dto.DepartmentDto;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,7 +34,7 @@ import java.util.List;
 @ApiOperation(value = "Контроллер департамента")
 @AllArgsConstructor
 @Log4j2
-@RequestMapping("api/repository")
+@RequestMapping("api/repository/department")
 public class DepartmentController {
     private final DepartmentService departmentService;
     private static final DepartmentMapper departmentMapper = DepartmentMapper.mapper;
@@ -50,10 +46,11 @@ public class DepartmentController {
      * @return
      */
     @ApiOperation(value = "Предоставление департамента по индентификатору")
-    @GetMapping("/department/{id}")
+    @GetMapping("/{id}")
     private ResponseEntity<DepartmentDto> getDepartment(@PathVariable(name = "id") Long id) {
         log.info("send a response with the department of the assigned id");
-        DepartmentDto department = departmentMapper.toDTO(departmentService.findById(id));
+        System.out.println(departmentMapper.toDto(departmentService.findById(id)));
+        DepartmentDto department = departmentMapper.toDto(departmentService.findById(id));
         log.info("The operation was successful, we got the department by id ={}",id);
         return new ResponseEntity<>(department, HttpStatus.OK);
     }
@@ -65,10 +62,10 @@ public class DepartmentController {
      * @return
      */
     @ApiOperation(value = "Предоставление департамента без архивации по идентификатору")
-    @GetMapping("/department/NotArchived/{id}")
+    @GetMapping("/notArchived/{id}")
     private ResponseEntity<DepartmentDto> getDepartmentNotArchived(@PathVariable(name = "id") Long id) {
         log.info("send a response with the department not archived of the assigned ID");
-        DepartmentDto department = departmentMapper.toDTO(departmentService.findByIdNotArchived(id));
+        DepartmentDto department = departmentMapper.toDto(departmentService.findByIdNotArchived(id));
         log.info("The operation was successful, they got the non-archived department by id ={}",id);
         return new ResponseEntity<>(department, HttpStatus.OK);
     }
@@ -80,10 +77,10 @@ public class DepartmentController {
      * @return
      */
     @ApiOperation(value = "Предоставление дапартаментов без архивации по назначеным идентификаторам")
-    @GetMapping("/department/NotArchivedAll/{ids}")
+    @GetMapping("/notArchivedAll/{ids}")
     private ResponseEntity<List<DepartmentDto>> getDepartmentsNotArchived(@PathVariable(name = "ids") List<Long> ids) {
         log.info("send a response with the departments not archived of the assigned IDs");
-        List<DepartmentDto> departments = departmentService.findByAllIdNotArchived(ids).stream().map(departmentMapper::toDTO).toList();
+        List<DepartmentDto> departments =(List<DepartmentDto>) departmentMapper.toDto(departmentService.findByAllIdNotArchived(ids));
         log.info("The operation was successful, they got the non-archived department by id ={}",ids);
         return new ResponseEntity<>(departments, HttpStatus.OK);
     }
@@ -95,10 +92,10 @@ public class DepartmentController {
      * @return
      */
     @ApiOperation(value = "Предоставление дапартаментов  по назначеным идентификаторам")
-    @GetMapping("/department/all/{ids}")
+    @GetMapping("/all/{ids}")
     private ResponseEntity<List<DepartmentDto>> getDepartments(@PathVariable(name = "ids") List<Long> ids) {
         log.info("send a response with the departments of the assigned IDs");
-        List<DepartmentDto> departments = departmentService.findByAllId(ids).stream().map(departmentMapper::toDTO).toList();
+        List<DepartmentDto> departments = (List<DepartmentDto>) departmentMapper.toDto(departmentService.findByAllId(ids));
         log.info("The operation was successful, we got the departments by id = {} ",ids);
         return new ResponseEntity<>(departments, HttpStatus.OK);
     }
@@ -110,12 +107,10 @@ public class DepartmentController {
      * @return
      */
     @ApiOperation(value = "Добавлнение департамента")
-    @PostMapping(value = "/department")
+    @PostMapping
     private ResponseEntity<String> saveDepartment(@RequestBody DepartmentDto departmentDto) {
-        System.out.println(departmentDto);
         log.info("Starting the save operation");
-        System.out.println(departmentMapper.toDep(departmentDto));
-        departmentService.save(departmentMapper.toDep(departmentDto));
+        departmentService.save((Department) departmentMapper.toEntity(departmentDto));
         log.info("saving the department and displaying its full name in the response");
         return new ResponseEntity<>("Added the department to the database", HttpStatus.OK);
     }
@@ -127,7 +122,7 @@ public class DepartmentController {
      * @return
      */
     @ApiOperation(value = "Архивация департамента с занесением времени архивации")
-    @PostMapping("/department/{id}")
+    @PostMapping("/{id}")
     private ResponseEntity<String> deleteUser(@PathVariable(name = "id") Long id) {
         log.info("Starting the archiving operation");
         departmentService.removeToArchived(id);

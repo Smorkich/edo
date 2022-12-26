@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-import java.util.Optional;
+
 
 /**
  * @author Usolkin Dmitry
@@ -45,12 +45,7 @@ public class DepartmentServiceImp implements DepartmentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void removeToArchived(Long id) {
-        Optional<Department> depar = repository.findById(id);
-        if (!depar.isEmpty()) {
-            Department department = depar.get();
-            department.setArchivedDate(ZonedDateTime.now());
-            repository.save(department);
-        }
+        repository.removeToArchived(ZonedDateTime.now(),id);
     }
 
     /**

@@ -1,7 +1,9 @@
 package com.education.repository.department;
 
 import com.education.entity.Department;
+import org.hibernate.annotations.SQLUpdate;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -15,9 +17,13 @@ import java.util.List;
  */
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
+    @Modifying
+    @Query("UPDATE department d SET d.archivedDate = :date WHERE d.id = :id and d.archivedDate is null")
+    void removeToArchived(@Param(value = "date")ZonedDateTime dateTime,
+                          @Param(value = "id") Long id);
     Department findByIdAndArchivedDateNull(Long id);
 
-    //    @Query("SELECT d FROM department d WHERE d.id IN :ids AND d.archivedDate is null ")
+
     List<Department> findByIdInAndArchivedDateNull(Iterable<Long> ids);
 
 

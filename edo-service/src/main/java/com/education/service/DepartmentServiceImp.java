@@ -1,7 +1,6 @@
 package com.education.service;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.DepartmentDto;
@@ -40,14 +39,12 @@ public class DepartmentServiceImp implements DepartmentService {
     }
 
     @Override
-
     public DepartmentDto findById(Long id) {
         log.info("sent a request to receive the department in edo - repository");
         return restTemplate.getForObject(URL + "/" + id, DepartmentDto.class);
     }
 
     @Override
-
     public List<DepartmentDto> findByAllId(String ids) {
         log.info("sent a request to receive the departments in edo - repository");
         return restTemplate.getForObject(URL + "/all/" + ids, List.class);
@@ -56,13 +53,13 @@ public class DepartmentServiceImp implements DepartmentService {
     @Override
     public DepartmentDto findByIdNotArchived(Long id) {
         log.info("sent a request to receive the department not archived in edo - repository");
-        return restTemplate.getForObject(URL + "/NotArchived/" + id, DepartmentDto.class);
+        return restTemplate.getForObject(URL + "/notArchived/" + id, DepartmentDto.class);
 
     }
 
     @Override
     public List<DepartmentDto> findByAllIdNotArchived(String ids) {
         log.info("sent a request to receive the departments not archived in edo - repository");
-        return restTemplate.getForObject(URL + "/NotArchivedAll/" + ids, List.class);
+        return restTemplate.getForObject(URL + "/notArchivedAll/" + ids, List.class);
     }
 }
