@@ -69,7 +69,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     /**
      * Delete entity of Nomenclature by its id
      */
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void deleteById(Long id) {
         repository.deleteById(id);
