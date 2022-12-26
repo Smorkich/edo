@@ -3,6 +3,8 @@ package com.education.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import model.enums.Employment;
+import model.enums.ReceiptMethod;
+import model.enums.Status;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;
@@ -50,7 +52,7 @@ public class Appeal extends BaseEntity {
      */
     @Column(name = "appeals_status")
     @Enumerated(EnumType.STRING)
-    private Employment appealsStatus;
+    private Status appealsStatus;
 
     /**
      * Поле "sendingMethod" - способ получения обращения
@@ -58,7 +60,7 @@ public class Appeal extends BaseEntity {
      */
     @Column(name = "appeals_receipt_method")
     @Enumerated(EnumType.STRING)
-    private Employment sendingMethod;
+    private ReceiptMethod sendingMethod;
 
     /**
      * Обработчик обращения (несколько Employee - подписанты)

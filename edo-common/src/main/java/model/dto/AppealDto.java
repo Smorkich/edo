@@ -2,11 +2,9 @@ package model.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import model.enums.Employment;
+import lombok.*;
+import model.enums.ReceiptMethod;
+import model.enums.Status;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -17,6 +15,7 @@ import java.util.HashSet;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @ApiModel(value = "Обращение граждан")
 public class AppealDto implements Serializable {
 
@@ -36,10 +35,10 @@ public class AppealDto implements Serializable {
     private String annotation;
 
     @ApiModelProperty(value = "Статус обращения")
-    private EmployeeDto appealsStatusDto;
+    private Status appealsStatusDto;
 
     @ApiModelProperty(value = "Способ получения обращения")
-    private EmployeeDto sendingMethodDto;
+    private ReceiptMethod sendingMethodDto;
 
     @ApiModelProperty(value = "Подписант(ы) обращения")
     private Collection<EmployeeDto> signerDto;

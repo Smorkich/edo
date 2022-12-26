@@ -1,5 +1,7 @@
 package com.education.controller.appeal;
 
+import static com.education.util.AuthorUtil.*;
+
 import com.education.entity.Appeal;
 import com.education.entity.Employee;
 import com.education.service.appeal.AppealService;
@@ -68,16 +70,23 @@ public class AppealRestController {
      * Маппинг из Appeal в Dto
      */
     public AppealDto toDto(Appeal appeal) {
-        return new AppealDto(
-                appeal.getId(),
-                appeal.getCreationDate(),
-                appeal.getArchivedDate(),
-                appeal.getNumber(),
-                appeal.getAnnotation(),
-                toDto(appeal.getSigner()),
-                toDto(appeal.getCreator()),
-                toDto(appeal.getAddressee())
-        );
+        return AppealDto.builder()
+                .id(appeal.getId())
+                .creationDate(appeal.getCreationDate())
+                .archivedDate(appeal.getArchivedDate())
+                .number(appeal.getNumber())
+                .annotation(appeal.getAnnotation())
+                .appealsStatusDto(appeal.getAppealsStatus())
+                .sendingMethodDto(appeal.getSendingMethod())
+                .signerDto(toDto(appeal.getSigner()))
+                .creatorDto(toDto(appeal.getCreator()))
+                .addresseeDto(toDto(appeal.getAddressee()))
+                .authorsDto(listAuthorDtos(appeal.getAuthors()))
+                .questionsDto()
+                .nomenclatureDto()
+                .fileDto()
+                .build();
+
     }
 
     /**
