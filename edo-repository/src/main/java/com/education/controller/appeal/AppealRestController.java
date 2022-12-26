@@ -98,9 +98,9 @@ public class AppealRestController {
                 appealDto.getArchivedDate(),
                 appealDto.getNumber(),
                 appealDto.getAnnotation(),
-                dtoEmployeeToEntity(appealDto.getSigner()),
-                toEntity(appealDto.getCreator()),
-                dtoEmployeeToEntity(appealDto.getAddressee())
+                dtoEmployeeToEntity(appealDto.getSignerDto()),
+                toEntity(appealDto.getCreatorDto()),
+                dtoEmployeeToEntity(appealDto.getAddresseeDto())
         );
     }
 
