@@ -45,6 +45,22 @@ public class Appeal extends BaseEntity {
     private String annotation;
 
     /**
+     * Поле "appealsStatus" - статус обращения
+     * (Новое, Зарегистрировано, На рассмотрении, В работе, Архив, Ожидает отправки, Выполнено)
+     */
+    @Column(name = "appeals_status")
+    @Enumerated(EnumType.STRING)
+    private Employment appealsStatus;
+
+    /**
+     * Поле "sendingMethod" - способ получения обращения
+     * (На бумаге, Через электронную почту, Лично в приемной, По телефону)
+     */
+    @Column(name = "appeals_receipt_method")
+    @Enumerated(EnumType.STRING)
+    private Employment sendingMethod;
+
+    /**
      * Обработчик обращения (несколько Employee - подписанты)
      * те из работников, кто будут рассматривать обращение недовольного гражданина
      */
@@ -73,49 +89,23 @@ public class Appeal extends BaseEntity {
     private Collection<Employee> addressee = new HashSet<>();
 
     /**
-     * Поле "appealsStatus" - статус обращения
-     * (Новое, Зарегистрировано, На рассмотрении, В работе, Архив, Ожидает отправки, Выполнено)
-     */
-    @Column(name = "appeals_status")
-    @Enumerated(EnumType.STRING)
-    private Employment appealsStatus;
-
-    /**
-     * Поле "appealsReceiptMethod" - способ получения обращения
-     * (На бумаге, Через электронную почту, Лично в приемной, По телефону)
-     */
-    @Column(name = "appeals_receipt_method")
-    @Enumerated(EnumType.STRING)
-    private Employment appealsReceiptMethod;
-
-    /**
-     * Несколько "Authors" - автор, соавторы обращения
+     * Несколько "authors" - автор, соавторы обращения
      */
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "appeal_authors",
             joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "author_id", referencedColumnName = "id"))
-    private Collection<Author> appealAuthors = new HashSet<>();
+    private Collection<Author> authors = new HashSet<>();
 
     /**
-     * Несколько "FilePool" - несколько файлов
-     * внутри гневное письмо/письма недовольных граждан
-     */
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "appeal_filepool",
-            joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "filepool_id", referencedColumnName = "id"))
-    private Collection<FilePool> appealFilepool = new HashSet<>();
-
-    /**
-     * Несколько "Question" - несколько вопросов
+     * Несколько "questions" - несколько вопросов
      * внутри гневные вопросы недовольных граждан
      */
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "appeal_question",
             joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"))
-    private Collection<Question> appealQuestion = new HashSet<>();
+    private Collection<Question> questions = new HashSet<>();
 
     /**
      * Номенклатура
@@ -125,16 +115,13 @@ public class Appeal extends BaseEntity {
     private Nomenclature nomenclature;
 
     /**
-     * Разрешение
+     * Несколько "file" - несколько файлов
+     * внутри гневное письмо/письма недовольных граждан
      */
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "resolution_id", referencedColumnName = "id")
-    private Resolution resolution;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "appeal_filepool",
+            joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "filepool_id", referencedColumnName = "id"))
+    private Collection<FilePool> file = new HashSet<>();
 
-//    /**
-//     * Тема !!!Не создана сущность потом раскомментить!!!
-//     */
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "thema_id", referencedColumnName = "id")
-//    private Thema thema;
 }

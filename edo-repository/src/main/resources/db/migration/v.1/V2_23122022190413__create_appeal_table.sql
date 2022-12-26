@@ -4,10 +4,7 @@ alter table if exists appeal
     add appeal_authors         varchar(255),
     add appeal_filepool        varchar(255),
     add appeal_question        varchar(255),
-    add nomenclature_id        bigint references edo.nomenclature (id),
-    add resolution_id          bigint references edo.resolution (id);
-    --thema_id               bigint references edo.thema (id)
-
+    add nomenclature_id        bigint references edo.nomenclature (id);
 
 comment on column appeal.appeals_status
     is 'Статус обращения';
@@ -21,7 +18,3 @@ comment on column appeal.appeal_question
     is 'Несколько вопросов';
 comment on column appeal.nomenclature_id
     is 'Номенклатура';
-comment on column appeal.resolution_id
-    is 'Разрешение';
---comment on column appeal.thema_id
---    is 'Тема обращения';

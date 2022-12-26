@@ -30,37 +30,31 @@ public class AppealDto {
     @ApiModelProperty(value = "Заголовок обращения")
     private String annotation;
 
-    @ApiModelProperty(value = "Подписант(ы) обращения")
-    private Collection<EmployeeDto> signer;
-
-    @ApiModelProperty(value = "Создатель обращения")
-    private EmployeeDto creator;
-
-    @ApiModelProperty(value = "Отправить им обращение тоже (в копию)")
-    private Collection<EmployeeDto> addressee;
-
     @ApiModelProperty(value = "Статус обращения")
     private EmployeeDto appealsStatusDto;
 
     @ApiModelProperty(value = "Способ получения обращения")
-    private EmployeeDto appealsReceiptMethodDto;
+    private EmployeeDto sendingMethodDto;
+
+    @ApiModelProperty(value = "Подписант(ы) обращения")
+    private Collection<EmployeeDto> signerDto;
+
+    @ApiModelProperty(value = "Создатель обращения")
+    private EmployeeDto creatorDto;
+
+    @ApiModelProperty(value = "Отправить им обращение тоже (в копию)")
+    private Collection<EmployeeDto> addresseeDto;
 
     @ApiModelProperty(value = "Автор, соавторы обращения")
-    private Collection<AuthorDto> appealAuthorsDto = new HashSet<>();
-
-    @ApiModelProperty(value = "Несколько файлов")
-    private Collection<FilePoolDto> appealFilepoolDto = new HashSet<>();
+    private Collection<AuthorDto> authorsDto = new HashSet<>();
 
     @ApiModelProperty(value = "Несколько вопросов")
-    private Collection<QuestionDto> appealQuestionDto = new HashSet<>();
+    private Collection<QuestionDto> questionsDto = new HashSet<>();
 
     @ApiModelProperty(value = "Номенклатура")
     private NomenclatureDto nomenclatureDto;
 
-    @ApiModelProperty(value = "Разрешение")
-    private ResolutionDto resolutionDto;
+    @ApiModelProperty(value = "Несколько файлов")
+    private Collection<FilePoolDto> fileDto = new HashSet<>();
 
-//    // !!!Не создана сущность потом раскомментить!!!
-//    @ApiModelProperty(value = "Тема")
-//    private ThemaDto themaDto;
 }
