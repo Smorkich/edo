@@ -66,7 +66,7 @@ public class NomenclatureController {
      * Method searches for an entity of Nomenclature that archiveDate fild is null
      */
     @ApiOperation(value = "Method finds nomenclature if it has not been archived")
-    @GetMapping("/find_not_archived/{id}")
+    @GetMapping("/notArch/{id}")
     public ResponseEntity<NomenclatureDto> findByIdNotArchivedController(@PathVariable Long id) {
         log.info("Searching entity with empty archived_date field");
         NomenclatureDto nomenclatureDto = NomenclatureDTOMapper.toDTO(service.findByIdNotArchived(id).get());
@@ -78,7 +78,7 @@ public class NomenclatureController {
      * Method searches for set of entities of Nomenclature that archiveDate filds are null
      */
     @ApiOperation(value = "find list of Nomenclature`s entities if they have not been archived")
-    @GetMapping(value = "/find_not_archived_List", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/notArchList", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<NomenclatureDto>> findAllByIdNotArchivedController(@RequestParam("id") Collection<Long> listId) {
         log.info("Searching entities with empty archived_date fields");
         List<NomenclatureDto> nomenclatureDtoList = NomenclatureDTOMapper.listNomenclatureDto(service.findAllByIdNotArchived(listId));
@@ -90,7 +90,7 @@ public class NomenclatureController {
      * Method searches for set of entities of Nomenclature by their ids in Collection
      */
     @ApiOperation("find all entites of nomenclature which are in Collectionn<Long> of id")
-    @GetMapping(value = "/allId")
+    @GetMapping(value = "/all")
     public ResponseEntity<List<NomenclatureDto>> findAllByIdController(@RequestParam("id") Collection<Long> listId) {
         log.info("Searching entity with id list = {}", listId);
         List<NomenclatureDto> nomenclatureDtoList = NomenclatureDTOMapper.listNomenclatureDto(service.findAllById(listId));
