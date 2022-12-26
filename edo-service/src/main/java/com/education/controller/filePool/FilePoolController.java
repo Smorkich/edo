@@ -55,29 +55,29 @@ public class FilePoolController {
     }
 
     @ApiOperation(value = "Providing files by assigned IDs")
-    @GetMapping("/department/all/{ids}")
+    @GetMapping("/all/{ids}")
     private ResponseEntity<Collection<FilePoolDto>> findAllById(@PathVariable(name = "ids") String ids) {
         log.info("Send a response with the departments of the assigned IDs");
         return new ResponseEntity<>(filePoolService.findAllById(ids), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Archiving a file with adding archive time\n")
-    @PostMapping("/department/{id}")
+    @PostMapping("/{id}")
     private String moveToArchive(@PathVariable(name = "id") Long id) {
         filePoolService.moveToArchive(id);
         log.info("Deleting a department");
-        return "Удалил " + id;
+        return "Delete " + id;
     }
 
     @ApiOperation(value = "Providing a file without archiving by id")
-    @GetMapping("/department/NotArchived/{id}")
+    @GetMapping("/NotArchived/{id}")
     private ResponseEntity<FilePoolDto> findByIdNotArchived(@PathVariable(name = "id") Long id) {
         log.info("send a response with the department not archived of the assigned ID");
         return new ResponseEntity<>(filePoolService.findByIdNotArchived(id), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Providing files without archiving by assigned ids")
-    @GetMapping("/department/NotArchivedAll/{ids}")
+    @GetMapping("/NotArchivedAll/{ids}")
     private ResponseEntity<Collection<FilePoolDto>> findAllByIdNotArchived(@PathVariable(name = "ids") String ids) {
         log.info("send a response with the departments not archived of the assigned IDs");
         return new ResponseEntity<>(filePoolService.findAllByIdNotArchived(ids), HttpStatus.OK);

@@ -32,11 +32,8 @@ public class FilePoolController {
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public String save(@RequestBody @Valid FilePool filePoolDto) {
         log.info("POST: /api/repository/filePool");
-        //filePoolService.save(FilePoolUtil.toFilePool(filePoolDto));
         filePoolService.save(filePoolDto);
-        //filePoolService.save(filePoolDto);
         log.info("POST request successful");
-        //return new ResponseEntity<>(HttpStatus.CREATED);
         return "исполнено";
     }
 
@@ -60,7 +57,7 @@ public class FilePoolController {
     }
 
     @ApiOperation(value = "Выводит id всех файлов", notes = "Файлы должны существовать")
-    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<FilePoolDto>> findAll() {
         log.info("Sent GET request to get all authors from the database");
         Collection<FilePoolDto> filePoolDtoCollection = FilePoolUtil.ListFilePooDto((List<FilePool>) filePoolService.findAll());

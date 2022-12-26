@@ -17,3 +17,4 @@ public interface FilePoolRepository extends JpaRepository<FilePool, Long> {
     List<FilePool> findByIdInAndArchivedDateNull(Iterable<Long> ids);
 
 }
+
