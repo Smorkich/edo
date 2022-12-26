@@ -16,7 +16,6 @@ import java.util.Optional;
  /** Implementation of edo-service service */
 @AllArgsConstructor
 @Service
-@Transactional(readOnly = true)
 public class NomenclatureServiceImpl implements NomenclatureService {
 
     private NomenclatureRepository repository;
@@ -43,7 +42,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     public Optional<Nomenclature> findById(Long id) {
         return repository.findById(id);
     }
-
 
     /**
      * Method searches for set of entities of Nomenclature by their ids: "?id = 1,2,3,4,5,6... "
