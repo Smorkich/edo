@@ -1,7 +1,7 @@
 create table if not exists nomenclature (
-    id serial primary key not null,
+    id bigserial primary key not null,
     creation_date timestamp with time zone,
-    archived_date timestamp with time zone ,
+    archived_date timestamp with time zone,
     template varchar(300),
     current_value int,
     "index" int

@@ -13,6 +13,7 @@ spring:
   application:
     name: edo-repository
 server:
+  enableSelfPreservation: fasle
   port: 0
 eureka:
   client:
