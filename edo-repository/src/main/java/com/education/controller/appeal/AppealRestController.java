@@ -88,7 +88,7 @@ public class AppealRestController {
                 .authorsDto(listAuthorDtos(appeal.getAuthors()))
                 .questionsDto(toQuestionDto(appeal.getQuestions()))
                 .nomenclatureDto()
-                .fileDto() //
+                .fileDto(toFilePoolDtoCollection(appeal.getFile())) //
                 .build();
 
     }
@@ -150,10 +150,11 @@ public class AppealRestController {
                 .summary(questionDto.getSummary())
                 .build();
     }
+
     /**
      * Маппинг из Question в Dto (Для полей AppealDto, содержащих Question)
      */
-    public QuestionDto toDto ( Question question ) {
+    public QuestionDto toDto(Question question) {
         return QuestionDto.builder()
                 .id(question.getId())
                 .creationDate(question.getCreationDate())
@@ -217,10 +218,11 @@ public class AppealRestController {
                 .creator(toEntity(filePoolDto.getCreator()))
                 .build();
     }
+
     /**
      * Маппинг из FilePool в Dto
      */
-    public FilePoolDto toDto ( FilePool filePool ) {
+    public FilePoolDto toDto(FilePool filePool) {
         return FilePoolDto.builder()
                 .id(filePool.getId())
                 .storageFileId(filePool.getStorageFileId())
@@ -232,5 +234,11 @@ public class AppealRestController {
                 .archivedDate(filePool.getArchivedDate())
                 .creator(toDto(filePool.getCreator()))
                 .build();
+    }
+
+    public Collection<FilePoolDto> toFilePoolDtoCollection(Collection<FilePool> filePool) {
+        return filePool.stream()
+                .map(this::toDto)
+                .toList();
     }
 }
