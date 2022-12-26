@@ -4,11 +4,15 @@ import static com.education.util.AuthorUtil.*;
 
 import com.education.entity.Appeal;
 import com.education.entity.Employee;
+import com.education.entity.FilePool;
+import com.education.entity.Question;
 import com.education.service.appeal.AppealService;
 import com.education.service.employee.EmployeeService;
 import lombok.AllArgsConstructor;
 import model.dto.AppealDto;
 import model.dto.EmployeeDto;
+import model.dto.FilePoolDto;
+import model.dto.QuestionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -82,9 +86,9 @@ public class AppealRestController {
                 .creatorDto(toDto(appeal.getCreator()))
                 .addresseeDto(toDto(appeal.getAddressee()))
                 .authorsDto(listAuthorDtos(appeal.getAuthors()))
-                .questionsDto()
+                .questionsDto(toQuestionDto(appeal.getQuestions()))
                 .nomenclatureDto()
-                .fileDto()
+                .fileDto() //
                 .build();
 
     }
@@ -137,10 +141,41 @@ public class AppealRestController {
     }
 
     /**
+     * Маппинг из QuestionDto в Question
+     */
+    public Question toQuestion(QuestionDto questionDto) {
+        return Question.builderquestion()
+                .creationDate(questionDto.getCreationDate())
+                .archivedDate(questionDto.getArchivedDate())
+                .summary(questionDto.getSummary())
+                .build();
+    }
+    /**
+     * Маппинг из Question в Dto (Для полей AppealDto, содержащих Question)
+     */
+    public QuestionDto toDto ( Question question ) {
+        return QuestionDto.builder()
+                .id(question.getId())
+                .creationDate(question.getCreationDate())
+                .archivedDate(question.getArchivedDate())
+                .summary(question.getSummary())
+                .build();
+    }
+
+    /**
      * Маппинг из Collection<Employee> в Dto (Для полей AppealDto, содержащих Collection<EmployeeDto>)
      */
     public Collection<EmployeeDto> toDto(Collection<Employee> employees) {
         return employees.stream()
+                .map(this::toDto)
+                .toList();
+    }
+
+    /**
+     * Маппинг из Collection<Question> в Dto (Для полей AppealDto, содержащих Collection<Question>)
+     */
+    public Collection<QuestionDto> toQuestionDto(Collection<Question> questions) {
+        return questions.stream()
                 .map(this::toDto)
                 .toList();
     }
@@ -167,4 +202,35 @@ public class AppealRestController {
                 .toList();
     }
 
+    /**
+     * Маппинг из FilePoolDto в FilePool
+     */
+    public FilePool toFilePool(FilePoolDto filePoolDto) {
+        return FilePool.builderfilePool()
+                .storageFileId(filePoolDto.getStorageFileId())
+                .name(filePoolDto.getName())
+                .extension(filePoolDto.getExtension())
+                .size(filePoolDto.getSize())
+                .pageCount(filePoolDto.getPageCount())
+                .uploadDate(filePoolDto.getUploadDate())
+                .archivedDate(filePoolDto.getArchivedDate())
+                .creator(toEntity(filePoolDto.getCreator()))
+                .build();
+    }
+    /**
+     * Маппинг из FilePool в Dto
+     */
+    public FilePoolDto toDto ( FilePool filePool ) {
+        return FilePoolDto.builder()
+                .id(filePool.getId())
+                .storageFileId(filePool.getStorageFileId())
+                .name(filePool.getName())
+                .extension(filePool.getExtension())
+                .size(filePool.getSize())
+                .pageCount(filePool.getPageCount())
+                .uploadDate(filePool.getUploadDate())
+                .archivedDate(filePool.getArchivedDate())
+                .creator(toDto(filePool.getCreator()))
+                .build();
+    }
 }
