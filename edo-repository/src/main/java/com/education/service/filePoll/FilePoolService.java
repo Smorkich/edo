@@ -30,6 +30,9 @@ public interface FilePoolService {
      */
     Collection<FilePool> findAllById(Iterable<Long> ids);
 
+    /**
+     * findAllById - выводит список всех файлов
+     */
     Collection<FilePool> findAll();
 
     /**
