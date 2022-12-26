@@ -22,24 +22,18 @@ public class FilePoolServiceImpl implements FilePoolService {
     static final String URL = "http://edo-repository/api/repository/filePool";
     private final RestTemplate restTemplate;
 
-
     @Override
     public void save(FilePoolDto filePoolDto) {
-        log.info("sent a request to save the department in edo - repository");
         restTemplate.postForObject(URL, filePoolDto, FilePoolDto.class);
-        log.info("sent a request to save the department in edo - repository");
-
     }
 
     @Override
     public void delete(Long id) {
-        log.info("sent a request to delete the department in edo - repository");
         restTemplate.delete(URL + "/" + id, FilePoolDto.class);
     }
 
     @Override
     public String findById(Long id) {
-        log.info("sent a request to findById the department in edo - repository");
         return restTemplate.getForObject(URL + "/" + id, String.class);
     }
 
@@ -49,26 +43,21 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public Collection<FilePoolDto> findAllById(String ids) {
-        log.info("sent a request to findAllById the department in edo - repository");
         return restTemplate.getForObject(URL + "/all/" + ids, List.class);
     }
 
-
     @Override
     public void moveToArchive(Long id) {
-        log.info("sent a request to moveToArchive the department in edo - repository");
         restTemplate.postForObject(URL + "/" + id, null, FilePoolDto.class);
     }
 
     @Override
     public FilePoolDto findByIdNotArchived(Long id) {
-        log.info("sent a request to findByIdNotArchived the department in edo - repository");
         return restTemplate.getForObject(URL + "/NotArchived/" + id,FilePoolDto.class);
     }
 
     @Override
     public Collection<FilePoolDto> findAllByIdNotArchived(String ids) {
-        log.info("sent a request to findAllByIdNotArchived the department in edo - repository");
         return restTemplate.getForObject(URL + "/NotArchivedAll/" + ids, List.class);
     }
 

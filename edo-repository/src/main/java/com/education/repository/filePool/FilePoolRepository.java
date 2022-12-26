@@ -12,8 +12,15 @@ import java.util.List;
  */
 @Repository
 public interface FilePoolRepository extends JpaRepository<FilePool, Long> {
+    /**
+     * Возвращает по id файл вне архива
+     * @return
+     */
     FilePool findByIdAndArchivedDateNull(Long id);
-
+    /**
+     * Возвращает по id все файлы вне архива
+     * @return
+     */
     List<FilePool> findByIdInAndArchivedDateNull(Iterable<Long> ids);
 
 }

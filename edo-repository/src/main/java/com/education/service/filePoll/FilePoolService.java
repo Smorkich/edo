@@ -1,4 +1,4 @@
-package com.education.serivce.filePoll;
+package com.education.service.filePoll;
 
 import com.education.entity.FilePool;
 

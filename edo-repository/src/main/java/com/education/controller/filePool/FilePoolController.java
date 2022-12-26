@@ -1,7 +1,7 @@
 package com.education.controller.filePool;
 
 import com.education.entity.FilePool;
-import com.education.serivce.filePoll.FilePoolService;
+import com.education.service.filePoll.FilePoolService;
 import com.education.util.FilePoolUtil;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
@@ -16,25 +16,27 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.List;
 
+import static com.education.util.FilePoolUtil.*;
+
 /**
  * @author Nadezhda Pupina
  * Rest-контроллер отправляет запрос от клиента в бд
  */
+@Log4j2
 @RestController
 @AllArgsConstructor
-@Log4j2
 @RequestMapping("/api/repository/filePool")
 public class FilePoolController {
 
     private final FilePoolService filePoolService;
 
     @ApiOperation(value = "Создает файл", notes = "Файл должен существовать")
-    @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String save(@RequestBody @Valid FilePool filePoolDto) {
-        log.info("POST: /api/repository/filePool");
-        filePoolService.save(filePoolDto);
-        log.info("POST request successful");
-        return "исполнено";
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FilePoolDto> save(@RequestBody @Valid FilePoolDto filePoolDto) {
+        log.info("Send a post-request to post new Address to database");
+        filePoolService.save(toFilePool(filePoolDto));
+        log.info("Response: {} was added to database", filePoolDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Удаляет файл", notes = "Файл должен существовать")
@@ -46,23 +48,22 @@ public class FilePoolController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-
     @ApiOperation(value = "Gets authors by id", notes = "Author must exist")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FilePoolDto> findById(@PathVariable Long id) {
         log.info("Sent GET request to get author with id={} from the database", id);
-        var filePoolDto = FilePoolUtil.toDto(filePoolService.findById(id));
+        var filePoolDto = toDto(filePoolService.findById(id));
         log.info("Response from database:{}", filePoolDto);
         return new ResponseEntity<>(filePoolDto, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Выводит id всех файлов", notes = "Файлы должны существовать")
-    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Возвращает все файлы", notes = "Файлы должны существовать")
+    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<FilePoolDto>> findAll() {
-        log.info("Sent GET request to get all authors from the database");
-        Collection<FilePoolDto> filePoolDtoCollection = FilePoolUtil.ListFilePooDto((List<FilePool>) filePoolService.findAll());
-        log.info("Response from database:{}");
-        return new ResponseEntity<>(filePoolDtoCollection, HttpStatus.OK);
+        log.info("Send a get-request to get all file from database");
+        var filePoolDto = listFilePooDto(filePoolService.findAll());
+        log.info("Response from database: {}", filePoolDto);
+        return new ResponseEntity<>(filePoolDto, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Добавляет в файл архивную дату", notes = "Файл должен существовать")
@@ -75,7 +76,7 @@ public class FilePoolController {
     @ApiOperation(value = "Предоставление файла без архивации")
     @GetMapping("/noArchived/{id}")
     private ResponseEntity<FilePoolDto> getFileNotArchived(@PathVariable Long id) {
-        return new ResponseEntity<>(FilePoolUtil.toDto(filePoolService.findByIdAndArchivedDateNull(id)), HttpStatus.OK);
+        return new ResponseEntity<>(toDto(filePoolService.findByIdAndArchivedDateNull(id)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Предоставление файлов без архивации")

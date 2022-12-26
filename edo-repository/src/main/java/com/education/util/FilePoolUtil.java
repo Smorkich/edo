@@ -5,6 +5,7 @@ import com.education.entity.FilePool;
 import model.dto.EmployeeDto;
 import model.dto.FilePoolDto;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -47,7 +48,7 @@ public class FilePoolUtil {
     /**
      *Конвертация коллекции <FilePool> в коллекцию <FilePoolDto>
      */
-    public static List<FilePoolDto> ListFilePooDto(List<FilePool> filePools) {
+    public static Collection<FilePoolDto> listFilePooDto(Collection<FilePool> filePools) {
         return filePools.stream()
                 .map(FilePoolUtil::toDto)
                 .toList();

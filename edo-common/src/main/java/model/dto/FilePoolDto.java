@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -17,6 +18,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@ToString
 @ApiModel(value = "Класс-обертка для взаимодействия с иными модулями и внешними системами")
 public class FilePoolDto implements Serializable {
 

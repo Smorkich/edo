@@ -1,8 +1,9 @@
-package com.education.serivce.filePoll.impl;
+package com.education.service.filePoll.impl;
 
 import com.education.entity.FilePool;
 import com.education.repository.filePool.FilePoolRepository;
-import com.education.serivce.filePoll.FilePoolService;
+import com.education.service.filePoll.FilePoolService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
  * Сервис реализует методы jpa repository и обычные методы
  */
 @Service
+@AllArgsConstructor
 public class FilePoolServiceImpl implements FilePoolService {
     private FilePoolRepository filePoolRepository;
 
