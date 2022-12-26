@@ -22,11 +22,11 @@ public interface NomenclatureRepository extends JpaRepository<Nomenclature,Long>
     void moveToArchive( @Param("archDate") ZonedDateTime date, @Param("id") Long id);
 
     /** Query request for searching not archived entity by id */
-    @Query("select u from Nomenclature u where ((u.archivedDate is null) and u.id =:id)")
+    @Query("select u from Nomenclature u where u.archivedDate is null and u.id =:id")
     Optional<Nomenclature> findByIdNotArchived(@Param("id") Long id);
 
     /** Query request for searching not archived entities by ids */
-    @Query("select u from Nomenclature u where (u.archivedDate is null and u.id in :idList)")
+    @Query("select u from Nomenclature u where u.archivedDate is null and u.id in :idList")
     List<Nomenclature> findAllByIdNotArchived(@Param("idList") Collection<Long> idList);
 
 }
