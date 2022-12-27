@@ -10,6 +10,4 @@ public class EdoRepositoryApplication {
     public static void main(String[] args) {
         SpringApplication.run(EdoRepositoryApplication.class, args);
     }
-
-
 }
