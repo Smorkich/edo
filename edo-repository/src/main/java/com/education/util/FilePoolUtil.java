@@ -1,13 +1,11 @@
 package com.education.util;
 
-import com.education.controller.filePool.FilePoolController;
 import com.education.entity.Employee;
 import com.education.entity.FilePool;
 import model.dto.EmployeeDto;
 import model.dto.FilePoolDto;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Util класс для реализации вспомогательных методов
@@ -105,6 +103,5 @@ public class FilePoolUtil {
     public Employee toEntity(EmployeeDto employeeDto) {
         return employeeService.findById(employeeDto.getId());
     }
-
 
 }
