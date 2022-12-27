@@ -6,8 +6,8 @@ CREATE TABLE file_pool
     extension       VARCHAR     NOT NULL,
     size            INTEGER     NOT NULL,
     page_count      INTEGER     NOT NULL,
-    upload_date     timestamptz NOT NULL,
-    archived_date   timestamptz,
+    upload_date     timestamp NOT NULL,
+    archived_date   timestamp,
     creator_id      BIGINT      NOT NULL REFERENCES edo.employee (id)
 );
 
