@@ -18,9 +18,8 @@ import java.util.List;
 public interface ThemeRepository extends JpaRepository<Theme, Long> {
 
     @Modifying
-    @Query(value = "update Theme theme set  theme.archivedDate =:archDate where theme.id =:id")
+    @Query(value = "update  theme set  theme.archivedDate =:archDate where theme.id =:id")
     void moveToArchive(@Param("archDate") ZonedDateTime date, @Param("id") Long id);
-
 
     Theme findByIdAndArchivedDateNull(Long id);
     List<Theme> findByIdInAndArchivedDateNull(Iterable<Long> ids);

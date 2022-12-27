@@ -16,7 +16,6 @@ import java.util.Optional;
 
 public class ThemeServiceImp implements ThemeService {
 
-
     private ThemeRepository themeRepository;
 
     @Override
@@ -24,7 +23,6 @@ public class ThemeServiceImp implements ThemeService {
     public void save(Theme theme) {
         themeRepository.save(theme);
     }
-
 
 
     @Override
@@ -68,4 +66,5 @@ public class ThemeServiceImp implements ThemeService {
     public Collection<Theme> findByIdInAndArchivedDateNull(Iterable<Long> ids) {
         return themeRepository.findByIdInAndArchivedDateNull(ids);
     }
+
 }

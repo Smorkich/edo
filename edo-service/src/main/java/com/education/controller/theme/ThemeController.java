@@ -35,7 +35,6 @@ public class ThemeController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-
     @ApiOperation(value = "Получает тему по ID", notes = "Тема обращения должна существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ThemeDto> findById(@PathVariable Long id) {
@@ -49,9 +48,12 @@ public class ThemeController {
     @ApiOperation(value = "Добавляет в тему дату архивации", notes = "Тема должна существовать")
     @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     private String moveToArchive(@PathVariable(name = "id") Long id) {
+        log.info("Starting the archiving theme");
         themeService.moveToArchived(id);
+        log.info("Archiving a theme");
         return "Удалил " + id;
     }
+
 
     @ApiOperation(value = "Предоставление темы без архивирования по идентификатору")
     @GetMapping("/NotArchived/{id}")

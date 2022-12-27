@@ -73,6 +73,7 @@ public class ThemeController {
         return new ResponseEntity<>("The theme is archived", HttpStatus.OK);
     }
 
+
         @ApiOperation(value = "Предоставление темы без архивации")
     @GetMapping("/noArchived/{id}")
     private ResponseEntity<ThemeDto> getThemeNotArchived(@PathVariable Long id) {
