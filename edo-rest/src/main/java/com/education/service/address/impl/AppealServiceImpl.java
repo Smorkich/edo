@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Service в "edo-service", служит для связи контроллера и RestTemplate
@@ -31,15 +32,14 @@ public class AppealServiceImpl implements AppealService {
      * Метод сохранения нового адреса в БД
      */
     public void save(AppealDto appealDto) {
-        Collection<AuthorDto> authorDtoCollection= new ArrayList<>();
-        appealDto.getAuthorsDto().forEach(authorDto -> {
+        List<AuthorDto> authorDtoCollection = new ArrayList<>();
+        for(AuthorDto authorDto:appealDto.getAuthorsDto()){
             restTemplate
-                    .postForObject("http://edo-repository/api/repository/author",authorDto, AuthorDto.class);
-
-            System.out.println(findAll().stream().mapToLong(AuthorDto::getId));
-
-        });
-
+                    .postForObject("http://edo-repository/api/repository/author", authorDto, AuthorDto.class);
+            authorDto.setId(findAll().stream().mapToLong(AuthorDto::getId).max().getAsLong());
+        };
+        appealDto.setAuthorsDto(authorDtoCollection);
+        restTemplate.postForObject(URL,appealDto, AppealDto.class);
     }
 
 
@@ -51,13 +51,12 @@ public class AppealServiceImpl implements AppealService {
     }
 
 
-
-
     /**
      * Метод, который возвращает все адреса//////////////////////////
      */
-    public Collection<AuthorDto> findAll() {
-        return restTemplate.getForObject("http://edo-repository/api/repository/author", List.class);
+    public List<AuthorDto> findAll() {
+        AuthorDto[] authorDtos=restTemplate.getForObject("http://edo-repository/api/repository/author",AuthorDto[].class);
+        return Arrays.asList(authorDtos);
     }
 
     /**
