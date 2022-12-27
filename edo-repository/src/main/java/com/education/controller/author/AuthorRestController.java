@@ -61,4 +61,13 @@ public class AuthorRestController {
         log.info("Response from database:{}", authorDto);
         return new ResponseEntity<>(authorDto, HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Gets authors by snils", notes = "Author must exist")
+    @GetMapping(value = "/snils/{snils}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AuthorDto> getAuthorBySnils(@PathVariable String snils) {
+        log.info("Sent GET request to get author with snils={} from the database", snils);
+        var authorDto = toDto(authorService.findAuthorBySnils(snils));
+        log.info("Response from database:{}", authorDto);
+        return new ResponseEntity<>(authorDto, HttpStatus.OK);
+    }
 }

@@ -11,4 +11,6 @@ public interface AuthorService {
     AuthorDto findById(Long id);
 
     Collection<AuthorDto> findAll();
+
+    AuthorDto findAuthorBySnils(String snils);
 }
