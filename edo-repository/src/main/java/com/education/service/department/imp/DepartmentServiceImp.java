@@ -45,7 +45,8 @@ public class DepartmentServiceImp implements DepartmentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void removeToArchived(Long id) {
-        repository.removeToArchived(ZonedDateTime.now(),id);
+        ZonedDateTime zonedDateTime = ZonedDateTime.now();
+        repository.removeToArchived(zonedDateTime,id);
     }
 
     /**

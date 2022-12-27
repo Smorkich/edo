@@ -18,15 +18,15 @@ import java.util.Collection;
  */
 
 public interface
-AbstractMapper <E extends BaseEntity,D extends Object> {
+AbstractMapper <Entity extends BaseEntity,Dto> {
 
-    D toDto(E entity);
+    Dto toDto(Entity entity);
 
-    E toEntity(D dto);
+    Entity toEntity(Dto dto);
 
-    Collection <D> toDto(Collection<E> departments);
+    Collection <Dto> toDto(Collection<Entity> entities);
 
-    Collection<E> toEntity(Collection<D> departmentsDto);
+    Collection<Entity> toEntity(Collection<Dto> dtoEntities);
 
 
 }

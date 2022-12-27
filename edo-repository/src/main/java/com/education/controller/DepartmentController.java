@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static com.education.mapper.DepartmentMapper.DEPARTMENT_MAPPER;
+
 /**
  * @author Usolkin Dmitry
  * Контроллер в модуле edo-repository,работате с моделью DepartmentDto,
@@ -37,7 +39,6 @@ import java.util.List;
 @RequestMapping("api/repository/department")
 public class DepartmentController {
     private final DepartmentService departmentService;
-    private static final DepartmentMapper departmentMapper = DepartmentMapper.mapper;
 
     /**
      * достает департамент по id
@@ -49,8 +50,7 @@ public class DepartmentController {
     @GetMapping("/{id}")
     private ResponseEntity<DepartmentDto> getDepartment(@PathVariable(name = "id") Long id) {
         log.info("send a response with the department of the assigned id");
-        System.out.println(departmentMapper.toDto(departmentService.findById(id)));
-        DepartmentDto department = departmentMapper.toDto(departmentService.findById(id));
+        DepartmentDto department = DEPARTMENT_MAPPER.toDto(departmentService.findById(id));
         log.info("The operation was successful, we got the department by id ={}",id);
         return new ResponseEntity<>(department, HttpStatus.OK);
     }
@@ -65,7 +65,7 @@ public class DepartmentController {
     @GetMapping("/notArchived/{id}")
     private ResponseEntity<DepartmentDto> getDepartmentNotArchived(@PathVariable(name = "id") Long id) {
         log.info("send a response with the department not archived of the assigned ID");
-        DepartmentDto department = departmentMapper.toDto(departmentService.findByIdNotArchived(id));
+        DepartmentDto department = DEPARTMENT_MAPPER.toDto(departmentService.findByIdNotArchived(id));
         log.info("The operation was successful, they got the non-archived department by id ={}",id);
         return new ResponseEntity<>(department, HttpStatus.OK);
     }
@@ -80,7 +80,7 @@ public class DepartmentController {
     @GetMapping("/notArchivedAll/{ids}")
     private ResponseEntity<List<DepartmentDto>> getDepartmentsNotArchived(@PathVariable(name = "ids") List<Long> ids) {
         log.info("send a response with the departments not archived of the assigned IDs");
-        List<DepartmentDto> departments =(List<DepartmentDto>) departmentMapper.toDto(departmentService.findByAllIdNotArchived(ids));
+        List<DepartmentDto> departments =(List<DepartmentDto>) DEPARTMENT_MAPPER.toDto(departmentService.findByAllIdNotArchived(ids));
         log.info("The operation was successful, they got the non-archived department by id ={}",ids);
         return new ResponseEntity<>(departments, HttpStatus.OK);
     }
@@ -95,7 +95,7 @@ public class DepartmentController {
     @GetMapping("/all/{ids}")
     private ResponseEntity<List<DepartmentDto>> getDepartments(@PathVariable(name = "ids") List<Long> ids) {
         log.info("send a response with the departments of the assigned IDs");
-        List<DepartmentDto> departments = (List<DepartmentDto>) departmentMapper.toDto(departmentService.findByAllId(ids));
+        List<DepartmentDto> departments = (List<DepartmentDto>) DEPARTMENT_MAPPER.toDto(departmentService.findByAllId(ids));
         log.info("The operation was successful, we got the departments by id = {} ",ids);
         return new ResponseEntity<>(departments, HttpStatus.OK);
     }
@@ -110,7 +110,7 @@ public class DepartmentController {
     @PostMapping
     private ResponseEntity<String> saveDepartment(@RequestBody DepartmentDto departmentDto) {
         log.info("Starting the save operation");
-        departmentService.save((Department) departmentMapper.toEntity(departmentDto));
+        departmentService.save((Department) DEPARTMENT_MAPPER.toEntity(departmentDto));
         log.info("saving the department and displaying its full name in the response");
         return new ResponseEntity<>("Added the department to the database", HttpStatus.OK);
     }

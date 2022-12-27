@@ -24,7 +24,6 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @Table(name = "department")
 @ToString
-@Builder
 public class Department extends BaseEntity {
 
     /* Поле короткое имя*/

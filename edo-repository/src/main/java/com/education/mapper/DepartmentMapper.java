@@ -13,17 +13,6 @@ import java.util.Collection;
 
 @Mapper(componentModel = "spring")
 public interface DepartmentMapper extends AbstractMapper<Department, DepartmentDto> {
-    DepartmentMapper mapper = Mappers.getMapper(DepartmentMapper.class);
+    DepartmentMapper DEPARTMENT_MAPPER = Mappers.getMapper(DepartmentMapper.class);
 
-    @Override
-    DepartmentDto toDto(Department entity);
-
-    @Override
-    Department toEntity(DepartmentDto dto);
-
-    @Override
-    Collection<DepartmentDto> toDto(Collection<Department> departments);
-
-    @Override
-    Collection<Department> toEntity(Collection<DepartmentDto> departmentsDto);
 }
