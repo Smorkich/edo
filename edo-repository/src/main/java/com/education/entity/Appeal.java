@@ -19,6 +19,7 @@ import java.util.HashSet;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder(builderMethodName = "appealBuilder")
 @Table(name = "appeal")
 public class Appeal extends BaseEntity {
 

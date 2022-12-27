@@ -60,4 +60,14 @@ public class AuthorUtil {
                 .map(AuthorUtil::toDto)
                 .toList();
     }
+
+    /**
+     * Конвертация коллекции <AuthorDto> в коллекцию <Author>
+     */
+    public static Collection<Author> listAuthor(Collection<AuthorDto> authors) {
+        return authors.stream()
+                .map(AuthorUtil::toAuthor)
+                .toList();
+    }
+
 }

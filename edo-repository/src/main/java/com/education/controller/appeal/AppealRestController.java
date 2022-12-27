@@ -4,15 +4,18 @@ import static com.education.util.AuthorUtil.*;
 
 import com.education.entity.Appeal;
 import com.education.entity.Employee;
+import com.education.entity.Nomenclature;
 import com.education.entity.FilePool;
 import com.education.entity.Question;
 import com.education.service.appeal.AppealService;
 import com.education.service.employee.EmployeeService;
+import com.education.service.nomenclature.NomenclatureService;
 import lombok.AllArgsConstructor;
 import model.dto.AppealDto;
 import model.dto.EmployeeDto;
 import model.dto.FilePoolDto;
 import model.dto.QuestionDto;
+import model.dto.NomenclatureDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +32,8 @@ public class AppealRestController {
     private AppealService appealService;
 
     private EmployeeService employeeService;
+
+    private NomenclatureService nomenclatureService;
 
     @PatchMapping(value = "/move/{id}")
     public ResponseEntity<AppealDto> moveToArchive(@PathVariable Long id) {
@@ -87,8 +92,8 @@ public class AppealRestController {
                 .addresseeDto(toDto(appeal.getAddressee()))
                 .authorsDto(listAuthorDtos(appeal.getAuthors()))
                 .questionsDto(toQuestionDto(appeal.getQuestions()))
-                .nomenclatureDto()
-                .fileDto(toFilePoolDtoCollection(appeal.getFile())) //
+                .nomenclatureDto(toDto(appeal.getNomenclature()))
+                .fileDto(toFilePoolDtoCollection(appeal.getFile()))
                 .build();
 
     }
@@ -106,15 +111,21 @@ public class AppealRestController {
      * Маппинг из AppealDto в Entity
      */
     public Appeal toEntity(AppealDto appealDto) {
-        return new Appeal(
-                appealDto.getCreationDate(),
-                appealDto.getArchivedDate(),
-                appealDto.getNumber(),
-                appealDto.getAnnotation(),
-                dtoEmployeeToEntity(appealDto.getSignerDto()),
-                toEntity(appealDto.getCreatorDto()),
-                dtoEmployeeToEntity(appealDto.getAddresseeDto())
-        );
+        return Appeal.appealBuilder()
+                .creationDate(appealDto.getCreationDate())
+                .archivedDate(appealDto.getArchivedDate())
+                .number(appealDto.getNumber())
+                .annotation(appealDto.getAnnotation())
+                .appealsStatus(appealDto.getAppealsStatusDto())
+                .sendingMethod(appealDto.getSendingMethodDto())
+                .signer(dtoEmployeeToEntity(appealDto.getSignerDto()))
+                .creator(toEntity(appealDto.getCreatorDto()))
+                .addressee(dtoEmployeeToEntity(appealDto.getAddresseeDto()))
+                .authors(listAuthor(appealDto.getAuthorsDto()))
+                .questions(dtoQuestionToEntity(appealDto.getQuestionsDto()))
+                .nomenclature(toEntity(appealDto.getNomenclatureDto()))
+                .file(dtoFilePoolToEntity(appealDto.getFileDto()))
+                .build();
     }
 
     /**
@@ -204,6 +215,33 @@ public class AppealRestController {
     }
 
     /**
+     * Маппинг из Nomenclature в Dto (Для полей AppealDto, содержащих NomenclatureDto)
+     */
+    public NomenclatureDto toDto(Nomenclature nomenclature) {
+        return new NomenclatureDto(
+                nomenclature.getId(),
+                nomenclature.getCreationDate(),
+                nomenclature.getArchivedDate(),
+                nomenclature.getTemplate(),
+                nomenclature.getCurrentValue(),
+                nomenclature.getIndex()
+        );
+    }
+
+    /**
+     * Следующее поле нужно, чтобы при подаче на POST-контроллер нового NomenclatureDto
+     * иметь возможность распарсить NomenclatureDto в Nomenclature, которое будет содержать id.
+     * Id нужен, чтобы не создавать новую номенклатуру при создании каждого нового обращения,
+     * а назначать из уже имеющихся.
+     * <p>
+     * <p>
+     * Маппинг из NomenclatureDto в Nomenclature (Для POST-контроллера Appeal)
+     */
+    public Nomenclature toEntity(NomenclatureDto nomenclatureDto) {
+        return nomenclatureService.findById(nomenclatureDto.getId());
+    }
+
+    /**
      * Маппинг из FilePoolDto в FilePool
      */
     public FilePool toFilePool(FilePoolDto filePoolDto) {
@@ -241,4 +279,23 @@ public class AppealRestController {
                 .map(this::toDto)
                 .toList();
     }
+
+    /**
+     * Маппинг из Collection<QuestionDto> в Collection<Question> (Для POST-контроллера Appeal)
+     */
+    public Collection<Question> dtoQuestionToEntity(Collection<QuestionDto> questionDtos) {
+        return questionDtos.stream()
+                .map(this::toQuestion)
+                .toList();
+    }
+
+    /**
+     * Маппинг из Collection<FilePoolDto> в Collection<FilePool> (Для POST-контроллера Appeal)
+     */
+    public Collection<FilePool> dtoFilePoolToEntity(Collection<FilePoolDto> filePoolDtos) {
+        return filePoolDtos.stream()
+                .map(this::toFilePool)
+                .toList();
+    }
+
 }
