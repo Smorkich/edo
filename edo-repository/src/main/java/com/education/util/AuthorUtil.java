@@ -61,13 +61,13 @@ public class AuthorUtil {
                 .toList();
     }
 
-    /**
-     * Конвертация коллекции <AuthorDto> в коллекцию <Author>
-     */
-    public static Collection<Author> listAuthor(Collection<AuthorDto> authors) {
-        return authors.stream()
-                .map(AuthorUtil::toAuthor)
-                .toList();
-    }
+//    /**
+//     * Конвертация коллекции <AuthorDto> в коллекцию <Author>
+//     */
+//    public static Collection<Author> listAuthor(Collection<AuthorDto> authors) {
+//        return authors.stream()
+//                .map(AuthorUtil::toAuthor)
+//                .toList();
+//    }
 
 }

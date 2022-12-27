@@ -16,6 +16,7 @@ import java.util.HashSet;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder()
+@ToString
 @ApiModel(value = "Обращение граждан")
 public class AppealDto implements Serializable {
 
@@ -35,30 +36,30 @@ public class AppealDto implements Serializable {
     private String annotation;
 
     @ApiModelProperty(value = "Статус обращения")
-    private Status appealsStatusDto;
+    private Status appealsStatus;
 
     @ApiModelProperty(value = "Способ получения обращения")
-    private ReceiptMethod sendingMethodDto;
+    private ReceiptMethod sendingMethod;
 
     @ApiModelProperty(value = "Подписант(ы) обращения")
-    private Collection<EmployeeDto> signerDto;
+    private Collection<EmployeeDto> signer;
 
     @ApiModelProperty(value = "Создатель обращения")
-    private EmployeeDto creatorDto;
+    private EmployeeDto creator;
 
     @ApiModelProperty(value = "Отправить им обращение тоже (в копию)")
-    private Collection<EmployeeDto> addresseeDto;
+    private Collection<EmployeeDto> addressee;
 
     @ApiModelProperty(value = "Автор, соавторы обращения")
-    private Collection<AuthorDto> authorsDto = new HashSet<>();
+    private Collection<AuthorDto> authors = new HashSet<>();
 
     @ApiModelProperty(value = "Несколько вопросов")
-    private Collection<QuestionDto> questionsDto = new HashSet<>();
+    private Collection<QuestionDto> questions = new HashSet<>();
 
     @ApiModelProperty(value = "Номенклатура")
-    private NomenclatureDto nomenclatureDto;
+    private NomenclatureDto nomenclature;
 
     @ApiModelProperty(value = "Несколько файлов")
-    private Collection<FilePoolDto> fileDto = new HashSet<>();
+    private Collection<FilePoolDto> file = new HashSet<>();
 
 }

@@ -32,14 +32,12 @@ public class AppealServiceImpl implements AppealService {
      * Метод сохранения нового адреса в БД
      */
     public void save(AppealDto appealDto) {
-        List<AuthorDto> authorDtoCollection = new ArrayList<>();
-        for(AuthorDto authorDto:appealDto.getAuthorsDto()){
+        for (AuthorDto authorDto : appealDto.getAuthors()) {
             restTemplate
                     .postForObject("http://edo-repository/api/repository/author", authorDto, AuthorDto.class);
             authorDto.setId(findAll().stream().mapToLong(AuthorDto::getId).max().getAsLong());
-        };
-        appealDto.setAuthorsDto(authorDtoCollection);
-        restTemplate.postForObject(URL,appealDto, AppealDto.class);
+        }
+        restTemplate.postForObject(URL, appealDto, AppealDto.class);
     }
 
 
@@ -55,8 +53,13 @@ public class AppealServiceImpl implements AppealService {
      * Метод, который возвращает все адреса//////////////////////////
      */
     public List<AuthorDto> findAll() {
-        AuthorDto[] authorDtos=restTemplate.getForObject("http://edo-repository/api/repository/author",AuthorDto[].class);
+        AuthorDto[] authorDtos = restTemplate.getForObject("http://edo-repository/api/repository/author", AuthorDto[].class);
         return Arrays.asList(authorDtos);
+    }
+
+    @Override
+    public AuthorDto findAuthorBySnils(String snils) {
+        return null;
     }
 
     /**

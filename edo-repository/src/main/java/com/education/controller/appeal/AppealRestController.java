@@ -2,20 +2,13 @@ package com.education.controller.appeal;
 
 import static com.education.util.AuthorUtil.*;
 
-import com.education.entity.Appeal;
-import com.education.entity.Employee;
-import com.education.entity.Nomenclature;
-import com.education.entity.FilePool;
-import com.education.entity.Question;
+import com.education.entity.*;
 import com.education.service.appeal.AppealService;
+import com.education.service.author.AuthorService;
 import com.education.service.employee.EmployeeService;
 import com.education.service.nomenclature.NomenclatureService;
 import lombok.AllArgsConstructor;
-import model.dto.AppealDto;
-import model.dto.EmployeeDto;
-import model.dto.FilePoolDto;
-import model.dto.QuestionDto;
-import model.dto.NomenclatureDto;
+import model.dto.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +27,8 @@ public class AppealRestController {
     private EmployeeService employeeService;
 
     private NomenclatureService nomenclatureService;
+
+    private AuthorService authorService;
 
     @PatchMapping(value = "/move/{id}")
     public ResponseEntity<AppealDto> moveToArchive(@PathVariable Long id) {
@@ -85,15 +80,15 @@ public class AppealRestController {
                 .archivedDate(appeal.getArchivedDate())
                 .number(appeal.getNumber())
                 .annotation(appeal.getAnnotation())
-                .appealsStatusDto(appeal.getAppealsStatus())
-                .sendingMethodDto(appeal.getSendingMethod())
-                .signerDto(toDto(appeal.getSigner()))
-                .creatorDto(toDto(appeal.getCreator()))
-                .addresseeDto(toDto(appeal.getAddressee()))
-                .authorsDto(listAuthorDtos(appeal.getAuthors()))
-                .questionsDto(toQuestionDto(appeal.getQuestions()))
-                .nomenclatureDto(toDto(appeal.getNomenclature()))
-                .fileDto(toFilePoolDtoCollection(appeal.getFile()))
+                .appealsStatus(appeal.getAppealsStatus())
+                .sendingMethod(appeal.getSendingMethod())
+                .signer(toDto(appeal.getSigner()))
+                .creator(toDto(appeal.getCreator()))
+                .addressee(toDto(appeal.getAddressee()))
+                .authors(listAuthorDtos(appeal.getAuthors()))
+                .questions(toQuestionDto(appeal.getQuestions()))
+                .nomenclature(toDto(appeal.getNomenclature()))
+                .file(toFilePoolDtoCollection(appeal.getFile()))
                 .build();
 
     }
@@ -116,16 +111,26 @@ public class AppealRestController {
                 .archivedDate(appealDto.getArchivedDate())
                 .number(appealDto.getNumber())
                 .annotation(appealDto.getAnnotation())
-                .appealsStatus(appealDto.getAppealsStatusDto())
-                .sendingMethod(appealDto.getSendingMethodDto())
-                .signer(dtoEmployeeToEntity(appealDto.getSignerDto()))
-                .creator(toEntity(appealDto.getCreatorDto()))
-                .addressee(dtoEmployeeToEntity(appealDto.getAddresseeDto()))
-                .authors(listAuthor(appealDto.getAuthorsDto()))
-                .questions(dtoQuestionToEntity(appealDto.getQuestionsDto()))
-                .nomenclature(toEntity(appealDto.getNomenclatureDto()))
-                .file(dtoFilePoolToEntity(appealDto.getFileDto()))
+                .appealsStatus(appealDto.getAppealsStatus())
+                .sendingMethod(appealDto.getSendingMethod())
+                .signer(dtoEmployeeToEntity(appealDto.getSigner()))
+                .creator(toEntity(appealDto.getCreator()))
+                .addressee(dtoEmployeeToEntity(appealDto.getAddressee()))
+                .authors(listAuthorA(appealDto.getAuthors()))
+                .questions(dtoQuestionToEntity(appealDto.getQuestions()))
+                .nomenclature(toEntity(appealDto.getNomenclature()))
+                .file(dtoFilePoolToEntity(appealDto.getFile()))
                 .build();
+    }
+
+    public Author toEntityA(AuthorDto authorDto) {
+        return authorService.findById(authorDto.getId());
+    }
+
+    public Collection<Author> listAuthorA(Collection<AuthorDto> authors) {
+        return authors.stream()
+                .map(this::toEntityA)
+                .toList();
     }
 
     /**
@@ -297,5 +302,4 @@ public class AppealRestController {
                 .map(this::toFilePool)
                 .toList();
     }
-
 }
