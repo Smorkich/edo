@@ -58,23 +58,23 @@ public class FilePoolUtil {
      * Конвертация из Employee в Dto (Для полей FilePoolDto, содержащих EmployeeDto)
      */
     public static EmployeeDto toDto(Employee employee) {
-        return new EmployeeDto(
-                employee.getId(),
-                employee.getFirstName(),
-                employee.getLastName(),
-                employee.getMiddleName(),
-                employee.getAddress(),
-                employee.getFioDative(),
-                employee.getFioNominative(),
-                employee.getFioGenitive(),
-                employee.getExternalId(),
-                employee.getPhone(),
-                employee.getWorkPhone(),
-                employee.getBirthDate(),
-                employee.getUsername(),
-                employee.getCreationDate(),
-                employee.getArchivedDate()
-        );
+        return EmployeeDto.builder()
+                .id(employee.getId())
+                .firstName(employee.getFirstName())
+                .lastName(employee.getLastName())
+                .middleName(employee.getMiddleName())
+                .address(employee.getAddress())
+                .fioDative(employee.getFioDative())
+                .fioNominative(employee.getFioNominative())
+                .fioGenitive(employee.getFioGenitive())
+                .externalId(employee.getExternalId())
+                .phone(employee.getPhone())
+                .workPhone(employee.getWorkPhone())
+                .birthDate(employee.getBirthDate())
+                .username(employee.getUsername())
+                .creationDate(employee.getCreationDate())
+                .archivedDate(employee.getArchivedDate())
+                .build();
     }
 
     /**
