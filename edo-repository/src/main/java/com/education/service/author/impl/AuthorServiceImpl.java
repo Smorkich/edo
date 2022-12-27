@@ -65,4 +65,13 @@ public class AuthorServiceImpl implements AuthorService {
     public Collection<Author> findAll() {
         return authorRepository.findAll();
     }
+
+    /**
+     * Поиск Author по snils
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Author findAuthorBySnils(String snils) {
+        return authorRepository.findAuthorBySnils(snils);
+    }
 }

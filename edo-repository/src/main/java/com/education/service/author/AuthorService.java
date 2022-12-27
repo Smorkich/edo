@@ -13,4 +13,6 @@ public interface AuthorService {
     Collection<Author> findAllById(Iterable<Long> ids);
 
     Collection<Author> findAll();
+
+    Author findAuthorBySnils(String snils);
 }
