@@ -2,23 +2,29 @@ package com.education.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import model.dto.ThemeDto;
+
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 
 /**
  * @author AlexeySpiridonov
  * Сущность описывающая тему обращения граждан
  */
-@Entity
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity(name = "theme")
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @Table(name = "theme")
 public class Theme extends BaseEntity {
 
     /**
      * Название темы
      */
+
     @Column(name = "name")
     private String name;
 
@@ -47,6 +53,5 @@ public class Theme extends BaseEntity {
     @JoinColumn(name = "id")
     private Theme parentTheme;
 
-    public Theme(Long id, String name, ZonedDateTime archivedDate, ZonedDateTime creationDate, String code) {
-    }
+
 }

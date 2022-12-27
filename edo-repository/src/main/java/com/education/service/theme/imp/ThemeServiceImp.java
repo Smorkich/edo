@@ -54,10 +54,7 @@ public class ThemeServiceImp implements ThemeService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void moveToArchive(Long id) {
-        Optional<Theme> themeOptional = themeRepository.findById(id);
-        Theme theme = themeOptional.get();
-        theme.setArchivedDate(ZonedDateTime.now());
-        themeRepository.save(theme);
+        themeRepository.moveToArchive(ZonedDateTime.now(), id);
     }
 
     @Override

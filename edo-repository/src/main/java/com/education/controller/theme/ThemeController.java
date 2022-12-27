@@ -29,11 +29,11 @@ public class ThemeController {
 
     @ApiOperation(value = "Создает тему обращения", notes = "Тема обращения должна существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public String  save(@RequestBody Theme theme) {
+    public ResponseEntity<Theme>  save(@RequestBody Theme theme) {
         log.info("Starting the save operation");
         themeService.save(theme);
         log.info("POST request successful");
-        return "сохранено";
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Удаляет тему обращения", notes = "Тема обращения должна существовать")
@@ -67,7 +67,9 @@ public class ThemeController {
     @ApiOperation(value = "Добавляет в тему дату архивации", notes = "Тема должна существовать")
     @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<String> moveToArchive(@PathVariable(name = "id") Long id) {
+        log.info("Starting the archiving theme");
         themeService.moveToArchive(id);
+        log.info("Archiving a theme");
         return new ResponseEntity<>("The theme is archived", HttpStatus.OK);
     }
 

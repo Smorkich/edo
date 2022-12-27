@@ -9,12 +9,12 @@ import java.time.ZonedDateTime;
 /**
  * @author AlexeySpiridonov
  */
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
-@Builder
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
 @ApiModel(value = "Тема обращения")
 public class ThemeDto {
 
