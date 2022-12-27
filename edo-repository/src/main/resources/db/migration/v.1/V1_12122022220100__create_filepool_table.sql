@@ -4,11 +4,11 @@ CREATE TABLE file_pool
     storage_file_id VARCHAR     NOT NULL,
     name            VARCHAR     NOT NULL,
     extension       VARCHAR     NOT NULL,
-    size            INTEGER     NOT NULL CHECK (size > 0),
-    page_count      INTEGER     NOT NULL CHECK (page_count > 0),
+    size            INTEGER     NOT NULL,
+    page_count      INTEGER     NOT NULL,
     upload_date     timestamptz NOT NULL,
     archived_date   timestamptz,
-    creator_id      BIGINT      NOT NULL
+    creator_id      BIGINT      NOT NULL REFERENCES edo.employee (id)
 );
 
 
