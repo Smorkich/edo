@@ -2,6 +2,7 @@ package com.education.util;
 
 import com.education.entity.Employee;
 import com.education.entity.FilePool;
+import com.education.service.filePoll.EmployeeServise;
 import model.dto.EmployeeDto;
 import model.dto.FilePoolDto;
 
@@ -24,7 +25,7 @@ public class FilePoolUtil {
                 .pageCount(filePool.getPageCount())
                 .uploadDate(filePool.getUploadDate())
                 .archivedDate(filePool.getArchivedDate())
-                .creator(new EmployeeDto())
+                .creator(EmployeeDto.builder().build())
                 .build();
     }
 
