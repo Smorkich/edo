@@ -33,10 +33,14 @@ public class AppealServiceImpl implements AppealService {
      */
     public void save(AppealDto appealDto) {
         for (AuthorDto authorDto : appealDto.getAuthors()) {
-            restTemplate
-                    .postForObject("http://edo-repository/api/repository/author", authorDto, AuthorDto.class);
-            authorDto.setId(findAll().stream().mapToLong(AuthorDto::getId).max().getAsLong());
+            restTemplate.postForObject("http://edo-repository/api/repository/author", authorDto, AuthorDto.class);
+            authorDto.setId(findAll().stream()
+                    .mapToLong(AuthorDto::getId)
+                    .max()
+                    .getAsLong());
         }
+        //for для question
+        //for для filepool
         restTemplate.postForObject(URL, appealDto, AppealDto.class);
     }
 
