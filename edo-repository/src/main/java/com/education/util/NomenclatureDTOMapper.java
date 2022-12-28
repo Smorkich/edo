@@ -39,7 +39,7 @@ public class NomenclatureDTOMapper {
      * Method tranforms object from DTO to entity
      */
     public static Nomenclature toEntity(NomenclatureDto nomenclatureDto) {
-        return Nomenclature.builder()
+        return Nomenclature.builderNomenclature()
                 .creationDate(nomenclatureDto.getCreationDate())
                 .archivedDate(nomenclatureDto.getArchivedDate())
                 .template(nomenclatureDto.getTemplate())

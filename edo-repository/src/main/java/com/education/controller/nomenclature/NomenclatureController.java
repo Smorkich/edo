@@ -44,7 +44,7 @@ public class NomenclatureController {
     @GetMapping(value = "/find/{id}")
     public ResponseEntity<NomenclatureDto> findById(@PathVariable Long id) {
         log.info("Serching entity with id = {}", id);
-        NomenclatureDto nomenclatureDto = NomenclatureDTOMapper.toDTO(service.findById(id).get());
+        NomenclatureDto nomenclatureDto = NomenclatureDTOMapper.toDTO(service.findById(id));
         log.info("Entity {} has been found",nomenclatureDto);
         return new ResponseEntity<>(nomenclatureDto, HttpStatus.OK);
     }
@@ -58,7 +58,7 @@ public class NomenclatureController {
         log.debug("Set field archived_date with actual datetime");
         service.moveToArchive(id);
         log.debug("Set field archived_date with actual datetime");
-        NomenclatureDto nomenclatureDto = NomenclatureDTOMapper.toDTO(service.findById(id).get());
+        NomenclatureDto nomenclatureDto = NomenclatureDTOMapper.toDTO(service.findById(id));
         return new ResponseEntity<>(nomenclatureDto, HttpStatus.OK);
     }
 

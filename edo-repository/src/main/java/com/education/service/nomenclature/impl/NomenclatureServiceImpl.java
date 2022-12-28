@@ -39,8 +39,8 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     /**
      * Method searches for an entity of Nomenclature
      */
-    public Optional<Nomenclature> findById(Long id) {
-        return repository.findById(id);
+    public Nomenclature findById(Long id) {
+        return repository.findById(id).orElse(null);
     }
 
     /**

@@ -11,7 +11,7 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
+@Builder(builderMethodName = "builderNomenclature")
 @Table(name = "nomenclature",schema = "edo")
 public class Nomenclature extends BaseEntity {
 
