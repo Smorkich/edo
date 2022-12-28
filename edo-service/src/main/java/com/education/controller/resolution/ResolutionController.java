@@ -47,7 +47,7 @@ public class ResolutionController {
 
     @ApiOperation(value = "Поиск резолюции по id")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON)
-    public ResponseEntity<ResolutionDto> getById(@PathVariable Long id) {
+    public ResponseEntity<ResolutionDto> findById(@PathVariable Long id) {
         log.info("GET request to search for resolution with id = {} has been sent", id);
         var resolutionDto = resolutionService.findById(id);
         log.info("Resolution with id = {} was found", id);
@@ -74,7 +74,7 @@ public class ResolutionController {
 
     @ApiOperation(value = "Поиск всех не архивированных резолюций")
     @GetMapping(value = "/notArchived/all/{id}")
-    public ResponseEntity<Collection<ResolutionDto>> findAllById(@PathVariable Long id) {
+    public ResponseEntity<Collection<ResolutionDto>> findAllByIdNotArchived(@PathVariable Long id) {
         log.info("GET request to search for all unarchived resolutions has been sent");
         var resolutionDto = resolutionService.findAllByIdNotArchived(id);
         log.info("Resolutions was found");

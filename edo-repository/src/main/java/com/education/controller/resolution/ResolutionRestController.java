@@ -76,7 +76,7 @@ public class ResolutionRestController {
     }
 
     @ApiOperation(value = "Поиск всех не архивированных резолюций")
-    @GetMapping(value = "/notArchived/{id}")
+    @GetMapping(value = "/notArchived/all/{id}")
     public ResponseEntity<Collection<ResolutionDto>> findAllByIdNotArchived(@PathVariable Collection<Long> id) {
         log.info("GET request to search for all unarchived resolutions has been sent");
         var resolutionDto = toListResolutionsDto(resolutionService.findAllByIdNotArchived(id));
