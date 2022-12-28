@@ -61,11 +61,6 @@ public class AppealServiceImpl implements AppealService {
         return Arrays.asList(authorDtos);
     }
 
-    @Override
-    public AuthorDto findAuthorBySnils(String snils) {
-        return null;
-    }
-
     /**
      * Метод удаления адреса из БД
      */
