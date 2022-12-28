@@ -13,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @ApiModel(value = "Класс-обертка класса Resolution для передачи данных между модулями и классами")
 public class ResolutionDto {
 
