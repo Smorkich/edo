@@ -19,12 +19,12 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
      */
     @Modifying
     @Query("update Appeal appeal set appeal.archivedDate =:archivedDate where appeal.id =:id")
-    void moveToArchive(@Param("id") Long id, @Param("archivedDate") ZonedDateTime archiveDate);
+    void moveToArchive(@Param("id") Long id, @Param("archivedDate") ZonedDateTime archivedDate);
 
     /**
      * Метод достает Appeal, у которого поле archivedDate = null
      */
-    @Query("select u from Appeal u where u.archivedDate is null and u.id =:id")
+    @Query("select u from Appeal u where u.id =:id and u.archivedDate is null ")
     Optional<Appeal> findByIdNotArchived(@Param("id") Long id);
 
     /**

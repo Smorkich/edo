@@ -1,0 +1,47 @@
+package com.education.service.appeal;
+
+import model.dto.AppealDto;
+
+import java.time.ZonedDateTime;
+import java.util.Collection;
+
+/**
+ * Service в "edo-service", служит для связи контроллера и RestTemplate
+ */
+public interface AppealService {
+
+    /**
+     * Нахождение обращения по id
+     */
+    AppealDto findById(Long id);
+
+    /**
+     * Нахождение всех обращений
+     */
+    Collection<AppealDto> findAll();
+
+    /**
+     * Сохранение обращения
+     */
+    void save(AppealDto appealDto);
+
+    /**
+     * Удаления обращения по Id
+     */
+    void delete(Long id);
+
+    /**
+     * Перенос обращения в архив по id
+     */
+    void moveToArchive(Long id, ZonedDateTime zonedDateTime);
+
+    /**
+     * Нахождение обращения по id не из архива
+     */
+    AppealDto findByIdNotArchived(Long id);
+
+    /**
+     * Нахождение всех обращений не из архива
+     */
+    Collection<AppealDto> findAllNotArchived();
+}
