@@ -44,6 +44,6 @@ public class Theme extends BaseEntity {
      *  связка с entity Theme
     * */
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "parent_theme")
     private Theme parentTheme;
 }
