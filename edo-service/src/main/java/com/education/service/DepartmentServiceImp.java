@@ -4,6 +4,7 @@ package com.education.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.DepartmentDto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import org.springframework.web.client.RestTemplate;

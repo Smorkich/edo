@@ -23,6 +23,7 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "department")
+@Builder(builderMethodName = "builderDepartment")
 @ToString
 public class Department extends BaseEntity {
 

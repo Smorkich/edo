@@ -5,13 +5,13 @@ import lombok.*;
 
 import java.util.Objects;
 
-@Entity
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
 @MappedSuperclass
+@Builder
 public class BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
