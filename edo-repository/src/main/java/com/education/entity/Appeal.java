@@ -2,6 +2,7 @@ package com.education.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import model.enums.Employment;
 import model.enums.ReceiptMethod;
 import model.enums.Status;
@@ -19,7 +20,7 @@ import java.util.HashSet;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder(builderMethodName = "appealBuilder")
+@SuperBuilder
 @Table(name = "appeal")
 public class Appeal extends BaseEntity {
 

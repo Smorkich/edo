@@ -11,6 +11,6 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface NomenclatureMapper extends AbstractMapper<Nomenclature, NomenclatureDto> {
-    NomenclatureMapper DEPARTMENT_MAPPER = Mappers.getMapper(NomenclatureMapper.class);
+    NomenclatureMapper NOMENCLATURE_MAPPER = Mappers.getMapper(NomenclatureMapper.class);
 
 }

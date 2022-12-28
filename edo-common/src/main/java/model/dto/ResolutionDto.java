@@ -1,10 +1,12 @@
 package model.dto;
 
+import com.sun.source.doctree.SerialDataTree;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import model.enums.ResolutionType;
 
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -13,8 +15,9 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 @ApiModel(value = "Класс-обертка класса Resolution для передачи данных между модулями и классами")
-public class ResolutionDto {
+public class ResolutionDto implements Serializable {
 
     @ApiModelProperty(value = "id")
     private Long id;
@@ -32,19 +35,18 @@ public class ResolutionDto {
     private ResolutionType type;
 
     @ApiModelProperty(value = "Создатель")
-    private EmployeeDto creatorDto;
+    private EmployeeDto creator;
 
     @ApiModelProperty(value = "Принявший резолюцию")
-    private EmployeeDto signerDto;
+    private EmployeeDto signer;
 
     @ApiModelProperty(value = "Исполнители резолюции")
-    private List<EmployeeDto> executorDto;
+    private List<EmployeeDto> executor;
 
     @ApiModelProperty(value = "Контролер исполнения")
-    private EmployeeDto curatorDto;
+    private EmployeeDto curator;
 
     @ApiModelProperty(value = "Серийный номер")
     private String serialNumber;
-
 
 }

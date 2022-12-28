@@ -11,6 +11,6 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface AuthorMapper extends AbstractMapper<Author, AuthorDto> {
-    AuthorMapper DEPARTMENT_MAPPER = Mappers.getMapper(AuthorMapper.class);
+    AuthorMapper AUTHOR_MAPPER = Mappers.getMapper(AuthorMapper.class);
 
 }

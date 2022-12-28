@@ -24,8 +24,8 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void save(Author author) {
-        authorRepository.saveAndFlush(author);
+    public Author save(Author author) {
+        return authorRepository.saveAndFlush(author);
     }
 
     /**

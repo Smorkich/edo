@@ -11,6 +11,6 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface FilePoolMapper extends AbstractMapper<FilePool, FilePoolDto> {
-    FilePoolMapper DEPARTMENT_MAPPER = Mappers.getMapper(FilePoolMapper.class);
+    FilePoolMapper FILE_POOL_MAPPER = Mappers.getMapper(FilePoolMapper.class);
 
 }

@@ -9,8 +9,7 @@ import org.mapstruct.factory.Mappers;
  * Интерфейс для реализации конвертации департамента в ДТО и обратно
  */
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = EmployeeMapper.class, imports = Resolution.class)
 public interface ResolutionMapper extends AbstractMapper<Resolution, ResolutionDto> {
-    ResolutionMapper DEPARTMENT_MAPPER = Mappers.getMapper(ResolutionMapper.class);
-
+    ResolutionMapper RESOLUTION_MAPPER = Mappers.getMapper(ResolutionMapper.class);
 }

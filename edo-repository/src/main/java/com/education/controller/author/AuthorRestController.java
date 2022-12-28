@@ -1,6 +1,6 @@
 package com.education.controller.author;
 
-import static com.education.util.AuthorUtil.*;
+import static com.education.mapper.AuthorMapper.AUTHOR_MAPPER;
 
 import com.education.service.author.AuthorService;
 import io.swagger.annotations.ApiOperation;
@@ -30,7 +30,7 @@ public class AuthorRestController {
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AuthorDto>> getAllAuthors() {
         log.info("Sent GET request to get all authors from the database");
-        var authorDtoCollection = listAuthorDtos(authorService.findAll());
+        var authorDtoCollection = AUTHOR_MAPPER.AUTHOR_MAPPER.toDto(authorService.findAll());
         log.info("Response from database:{}", authorDtoCollection);
         return new ResponseEntity<>(authorDtoCollection, HttpStatus.OK);
     }
@@ -39,7 +39,7 @@ public class AuthorRestController {
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> addAuthorAction(@RequestBody AuthorDto authorDto) {
         log.info("Send POST request to add author to databases: {}", authorDto);
-        authorService.save(toAuthor(authorDto));
+        authorService.save(AUTHOR_MAPPER.toEntity(authorDto));
         log.info("Author added to database");
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -57,7 +57,7 @@ public class AuthorRestController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> getAuthorById(@PathVariable Long id) {
         log.info("Sent GET request to get author with id={} from the database", id);
-        var authorDto = toDto(authorService.findById(id));
+        var authorDto = AUTHOR_MAPPER.toDto(authorService.findById(id));
         log.info("Response from database:{}", authorDto);
         return new ResponseEntity<>(authorDto, HttpStatus.OK);
     }
@@ -66,7 +66,7 @@ public class AuthorRestController {
     @GetMapping(value = "/snils/{snils}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> getAuthorBySnils(@PathVariable String snils) {
         log.info("Sent GET request to get author with snils={} from the database", snils);
-        var authorDto = toDto(authorService.findAuthorBySnils(snils));
+        var authorDto = AUTHOR_MAPPER.toDto(authorService.findAuthorBySnils(snils));
         log.info("Response from database:{}", authorDto);
         return new ResponseEntity<>(authorDto, HttpStatus.OK);
     }

@@ -3,6 +3,7 @@ package com.education.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
 
@@ -16,7 +17,7 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Builder(builderMethodName = "builderquestion")
+@SuperBuilder
 @Table(name = "question")
 public class Question extends BaseEntity {
 

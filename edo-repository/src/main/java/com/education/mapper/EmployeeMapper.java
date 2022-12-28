@@ -11,6 +11,6 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface EmployeeMapper extends AbstractMapper<Employee, EmployeeDto> {
-    EmployeeMapper DEPARTMENT_MAPPER = Mappers.getMapper(EmployeeMapper.class);
+    EmployeeMapper EMPLOYEE_MAPPER = Mappers.getMapper(EmployeeMapper.class);
 
 }

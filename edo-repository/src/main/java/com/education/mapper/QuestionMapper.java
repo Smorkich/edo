@@ -11,6 +11,6 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface QuestionMapper extends AbstractMapper<Question, QuestionDto> {
-    QuestionMapper DEPARTMENT_MAPPER = Mappers.getMapper(QuestionMapper.class);
+    QuestionMapper QUESTION_MAPPER = Mappers.getMapper(QuestionMapper.class);
 
 }

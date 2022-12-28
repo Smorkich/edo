@@ -11,6 +11,6 @@ import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public interface AddressMapper extends AbstractMapper<Address, AddressDto> {
-    AddressMapper DEPARTMENT_MAPPER = Mappers.getMapper(AddressMapper.class);
+    AddressMapper ADDRESS_MAPPER_MAPPER = Mappers.getMapper(AddressMapper.class);
 
 }

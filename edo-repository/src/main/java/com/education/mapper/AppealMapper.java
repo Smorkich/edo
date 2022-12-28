@@ -10,7 +10,8 @@ import org.mapstruct.factory.Mappers;
  */
 
 @Mapper(componentModel = "spring")
+
 public interface AppealMapper extends AbstractMapper<Appeal, AppealDto> {
-    AppealMapper DEPARTMENT_MAPPER = Mappers.getMapper(AppealMapper.class);
+    AppealMapper APPEAL_MAPPER = Mappers.getMapper(AppealMapper.class);
 
 }

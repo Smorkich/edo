@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -20,7 +21,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @ToString
 @Entity
-@Builder(builderMethodName = "builderfilePool")
+@SuperBuilder
 @Table(name = "file_pool")
 public class FilePool extends BaseEntity {
 
