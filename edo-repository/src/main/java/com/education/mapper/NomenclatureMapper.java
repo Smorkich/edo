@@ -1,0 +1,16 @@
+package com.education.mapper;
+
+import com.education.entity.Nomenclature;
+import model.dto.NomenclatureDto;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+
+/**
+ * Интерфейс для реализации конвертации департамента в ДТО и обратно
+ */
+
+@Mapper(componentModel = "spring")
+public interface NomenclatureMapper extends AbstractMapper<Nomenclature, NomenclatureDto> {
+    NomenclatureMapper DEPARTMENT_MAPPER = Mappers.getMapper(NomenclatureMapper.class);
+
+}
