@@ -3,11 +3,9 @@ package com.education.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
 @Entity
@@ -16,6 +14,7 @@ import java.time.ZonedDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder(builderMethodName = "employeeBuilder")
 
 /**
  * @author George Kiladze
@@ -87,7 +86,7 @@ public class Employee extends BaseEntity {
      * birthDate - Дата рождения
      */
     @Column(name = "birth_date")
-    private String birthDate;
+    private LocalDate birthDate;
 
     /**
      * username - Имя пользователя
