@@ -1,6 +1,8 @@
 package com.education.service.theme;
 
 import com.education.entity.Theme;
+import model.dto.ThemeDto;
+
 import java.util.Collection;
 
 /**
@@ -29,6 +31,9 @@ public interface ThemeService {
      */
     Collection<Theme> findAllById(Iterable<Long> ids);
 
+    /**
+     * findAll - возвращает все темы
+     */
     Collection<Theme> findAll();
 
     /**

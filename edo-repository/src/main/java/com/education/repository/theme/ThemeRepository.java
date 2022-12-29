@@ -17,8 +17,11 @@ import java.util.List;
 @Repository
 public interface ThemeRepository extends JpaRepository<Theme, Long> {
 
+    /**
+     * Метод устанавливает дату архивации
+     */
     @Modifying
-    @Query(value = "update  theme set  theme.archivedDate =:archDate where theme.id =:id")
+    @Query("update theme th set  th.archivedDate =:archDate where th.id =:id")
     void moveToArchive(@Param("archDate") ZonedDateTime date, @Param("id") Long id);
 
     Theme findByIdAndArchivedDateNull(Long id);

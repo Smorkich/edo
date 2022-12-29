@@ -47,23 +47,23 @@ public class ThemeController {
 
     @ApiOperation(value = "Добавляет в тему дату архивации", notes = "Тема должна существовать")
     @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    private String moveToArchive(@PathVariable(name = "id") Long id) {
+    private ResponseEntity<String> moveToArchive(@PathVariable(name = "id") Long id) {
         log.info("Starting the archiving theme");
         themeService.moveToArchived(id);
-        log.info("Archiving a theme");
-        return "Удалил " + id;
+        log.info("Theme with id = {} has been moved to archive", id);
+        return new ResponseEntity<>("The theme is archived", HttpStatus.OK);
     }
 
 
     @ApiOperation(value = "Предоставление темы без архивирования по идентификатору")
-    @GetMapping("/NotArchived/{id}")
+    @GetMapping("/notArchived/{id}")
     private ResponseEntity<ThemeDto> findByIdNotArchived(@PathVariable(name = "id") Long id) {
         log.info("send a response with the theme not archived of the assigned ID");
         return new ResponseEntity<>(themeService.findByIdNotArchived(id), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Предоставление тем  без архивирования по назначенным идентификаторам")
-    @GetMapping("/department/NotArchivedAll/{ids}")
+    @GetMapping("/department/notArchivedAll/{ids}")
     private ResponseEntity<Collection<ThemeDto>> findAllByIdNotArchived(@PathVariable(name = "ids") String ids) {
         log.info("send a response with the departments not archived of the assigned IDs");
         return new ResponseEntity<>(themeService.findByAllIdNotArchived(ids), HttpStatus.OK);

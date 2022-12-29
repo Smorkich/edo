@@ -2,8 +2,10 @@ package com.education.service.theme.util;
 
 import com.education.entity.Theme;
 
+import com.education.service.theme.ThemeService;
 import model.dto.ThemeDto;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -38,10 +40,12 @@ public class ThemeUtil {
         );
     }
 
+
+
     /**
      *Конвертация коллекции <Theme> в коллекцию <ThemeDto>
      */
-    public static List<ThemeDto> ListThemeDto(List<Theme> themees) {
+    public static Collection<ThemeDto> listThemeDto(Collection<Theme> themees) {
         return themees.stream()
                 .map(ThemeUtil::toDto)
                 .toList();

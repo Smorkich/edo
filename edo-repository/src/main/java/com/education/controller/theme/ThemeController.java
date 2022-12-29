@@ -29,9 +29,9 @@ public class ThemeController {
 
     @ApiOperation(value = "Создает тему обращения", notes = "Тема обращения должна существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Theme>  save(@RequestBody Theme theme) {
+    public ResponseEntity<Theme>  save(@RequestBody ThemeDto themeDto) {
         log.info("Starting the save operation");
-        themeService.save(theme);
+        themeService.save(themeDto);
         log.info("POST request successful");
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -59,7 +59,7 @@ public class ThemeController {
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<ThemeDto>> findAll() {
         log.info("Sent GET request to get all authors from the database");
-        Collection<ThemeDto> themeDtoCollection = ThemeUtil.ListThemeDto((List<Theme>) themeService.findAll());
+        var themeDtoCollection = ThemeUtil.listThemeDto(themeService.findAll());
         log.info("Response from database:{}");
         return new ResponseEntity<>(themeDtoCollection, HttpStatus.OK);
     }
