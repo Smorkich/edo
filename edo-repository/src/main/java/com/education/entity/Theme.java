@@ -2,6 +2,8 @@ package com.education.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 import java.time.ZonedDateTime;
 
 /**
@@ -13,6 +15,7 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
+@SuperBuilder
 @Table(name = "theme")
 public class Theme extends BaseEntity {
 
@@ -42,7 +45,7 @@ public class Theme extends BaseEntity {
 
     /**
      *  связка с entity Theme
-    * */
+     * */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_theme")
     private Theme parentTheme;

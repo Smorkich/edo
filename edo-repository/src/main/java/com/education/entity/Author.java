@@ -51,7 +51,7 @@ public class Author extends BaseEntity {
      * Поле "mobilePhone" - номер телефона автора (мобильный)
      */
     @Column(name = "mobile_phone")
-    private int mobilePhone;
+    private String mobilePhone;
 
     /**
      * Поле "email" - адрес электронной почты автора

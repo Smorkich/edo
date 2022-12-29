@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS theme
     archived_date TIMESTAMP WITH TIME ZONE,
     creation_date TIMESTAMP WITH TIME ZONE NOT NULL,
     code  VARCHAR(20) NOT NULL,
-    parent_them bigint references theme (id)
+    parent_theme bigint references theme (id)
 
 );
 

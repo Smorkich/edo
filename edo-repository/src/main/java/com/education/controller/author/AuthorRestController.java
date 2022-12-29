@@ -1,7 +1,6 @@
 package com.education.controller.author;
 
-import static com.education.mapper.AuthorMapper.AUTHOR_MAPPER;
-
+import com.education.entity.Author;
 import com.education.service.author.AuthorService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -13,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+
+import static com.education.mapper.AuthorMapper.AUTHOR_MAPPER;
 
 /**
  * Рест-контроллер для Author
@@ -39,9 +40,9 @@ public class AuthorRestController {
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> addAuthorAction(@RequestBody AuthorDto authorDto) {
         log.info("Send POST request to add author to databases: {}", authorDto);
-        authorService.save(AUTHOR_MAPPER.toEntity(authorDto));
+        Author author = authorService.save(AUTHOR_MAPPER.toEntity(authorDto));
         log.info("Author added to database");
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(AUTHOR_MAPPER.toDto(author), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Delete author", notes = "Author must exist")

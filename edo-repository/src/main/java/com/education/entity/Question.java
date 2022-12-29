@@ -41,11 +41,11 @@ public class Question extends BaseEntity {
     @Column(name = "summary")
     private String summary;
 
-//    /**
-//     * Тема !!!Не создана сущность потом раскомментить!!!
-//     */
-//    @OneToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "thema_id", referencedColumnName = "id")
-//    private Thema thema;
+    /**
+     * Тема
+     */
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "theme_id", referencedColumnName = "id")
+    private Theme theme;
 
 }

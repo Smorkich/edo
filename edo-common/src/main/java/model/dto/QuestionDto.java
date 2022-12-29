@@ -27,8 +27,7 @@ public class QuestionDto {
             example = "Как поднять настроение программисту")
     private String summary;
 
-//    // !!!Не создана сущность потом раскомментить!!!
-//    @ApiModelProperty(value = "Тема")
-//    private ThemaDto themaDto;
+    @ApiModelProperty(value = "Тема")
+    private ThemeDto theme;
 
 }

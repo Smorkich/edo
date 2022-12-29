@@ -7,8 +7,8 @@ import model.dto.AuthorDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Service в "edo-service", служит для связи контроллера и RestTemplate
@@ -32,9 +32,14 @@ public class AppealServiceImpl implements AppealService {
      * Метод сохранения нового адреса в БД
      */
     public void save(AppealDto appealDto) {
-        appealDto.getAddressee().forEach(authorDto->{
-            restTemplate.postForObject("http://edo-repository/api/repository/author", authorDto, AuthorDto.class);
-        });
+        for (AuthorDto authorDto : appealDto.getAuthors()) {
+            restTemplate.postForObject("http://edo-repository/api/repository/author",
+                    authorDto, AuthorDto.class);
+            authorDto.setId(findAll().stream()
+                    .mapToLong(AuthorDto::getId)
+                    .max()
+                    .getAsLong());
+        }
         //for для question
         //for для filepool
         restTemplate.postForObject(URL, appealDto, AppealDto.class);
