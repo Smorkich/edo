@@ -58,7 +58,7 @@ public class AppealServiceImpl implements AppealService {
     public void moveToArchive(Long id, ZonedDateTime zonedDateTime) {
         AppealDto appeal = findById(id);
         appeal.setArchivedDate(ZonedDateTime.now());
-        restTemplate.postForObject(URL + "/move" + "/" + id, appeal, AppealDto.class);
+        restTemplate.postForObject(URL + "/move/"+ id, appeal, AppealDto.class);
     }
 
     /**
@@ -66,7 +66,7 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public AppealDto findByIdNotArchived(Long id) {
-        return restTemplate.getForObject(URL + "/findByIdNotArchived" + "/" + id, AppealDto.class);
+        return restTemplate.getForObject(URL + "/findByIdNotArchived/"+ id, AppealDto.class);
     }
 
     /**
