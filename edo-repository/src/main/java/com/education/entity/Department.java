@@ -1,27 +1,29 @@
 package com.education.entity;
 
 import jakarta.persistence.*;
+
 import static jakarta.persistence.FetchType.LAZY;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-
 import java.time.ZonedDateTime;
-import java.util.Date;
+
 /**
-* @author Usolkin Dmitry
-* Сущность Department расширяет сущность BaseEntity
+ * @author Usolkin Dmitry
+ * Сущность Department расширяет сущность BaseEntity
  */
-@Entity
+@Entity(name = "department")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "department")
+@Builder(builderMethodName = "builderDepartment")
 @ToString
 public class Department extends BaseEntity {
 
@@ -40,7 +42,7 @@ public class Department extends BaseEntity {
     /* Поле с внешним идентификатором, у себя не создаем сущность,
     скачиваем из чужого хранилища)
      */
-    @Column(name = "externalId")
+    @Column(name = "external_id")
     private Long externalId;
 
     /* Поле с номером телефона*/
@@ -53,11 +55,11 @@ public class Department extends BaseEntity {
     private Department department;
 
     /* Поле с датой создания */
-    @Column(name="creation_date")
+    @Column(name = "creation_date")
     private ZonedDateTime creationDate;
 
     /* Поле с датой архивирования */
-    @Column(name="archived_date")
+    @Column(name = "archived_date")
     private ZonedDateTime archivedDate;
 
 }

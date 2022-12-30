@@ -4,15 +4,18 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
+@ToString
 @ApiModel(value = "Объект для передачи данных")
 public class AddressDto {
 
     @ApiModelProperty(value = "id")
     private Long id;
 
-    @ApiModelProperty(value = "полный адрес")
+    @ApiModelProperty(value = "Полный адрес")
     private String fullAddress;
 
     @ApiModelProperty(value = "Название улицы")

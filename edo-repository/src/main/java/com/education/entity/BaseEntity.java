@@ -7,15 +7,16 @@ import lombok.*;
 
 import java.util.Objects;
 
-@Entity
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
+@MappedSuperclass
 @Builder
 public class BaseEntity {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Override
