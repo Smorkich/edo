@@ -11,9 +11,9 @@ import org.springframework.web.client.RestTemplate;
 
 @Component
 public class AddressFeignClient {
-    @LoadBalanced
-    @Bean
-    public RestTemplate restTemplate(){
-        return new RestTemplate();
-    }
+//    @LoadBalanced
+//    @Bean
+//    public RestTemplate restTemplate(){
+//        return new RestTemplate();
+//    }
 }

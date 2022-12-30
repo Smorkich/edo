@@ -104,7 +104,7 @@ public class Employee extends BaseEntity {
     /**
      * archivedDate - Дата архивации
      */
-    @Column(name = "archived-date")
+    @Column(name = "archived_date")
     private ZonedDateTime archivedDate;
 
 }

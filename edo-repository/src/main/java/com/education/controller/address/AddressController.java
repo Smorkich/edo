@@ -89,7 +89,9 @@ public class AddressController {
                 address.getCity(),
                 address.getRegion(),
                 address.getCountry(),
-                address.getFlat()
+                address.getFlat(),
+                address.getLongitude(),
+                address.getLatitude()
         );
     }
 
@@ -116,7 +118,9 @@ public class AddressController {
                 addressDto.getCity(),
                 addressDto.getRegion(),
                 addressDto.getCountry(),
-                addressDto.getFlat()
+                addressDto.getFlat(),
+                addressDto.getLongitude(),
+                addressDto.getLatitude()
         );
     }
 }

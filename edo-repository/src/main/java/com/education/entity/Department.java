@@ -1,9 +1,11 @@
 package com.education.entity;
 
-import jakarta.persistence.*;
-
-import static jakarta.persistence.FetchType.LAZY;
-
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,6 +14,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.time.ZonedDateTime;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 /**
  * @author Usolkin Dmitry
@@ -25,6 +29,7 @@ import java.time.ZonedDateTime;
 @Table(name = "department")
 @Builder(builderMethodName = "builderDepartment")
 @ToString
+
 public class Department extends BaseEntity {
 
     /* Поле короткое имя*/
@@ -36,8 +41,9 @@ public class Department extends BaseEntity {
     private String fullName;
 
     /* Поле адрес*/
-    @Column(name = "address")
-    private String address;
+    @OneToOne(fetch = LAZY,cascade = CascadeType.PERSIST)
+    @JoinColumn (name = "address")
+    private Address address;
 
     /* Поле с внешним идентификатором, у себя не создаем сущность,
     скачиваем из чужого хранилища)
@@ -50,7 +56,8 @@ public class Department extends BaseEntity {
     private String phone;
 
     /* Поле с вышестоящим департаментом */
-    @OneToOne(fetch = LAZY)
+
+    @OneToOne(fetch = LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "department")
     private Department department;
 

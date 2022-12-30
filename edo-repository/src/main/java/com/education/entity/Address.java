@@ -2,6 +2,9 @@ package com.education.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.math.BigDecimal;
+
 /**
  * Сущность описывающая адрес проживания пользователя отправившего обращение
  */
@@ -73,4 +76,8 @@ public class Address extends BaseEntity{
      */
     @Column(name = "flat")
     private String flat;
+    @Column(name = "longitude")
+    private String longitude;
+    @Column(name = "latitude")
+    private String latitude;
 }
