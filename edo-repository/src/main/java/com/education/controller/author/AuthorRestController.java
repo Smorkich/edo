@@ -1,7 +1,5 @@
 package com.education.controller.author;
 
-import static com.education.mapper.AuthorMapper.AUTHOR_MAPPER;
-
 import com.education.entity.Author;
 import com.education.service.author.AuthorService;
 import io.swagger.annotations.ApiOperation;
@@ -14,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+
+import static com.education.mapper.AuthorMapper.AUTHOR_MAPPER;
 
 /**
  * Рест-контроллер для Author
@@ -59,15 +59,6 @@ public class AuthorRestController {
     public ResponseEntity<AuthorDto> getAuthorById(@PathVariable Long id) {
         log.info("Sent GET request to get author with id={} from the database", id);
         var authorDto = AUTHOR_MAPPER.toDto(authorService.findById(id));
-        log.info("Response from database:{}", authorDto);
-        return new ResponseEntity<>(authorDto, HttpStatus.OK);
-    }
-
-    @ApiOperation(value = "Gets authors by snils", notes = "Author must exist")
-    @GetMapping(value = "/snils/{snils}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthorDto> getAuthorBySnils(@PathVariable String snils) {
-        log.info("Sent GET request to get author with snils={} from the database", snils);
-        var authorDto = AUTHOR_MAPPER.toDto(authorService.findAuthorBySnils(snils));
         log.info("Response from database:{}", authorDto);
         return new ResponseEntity<>(authorDto, HttpStatus.OK);
     }
