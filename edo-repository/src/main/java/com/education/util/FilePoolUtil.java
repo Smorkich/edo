@@ -26,7 +26,7 @@ public class FilePoolUtil {
                 .pageCount(filePool.getPageCount())
                 .uploadDate(filePool.getUploadDate())
                 .archivedDate(filePool.getArchivedDate())
-                .creator(toDto2(new Employee()))
+                .creator(new EmployeeDto())
                 .build();
     }
 
@@ -53,57 +53,6 @@ public class FilePoolUtil {
         return filePools.stream()
                 .map(FilePoolUtil::toDto)
                 .toList();
-    }
-
-    /**
-     * Конвертация из Employee в Dto (Для полей FilePoolDto, содержащих EmployeeDto)
-     */
-    public static EmployeeDto toDto2(Employee employee) {
-        return EmployeeDto.builder()
-                .id(employee.getId())
-                .firstName(employee.getFirstName())
-                .lastName(employee.getLastName())
-                .middleName(employee.getMiddleName())
-                .address(employee.getAddress())
-                .fioDative(employee.getFioDative())
-                .fioNominative(employee.getFioNominative())
-                .fioGenitive(employee.getFioGenitive())
-                .externalId(employee.getExternalId())
-                .phone(employee.getPhone())
-                .workPhone(employee.getWorkPhone())
-                .birthDate(employee.getBirthDate())
-                .username(employee.getUsername())
-                .creationDate(employee.getCreationDate())
-                .archivedDate(employee.getArchivedDate())
-                .build();
-    }
-
-    /**
-     * Конвертация Collection<Employee> в Dto (Для полей FilePoolDto, содержащих Collection<EmployeeDto>)
-     */
-    public Collection<EmployeeDto> toDto(Collection<Employee> employees) {
-        return employees.stream()
-                .map(FilePoolUtil::toDto2)
-                .toList();
-    }
-
-    /**
-     * Конвертация Collection<EmployeeDto> в Collection<Employee>
-     */
-    public Collection<Employee> dtoEmployeeToEntity(Collection<EmployeeDto> employees) {
-        return employees.stream()
-                .map(this::toEntity)
-                .toList();
-    }
-
-    /**
-     * Конвертация EmployeeDto в Employee, содержащий id
-     * Id позволит назначать Employee из тех, что уже существуют
-     */
-    EmployeeServise employeeService;
-
-    public Employee toEntity(EmployeeDto employeeDto) {
-        return employeeService.findById(employeeDto.getId());
     }
 
 }
