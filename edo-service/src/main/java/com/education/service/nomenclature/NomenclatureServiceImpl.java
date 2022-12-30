@@ -1,11 +1,12 @@
 package com.education.service.nomenclature;
 
-import com.education.service.nomenclature.NomenclatureService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.NomenclatureDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 @AllArgsConstructor
 @Service
