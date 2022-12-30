@@ -10,7 +10,7 @@ import java.util.Collection;
  */
 public interface DepartmentService {
 
-    void save(Department department);
+    Long save(Department department);
     void removeToArchived(Long id);
     Department findById(Long id);
     Collection<Department> findByAllId(Iterable<Long> ids);

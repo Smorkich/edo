@@ -1,7 +1,6 @@
 package com.education.controller;
 
 import com.education.entity.Department;
-import com.education.mapper.DepartmentMapper;
 import com.education.service.department.DepartmentService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -108,11 +107,12 @@ public class DepartmentController {
      */
     @ApiOperation(value = "Добавлнение департамента")
     @PostMapping
-    private ResponseEntity<String> saveDepartment(@RequestBody DepartmentDto departmentDto) {
+    private ResponseEntity<Long> saveDepartment(@RequestBody DepartmentDto departmentDto) {
         log.info("Starting the save operation");
-        departmentService.save((Department) DEPARTMENT_MAPPER.toEntity(departmentDto));
+        System.out.println(departmentDto.getAddress());
+        Long idSaveDep = departmentService.save((Department) DEPARTMENT_MAPPER.toEntity(departmentDto));
         log.info("saving the department and displaying its full name in the response");
-        return new ResponseEntity<>("Added the department to the database", HttpStatus.OK);
+        return new ResponseEntity<>( idSaveDep, HttpStatus.OK);
     }
 
     /**

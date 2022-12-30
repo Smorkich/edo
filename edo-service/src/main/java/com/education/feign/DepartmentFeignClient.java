@@ -6,14 +6,15 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * реализация noFeignClient
+ * @Author Usolkin Dmitry
+ *  В этом классе помечаем бин RestTemplate
  */
-
 @Component
-public class AddressFeignClient {
-//    @LoadBalanced
-//    @Bean
-//    public RestTemplate restTemplate(){
-//        return new RestTemplate();
-//    }
+public class DepartmentFeignClient {
+
+    @LoadBalanced
+    @Bean
+    RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 }
