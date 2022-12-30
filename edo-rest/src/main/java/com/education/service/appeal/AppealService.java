@@ -1,4 +1,4 @@
-package com.education.service.address;
+package com.education.service.appeal;
 
 import model.dto.AppealDto;
 
@@ -8,7 +8,7 @@ import model.dto.AppealDto;
 public interface AppealService {
 
     /**
-     * Метод сохранения нового адреса в БД
+     * Метод сохранения нового обращения в БД
      */
     AppealDto save(AppealDto appealDto);
 

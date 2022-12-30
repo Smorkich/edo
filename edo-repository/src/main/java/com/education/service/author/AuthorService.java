@@ -3,6 +3,7 @@ package com.education.service.author;
 import com.education.entity.Author;
 
 import java.util.Collection;
+
 public interface AuthorService {
     Author save(Author author);
 
@@ -13,6 +14,4 @@ public interface AuthorService {
     Collection<Author> findAllById(Iterable<Long> ids);
 
     Collection<Author> findAll();
-
-    Author findAuthorBySnils(String snils);
 }

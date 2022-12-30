@@ -35,7 +35,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long id) {
         authorRepository.deleteById(id);
-
     }
 
     /**
@@ -66,12 +65,4 @@ public class AuthorServiceImpl implements AuthorService {
         return authorRepository.findAll();
     }
 
-    /**
-     * Поиск Author по snils
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public Author findAuthorBySnils(String snils) {
-        return authorRepository.findAuthorBySnils(snils);
-    }
 }

@@ -1,6 +1,6 @@
-package com.education.service.address.impl;
+package com.education.service.appeal.impl;
 
-import com.education.service.address.AppealService;
+import com.education.service.appeal.AppealService;
 import lombok.AllArgsConstructor;
 import model.dto.AppealDto;
 import model.dto.AuthorDto;
@@ -25,7 +25,7 @@ public class AppealServiceImpl implements AppealService {
     private final RestTemplate restTemplate;
 
     /**
-     * Метод сохранения нового адреса в БД
+     * Метод сохранения нового обращения в БД
      */
     public AppealDto save(AppealDto appealDto) {
 
@@ -38,11 +38,9 @@ public class AppealServiceImpl implements AppealService {
         appealDto.setAppealsStatus(NEW_STATUS);
         appealDto.setCreationDate(ZonedDateTime.now());
 
-
 //        appealDto.setQuestions(appealDto.getQuestions().stream()
 //                .map(questionDto -> restTemplate.postForObject(URL_REPOSITORY_QUESTION, questionDto, QuestionDto.class))
 //                .collect(Collectors.toList()));
-
 
 //        appealDto.setFile(appealDto.getFile().stream()
 //                .map(filePoolDto -> restTemplate.postForObject(URL_REPOSITORY_FILE_POOL, filePoolDto, FilePoolDto.class))
@@ -50,6 +48,4 @@ public class AppealServiceImpl implements AppealService {
 
         return restTemplate.postForObject(URL_REPOSITORY_APPEAL, appealDto, AppealDto.class);
     }
-
-
 }

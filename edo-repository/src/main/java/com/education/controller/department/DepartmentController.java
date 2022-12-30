@@ -1,4 +1,4 @@
-package com.education.controller;
+package com.education.controller.department;
 
 import com.education.entity.Department;
 import com.education.service.department.DepartmentService;

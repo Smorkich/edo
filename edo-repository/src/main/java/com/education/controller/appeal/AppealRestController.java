@@ -1,13 +1,8 @@
 package com.education.controller.appeal;
 
-import static com.education.mapper.AppealMapper.APPEAL_MAPPER;
-
-import com.education.mapper.AppealMapper;
 import com.education.service.appeal.AppealService;
-import com.education.service.employee.EmployeeService;
-import com.education.service.nomenclature.NomenclatureService;
 import lombok.AllArgsConstructor;
-import model.dto.*;
+import model.dto.AppealDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,19 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 
+import static com.education.mapper.AppealMapper.APPEAL_MAPPER;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/repository/appeal")
 public class AppealRestController {
 
     private AppealService appealService;
-
-    private EmployeeService employeeService;
-
-    private NomenclatureService nomenclatureService;
-
-
-    private AppealMapper appealMapper;
 
     @PatchMapping(value = "/move/{id}")
     public ResponseEntity<AppealDto> moveToArchive(@PathVariable Long id) {
@@ -69,6 +59,4 @@ public class AppealRestController {
     public ResponseEntity<AppealDto> getAppealById(@PathVariable Long id) {
         return new ResponseEntity<>(APPEAL_MAPPER.toDto(appealService.findById(id)), HttpStatus.OK);
     }
-
-
 }

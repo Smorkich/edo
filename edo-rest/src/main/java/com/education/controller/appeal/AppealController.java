@@ -1,6 +1,6 @@
 package com.education.controller.appeal;
 
-import com.education.service.address.AppealService;
+import com.education.service.appeal.AppealService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -11,16 +11,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Rest-контроллер в "edo-rest", служит для отправки запросов
- * от клиента(edo-rest) к другому микросервису(edo-repository) используя RestTemplate
- * и для получения данных в ответ.
- * "@Log4j2" нужна для создания логов, для удобной отладки программы
+ * Rest-контроллер в "edo-rest", служит для отправки обращения (Appeal) в БД используя RestTemplate
  */
 @RestController
 @Log4j2
 @AllArgsConstructor
 @RequestMapping("/api/edo/appeal")
 public class AppealController {
+
     AppealService appealService;
 
     @ApiOperation(value = "Создает обращение в БД", notes = "Обращение должен существовать")

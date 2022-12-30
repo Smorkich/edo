@@ -10,10 +10,10 @@ import org.springframework.web.client.RestTemplate;
  */
 
 @Component
-public class AddressFeignClient {
+public class FeignClient {
     @LoadBalanced
     @Bean
-    public RestTemplate restTemplate(){
+    public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 }
