@@ -3,6 +3,7 @@ package com.education.util;
 import com.education.entity.Employee;
 import com.education.entity.FilePool;
 import com.education.service.filePoll.EmployeeServise;
+import jakarta.validation.constraints.NotNull;
 import model.dto.EmployeeDto;
 import model.dto.FilePoolDto;
 
@@ -25,7 +26,7 @@ public class FilePoolUtil {
                 .pageCount(filePool.getPageCount())
                 .uploadDate(filePool.getUploadDate())
                 .archivedDate(filePool.getArchivedDate())
-                .creator(EmployeeDto.builder().build())
+                .creator(toDto2(new Employee()))
                 .build();
     }
 
@@ -57,7 +58,7 @@ public class FilePoolUtil {
     /**
      * Конвертация из Employee в Dto (Для полей FilePoolDto, содержащих EmployeeDto)
      */
-    public static EmployeeDto toDto(Employee employee) {
+    public static EmployeeDto toDto2(Employee employee) {
         return EmployeeDto.builder()
                 .id(employee.getId())
                 .firstName(employee.getFirstName())
@@ -82,7 +83,7 @@ public class FilePoolUtil {
      */
     public Collection<EmployeeDto> toDto(Collection<Employee> employees) {
         return employees.stream()
-                .map(FilePoolUtil::toDto)
+                .map(FilePoolUtil::toDto2)
                 .toList();
     }
 

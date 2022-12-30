@@ -70,6 +70,7 @@ public class FilePool extends BaseEntity {
      * creator - employee who created the file
      */
     @OneToOne(fetch = FetchType.LAZY)
+    //    @PrimaryKeyJoinColumn(name = "creator_id")
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
     private Employee creator;
 }
