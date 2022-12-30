@@ -4,6 +4,7 @@ package model.enums;
  * Enum "ReceiptMethod" - способ получения обращения (На бумаге, Через электронную почту, Лично в приемной, По телефону)
  */
 public enum ReceiptMethod {
+
     ON_THE_PAPER("На бумаге"),
     VIA_EMAIL("Через электронную почту"),
     IN_PERSON_AT_THE_RECEPTION("Лично в приемной"),
@@ -21,6 +22,7 @@ public enum ReceiptMethod {
         this.receiptMethod = receiptMethod;
     }
 
+
     /**
      * Переопределенный toString() для того, чтобы Enum записывался в БД на русском языке
      */
@@ -28,4 +30,5 @@ public enum ReceiptMethod {
     public String toString() {
         return receiptMethod;
     }
+
 }

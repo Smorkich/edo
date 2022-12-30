@@ -7,66 +7,49 @@ import model.dto.AuthorDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Arrays;
-import java.util.List;
+import java.time.ZonedDateTime;
+import java.util.stream.Collectors;
+
+import static model.enums.Status.NEW_STATUS;
 
 /**
- * Service в "edo-service", служит для связи контроллера и RestTemplate
+ * Service в "edo-rest", служит для связи контроллера и RestTemplate
  */
 @Service
 @AllArgsConstructor
 public class AppealServiceImpl implements AppealService {
-
-    /**
-     * Константа "URL" хранит URL по которому мы делаем запрос при помощи RestTemplate
-     */
-    private final String URL = "http://edo-repository/api/repository/appeal";
-
-    /**
-     * Поле "restTemplate" нужно для вызова RestTemplate,
-     * который нужен для совершения CRUD-операции по заданному URL
-     */
+    private final String URL_REPOSITORY_APPEAL = "http://edo-repository/api/repository/appeal";
+    private final String URL_REPOSITORY_AUTHORS = "http://edo-repository/api/repository/author";
+    private final String URL_REPOSITORY_QUESTION = "http://edo-repository/api/repository/question";
+    private final String URL_REPOSITORY_FILE_POOL = "http://edo-repository/api/repository/file_poll";
     private final RestTemplate restTemplate;
 
     /**
      * Метод сохранения нового адреса в БД
      */
-    public void save(AppealDto appealDto) {
-        for (AuthorDto authorDto : appealDto.getAuthors()) {
-            restTemplate.postForObject("http://edo-repository/api/repository/author",
-                    authorDto, AuthorDto.class);
-            authorDto.setId(findAll().stream()
-                    .mapToLong(AuthorDto::getId)
-                    .max()
-                    .getAsLong());
-        }
-        //for для question
-        //for для filepool
-        restTemplate.postForObject(URL, appealDto, AppealDto.class);
+    public AppealDto save(AppealDto appealDto) {
+
+        /**
+         * Сохранение новых авторов и маппинг что бы у авторов был id из таблицы
+         */
+        appealDto.setAuthors(appealDto.getAuthors().stream()
+                .map(authorDto -> restTemplate.postForObject(URL_REPOSITORY_AUTHORS, authorDto, AuthorDto.class))
+                .collect(Collectors.toList()));
+        appealDto.setAppealsStatus(NEW_STATUS);
+        appealDto.setCreationDate(ZonedDateTime.now());
+
+
+//        appealDto.setQuestions(appealDto.getQuestions().stream()
+//                .map(questionDto -> restTemplate.postForObject(URL_REPOSITORY_QUESTION, questionDto, QuestionDto.class))
+//                .collect(Collectors.toList()));
+
+
+//        appealDto.setFile(appealDto.getFile().stream()
+//                .map(filePoolDto -> restTemplate.postForObject(URL_REPOSITORY_FILE_POOL, filePoolDto, FilePoolDto.class))
+//                .collect(Collectors.toList()))
+
+        return restTemplate.postForObject(URL_REPOSITORY_APPEAL, appealDto, AppealDto.class);
     }
 
-
-    /**
-     * Метод, который возвращает адрес по Id
-     */
-    public String findById(long id) {
-        return restTemplate.getForObject(URL + "/" + id, String.class);
-    }
-
-
-    /**
-     * Метод, который возвращает все адреса//////////////////////////
-     */
-    public List<AuthorDto> findAll() {
-        AuthorDto[] authorDtos = restTemplate.getForObject("http://edo-repository/api/repository/author", AuthorDto[].class);
-        return Arrays.asList(authorDtos);
-    }
-
-    /**
-     * Метод удаления адреса из БД
-     */
-    public void delete(long id) {
-        restTemplate.delete(URL + "/" + id, AppealDto.class);
-    }
 
 }

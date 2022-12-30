@@ -16,7 +16,6 @@ import java.util.HashSet;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 @ToString
 @ApiModel(value = "Обращение граждан")
 public class AppealDto implements Serializable {
