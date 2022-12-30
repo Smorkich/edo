@@ -53,10 +53,8 @@ public class FilePoolServiceImpl implements FilePoolService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void moveToArchive(Long id) {
-        Optional<FilePool> file = filePoolRepository.findById(id);
-        FilePool filePool = file.get();
-        filePool.setArchivedDate(ZonedDateTime.now());
-        filePoolRepository.save(filePool);
+        ZonedDateTime zonedDateTime = ZonedDateTime.now();
+        filePoolRepository.moveToArchived(zonedDateTime, id);
     }
 
     @Override

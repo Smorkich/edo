@@ -53,12 +53,12 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public FilePoolDto findByIdNotArchived(Long id) {
-        return restTemplate.getForObject(URL + "/NotArchived/" + id,FilePoolDto.class);
+        return restTemplate.getForObject(URL + "/notArchived/" + id,FilePoolDto.class);
     }
 
     @Override
     public Collection<FilePoolDto> findAllByIdNotArchived(String ids) {
-        return restTemplate.getForObject(URL + "/NotArchivedAll/" + ids, List.class);
+        return restTemplate.getForObject(URL + "/notArchivedAll/" + ids, List.class);
     }
 
 }
