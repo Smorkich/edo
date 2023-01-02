@@ -9,6 +9,9 @@ alter table edo.file_pool
         foreign key (creator_id) references edo.employee (id);
 
 alter table edo.file_pool
+    alter column storage_file_id type uuid using storage_file_id::uuid;
+
+alter table edo.file_pool
     drop constraint file_pool_size_check;
 
 alter table edo.file_pool
