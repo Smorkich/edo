@@ -30,7 +30,7 @@ public interface ResolutionRepository extends JpaRepository<Resolution, Long> {
      * Перемещение резолюции в архив
      */
     @Modifying
-    @Query("update Resolution res set res.archivedDate = ?2 where res.id = ?1")
-    public void movesToArchive(Long id, ZonedDateTime zonedDateTime);
+    @Query("UPDATE Resolution res set res.archivedDate = current_date() where res.id = ?1")
+    public void movesToArchive(Long id);
 
 }

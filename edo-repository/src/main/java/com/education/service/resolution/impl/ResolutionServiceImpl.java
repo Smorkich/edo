@@ -32,7 +32,7 @@ public class ResolutionServiceImpl implements ResolutionService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void moveToArchive(Long id) {
-        repository.movesToArchive(id, ZonedDateTime.now());
+        repository.movesToArchive(id);
     }
 
     @Transactional(readOnly = true)
