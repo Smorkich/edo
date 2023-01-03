@@ -24,8 +24,7 @@ public class AppealController {
     @ApiOperation(value = "Создает обращение в БД", notes = "Обращение должен существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> save(@RequestBody AppealDto appealDto) {
-        log.info("Send a post-request to edo-repository to post new Appeal to database" +
-                " (RestTemplate on edo-service side)");
+        log.info("Send a post-request to edo-repository to post new Appeal to database");
         appealService.save(appealDto);
         log.info("Response: {} was added to database", appealDto);
         return new ResponseEntity<>(HttpStatus.CREATED);

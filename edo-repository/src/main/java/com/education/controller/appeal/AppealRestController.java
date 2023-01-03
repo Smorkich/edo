@@ -1,5 +1,6 @@
 package com.education.controller.appeal;
 
+import com.education.entity.Appeal;
 import com.education.service.appeal.AppealService;
 import lombok.AllArgsConstructor;
 import model.dto.AppealDto;
@@ -23,7 +24,7 @@ public class AppealRestController {
     @PatchMapping(value = "/move/{id}")
     public ResponseEntity<AppealDto> moveToArchive(@PathVariable Long id) {
         appealService.moveToArchive(id, ZonedDateTime.now());
-        return new ResponseEntity<>(APPEAL_MAPPER.toDto(appealService.findById(id)), HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping(value = "/findAllNotArchived", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -51,8 +52,8 @@ public class AppealRestController {
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> saveAppeal(@RequestBody AppealDto appealDto) {
-        appealService.save(APPEAL_MAPPER.toEntity(appealDto));
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        Appeal save = appealService.save(APPEAL_MAPPER.toEntity(appealDto));
+        return new ResponseEntity<>(APPEAL_MAPPER.toDto(save), HttpStatus.CREATED);
     }
 
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)

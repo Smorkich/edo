@@ -19,7 +19,6 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @SuperBuilder
 @Table(name = "file_pool")

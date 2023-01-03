@@ -2,17 +2,19 @@ package model.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Builder
+@ToString
 @ApiModel(value = "Класс-обертка для взаимодействия с иными модулями и внешними системами")
-public class QuestionDto {
+public class QuestionDto implements Serializable {
 
     @ApiModelProperty(value = "id вопроса", name = "id", dataType = "Long", example = "e58ed763-928c-4155-bee9-fdbaaadc15f3")
     private Long id;

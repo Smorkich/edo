@@ -18,8 +18,8 @@ public class AppealServiceImpl implements AppealService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void save(Appeal appeal) {
-        appealRepository.save(appeal);
+    public Appeal save(Appeal appeal) {
+        return appealRepository.saveAndFlush(appeal);
     }
 
     @Override

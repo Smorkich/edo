@@ -7,7 +7,7 @@ import java.util.Collection;
 
 public interface AppealService {
 
-    void save(Appeal appeal);
+    Appeal save(Appeal appeal);
 
     void delete(Long id);
 
