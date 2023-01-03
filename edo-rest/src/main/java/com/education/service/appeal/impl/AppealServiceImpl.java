@@ -18,6 +18,7 @@ import static model.enums.Status.NEW_STATUS;
 @Service
 @AllArgsConstructor
 public class AppealServiceImpl implements AppealService {
+
     private final String URL_REPOSITORY_APPEAL = "http://edo-repository/api/repository/appeal";
     private final String URL_REPOSITORY_AUTHORS = "http://edo-repository/api/repository/author";
     private final String URL_REPOSITORY_QUESTION = "http://edo-repository/api/repository/question";
@@ -30,7 +31,7 @@ public class AppealServiceImpl implements AppealService {
     public AppealDto save(AppealDto appealDto) {
 
         /**
-         * Сохранение новых авторов и маппинг что бы у авторов был id из таблицы
+         * Сохранение новых авторов и маппинг чтобы у авторов были id из таблицы
          */
         appealDto.setAuthors(appealDto.getAuthors().stream()
                 .map(authorDto -> restTemplate.postForObject(URL_REPOSITORY_AUTHORS, authorDto, AuthorDto.class))

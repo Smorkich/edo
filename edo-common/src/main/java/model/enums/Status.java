@@ -23,12 +23,4 @@ public enum Status {
     Status(String status) {
         this.status = status;
     }
-
-    /**
-     * Переопределенный toString() для того, чтобы Enum записывался в БД на русском языке
-     */
-    @Override
-    public String toString() {
-        return status;
-    }
 }
