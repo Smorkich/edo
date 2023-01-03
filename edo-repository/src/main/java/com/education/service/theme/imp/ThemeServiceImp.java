@@ -51,7 +51,7 @@ public class ThemeServiceImp implements ThemeService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void moveToArchive(Long id) {
-        themeRepository.moveToArchive(ZonedDateTime.now(), id);
+        themeRepository.moveToArchive(id);
     }
 
     @Override
