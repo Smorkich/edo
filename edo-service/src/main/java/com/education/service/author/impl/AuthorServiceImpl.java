@@ -50,9 +50,4 @@ public class AuthorServiceImpl implements AuthorService {
     public List<AuthorDto> findAll() {
         return restTemplate.getForObject(URL, List.class);
     }
-
-    @Override
-    public AuthorDto findAuthorBySnils(String snils) {
-        return restTemplate.getForObject(URL + "/snils/" + snils, AuthorDto.class);
-    }
 }

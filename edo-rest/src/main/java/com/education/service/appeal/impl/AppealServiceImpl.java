@@ -20,9 +20,11 @@ import static model.enums.Status.NEW_STATUS;
 public class AppealServiceImpl implements AppealService {
 
     private final String URL_REPOSITORY_APPEAL = "http://edo-repository/api/repository/appeal";
+
     private final String URL_REPOSITORY_AUTHORS = "http://edo-repository/api/repository/author";
-//    private final String URL_REPOSITORY_QUESTION = "http://edo-repository/api/repository/question";
-//    private final String URL_REPOSITORY_FILE_POOL = "http://edo-repository/api/repository/file_poll";
+    private final String URL_REPOSITORY_QUESTION = "http://edo-repository/api/repository/question";
+    private final String URL_REPOSITORY_FILE_POOL = "http://edo-repository/api/repository/file_poll";
+
     private final RestTemplate restTemplate;
 
     /**
