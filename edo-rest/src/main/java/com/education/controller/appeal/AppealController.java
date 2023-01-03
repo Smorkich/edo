@@ -25,8 +25,8 @@ public class AppealController {
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> save(@RequestBody AppealDto appealDto) {
         log.info("Send a post-request to edo-repository to post new Appeal to database");
-        appealService.save(appealDto);
-        log.info("Response: {} was added to database", appealDto);
+        AppealDto save = appealService.save(appealDto);
+        log.info("Response: {} was added to database", save);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
