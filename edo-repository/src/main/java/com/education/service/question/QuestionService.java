@@ -1,14 +1,12 @@
 package com.education.service.question;
 
-import com.education.entity.Nomenclature;
 import com.education.entity.Question;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
 
 /**
- * Service в "edo-repository", служит для связи контроллера и репозитория
+ * @author Nadezhda Pupina
+ * Создает связь контроллера и репозитория
  */
 public interface QuestionService {
     /**
@@ -44,11 +42,11 @@ public interface QuestionService {
     /**
      * Метод ищет объект Question, у которого поле archiveDate имеет значение null
      */
-    Question findByIdNotArchived(Long id);
+    Question findByIdAndArchivedDateNull(Long id);
 
     /**
      * Метод ищет сущности Question, у которых поля archiveDate имеют значение null
      */
-    Collection<Question> findAllByIdNotArchived(Collection<Long> id);
+    Collection<Question> findByAllIdNotArchived(Collection<Long> ids);
 
 }

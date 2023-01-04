@@ -7,9 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.time.ZonedDateTime;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Nadezhda Pupina
@@ -18,21 +16,20 @@ import java.util.Optional;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     /**
-     * Query request for set a date to archived_date field
+     * Запрос на установку даты в поле archived_date
      */
     @Modifying
-    @Query(value = "update Question u set u.archivedDate =:archDate where u.id =:id")
-    void moveToArchive(@Param("archDate") ZonedDateTime date, @Param("id") Long id);
+    @Query(value = "update Question u set u.archivedDate =:date where u.id =:id and u.archivedDate is null")
+    void moveToArchive(@Param("date") ZonedDateTime date, @Param("id") Long id);
 
     /**
-     * Query request for searching not archived entity by id
+     * Запрос на поиск объекта вне архива по id
      */
-    @Query("select u from Question u where u.archivedDate is null and u.id =:id")
-    Optional<Question> findByIdNotArchived(@Param("id") Long id);
+    Question findByIdAndArchivedDateNull(Long id);
 
     /**
-     * Query request for searching not archived entities by ids
+     * Запрос на поиск объектов вне архива по id
      */
-    @Query("select u from Question u where u.archivedDate is null and u.id in :idList")
-    List<Question> findAllByIdNotArchived(@Param("idList") Collection<Long> idList);
+    List<Question> findByIdInAndArchivedDateNull(Iterable<Long> ids);
+
 }
