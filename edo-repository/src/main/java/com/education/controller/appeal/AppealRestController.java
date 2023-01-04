@@ -27,7 +27,6 @@ import java.time.ZonedDateTime;
 @RequestMapping("/api/repository/appeal")
 public class AppealRestController {
 
-    private EmployeeService employeeService;
     private AppealService appealService;
 
 
@@ -35,7 +34,7 @@ public class AppealRestController {
     @PatchMapping("/move/{id}")
     public ResponseEntity<AppealDto> moveToArchive(@PathVariable Long id) {
         log.info("Adding archived date {} in Appeal with id: {}", ZonedDateTime.now(), id);
-        appealService.moveToArchive(id, ZonedDateTime.now());
+        appealService.moveToArchive(id);
         log.info("Moving appeal with id: {} to archive is success!", id);
         return new ResponseEntity<>(toDto(appealService.findById(id)), HttpStatus.OK);
     }
@@ -170,7 +169,22 @@ public class AppealRestController {
      * Маппинг из EmployeeDto в Employee (Для POST-контроллера Appeal)
      */
     public Employee toEntity(EmployeeDto employeeDto) {
-        return employeeService.findById(employeeDto.getId());
+        return new Employee(
+                employeeDto.getFirstName(),
+                employeeDto.getLastName(),
+                employeeDto.getMiddleName(),
+                employeeDto.getAddress(),
+                employeeDto.getFioDative(),
+                employeeDto.getFioNominative(),
+                employeeDto.getFioGenitive(),
+                employeeDto.getExternalId(),
+                employeeDto.getPhone(),
+                employeeDto.getWorkPhone(),
+                employeeDto.getBirthDate(),
+                employeeDto.getUsername(),
+                employeeDto.getCreationDate(),
+                employeeDto.getArchivedDate()
+        ) ;
     }
 
     /**

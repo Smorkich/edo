@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.ZonedDateTime;
 import java.util.Collection;
 
 /**
@@ -60,8 +59,8 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void moveToArchive(Long id, ZonedDateTime zonedDateTime) {
-        appealRepository.moveToArchive(id, zonedDateTime);
+    public void moveToArchive(Long id) {
+        appealRepository.moveToArchive(id);
     }
 
     /**

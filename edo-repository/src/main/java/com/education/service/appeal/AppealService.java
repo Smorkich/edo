@@ -33,7 +33,7 @@ public interface AppealService {
     /**
      * Перенос в архив обращения
      */
-    void moveToArchive(Long id, ZonedDateTime zonedDateTime);
+    void moveToArchive(Long id);
 
     /**
      * Нахождение обращения по id не из архива

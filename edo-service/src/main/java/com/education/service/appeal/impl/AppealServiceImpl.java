@@ -55,7 +55,7 @@ public class AppealServiceImpl implements AppealService {
      * Перенос обращения в архив по id
      */
     @Override
-    public void moveToArchive(Long id, ZonedDateTime zonedDateTime) {
+    public void moveToArchive(Long id) {
         AppealDto appeal = findById(id);
         appeal.setArchivedDate(ZonedDateTime.now());
         restTemplate.postForObject(URL + "/move/"+ id, appeal, AppealDto.class);

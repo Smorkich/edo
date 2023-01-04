@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -18,8 +17,8 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
      * Метод ставит дату архивации
      */
     @Modifying
-    @Query("update Appeal appeal set appeal.archivedDate =:archivedDate where appeal.id =:id")
-    void moveToArchive(@Param("id") Long id, @Param("archivedDate") ZonedDateTime archivedDate);
+    @Query("update Appeal appeal set appeal.archivedDate = current_timestamp where appeal.id =:id")
+    void moveToArchive(@Param("id") Long id);
 
     /**
      * Метод достает Appeal, у которого поле archivedDate = null
@@ -30,7 +29,7 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
     /**
      * Метод, который достает всех Appeal, у которых поле archivedDate = null
      */
-    @Query("from Appeal u where u.archivedDate is null")
+    @Query("select u from Appeal u where u.archivedDate is null")
     Collection<Appeal> findAllNotArchived();
 
 }
