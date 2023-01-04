@@ -33,9 +33,11 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void save(Employee employee) {
+    public Long save(Employee employee) {
         employee.setCreationDate(ZonedDateTime.now());
+        ///////////////////////////////////////////
         employeeRepository.save(employee);
+        return employee.getId();
     }
 
     /**

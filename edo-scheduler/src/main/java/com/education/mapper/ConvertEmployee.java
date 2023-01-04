@@ -23,7 +23,8 @@ public class ConvertEmployee {
         employeeDto.setPhone(externalEmployeeDto.getPhone());
         employeeDto.setWorkPhone(externalEmployeeDto.getWorkPhone());
         employeeDto.setBirthDate(externalEmployeeDto.getBirthDate());
-        employeeDto.setUsername(employeeDto.getUsername());
+        employeeDto.setUsername(externalEmployeeDto.getUsername());
+        employeeDto.setDepartment(externalEmployeeDto.getDepartment());
         return  employeeDto;
     }
 }

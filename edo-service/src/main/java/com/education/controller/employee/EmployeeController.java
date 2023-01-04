@@ -32,6 +32,7 @@ public class EmployeeController {
         log.info("Starting the save operation");
         employeeService.save(employeeDto);
         log.info("Saving the employee");
+        System.out.println();
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

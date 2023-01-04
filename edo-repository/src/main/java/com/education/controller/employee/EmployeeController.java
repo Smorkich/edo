@@ -81,11 +81,11 @@ public class EmployeeController {
      */
     @ApiOperation(value = "Создает сотрудника")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EmployeeDto> save(@RequestBody EmployeeDto employeeDto) {
+    public ResponseEntity<Long> save(@RequestBody EmployeeDto employeeDto) {
         log.info("Starting the save operation");
-        employeeService.save(EMPLOYEE_MAPPER.toEntity(employeeDto));
+        Long idSaveEmp = employeeService.save(EMPLOYEE_MAPPER.toEntity(employeeDto));
         log.info("Saving the employee");
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(idSaveEmp, HttpStatus.CREATED);
     }
 
     /**

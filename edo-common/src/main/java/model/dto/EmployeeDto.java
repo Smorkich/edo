@@ -28,7 +28,7 @@ public class EmployeeDto {
     private String middleName;
 
     @ApiModelProperty(value = "Адрес")
-    private String address;
+    private AddressDto address;
 
     @ApiModelProperty(value = "ФИО в дательном падеже")
     private String fioDative;
@@ -60,4 +60,6 @@ public class EmployeeDto {
     @ApiModelProperty(value = "Дата архивации")
     private ZonedDateTime archivedDate;
 
+    @ApiModelProperty(value = "Департамент")
+    private DepartmentDto department;
 }

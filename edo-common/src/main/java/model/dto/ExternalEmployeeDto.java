@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
 /**
@@ -24,7 +25,7 @@ public class ExternalEmployeeDto {
         @ApiModelProperty(value = "Отчество")
         private String middleName;
         @ApiModelProperty(value = "Адрес")
-        private String address;
+        private AddressDto address;
         @ApiModelProperty(value = "ФИО в дательном падеже")
         private String fioDative;
         @ApiModelProperty(value = "ФИО в именительном падеже")
@@ -38,7 +39,7 @@ public class ExternalEmployeeDto {
         @ApiModelProperty(value = "Рабочий номер телефона")
         private String workPhone;
         @ApiModelProperty(value = "Дата рождения")
-        private String birthDate;
+        private LocalDate birthDate;
         @ApiModelProperty(value = "Имя пользователя")
         private String username;
         @ApiModelProperty(value = "Дата создания")
@@ -47,8 +48,8 @@ public class ExternalEmployeeDto {
         private ZonedDateTime archivedDate;
         @ApiModelProperty(value = "Статус пользователя, если удален - true")
         private boolean isDelete;
-        @ApiModelProperty(value = "Адрес пользователя")
-        private AddressDto AddressDto;
+        @ApiModelProperty(value = "Департамент пользователя")
+        private DepartmentDto department;
 
 
 

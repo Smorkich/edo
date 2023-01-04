@@ -10,7 +10,7 @@ import java.util.Collection;
  */
 public interface EmployeeService {
 
-    void save(Employee employee);
+    Long save(Employee employee);
 
     void moveToArchived(Long id);
 

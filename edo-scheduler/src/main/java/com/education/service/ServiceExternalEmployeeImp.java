@@ -35,9 +35,9 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
         log.info("got an external employee from the andpoint");
         for(ExternalEmployeeDto externalEmployeeDto : externalEmployeesDto) {
             EmployeeDto employeeDto = convertEmployee.toDto(externalEmployeeDto);
-            Long idSaveDepartment = restTemplate.postForObject("Ссылка на контроллер Георгия в модуле сервис на save ",employeeDto, Long.class);
+            Long idSaveDepartment = restTemplate.postForObject("http://edo-repository/api/repository/employee",employeeDto, Long.class);
             if(externalEmployeeDto.isDelete()) {
-                restTemplate.postForObject("Ссылка на Epmloyee в модуле сервис на toArchived" + idSaveDepartment ,null, String.class);
+                restTemplate.postForObject("http://edo-repository/api/repository/employee" + idSaveDepartment ,null, String.class);
             }
         }
         log.info("converted an external user into That, directed to the save controller and archived an external user whose field IsDeleted = true");
