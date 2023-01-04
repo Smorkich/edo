@@ -1,13 +1,13 @@
 create table if not exists resolution
 (
-    id               bigserial                not null primary key,
+    id               bigserial primary key,
     creation_date    timestamp with time zone not null,
-    archived_date    timestamp with time zone not null,
+    archived_date    timestamp with time zone,
     last_action_date timestamp with time zone not null,
     resolution_type  varchar(20)              not null,
-    creator_id       bigint references edo.employee (id),
-    signer_id        bigint references edo.employee (id),
-    curator_id       bigint references edo.employee (id),
+    creator_id       bigint references employee (id),
+    signer_id        bigint references employee (id),
+    curator_id       bigint references employee (id),
     serial_number    varchar(50)              not null
 );
 
