@@ -1,5 +1,5 @@
 create table if not exists appeal_question
 (
-    appeal_id bigint references edo.appeal (id),
-    question_id bigint references edo.question (id)
+    appeal_id bigint references appeal (id),
+    question_id bigint references question (id)
 );
