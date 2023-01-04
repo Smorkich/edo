@@ -1,6 +1,7 @@
 package model.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +13,6 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 @ApiModel(value = "Данные о новом пользователе")
-
 public class ExternalEmployeeDto {
 
         @ApiModelProperty(value = "id")
@@ -25,12 +25,6 @@ public class ExternalEmployeeDto {
         private String middleName;
         @ApiModelProperty(value = "Адрес")
         private String address;
-        @ApiModelProperty(value = "ФИО в дательном падеже")
-        private String fioDative;
-        @ApiModelProperty(value = "ФИО в именительном падеже")
-        private String fioNominative;
-        @ApiModelProperty(value = "ФИО в родительном падеже")
-        private String fioGenitive;
         @ApiModelProperty(value = "Внешний идентификатор, который будем получать из чужого хранилища")
         private Long externalId;
         @ApiModelProperty(value = "Номер телефона сотовый")
