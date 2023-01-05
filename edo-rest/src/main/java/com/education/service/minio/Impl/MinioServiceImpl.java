@@ -15,7 +15,6 @@ public class MinioServiceImpl implements MinioService {
     private final String URL = "http://edo-file-storage/api/filestorage/minio";
     private RestTemplate restTemplate;
 
-
     @Override
     public void checkConnection() {
         restTemplate.getForObject(URL+ "/checkConnection",Void.class);
