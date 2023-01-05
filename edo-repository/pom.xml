@@ -11,6 +11,7 @@
     <artifactId>edo-repository</artifactId>
 
     <dependencies>
+
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>

@@ -6,7 +6,9 @@ import io.swagger.annotations.ApiModel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
@@ -16,12 +18,14 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
+@ToString
 @ApiModel(value = "Класс-обертка для взаимодействия с иными модулями и внешними системами")
-public class FilePoolDto {
-    @ApiModelProperty(value = "id файла", name = "id", dataType = "Long", example = "e58ed763-928c-4155-bee9-fdbaaadc15f3")
+public class FilePoolDto implements Serializable {
+
+    @ApiModelProperty(value = "id файла", name = "id", dataType = "Long", example = "1")
     private Long id;
 
-    @ApiModelProperty(value = "Ключ для получения файла из хранилища", name = "storageFileId", dataType = "UUID", example = "2")
+    @ApiModelProperty(value = "Ключ для получения файла из хранилища", name = "storageFileId", dataType = "UUID", example = "e58ed763-928c-4155-bee9-fdbaaadc15f3")
     private UUID storageFileId;
 
     @ApiModelProperty(value = "Имя обращения", name = "name", dataType = "String", example = "Dina")
