@@ -5,6 +5,11 @@ import java.io.IOException;
 /** Interface declare main methods of minio service. */
 public interface MinioService {
 
+    /** Method delete objects
+     *  with a last modified time more than 27 day of month. */
+    void deleteObjects();
+
+
     /** Method check connection to server MinIo with a parameters of admin. */
     void checkConnection();
 
@@ -17,7 +22,6 @@ public interface MinioService {
      *  downloading from the bucket of minio server
      *  to target folder. */
     void downloadOneFile(String objectName);
-
 }
 
 
