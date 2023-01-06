@@ -27,6 +27,6 @@ public class AppealController {
         log.info("Send a post-request to edo-repository to post new Appeal to database");
         AppealDto save = appealService.save(appealDto);
         log.info("Response: {} was added to database", save);
-        return new ResponseEntity<>(save, HttpStatus.CREATED);
+        return new ResponseEntity<>(appealService.findById(save.getId()), HttpStatus.CREATED);
     }
 }

@@ -14,7 +14,7 @@ public interface NomenclatureService {
     /**
      * Method saves new entity in DB by accepting json-body object
      */
-    void save(Nomenclature nomenclature);
+    Nomenclature save(Nomenclature nomenclature);
 
     /**
      * the Method fills in the field with the value and set date

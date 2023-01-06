@@ -12,5 +12,10 @@ public interface AppealService {
      */
     AppealDto save(AppealDto appealDto);
 
+    /**
+     * Метод поиска по id
+     */
+    AppealDto findById(Long id);
+
 
 }

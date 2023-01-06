@@ -1,5 +1,6 @@
 package com.education.controller.nomenclature;
 
+import com.education.entity.Nomenclature;
 import com.education.service.nomenclature.NomenclatureService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -11,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.List;
 
 import static com.education.mapper.NomenclatureMapper.NOMENCLATURE_MAPPER;
 
@@ -106,8 +106,8 @@ public class NomenclatureController {
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<NomenclatureDto> saveDefaultEntity(@RequestBody NomenclatureDto nomenclatureDto) {
         log.info(" DTO object of Nomenclature ({}) will be saved ", nomenclatureDto);
-        service.save(NOMENCLATURE_MAPPER.toEntity(nomenclatureDto));
+        Nomenclature save = service.save(NOMENCLATURE_MAPPER.toEntity(nomenclatureDto));
         log.info("DTO object: {} has been saved ", nomenclatureDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(NOMENCLATURE_MAPPER.toDto(save), HttpStatus.CREATED);
     }
 }

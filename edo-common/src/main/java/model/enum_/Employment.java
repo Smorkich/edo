@@ -1,4 +1,4 @@
-package model.enums;
+package model.enum_;
 
 /**
  * Enum "model.enums.Employment" - трудоустройство автора обращения (Безработный, Работник, Учащийся)

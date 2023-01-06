@@ -80,7 +80,7 @@ public class AppealRestController {
         log.info("Creating appeal");
         Appeal save = appealService.save(APPEAL_MAPPER.toEntity(appealDto));
         log.info("Creating appeal {}, success!", save);
-        return new ResponseEntity<>(APPEAL_MAPPER.toDto(save), HttpStatus.CREATED);
+        return new ResponseEntity<>(APPEAL_MAPPER.toDto(appealService.findById(save.getId())), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Находит строку таблицы Appeal по id",

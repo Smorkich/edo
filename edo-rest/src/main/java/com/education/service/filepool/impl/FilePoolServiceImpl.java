@@ -13,6 +13,6 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public FilePoolDto save(FilePoolDto filePoolDto) {
-        return restTemplate.postForObject("http://edo-repository/api/repository/filepool", filePoolDto, FilePoolDto.class);
+        return restTemplate.postForObject("http://edo-repository/api/repository/filePool", filePoolDto, FilePoolDto.class);
     }
 }
