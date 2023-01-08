@@ -1,49 +1,152 @@
 package model.dto;
+import com.fasterxml.jackson.annotation.JsonAlias;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
+import jdk.jfr.Registered;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
 /**
- * @author Nadezhda Pupina
+ * @author Nadezhda Pupina and Usolkin Dmitry
+ *
  */
 @Getter
 @Setter
 @ApiModel(value = "Данные о новом пользователе")
+@ToString
 public class ExternalEmployeeDto {
 
-        @ApiModelProperty(value = "id")
-        private Long id;
         @ApiModelProperty(value = "Имя")
-        private String firstName;
-        @ApiModelProperty(value = "Фамилия")
-        private String lastName;
-        @ApiModelProperty(value = "Отчество")
-        private String middleName;
+        private String gender;
+        @ApiModelProperty(value = "Имя")
+        private  Name name;
         @ApiModelProperty(value = "Адрес")
-        private String address;
-        @ApiModelProperty(value = "Внешний идентификатор, который будем получать из чужого хранилища")
-        private Long externalId;
+        private Location location;
+        @ApiModelProperty(value = "Почта")
+        private String email;
+        @ApiModelProperty(value = "Поле с классом для аутенитфикации и авторизации")
+        private Login login;
+        @ApiModelProperty(value = "Возраст и год рождения")
+        private Date dob;
+        @ApiModelProperty(value = "Информация о регистрации")
+        private Regist registered ;
         @ApiModelProperty(value = "Номер телефона сотовый")
         private String phone;
-        @ApiModelProperty(value = "Рабочий номер телефона")
-        private String workPhone;
-        @ApiModelProperty(value = "Дата рождения")
-        private String birthDate;
-        @ApiModelProperty(value = "Имя пользователя")
-        private String username;
-        @ApiModelProperty(value = "Дата создания")
-        private ZonedDateTime creationDate;
-        @ApiModelProperty(value = "Дата архивации")
-        private ZonedDateTime archivedDate;
-        @ApiModelProperty(value = "Статус пользователя, если удален - true")
+        @ApiModelProperty(value = "Номер ячейки")
+        private String cell;
+        @ApiModelProperty(value = "Идентификатор")
+        private Id id;
+        @ApiModelProperty(value = "Изображение")
+        private Picture picture;
+        @ApiModelProperty(value = "Преобразование сетевых адресов")
+        private String nat;
+        @ApiModelProperty(value = "Компания")
+        private Company company;
+        @ApiModelProperty(value = "Удален")
+        @JsonAlias(value = "is_deleted")
         private boolean isDelete;
-        @ApiModelProperty(value = "Адрес пользователя")
-        private AddressDto AddressDto;
+        @Getter
+        @Setter
+        @ApiModel(value = "Класс для поля name, в котором присутсвуют поля ФИО")
+         public static class Name {
+                private String last;
+                private String middle;
+                private String first;
+        }
+        @Getter
+        @Setter
+        @ApiModel(value = "Класс для поля street, в котором присутсвуют поля номера улицы и имени")
+        public static  class Location {
+                private Street street;
+                private String city;
+                private String state;
+                private String country;
+                private Integer postcode;
+                private Coordinates coordinates;
+                @JsonAlias(value = "timezone")
+                private CustTimeZone timeZone;
+                @Getter
+                @Setter
+                @ApiModel(value = "Класс для поля coordinates , в котором присутсвуют широта и долгота ")
+                public static  class Coordinates {
+                        private String latitude;
+                        private String longitude;
 
+                }
+                @Getter
+                @Setter
+                @ApiModel(value = "Класс для поля street, в котором присутсвуют поля номера улицы и имени")
+                public class  Street {
+                        private Long number;
+                        private String name;
+                }
+                @Getter
+                @Setter
+                @ApiModel(value = "Часовой пояс и страна")
+                public static class CustTimeZone {
+                        private String offset;
+                        private String description;
+                }
 
+        }
 
+        @Getter
+        @Setter
+        @ApiModel(value = "Информация по ауетнтификации и авторизации")
+        public static  class Login {
+                private String uuid;
+                private String username;
+                private String password;
+                private String salt;
+                private String md5;
+                private String sha1;
+                private String sha256;
+
+        }
+        @Getter
+        @Setter
+        @ApiModel(value = "Время рождения и возраст")
+        public static  class Date {
+                private LocalDate date;
+                private Integer age;
+        }
+        @Getter
+        @Setter
+        @ApiModel(value = "Регистрация")
+        private static class Regist {
+                private String date;
+                private Integer age;
+
+        }
+        @Getter
+        @Setter
+        @ApiModel(value = "Индетификатор")
+        public static class Id {
+                private String name;
+                private String value;
+        }
+        @Getter
+        @Setter
+        @ApiModel(value = "Картинка")
+        public static class Picture {
+                private String large;
+                private String medium;
+                private String thumbnail;
+        }
+        @Getter
+        @Setter
+        @ApiModel(value = "Компания")
+        public static  class Company {
+                private Id id;
+                private String name;
+                private Location location;
+                @JsonAlias(value = "is_deleted")
+                private boolean isDelete;
+        }
 }

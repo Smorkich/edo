@@ -2,7 +2,7 @@ spring:
   flyway:
     enabled: true
     user: postgres
-    password: oog
+    password: 12345
     url: jdbc:postgresql://localhost:5432/edo_db
     default-schema: edo
     locations: db/migration
@@ -13,7 +13,8 @@ spring:
   application:
     name: edo-repository
 server:
-  port: 0
+  enableSelfPreservation: fasle
+  port: 8889
 eureka:
   client:
     serviceUrl:

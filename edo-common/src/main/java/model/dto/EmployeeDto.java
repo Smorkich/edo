@@ -2,16 +2,18 @@ package model.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
 @Getter
 @Setter
-@ApiModel(value = "объект для передачи данных")
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@ApiModel(value = "объект для передачи данных")
+@ToString
 public class EmployeeDto {
     @ApiModelProperty(value = "id")
     private Long id;
@@ -26,7 +28,7 @@ public class EmployeeDto {
     private String middleName;
 
     @ApiModelProperty(value = "Адрес")
-    private String address;
+    private AddressDto address;
 
     @ApiModelProperty(value = "ФИО в дательном падеже")
     private String fioDative;
@@ -47,7 +49,7 @@ public class EmployeeDto {
     private String workPhone;
 
     @ApiModelProperty(value = "Дата рождения")
-    private String birthDate;
+    private LocalDate birthDate;
 
     @ApiModelProperty(value = "Имя пользователя")
     private String username;
@@ -57,4 +59,7 @@ public class EmployeeDto {
 
     @ApiModelProperty(value = "Дата архивации")
     private ZonedDateTime archivedDate;
+
+    @ApiModelProperty(value = "Департамент")
+    private DepartmentDto department;
 }

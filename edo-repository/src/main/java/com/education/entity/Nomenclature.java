@@ -1,10 +1,8 @@
 package com.education.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
 
@@ -14,6 +12,8 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
+@SuperBuilder
+@Table(name = "nomenclature",schema = "edo")
 public class Nomenclature extends BaseEntity {
 
     /** Колонка даты создания */
