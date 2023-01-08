@@ -25,9 +25,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final RestTemplate restTemplate;
 
     @Override
-    public void save(EmployeeDto employeeDto) {
-        restTemplate.postForObject(URL, employeeDto, EmployeeDto.class);
+    public Long save(EmployeeDto employeeDto) {
         log.info("Sent a request to save the employee in edo - repository");
+        return restTemplate.postForObject(URL, employeeDto, Long.class);
     }
 
     @Override
