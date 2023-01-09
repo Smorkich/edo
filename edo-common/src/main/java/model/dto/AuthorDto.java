@@ -3,7 +3,7 @@ package model.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import model.enums.Employment;
+import model.enum_.Employment;
 
 import java.io.Serializable;
 

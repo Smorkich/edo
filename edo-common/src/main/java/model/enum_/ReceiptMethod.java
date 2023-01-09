@@ -1,4 +1,4 @@
-package model.enums;
+package model.enum_;
 
 /**
  * Enum "ReceiptMethod" - способ получения обращения (На бумаге, Через электронную почту, Лично в приемной, По телефону)

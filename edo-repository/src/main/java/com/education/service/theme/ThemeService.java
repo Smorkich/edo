@@ -1,19 +1,19 @@
-package com.education.service.filePool;
+package com.education.service.theme;
 
-import com.education.entity.FilePool;
+import com.education.entity.Theme;
 
 import java.util.Collection;
 
 /**
- * @author Nadezhda Pupina
- * Интерфейс с методами для FilePool
+ *@author AlexeySpiridonov
  */
-public interface FilePoolService {
+
+public interface ThemeService {
 
     /**
      * save - сохраняет новый файл в бд
      */
-    FilePool save(FilePool filePool);
+    void save(Theme theme);
 
     /**
      * delete - удаляет файл из бд
@@ -23,17 +23,17 @@ public interface FilePoolService {
     /**
      * findById - находит файл по id
      */
-    FilePool findById(Long id);
+    Theme findById(Long id);
 
     /**
      * findAllById - выводит список всех файлов по id
      */
-    Collection<FilePool> findAllById(Iterable<Long> ids);
+    Collection<Theme> findAllById(Iterable<Long> ids);
 
     /**
-     * findAllById - выводит список всех файлов
+     * findAll - возвращает все темы
      */
-    Collection<FilePool> findAll();
+    Collection<Theme> findAll();
 
     /**
      * moveToArchive - заполняет архивную дату
@@ -43,12 +43,12 @@ public interface FilePoolService {
     /**
      * findByIdNotArchived - находит файл без архивной даты по id
      */
-    FilePool findByIdAndArchivedDateNull(Long id);
+    Theme findByIdAndArchivedDateNull(Long id);
 
     /**
      * findAllByIdNotArchived - находит все файлы без архивной даты по id
      */
-    Collection<FilePool> findByIdInAndArchivedDateNull(Iterable<Long> ids);
+    Collection<Theme> findByIdInAndArchivedDateNull(Iterable<Long> ids);
 
 
 }

@@ -3,9 +3,8 @@ package com.education.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import model.enums.Employment;
-import model.enums.ReceiptMethod;
-import model.enums.Status;
+import model.enum_.ReceiptMethod;
+import model.enum_.Status;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;

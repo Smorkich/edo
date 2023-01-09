@@ -3,8 +3,8 @@ package model.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import model.enums.ReceiptMethod;
-import model.enums.Status;
+import model.enum_.ReceiptMethod;
+import model.enum_.Status;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;

@@ -2,7 +2,7 @@ package com.education.entity;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import model.enums.ResolutionType;
+import model.enum_.ResolutionType;
 import jakarta.persistence.*;
 
 import java.time.ZonedDateTime;

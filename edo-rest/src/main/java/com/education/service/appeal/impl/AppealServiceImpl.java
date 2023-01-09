@@ -12,7 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.ZonedDateTime;
 import java.util.stream.Collectors;
 
-import static model.enums.Status.NEW_STATUS;
+import static model.enum_.Status.NEW_STATUS;
 
 /**
  * Service в "edo-rest", служит для связи контроллера и RestTemplate
@@ -21,6 +21,7 @@ import static model.enums.Status.NEW_STATUS;
 @AllArgsConstructor
 public class AppealServiceImpl implements AppealService {
 
+    private static final String URL = "http://edo-repository/api/repository/appeal";
     private final RestTemplate restTemplate;
     private final AuthorService authorService;
     private final QuestionService questionService;
@@ -29,25 +30,31 @@ public class AppealServiceImpl implements AppealService {
     /**
      * Метод сохранения нового обращения в БД
      */
+    @Override
     public AppealDto save(AppealDto appealDto) {
 
         /**
          * Сохранение новых авторов и маппинг чтобы у авторов были id из таблицы
          */
         appealDto.setAuthors(appealDto.getAuthors().stream()
-                .map(authorDto -> authorService.save(authorDto))
+                .map(authorService::save)
                 .collect(Collectors.toList()));
         appealDto.setAppealsStatus(NEW_STATUS);
         appealDto.setCreationDate(ZonedDateTime.now());
 
         appealDto.setQuestions(appealDto.getQuestions().stream()
-                .map(questionDto -> questionService.save(questionDto))
+                .map(questionService::save)
                 .collect(Collectors.toList()));
 
         appealDto.setFile(appealDto.getFile().stream()
-                .map(filePoolDto -> filePoolService.save(filePoolDto))
+                .map(filePoolService::save)
                 .collect(Collectors.toList()));
 
-        return restTemplate.postForObject("http://edo-repository/api/repository/appeal", appealDto, AppealDto.class);
+        return restTemplate.postForObject(URL, appealDto, AppealDto.class);
+    }
+
+    @Override
+    public AppealDto findById(Long id) {
+        return restTemplate.getForObject(URL + "/" + id, AppealDto.class);
     }
 }

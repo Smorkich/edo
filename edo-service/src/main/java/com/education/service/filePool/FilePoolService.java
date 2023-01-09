@@ -1,6 +1,5 @@
 package com.education.service.filePool;
-
-import com.education.entity.FilePool;
+import model.dto.FilePoolDto;
 
 import java.util.Collection;
 
@@ -13,7 +12,7 @@ public interface FilePoolService {
     /**
      * save - сохраняет новый файл в бд
      */
-    FilePool save(FilePool filePool);
+    void save(FilePoolDto filePool);
 
     /**
      * delete - удаляет файл из бд
@@ -23,17 +22,17 @@ public interface FilePoolService {
     /**
      * findById - находит файл по id
      */
-    FilePool findById(Long id);
+    String findById(Long id);
+
+    /**
+     * findAll - возвращает все файлы
+     */
+    String findAll();
 
     /**
      * findAllById - выводит список всех файлов по id
      */
-    Collection<FilePool> findAllById(Iterable<Long> ids);
-
-    /**
-     * findAllById - выводит список всех файлов
-     */
-    Collection<FilePool> findAll();
+    Collection<FilePoolDto> findAllById(String ids);
 
     /**
      * moveToArchive - заполняет архивную дату
@@ -43,12 +42,11 @@ public interface FilePoolService {
     /**
      * findByIdNotArchived - находит файл без архивной даты по id
      */
-    FilePool findByIdAndArchivedDateNull(Long id);
+    FilePoolDto findByIdNotArchived(Long id);
 
     /**
      * findAllByIdNotArchived - находит все файлы без архивной даты по id
      */
-    Collection<FilePool> findByIdInAndArchivedDateNull(Iterable<Long> ids);
-
+    Collection<FilePoolDto> findAllByIdNotArchived(String ids);
 
 }
