@@ -12,16 +12,16 @@ import java.io.IOException;
 @AllArgsConstructor
 public class MinioServiceImpl implements MinioService {
 
-    private final String URL = "http://edo-file-storage/api/filestorage/minio";
+    private static final String URL = "http://edo-file-storage/api/filestorage/minio";
     private RestTemplate restTemplate;
 
     @Override
     public void checkConnection() {
-        restTemplate.getForObject(URL+ "/checkConnection",Void.class);
+        restTemplate.getForObject(URL + "/checkConnection", Void.class);
     }
 
     @Override
-    public void uploadOneFile(String objectName)  {
+    public void uploadOneFile(String objectName) {
         restTemplate.getForObject(URL + "/upload/" + objectName, Void.class);
     }
 

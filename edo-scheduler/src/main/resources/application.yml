@@ -16,8 +16,5 @@ integration:
   url:
     employee: https://8bc15778-921d-471d-ab98-8f59e6dc1c1c.mock.pstmn.io/employees
 
-
 minio:
-  url:
-    deleteobjects: http://edo-file-storage/api/filestorage/minio/delete
-  deletefreq: "0 0 1 * * MON"
+  cron: 0 0 1 * * MON

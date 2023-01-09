@@ -13,5 +13,6 @@ minio:
   endpoint: http://127.0.0.1:9000
   username: admin
   password: password
-  sourcefolder: C:\Users\akhme\minio\fileHolder\
-  targetfolder: C:\Users\akhme\minio\targetFolder\
+  sourcefolder: C:\fileHolder\
+  targetfolder: C:\targetFolder\
+  bucketname: my-bucketname

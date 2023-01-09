@@ -71,6 +71,7 @@ public class NomenclatureController {
     public ResponseEntity<NomenclatureDto> findByIdNotArchivedController(@PathVariable Long id) {
         log.info("Searching entity with empty archived_date field");
         NomenclatureDto nomenclatureDto = NomenclatureDTOMapper.toDTO(service.findByIdNotArchived(id).get());
+
         log.info("Archived object has been identified: {}", nomenclatureDto);
         return new ResponseEntity<>(nomenclatureDto, HttpStatus.OK);
     }

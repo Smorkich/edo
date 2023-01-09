@@ -56,9 +56,9 @@ public class MinioController {
      */
     @ApiOperation("send request to upload file to bucjets from source")
     @GetMapping("/delete")
-    public ResponseEntity<HttpStatus> delete() throws IOException {
+    public ResponseEntity<HttpStatus> delete(@PathVariable("objectNumber") String objectNumber) throws IOException {
         log.info("Delete outdated objects in MINIO-server:", LocalTime.now());
-        service.deleteObjects();
+        service.deleteObjects(objectNumber);
         log.info("Delete outdated objects in MINIO-server:", LocalTime.now());
         return new ResponseEntity<>(HttpStatus.OK);
     }
