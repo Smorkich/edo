@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import java.time.ZonedDateTime;
 
+@AllArgsConstructor
 @Getter
 @Setter
 @AllArgsConstructor
