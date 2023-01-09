@@ -5,7 +5,7 @@ create table if not exists appeal
     archived_date timestamp with time zone,
     number varchar(255),
     annotation varchar(255),
-    creator_id bigint references edo.employee (id)
+    creator_id bigint references employee (id)
 );
 comment on table appeal
     is 'Обращение';
