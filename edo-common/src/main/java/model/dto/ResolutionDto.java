@@ -15,6 +15,7 @@ import java.util.List;
 @Getter
 @Setter
 @Builder
+@ToString
 @ApiModel(value = "Класс-обертка класса Resolution для передачи данных между модулями и классами")
 public class ResolutionDto implements Serializable {
 
