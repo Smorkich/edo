@@ -1,6 +1,6 @@
 alter table if exists appeal
-    drop column creator_id,
-    add creator_id             bigint references employee (id),
+    alter column creator_id type bigint USING creator_id::bigint,
+    add foreign key (creator_id) references employee (id),
     add appeals_status         varchar(255),
     add appeals_receipt_method varchar(255),
     add nomenclature_id        bigint references nomenclature (id);
