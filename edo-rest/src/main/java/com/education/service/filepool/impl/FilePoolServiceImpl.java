@@ -10,7 +10,7 @@ import org.springframework.web.client.RestTemplate;
 @AllArgsConstructor
 public class FilePoolServiceImpl implements FilePoolService {
     private final RestTemplate restTemplate;
-    private final String URL = "http://edo-repository/api/repository/filepool";
+    private static final String URL = "http://edo-repository/api/repository/filePool";
 
     @Override
     public FilePoolDto save(FilePoolDto filePoolDto) {

@@ -11,11 +11,4 @@ public interface AppealService {
      * Метод сохранения нового обращения в БД
      */
     AppealDto save(AppealDto appealDto);
-
-    /**
-     * Метод поиска по id
-     */
-    AppealDto findById(Long id);
-
-
 }

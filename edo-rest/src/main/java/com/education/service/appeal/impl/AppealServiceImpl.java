@@ -52,9 +52,4 @@ public class AppealServiceImpl implements AppealService {
 
         return restTemplate.postForObject(URL, appealDto, AppealDto.class);
     }
-
-    @Override
-    public AppealDto findById(Long id) {
-        return restTemplate.getForObject(URL + "/" + id, AppealDto.class);
-    }
 }
