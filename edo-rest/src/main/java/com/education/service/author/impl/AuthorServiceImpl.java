@@ -11,9 +11,10 @@ import org.springframework.web.client.RestTemplate;
 public class AuthorServiceImpl implements AuthorService {
 
     private final RestTemplate restTemplate;
+    private final String URL = "http://edo-repository/api/repository/author";
 
     @Override
     public AuthorDto save(AuthorDto authorDto) {
-        return  restTemplate.postForObject("http://edo-repository/api/repository/author", authorDto, AuthorDto.class);
+        return  restTemplate.postForObject(URL, authorDto, AuthorDto.class);
     }
 }

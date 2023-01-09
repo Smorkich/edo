@@ -1,6 +1,5 @@
 package model.dto;
 
-import com.sun.source.doctree.SerialDataTree;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;

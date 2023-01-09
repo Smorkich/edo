@@ -11,9 +11,10 @@ import org.springframework.web.client.RestTemplate;
 public class QuestionServiceImpl implements QuestionService {
 
     private final RestTemplate restTemplate;
+    private final String URL = "http://edo-repository/api/repository/question";
 
     @Override
     public QuestionDto save(QuestionDto questionDto) {
-        return restTemplate.postForObject("http://edo-repository/api/repository/question", questionDto, QuestionDto.class);
+        return restTemplate.postForObject(URL, questionDto, QuestionDto.class);
     }
 }
