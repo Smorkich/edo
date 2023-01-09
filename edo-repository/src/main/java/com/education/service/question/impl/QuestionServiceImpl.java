@@ -24,6 +24,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void save(Question question) {
+        question.setCreationDate(ZonedDateTime.now());
         questionRepository.save(question);
     }
 
