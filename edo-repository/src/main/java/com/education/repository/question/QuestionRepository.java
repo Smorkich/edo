@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
@@ -20,16 +19,17 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
      */
     @Modifying
     @Query(value = "update Question u set u.archivedDate =:date where u.id =:id and u.archivedDate is null")
-    void moveToArchive(@Param("date") ZonedDateTime date, @Param("id") Long id);
+    void moveToArchive(@Param("id") Long id);
 
     /**
      * Запрос на поиск объекта вне архива по id
      */
-    Question findByIdAndArchivedDateNull(Long id);
+    Question findByIdAndArchivedDateNull(@Param("id") Long id);
 
     /**
      * Запрос на поиск объектов вне архива по id
      */
-    List<Question> findByIdInAndArchivedDateNull(Iterable<Long> ids);
+    @Query("select u from Question u where u.archivedDate is null and u.id in :idList")
+    List<Question> findByIdInAndArchivedDateNull(@Param("idList") Iterable<Long> ids);
 
 }
