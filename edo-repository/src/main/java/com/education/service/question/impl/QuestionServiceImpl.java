@@ -55,8 +55,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void moveToArchive(Long id) {
-        ZonedDateTime zonedDateTime = ZonedDateTime.now();
-        questionRepository.moveToArchive(zonedDateTime,id);
+        questionRepository.moveToArchive(id);
     }
 
     @Override
