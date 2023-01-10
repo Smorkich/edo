@@ -3,13 +3,17 @@ package com.education.service.employee.impl;
 import com.education.entity.Employee;
 import com.education.repository.EmployeeRepository;
 import com.education.service.employee.EmployeeService;
+import com.github.aleksandy.petrovich.Case;
+import com.github.aleksandy.petrovich.Petrovich;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Kiladze George
@@ -35,7 +39,29 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional(rollbackFor = Exception.class)
     public Long save(Employee employee) {
         employee.setCreationDate(ZonedDateTime.now());
-        ///////////////////////////////////////////
+        Petrovich.Names names = new Petrovich.Names(employee.getLastName(), employee.getFirstName(), employee.getMiddleName(), null);
+        Petrovich petrovich = new Petrovich();
+        String fioDative = petrovich.inflectTo(names, Case.DATIVE).lastName
+                .concat(StringUtils.SPACE)
+                .concat(petrovich.inflectTo(names, Case.DATIVE).firstName)
+                .concat(StringUtils.SPACE)
+                .concat(petrovich.inflectTo(names, Case.DATIVE).middleName);
+        employee.setFioDative(fioDative);
+
+        String fioGenitive = petrovich.inflectTo(names, Case.GENITIVE).lastName
+                .concat(StringUtils.SPACE)
+                .concat(petrovich.inflectTo(names, Case.GENITIVE).firstName)
+                .concat(StringUtils.SPACE)
+                .concat(petrovich.inflectTo(names, Case.GENITIVE).middleName);
+        employee.setFioGenitive(fioGenitive);
+
+        String fioNominative = petrovich.inflectTo(names, Case.NOMINATIVE).lastName
+                .concat(StringUtils.SPACE)
+                .concat(petrovich.inflectTo(names, Case.NOMINATIVE).firstName)
+                .concat(StringUtils.SPACE)
+                .concat(petrovich.inflectTo(names, Case.NOMINATIVE).middleName);
+        employee.setFioNominative(fioNominative);
+        employee.getDepartment().setCreationDate(ZonedDateTime.now());
         employeeRepository.save(employee);
         return employee.getId();
     }

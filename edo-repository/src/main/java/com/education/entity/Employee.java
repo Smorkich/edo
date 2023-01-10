@@ -1,5 +1,6 @@
 package com.education.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,6 +16,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder(builderMethodName = "employeeBuilder")
+@ToString
 
 /**
  * @author George Kiladze
@@ -87,6 +89,7 @@ public class Employee extends BaseEntity {
      * birthDate - Дата рождения
      */
     @Column(name = "birth_date")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate birthDate;
 
     /**

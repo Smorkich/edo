@@ -30,10 +30,11 @@ public class EmployeeController {
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeDto> save(@RequestBody EmployeeDto employeeDto) {
         log.info("Starting the save operation");
-        employeeService.save(employeeDto);
+        System.out.println(employeeDto);
+        EmployeeDto employeeDto1 = employeeService.save(employeeDto);
         log.info("Saving the employee");
         System.out.println();
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(employeeDto1, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Архивация сотрудника с занесением времени архивации")

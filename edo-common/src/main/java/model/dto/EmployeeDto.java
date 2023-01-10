@@ -1,5 +1,6 @@
 package model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -49,6 +50,7 @@ public class EmployeeDto {
     private String workPhone;
 
     @ApiModelProperty(value = "Дата рождения")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate birthDate;
 
     @ApiModelProperty(value = "Имя пользователя")

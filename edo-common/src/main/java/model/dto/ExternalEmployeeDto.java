@@ -1,5 +1,6 @@
 package model.dto;
 import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import jdk.jfr.Registered;
@@ -62,6 +63,7 @@ public class ExternalEmployeeDto {
         @Getter
         @Setter
         @ApiModel(value = "Класс для поля street, в котором присутсвуют поля номера улицы и имени")
+        @ToString
         public static  class Location {
                 private Street street;
                 private String city;
@@ -74,6 +76,7 @@ public class ExternalEmployeeDto {
                 @Getter
                 @Setter
                 @ApiModel(value = "Класс для поля coordinates , в котором присутсвуют широта и долгота ")
+                @ToString
                 public static  class Coordinates {
                         private String latitude;
                         private String longitude;
@@ -113,6 +116,7 @@ public class ExternalEmployeeDto {
         @Setter
         @ApiModel(value = "Время рождения и возраст")
         public static  class Date {
+                @JsonFormat(pattern="yyyy-MM-dd")
                 private LocalDate date;
                 private Integer age;
         }

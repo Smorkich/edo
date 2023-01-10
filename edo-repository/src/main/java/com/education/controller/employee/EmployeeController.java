@@ -1,7 +1,6 @@
 package com.education.controller.employee;
 
 
-import com.education.entity.Employee;
 import com.education.service.employee.impl.EmployeeServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -10,7 +9,12 @@ import model.dto.EmployeeDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 import java.util.List;
@@ -82,12 +86,12 @@ public class EmployeeController {
      */
     @ApiOperation(value = "Создает сотрудника")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> save(@RequestBody EmployeeDto employeeDto) {
+    public ResponseEntity<EmployeeDto> save(@RequestBody EmployeeDto employeeDto) {
         log.info("Starting the save operation");
-        System.out.println(employeeDto);
-        Long idSaveEmp = employeeService.save(EMPLOYEE_MAPPER.toEntity(employeeDto));
+        Long id = employeeService.save(EMPLOYEE_MAPPER.toEntity(employeeDto));
+        EmployeeDto employeeDto1 = EMPLOYEE_MAPPER.toDto(employeeService.findById(id));
         log.info("Saving the employee");
-        return new ResponseEntity<>(idSaveEmp, HttpStatus.CREATED);
+        return new ResponseEntity<>(employeeDto1, HttpStatus.CREATED);
     }
 
     /**

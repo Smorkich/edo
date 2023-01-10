@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Builder(builderMethodName = "builderAddress")
 @Table(name = "address")
+@ToString
 public class Address extends BaseEntity{
 
     /**

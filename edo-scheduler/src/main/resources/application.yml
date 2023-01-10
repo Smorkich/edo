@@ -14,7 +14,7 @@ eureka:
 integration:
   url:
     employee: https://5b1fc2ba-e02c-4017-9744-6463c84600d3.mock.pstmn.io/employees
-cron-expression:
-  employee:'0 * * * *'
+cron:
+  employee: 0 0 * * * *
 
 

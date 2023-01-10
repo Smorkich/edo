@@ -16,11 +16,16 @@ public interface DepartmentMapper extends AbstractMapper<Department, DepartmentD
     DepartmentMapper DEPARTMENT_MAPPER = Mappers.getMapper(DepartmentMapper.class);
     @BeforeMapping
     default void beforeMapping( DepartmentDto department) {
-            if(department!= null && department.getDepartment().getShortName() == null
-                    && department.getAddress()!= null && department.getAddress().getLatitude() == null) {
+            if(department!= null && department.getDepartment() != null
+                    && (department.getDepartment().getShortName() == null
+                    || department.getDepartment().getFullName() == null
+                    || department.getDepartment().getAddress() == null
+                    || department.getDepartment().getPhone() == null
+                    || department.getDepartment().getExternalId() == null)
+            )  {
                 department.setDepartment(null);
-                department.setAddress(null);
             }
+
 
     }
 
