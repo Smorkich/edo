@@ -1,0 +1,10 @@
+image: java:17
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  script:
+  - echo "Hello World!"
