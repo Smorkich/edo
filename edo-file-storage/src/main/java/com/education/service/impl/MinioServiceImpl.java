@@ -1,21 +1,16 @@
-package com.education.service.Impl;
+package com.education.service.impl;
 
 import com.education.utils.MinioUtil;
 import com.education.service.MinioService;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.messages.Bucket;
-import io.minio.messages.Item;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalTime;
-import java.time.ZonedDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @AllArgsConstructor
 @Service
@@ -32,11 +27,11 @@ public class MinioServiceImpl implements MinioService {
     @PostConstruct
     public void existBucket() {
         try {
-            log.info("creating new bucket", LocalTime.now());
+            log.info("creating new bucket");
             if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(util.getMyBucketname()).build())) {
                 minioClient.makeBucket(MakeBucketArgs.builder().bucket(util.getMyBucketname()).build());
             }
-            log.info("my-bucketname is created successfully", LocalTime.now());
+            log.info("my-bucketname is created successfully");
         } catch (MinioException e) {
             System.out.println("checking for bucket`s existence : " + e.getMessage());
         } catch (Exception e) {
@@ -62,7 +57,7 @@ public class MinioServiceImpl implements MinioService {
 
     public void checkConnection() {
         try {
-            log.info("Starting connection to MINIO server", LocalTime.now());
+            log.info("Starting connection to MINIO server");
             List<Bucket> blist = minioClient.listBuckets();
             log.info("Connection success, total buckets: " + blist.size());
         } catch (MinioException e) {
@@ -76,16 +71,16 @@ public class MinioServiceImpl implements MinioService {
     @Override
     public void uploadOneFile(String objectName) {
         try {
-            log.info("Starting to uploading", LocalTime.now());
+            log.info("Starting to uploading");
             minioClient.uploadObject(
                     UploadObjectArgs.builder()
                             .bucket(util.getMyBucketname())
                             .object(objectName)
                             .filename(util.getForUploadFolder() + objectName)
                             .build());
-            log.info("File is successfully uploaded to " + util.getForUploadFolder());
+            log.info("File is successfully uploaded to {}", util.getForUploadFolder());
         } catch (MinioException e) {
-            System.out.println("Upload failed: " + e.getMessage());
+            log.error("Upload failed: ", e);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -93,15 +88,15 @@ public class MinioServiceImpl implements MinioService {
 
     //** Download 'my-objectname' from 'my-bucketname' to 'targetfolder' */
     @Override
-    public void downloadOneFile(String objectName) {
+    public void downloadOneFile(String storageFileId) {
 
         try {
-            log.info("Starting to download file: " + objectName);
+            log.info("Starting to download file: " + storageFileId);
             minioClient.downloadObject(
                     DownloadObjectArgs.builder()
                             .bucket(util.getMyBucketname())
-                            .object(objectName)
-                            .filename(util.getForDownloadingFolder() + objectName)
+                            .object(storageFileId)
+                            .filename(util.getForDownloadingFolder() + storageFileId)
                             .build());
             log.info("File is successfully downloaded to " + util.getForDownloadingFolder());
         } catch (MinioException e) {

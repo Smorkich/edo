@@ -29,10 +29,9 @@ public class MinIoClient {
     /** Bean of MinioClient with a parameters */
     @Bean
     MinioClient createMinio() {
-        MinioClient minio =  MinioClient.builder()
+        return MinioClient.builder()
                 .endpoint(endpoint)
                 .credentials(username,password)
                 .build();
-        return minio;
     }
 }
