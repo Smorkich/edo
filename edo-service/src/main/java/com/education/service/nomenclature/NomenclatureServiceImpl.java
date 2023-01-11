@@ -7,6 +7,8 @@ import model.dto.NomenclatureDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 @Log4j2
