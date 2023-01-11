@@ -7,7 +7,6 @@ import lombok.*;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
-
 @Getter
 @Setter
 @Builder
@@ -59,5 +58,4 @@ public class EmployeeDto {
 
     @ApiModelProperty(value = "Дата архивации")
     private ZonedDateTime archivedDate;
-
 }
