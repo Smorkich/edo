@@ -29,7 +29,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     /**
      * Запрос на поиск объектов вне архива по id
      */
-    @Query("select u from Question u where u.archivedDate is null and u.id in :idList")
+    @Query("select u from Question u  where u.archivedDate is null and u.id in :idList")
     List<Question> findByIdInAndArchivedDateNull(@Param("idList") Iterable<Long> ids);
 
 }
