@@ -1,9 +1,6 @@
 package com.education.entity;
 
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.ZonedDateTime;
@@ -70,7 +67,7 @@ public class FilePool extends BaseEntity {
      * creator - employee who created the file
      */
     @OneToOne(fetch = FetchType.LAZY)
-    //    @PrimaryKeyJoinColumn(name = "creator_id")
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
     private Employee creator;
+
 }
