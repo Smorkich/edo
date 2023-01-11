@@ -66,9 +66,9 @@ public class QuestionController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
-    //POST /api/repository/question/{id}
+    //POST /api/repository/question/move/{id}
     @ApiOperation(value = "Добавляет в вопрос дату архивации", notes = "Вопрос должен существовать")
-    @PostMapping("/{id}")
+    @PostMapping("/move/{id}")
     private ResponseEntity<String> moveToArchive(@PathVariable(name = "id") Long id) {
         log.info("Starting the archiving operation");
         questionService.moveToArchive(id);
