@@ -36,7 +36,7 @@ public class QuestionController {
         return new ResponseEntity<>(questionDto, HttpStatus.OK);
     }
 
-    //GET ALL /api/repository/question/all/
+    //GET ALL /api/repository/question/all/{ids}
     @ApiOperation(value = "Возвращает все вопросы", notes = "Вопросы должны существовать")
     @GetMapping("/all/{ids}")
     private ResponseEntity<List<QuestionDto>> findAll(@PathVariable(name = "ids") List<Long> ids) {
@@ -69,11 +69,12 @@ public class QuestionController {
     //POST /api/repository/question/move/{id}
     @ApiOperation(value = "Добавляет в вопрос дату архивации", notes = "Вопрос должен существовать")
     @PostMapping("/move/{id}")
-    private ResponseEntity<String> moveToArchive(@PathVariable(name = "id") Long id) {
+    private ResponseEntity<QuestionDto> moveToArchive(@PathVariable(name = "id") Long id) {
         log.info("Starting the archiving operation");
         questionService.moveToArchive(id);
         log.info("Added archiving date");
-        return new ResponseEntity<>("Added archiving date", HttpStatus.OK);
+        QuestionDto questionDto = QUESTION_MAPPER.toDto(questionService.findById(id));
+        return new ResponseEntity<>(questionDto, HttpStatus.OK);
     }
 
     //GET ONE WITHOUT ARCHIVED DATE /api/repository/question/notArchived/{id}
