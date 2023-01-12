@@ -19,7 +19,7 @@ stages:
     - runner
   script:
     - echo "Building $MODULE"
-    - mvn $MAVEN_OPTS $MODULE clean package --also-make
+    - mvn $MAVEN_OPTS -pl $MODULE clean package --also-make
   artifacts:
     expire_in: 10 min
     paths:
