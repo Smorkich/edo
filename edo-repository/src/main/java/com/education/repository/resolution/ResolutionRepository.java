@@ -18,19 +18,18 @@ public interface ResolutionRepository extends JpaRepository<Resolution, Long> {
      * Выборка резолюции по id и при этом она не архивирована
      */
     @Query("SELECT res from Resolution res where res.id =:id and res.archivedDate is null")
-    public Resolution findByIdAndArchivedDateIsNull(@Param("id") Long id);
+    Resolution findByIdAndArchivedDateIsNull(@Param("id") Long id);
 
     /**
      * Выборка всех резолюций не архивированных резолюций
      */
     @Query("SELECT res from Resolution res where res.id =:id and res.archivedDate is null")
-    public Collection<Resolution> findAllByArchivedDateIsNull(@Param("id") Collection<Long> id);
+    Collection<Resolution> findAllByArchivedDateIsNull(@Param("id") Collection<Long> id);
 
     /**
      * Перемещение резолюции в архив
      */
     @Modifying
-    @Query("UPDATE Resolution res set res.archivedDate = current_date() where res.id =:id")
-    public void movesToArchive(@Param("id") Long id);
-
+    @Query(nativeQuery = true, value = "UPDATE resolution set archived_date = now() where id =:id")
+    void movesToArchive(@Param("id") Long id);
 }

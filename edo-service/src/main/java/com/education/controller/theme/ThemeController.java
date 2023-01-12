@@ -69,5 +69,4 @@ public class ThemeController {
         return new ResponseEntity<>(themeService.findByAllIdNotArchived(ids), HttpStatus.OK);
 
     }
-
 }

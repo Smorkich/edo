@@ -1,10 +1,26 @@
-image: java:17
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository -Dmaven.artifact.threads=50"
+
+cache:
+  paths:
+    - ./.m2/repository
+  key: project-cache
 
 stages:
-  - build
-  - deploy
+  - build_artifacts
 
-build:
-  stage: build
+.build-module:
+  image: maven:3.6.3-openjdk-17-slim
+  stage: build_artifacts
+  tags:
+    - runner
   script:
-  - echo "Hello World!"
+    - mvn $MAVEN_OPTS clean package
+  artifacts:
+    expire_in: 10 min
+    paths:
+      - "*/target"
+
+build_artifacts:
+  extends:
+    - .build-module
