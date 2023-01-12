@@ -12,8 +12,6 @@ cache:
 stages:
   - build_artifacts
 
-
-
 .build-module:
   image: maven:3.6.3-openjdk-17-slim
   stage: build_artifacts
@@ -21,7 +19,7 @@ stages:
     - runner
   script:
     - echo "Building $MODULE"
-    - mvn -pl $MODULE clean compile --also-make
+    - mvn $MODULE clean compile --also-make
   artifacts:
     expire_in: 10 min
     paths:
