@@ -12,7 +12,7 @@ stages:
 #  - deploy
 
 build_artifacts:
-  stage: build
+  stage: build_artifacts
   image: maven:3.6.3-openjdk-17-slim
   tags:
     - runner
