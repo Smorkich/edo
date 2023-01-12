@@ -1,6 +1,8 @@
 .common-module:
   variables:
     MODULE: "edo-common"
-#  only:
-#    changes:
-#      - "edo-common/**/*"
+  image: maven:3.6.3-openjdk-17-slim
+  tags:
+    - runner
+  script:
+    - mvn clean $MAVEN_OPTS package -DskipTests

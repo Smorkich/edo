@@ -19,11 +19,6 @@ build_common:
   extends:
     - .common-module
   stage: build_common
-  image: maven:3.6.3-openjdk-17-slim
-  tags:
-    - runner
-  script:
-    - mvn clean $MAVEN_OPTS package -DskipTests
 
 build_artifacts:
   stage: build_artifacts
