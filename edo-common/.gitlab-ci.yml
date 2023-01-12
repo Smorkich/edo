@@ -1,0 +1,6 @@
+.common-module:
+  variables:
+    MODULE: "edo-common"
+  only:
+    changes:
+      - "edo-common/**/*"

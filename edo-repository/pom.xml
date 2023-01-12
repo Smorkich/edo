@@ -33,12 +33,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.education</groupId>
-            <artifactId>edo-common</artifactId>
-            <version>0.0.1</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 
     <build>

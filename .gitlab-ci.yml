@@ -2,20 +2,34 @@ variables:
 #  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository -Dmaven.artifact.threads=50"
 
+include:
+  - local: common/.gitlab-ci.yml
+
+cache:
+  paths:
+    - ./.m2/repository
+  key: project-cache
+
 stages:
+  - build_common
   - build_artifacts
 #  - build_image
 #  - deploy
+build_common:
+  extends:
+    - .common-module
+  stage: build_common
+  image: maven:3.6.3-openjdk-17-slim
+  tags:
+    - runner
+  script:
+    - mvn clean $MAVEN_OPTS package -DskipTests
 
 build_artifacts:
   stage: build_artifacts
   image: maven:3.6.3-openjdk-17-slim
-  cache:
-    paths:
-      - ./.m2/repository
-    key: project-cache
   tags:
     - runner
   script:
-    - mvn clean $MAVEN_OPTS compile -DskipTests
+    - mvn clean $MAVEN_OPTS package -DskipTests
 #build-image:

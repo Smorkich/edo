@@ -19,7 +19,6 @@
         <module>edo-websocket</module>
         <module>edo-scheduler</module>
         <module>edo-security</module>
-        <module>edo-common</module>
         <module>edo-integration</module>
         <module>edo-service</module>
         <module>edo-rest</module>
@@ -56,6 +55,11 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.education</groupId>
+            <artifactId>edo-common</artifactId>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
