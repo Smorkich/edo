@@ -17,5 +17,5 @@ build_artifacts:
   tags:
     - runner
   script:
-    - mvn clean $MAVEN_OPTS package -DskipTests
+    - mvn clean $MAVEN_OPTS compile -DskipTests
 #build-image:
