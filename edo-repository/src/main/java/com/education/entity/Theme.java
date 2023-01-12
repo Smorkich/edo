@@ -2,6 +2,7 @@ package com.education.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import model.dto.ThemeDto;
 
 import java.io.Serializable;
@@ -15,7 +16,7 @@ import java.time.ZonedDateTime;
 @Entity(name = "theme")
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString

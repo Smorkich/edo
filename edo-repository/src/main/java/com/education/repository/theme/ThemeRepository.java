@@ -11,19 +11,19 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
-*@author AlexeySpiridonov
-*/
+ * @author AlexeySpiridonov
+ */
 
-@Repository
 public interface ThemeRepository extends JpaRepository<Theme, Long> {
 
     /**
      * Метод устанавливает дату архивации
      */
     @Modifying
-    @Query("update theme th set  th.archivedDate = CURRENT_TIME() where th.id =:id")
+    @Query(nativeQuery = true, value = "update theme set  archived_date = now() where id =:id")
     void moveToArchive(@Param("id") Long id);
 
     Theme findByIdAndArchivedDateNull(Long id);
+
     List<Theme> findByIdInAndArchivedDateNull(Iterable<Long> ids);
 }

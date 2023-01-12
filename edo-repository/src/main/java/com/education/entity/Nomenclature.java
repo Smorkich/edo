@@ -2,6 +2,7 @@ package com.education.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
 
@@ -11,7 +12,7 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @Table(name = "nomenclature",schema = "edo")
 public class Nomenclature extends BaseEntity {
 

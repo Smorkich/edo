@@ -31,7 +31,7 @@ public class ThemeController {
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Theme>  save(@RequestBody ThemeDto themeDto) {
         log.info("Starting the save operation");
-        themeService.save(themeDto);
+        themeService.save(ThemeUtil.toTheme(themeDto));
         log.info("POST request successful");
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -60,7 +60,7 @@ public class ThemeController {
     public ResponseEntity<Collection<ThemeDto>> findAll() {
         log.info("Sent GET request to get all authors from the database");
         var themeDtoCollection = ThemeUtil.listThemeDto(themeService.findAll());
-        log.info("Response from database:{}");
+        log.info("Response from database");
         return new ResponseEntity<>(themeDtoCollection, HttpStatus.OK);
     }
 

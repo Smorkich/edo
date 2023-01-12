@@ -32,11 +32,11 @@ public class ThemeUtil {
      */
     public static Theme toTheme(ThemeDto themeDto){
         return new Theme(
-                themeDto.getId(),
-                themeDto.getName(),
-                themeDto.getArchivedDate(),
-                themeDto.getCreationDate(),
-                themeDto.getCode()
+//                themeDto.getId(),
+//                themeDto.getName(),
+//                themeDto.getArchivedDate(),
+//                themeDto.getCreationDate(),
+//                themeDto.getCode()
         );
     }
 
