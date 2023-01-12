@@ -32,6 +32,6 @@ build_common:
 
 build_artifacts:
   variables:
-    MODULE: edo
+    MODULE: "edo"
   extends:
     - .build-module
