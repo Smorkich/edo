@@ -7,5 +7,7 @@ cache:
     - .m2/repository/
 build:
   stage: build
+  tags:
+    - runner
   script:
     - mvn clean $MAVEN_CLI_OPTS $MAVEN_OPTS package -DskipTests
