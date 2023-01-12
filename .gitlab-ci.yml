@@ -19,7 +19,7 @@ stages:
     - runner
   script:
     - echo "Building $MODULE"
-    - mvn $MODULE clean compile --also-make
+    - mvn $MODULE clean package --also-make
   artifacts:
     expire_in: 10 min
     paths:
@@ -31,5 +31,7 @@ build_common:
     - .build-module
 
 build_artifacts:
+  variables:
+    MODULE: edo
   extends:
     - .build-module
