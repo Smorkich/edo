@@ -6,7 +6,6 @@ job:
 
 stages:
   - build
-  - deploy
 
 build:
   stage: build
