@@ -3,7 +3,7 @@ variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository -Dmaven.artifact.threads=50"
 
 include:
-  - local: common/.gitlab-ci.yml
+  - local: edo-common/.gitlab-ci.yml
 
 cache:
   paths:
