@@ -1,5 +1,4 @@
 variables:
-#  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository -Dmaven.artifact.threads=50"
 
 include:
@@ -11,20 +10,28 @@ cache:
   key: project-cache
 
 stages:
-  - build_common
   - build_artifacts
-#  - build_image
-#  - deploy
-build_common:
-  extends:
-    - .common-module
-  stage: build_common
 
-build_artifacts:
-  stage: build_artifacts
+
+
+.build-module:
   image: maven:3.6.3-openjdk-17-slim
+  stage: build_artifacts
   tags:
     - runner
   script:
-    - mvn clean $MAVEN_OPTS package -DskipTests
-#build-image:
+    - echo "Building $MODULE"
+    - mvn -pl $MODULE clean compile --also-make
+  artifacts:
+    expire_in: 10 min
+    paths:
+      - "*/target"
+
+build_common:
+  extends:
+    - .common-module
+    - .build-module
+
+build_artifacts:
+  extends:
+    - .build-module
