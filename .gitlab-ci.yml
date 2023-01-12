@@ -1,5 +1,9 @@
 image: java:17
 
+job:
+  tags:
+    - runner
+
 stages:
   - build
   - deploy
