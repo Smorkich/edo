@@ -14,6 +14,7 @@
     <name>edo</name>
     <description>Edo application</description>
     <modules>
+        <module>edo-common</module>
         <module>edo-cloud-server</module>
         <module>edo-file-storage</module>
         <module>edo-websocket</module>

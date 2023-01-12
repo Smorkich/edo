@@ -1,9 +1,6 @@
 variables:
   MAVEN_OPTS: "-Dmaven.repo.local=.m2/repository -Dmaven.artifact.threads=50"
 
-include:
-  - local: edo-common/.gitlab-ci.yml
-
 cache:
   paths:
     - ./.m2/repository
@@ -18,20 +15,12 @@ stages:
   tags:
     - runner
   script:
-    - echo "Building $MODULE"
-    - mvn $MAVEN_OPTS -pl $MODULE clean package --also-make
+    - mvn $MAVEN_OPTS clean package
   artifacts:
     expire_in: 10 min
     paths:
       - "*/target"
 
-build_common:
-  extends:
-    - .common-module
-    - .build-module
-
 build_artifacts:
-  variables:
-    MODULE: "edo"
   extends:
     - .build-module
