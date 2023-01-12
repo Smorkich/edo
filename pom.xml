@@ -24,7 +24,6 @@
         <module>edo-service</module>
         <module>edo-rest</module>
         <module>edo-repository</module>
-        <module>edo-common</module>
     </modules>
 
     <properties>
@@ -34,55 +33,38 @@
     </properties>
 
     <dependencies>
-
         <dependency>
             <groupId>io.minio</groupId>
             <artifactId>minio</artifactId>
             <version>8.4.6</version>
           </dependency>
-
         <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>1.4.2.Final</version>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok-mapstruct-binding</artifactId>
             <version>0.1.0</version>
         </dependency>
-
-
         <dependency>
             <groupId>com.amazonaws</groupId>
             <artifactId>aws-java-sdk-s3</artifactId>
             <version>1.12.376</version>
         </dependency>
-
-
-
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>1.6.2</version>
-        </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
-
         <dependency>
             <groupId>io.swagger</groupId>
             <artifactId>swagger-annotations</artifactId>
@@ -114,6 +96,7 @@
             <plugin>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
             </plugin>
         </plugins>
     </build>
