@@ -14,17 +14,16 @@
     <name>edo</name>
     <description>Edo application</description>
     <modules>
+        <module>edo-common</module>
         <module>edo-cloud-server</module>
         <module>edo-file-storage</module>
         <module>edo-websocket</module>
         <module>edo-scheduler</module>
         <module>edo-security</module>
-        <module>edo-common</module>
         <module>edo-integration</module>
         <module>edo-service</module>
         <module>edo-rest</module>
         <module>edo-repository</module>
-        <module>edo-common</module>
     </modules>
 
     <properties>
@@ -35,31 +34,33 @@
 
     <dependencies>
         <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.4.6</version>
+          </dependency>
+        <dependency>
             <groupId>org.mapstruct</groupId>
             <artifactId>mapstruct</artifactId>
             <version>1.4.2.Final</version>
         </dependency>
-
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok-mapstruct-binding</artifactId>
             <version>0.1.0</version>
         </dependency>
-
         <dependency>
-            <groupId>org.mapstruct</groupId>
-            <artifactId>mapstruct-processor</artifactId>
-            <version>1.4.2.Final</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.swagger</groupId>
-            <artifactId>swagger-annotations</artifactId>
-            <version>1.6.2</version>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.12.376</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.education</groupId>
+            <artifactId>edo-common</artifactId>
+            <version>0.0.1</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -75,11 +76,7 @@
             <version>1.6.2</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.github.aleksandy</groupId>
-            <artifactId>petrovich</artifactId>
-            <version>1.2.1</version>
-        </dependency>
+
     </dependencies>
 
 
@@ -104,6 +101,7 @@
             <plugin>
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
             </plugin>
         </plugins>
     </build>

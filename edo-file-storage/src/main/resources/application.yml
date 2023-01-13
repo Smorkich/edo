@@ -9,3 +9,10 @@ eureka:
       defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
   instance:
     preferIpAddress: true
+minio:
+  endpoint: http://127.0.0.1:9000
+  username: admin
+  password: password
+  sourcefolder: C:\fileHolder\
+  targetfolder: C:\targetFolder\
+  bucketname: my-bucketname
