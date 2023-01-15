@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -37,7 +39,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeDto> findById(@PathVariable Long id) {
         log.info("Send a response with the employee of the assigned id");
         EmployeeDto employeeDto = toDto(employeeService.findById(id));
-        log.info("The operation was successful, we got the employee by id ={}", id);
+        log.info("The operation was successful, we got the employee by id = {}", id);
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
 
@@ -121,6 +123,27 @@ public class EmployeeController {
         log.info("Send a response with the employee not archived of the assigned IDs");
         Collection<EmployeeDto> employeeDto = employeeService.findByIdInAndArchivedDateNull(ids).stream().map(this::toDto).toList();
         log.info("The operation was successful, they got the non-archived employee by id ={}", ids);
+        return new ResponseEntity<>(employeeDto, HttpStatus.OK);
+    }
+
+    /**
+     * предоставляет сотрудников по ФИО
+     *
+     * @param fullName
+     */
+    @ApiOperation(value = "Предоставление сотрудников по ФИО")
+    @GetMapping(value = "/search")
+    public ResponseEntity<Collection<EmployeeDto>> findAllByFullName(@RequestParam("fullName") String fullName) {
+        if (fullName.length() < 3) {
+            log.info("Send empty collection, characters less than 3");
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
+        }
+        log.info("Send a response with the requested full name");
+        Collection<EmployeeDto> employeeDto = employeeService.findAllByFullName(fullName).stream()
+                .sorted(Comparator.comparing(Employee::getLastName))
+                .map(this::toDto).toList();
+
+        log.info("The operation was successful, they got employee with full name ={}", fullName);
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
 
