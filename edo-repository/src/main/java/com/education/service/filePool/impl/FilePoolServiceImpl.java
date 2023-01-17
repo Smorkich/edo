@@ -1,15 +1,14 @@
-package com.education.service.filePoll.impl;
+package com.education.service.filePool.impl;
 
 import com.education.entity.FilePool;
 import com.education.repository.filePool.FilePoolRepository;
-import com.education.service.filePoll.FilePoolService;
+import com.education.service.filePool.FilePoolService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;
-import java.util.Optional;
 
 /**
  * @author Nadezhda Pupina
@@ -22,8 +21,9 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void save(FilePool filePool) {
-        filePoolRepository.save(filePool);
+    public FilePool save(FilePool filePool) {
+        filePool.setUploadDate(ZonedDateTime.now());
+        return filePoolRepository.saveAndFlush(filePool);
     }
 
     @Override

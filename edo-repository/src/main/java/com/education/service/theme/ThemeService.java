@@ -1,7 +1,6 @@
 package com.education.service.theme;
 
 import com.education.entity.Theme;
-import model.dto.ThemeDto;
 
 import java.util.Collection;
 

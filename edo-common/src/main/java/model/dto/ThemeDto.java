@@ -9,12 +9,11 @@ import java.time.ZonedDateTime;
 /**
  * @author AlexeySpiridonov
  */
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
 @ApiModel(value = "Тема обращения")
 public class ThemeDto {
 
@@ -32,4 +31,7 @@ public class ThemeDto {
 
     @ApiModelProperty(value = "идентификатор темы")
     private String code;
+
+    @ApiModelProperty(value = "родительская тема")
+    private ThemeDto parentTheme;
 }

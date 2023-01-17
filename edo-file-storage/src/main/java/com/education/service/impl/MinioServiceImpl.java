@@ -1,9 +1,9 @@
 package com.education.service.impl;
 
-import com.education.utils.MinioUtil;
 import com.education.service.MinioService;
+import com.education.utils.MinioUtil;
 import io.minio.*;
-import io.minio.errors.*;
+import io.minio.errors.MinioException;
 import io.minio.messages.Bucket;
 import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;

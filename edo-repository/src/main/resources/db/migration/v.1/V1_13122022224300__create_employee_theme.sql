@@ -15,4 +15,3 @@ COMMENT  ON COLUMN theme.name is 'название темы';
 COMMENT  ON COLUMN theme.archived_date is 'дата архивации';
 COMMENT  ON COLUMN theme.creation_date is 'дата создания';
 COMMENT  ON COLUMN theme.code is 'идентификатор темы';
-COMMENT  ON COLUMN theme.parent_theme is 'родительская тема';

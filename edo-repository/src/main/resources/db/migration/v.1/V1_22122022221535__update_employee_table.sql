@@ -58,3 +58,4 @@ comment on column employee.creation_date
 
 comment on column employee.archived_date
     is 'Дата архивации';
+

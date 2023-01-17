@@ -3,7 +3,7 @@ package model.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-import model.enums.Employment;
+import model.enum_.Employment;
 
 import java.io.Serializable;
 
@@ -38,7 +38,7 @@ public class AuthorDto implements Serializable {
     private String snils;
 
     @ApiModelProperty(value = "номер телефона автора (мобильный)")
-    private int mobilePhone;
+    private String mobilePhone;
 
     @ApiModelProperty(value = "адрес электронной почты автора")
     private String email;

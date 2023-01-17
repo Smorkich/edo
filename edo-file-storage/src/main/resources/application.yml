@@ -16,3 +16,9 @@ minio:
   sourcefolder: C:\fileHolder\
   targetfolder: C:\targetFolder\
   bucketname: my-bucketname
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info

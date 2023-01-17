@@ -2,11 +2,8 @@ package com.education.service.minio.Impl;
 
 import com.education.service.minio.MinioService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.io.IOException;
 
 @Service
 @AllArgsConstructor

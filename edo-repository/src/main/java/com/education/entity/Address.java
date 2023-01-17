@@ -2,6 +2,8 @@ package com.education.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
+
 /**
  * Сущность описывающая адрес проживания пользователя отправившего обращение
  */
@@ -10,7 +12,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder(builderMethodName = "builderAddress")
+@SuperBuilder
 @Table(name = "address")
 public class Address extends BaseEntity{
 

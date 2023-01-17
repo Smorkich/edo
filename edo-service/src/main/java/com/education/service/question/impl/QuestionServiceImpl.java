@@ -2,7 +2,6 @@ package com.education.service.question.impl;
 
 import com.education.service.question.QuestionService;
 import lombok.AllArgsConstructor;
-import model.dto.DepartmentDto;
 import model.dto.QuestionDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;

@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -15,6 +16,8 @@ import java.util.UUID;
 /**
  * @author Nadezhda Pupina
  */
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
 @Builder
