@@ -14,7 +14,7 @@ spring:
     name: edo-repository
 server:
   enableSelfPreservation: fasle
-  port: 8888
+  port: 0
 eureka:
   client:
     serviceUrl:
