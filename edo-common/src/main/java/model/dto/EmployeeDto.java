@@ -4,14 +4,14 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
-@AllArgsConstructor
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @ApiModel(value = "объект для передачи данных")
 public class EmployeeDto {
     @ApiModelProperty(value = "id")
@@ -48,7 +48,7 @@ public class EmployeeDto {
     private String workPhone;
 
     @ApiModelProperty(value = "Дата рождения")
-    private String birthDate;
+    private LocalDate birthDate;
 
     @ApiModelProperty(value = "Имя пользователя")
     private String username;

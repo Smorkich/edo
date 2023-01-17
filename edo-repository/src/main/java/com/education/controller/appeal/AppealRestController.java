@@ -16,9 +16,9 @@ import java.util.Collection;
 
 import static com.education.mapper.AppealMapper.APPEAL_MAPPER;
 
-@Log4j2
 @RestController
 @AllArgsConstructor
+@Log4j2
 @RequestMapping("/api/repository/appeal")
 public class AppealRestController {
 
@@ -29,7 +29,7 @@ public class AppealRestController {
     @PatchMapping(value = "/move/{id}")
     public ResponseEntity<AppealDto> moveToArchive(@PathVariable Long id) {
         log.info("Adding archived date {} in Appeal with id: {}", ZonedDateTime.now(), id);
-        appealService.moveToArchive(id, ZonedDateTime.now());
+        appealService.moveToArchive(id);
         log.info("Moving appeal with id: {} to archive is success!", id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

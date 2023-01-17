@@ -33,9 +33,8 @@ public class AppealServiceImpl implements AppealService {
     @Override
     public AppealDto save(AppealDto appealDto) {
 
-        /**
-         * Сохранение новых авторов и маппинг чтобы у авторов были id из таблицы
-         */
+        //Сохранение новых авторов и маппинг чтобы у авторов были id из таблицы
+
         appealDto.setAuthors(appealDto.getAuthors().stream()
                 .map(authorService::save)
                 .collect(Collectors.toList()));

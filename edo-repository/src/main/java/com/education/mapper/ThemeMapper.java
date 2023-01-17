@@ -5,7 +5,7 @@ import model.dto.ThemeDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface ThemeMapper extends AbstractMapper<Theme, ThemeDto> {
     ThemeMapper THEME_MAPPER = Mappers.getMapper(ThemeMapper.class);
 

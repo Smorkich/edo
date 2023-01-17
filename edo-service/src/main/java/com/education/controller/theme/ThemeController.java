@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @author AlexeySpiridonov
@@ -69,5 +68,4 @@ public class ThemeController {
         return new ResponseEntity<>(themeService.findByAllIdNotArchived(ids), HttpStatus.OK);
 
     }
-
 }

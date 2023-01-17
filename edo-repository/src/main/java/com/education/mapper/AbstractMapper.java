@@ -1,7 +1,5 @@
 package com.education.mapper;
 
-import com.education.entity.BaseEntity;
-
 import java.util.Collection;
 
 /**
@@ -9,8 +7,7 @@ import java.util.Collection;
  * Общий интерфейс для маппинга сущностей в дто и обратно
  */
 
-public interface
-AbstractMapper<Entity, Dto> {
+public interface AbstractMapper<Entity, Dto> {
 
     Dto toDto(Entity entity);
 

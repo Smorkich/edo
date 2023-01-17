@@ -9,8 +9,8 @@ import org.mapstruct.factory.Mappers;
  * Интерфейс для реализации конвертации департамента в ДТО и обратно
  */
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface AddressMapper extends AbstractMapper<Address, AddressDto> {
-    AddressMapper ADDRESS_MAPPER_MAPPER = Mappers.getMapper(AddressMapper.class);
+    AddressMapper ADDRESS_MAPPER = Mappers.getMapper(AddressMapper.class);
 
 }

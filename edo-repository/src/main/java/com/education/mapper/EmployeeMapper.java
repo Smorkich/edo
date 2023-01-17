@@ -9,7 +9,7 @@ import org.mapstruct.factory.Mappers;
  * Интерфейс для реализации конвертации департамента в ДТО и обратно
  */
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface EmployeeMapper extends AbstractMapper<Employee, EmployeeDto> {
     EmployeeMapper EMPLOYEE_MAPPER = Mappers.getMapper(EmployeeMapper.class);
 

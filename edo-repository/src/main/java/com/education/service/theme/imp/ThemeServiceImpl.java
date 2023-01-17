@@ -3,21 +3,20 @@ package com.education.service.theme.imp;
 import com.education.entity.Theme;
 import com.education.repository.theme.ThemeRepository;
 import com.education.service.theme.ThemeService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.ZonedDateTime;
 import java.util.Collection;
 
 /**
- *@author AlexeySpiridonov
+ * @author AlexeySpiridonov
  */
 @Service
-@AllArgsConstructor
-public class ThemeServiceImp implements ThemeService {
+@RequiredArgsConstructor
+public class ThemeServiceImpl implements ThemeService {
 
-    private ThemeRepository themeRepository;
+    private final ThemeRepository themeRepository;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -53,7 +52,7 @@ public class ThemeServiceImp implements ThemeService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void moveToArchive(Long id) {
-        themeRepository.moveToArchive(id, ZonedDateTime.now());
+        themeRepository.moveToArchive(id);
     }
 
     @Override
@@ -67,5 +66,4 @@ public class ThemeServiceImp implements ThemeService {
     public Collection<Theme> findByIdInAndArchivedDateNull(Iterable<Long> ids) {
         return themeRepository.findByIdInAndArchivedDateNull(ids);
     }
-
 }

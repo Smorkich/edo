@@ -9,7 +9,7 @@ import org.mapstruct.factory.Mappers;
  * Интерфейс для реализации конвертации департамента в ДТО и обратно
  */
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface NomenclatureMapper extends AbstractMapper<Nomenclature, NomenclatureDto> {
     NomenclatureMapper NOMENCLATURE_MAPPER = Mappers.getMapper(NomenclatureMapper.class);
 

@@ -1,11 +1,16 @@
 package com.education.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
 /**
  * @author Nadezhda Pupina
@@ -17,14 +22,14 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @Entity
 @SuperBuilder
+@JsonInclude(NON_NULL)
 @Table(name = "question")
 public class Question extends BaseEntity {
 
     /**
      * creationDate - question create date
      */
-    @NotEmpty(message = "creationDate should not be empty")
-    @Column(name = "creation_date")
+    @Column(name = "creation_date", nullable = false)
     private ZonedDateTime creationDate;
 
     /**
@@ -36,8 +41,7 @@ public class Question extends BaseEntity {
     /**
      * summary - question description
      */
-    @NotEmpty(message = "summary should not be empty")
-    @Column(name = "summary")
+    @Column(name = "summary", nullable = false)
     private String summary;
 
     /**

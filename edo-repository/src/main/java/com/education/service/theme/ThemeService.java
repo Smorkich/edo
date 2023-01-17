@@ -49,6 +49,4 @@ public interface ThemeService {
      * findAllByIdNotArchived - находит все файлы без архивной даты по id
      */
     Collection<Theme> findByIdInAndArchivedDateNull(Iterable<Long> ids);
-
-
 }

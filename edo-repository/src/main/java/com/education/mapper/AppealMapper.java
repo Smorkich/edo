@@ -9,7 +9,7 @@ import org.mapstruct.factory.Mappers;
  * Интерфейс для реализации конвертации департамента в ДТО и обратно
  */
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface AppealMapper extends AbstractMapper<Appeal, AppealDto> {
     AppealMapper APPEAL_MAPPER = Mappers.getMapper(AppealMapper.class);
 

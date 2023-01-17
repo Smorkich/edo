@@ -10,8 +10,4 @@
     </parent>
 
     <artifactId>edo-scheduler</artifactId>
-    <dependencies>
-
-    </dependencies>
-
 </project>

@@ -9,8 +9,7 @@ import org.mapstruct.factory.Mappers;
  * Интерфейс для реализации конвертации департамента в ДТО и обратно
  */
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface AuthorMapper extends AbstractMapper<Author, AuthorDto> {
     AuthorMapper AUTHOR_MAPPER = Mappers.getMapper(AuthorMapper.class);
-
 }
