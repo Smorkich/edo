@@ -18,7 +18,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
      * Запрос на установку даты в поле archived_date
      */
     @Modifying
-    @Query(nativeQuery = true, value = "update question u set  u.archived_date = now() where u.id =:id")
+    @Query(nativeQuery = true, value = "update edo.question set archived_date = now() where id =:id and archived_date is null")
     void moveToArchive(@Param("id") Long id);
 
     /**
