@@ -1,7 +1,7 @@
 package com.education.service.employee.impl;
 
 import com.education.entity.Employee;
-import com.education.repository.EmployeeRepository;
+import com.education.repository.employee.EmployeeRepository;
 import com.education.service.employee.EmployeeService;
 import com.github.aleksandy.petrovich.Case;
 import com.github.aleksandy.petrovich.Petrovich;

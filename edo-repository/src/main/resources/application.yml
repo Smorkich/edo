@@ -2,7 +2,7 @@ spring:
   flyway:
     enabled: true
     user: postgres
-    password: postgres
+    password: oog
     url: jdbc:postgresql://localhost:5432/edo_db
     default-schema: edo
     locations: db/migration
@@ -22,3 +22,8 @@ eureka:
   instance:
     preferIpAddress: true
     instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${random.value}}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info

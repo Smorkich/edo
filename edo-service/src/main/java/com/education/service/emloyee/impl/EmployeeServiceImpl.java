@@ -1,6 +1,6 @@
 package com.education.service.emloyee.impl;
 
-import com.education.service.EmployeeService;
+import com.education.service.emloyee.EmployeeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.EmployeeDto;
@@ -57,12 +57,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto findByIdAndArchivedDateNull(Long id) {
         log.info("Sent a request to receive the employee archived in edo - repository");
-        return restTemplate.getForObject(URL + "/NotArchived/" + id, EmployeeDto.class);
+        return restTemplate.getForObject(URL + "/notArchived/" + id, EmployeeDto.class);
     }
 
     @Override
     public Collection<EmployeeDto> findByIdInAndArchivedDateNull(String ids) {
         log.info("Sent a request to receive the employee not archived in edo - repository");
-        return restTemplate.getForObject(URL + "/NotArchivedAll/" + ids, List.class);
+        return restTemplate.getForObject(URL + "/notArchivedAll/" + ids, List.class);
     }
 }

@@ -24,8 +24,8 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void save(Author author) {
-        authorRepository.saveAndFlush(author);
+    public Author save(Author author) {
+        return authorRepository.saveAndFlush(author);
     }
 
     /**
@@ -35,7 +35,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long id) {
         authorRepository.deleteById(id);
-
     }
 
     /**
@@ -65,4 +64,5 @@ public class AuthorServiceImpl implements AuthorService {
     public Collection<Author> findAll() {
         return authorRepository.findAll();
     }
+
 }

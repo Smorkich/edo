@@ -43,7 +43,7 @@ public class DepartmentServiceImp implements DepartmentService {
     }
 
     /**
-     * заносит дату архивации, тем самым арххивируя департамент
+     * заносит дату архивации, тем самым архивируя департамент
      *
      * @param id
      */

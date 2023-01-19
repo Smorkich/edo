@@ -1,7 +1,6 @@
 package com.education.service.theme;
 
 import com.education.entity.Theme;
-import model.dto.ThemeDto;
 
 import java.util.Collection;
 
@@ -50,6 +49,4 @@ public interface ThemeService {
      * findAllByIdNotArchived - находит все файлы без архивной даты по id
      */
     Collection<Theme> findByIdInAndArchivedDateNull(Iterable<Long> ids);
-
-
 }

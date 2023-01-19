@@ -2,8 +2,7 @@ package com.education.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.math.BigDecimal;
+import lombok.experimental.SuperBuilder;
 
 /**
  * Сущность описывающая адрес проживания пользователя отправившего обращение
@@ -13,9 +12,8 @@ import java.math.BigDecimal;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder(builderMethodName = "builderAddress")
+@SuperBuilder
 @Table(name = "address")
-@ToString
 public class Address extends BaseEntity{
 
     /**
@@ -77,8 +75,4 @@ public class Address extends BaseEntity{
      */
     @Column(name = "flat")
     private String flat;
-    @Column(name = "longitude")
-    private String longitude;
-    @Column(name = "latitude")
-    private String latitude;
 }

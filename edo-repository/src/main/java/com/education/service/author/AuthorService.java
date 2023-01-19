@@ -3,8 +3,9 @@ package com.education.service.author;
 import com.education.entity.Author;
 
 import java.util.Collection;
+
 public interface AuthorService {
-    void save(Author author);
+    Author save(Author author);
 
     void delete(Long id);
 

@@ -1,27 +1,26 @@
 package com.education.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import model.dto.ThemeDto;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
-import java.io.Serializable;
 import java.time.ZonedDateTime;
 
 /**
  * @author AlexeySpiridonov
  * Сущность описывающая тему обращения граждан
  */
-
-@Entity(name = "theme")
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+@SuperBuilder
 @Table(name = "theme")
 public class Theme extends BaseEntity {
-
 
     /**
      * Название темы
@@ -53,6 +52,4 @@ public class Theme extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_theme")
     private Theme parentTheme;
-
-
 }

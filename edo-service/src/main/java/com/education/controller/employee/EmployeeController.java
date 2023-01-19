@@ -1,6 +1,6 @@
 package com.education.controller.employee;
 
-import com.education.service.EmployeeService;
+import com.education.service.emloyee.EmployeeService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;

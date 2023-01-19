@@ -17,4 +17,5 @@ public class JobScheduler {
 
     @Value("${integration.url.employee}")
     private String employeeUrl;
+
 }

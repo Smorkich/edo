@@ -7,3 +7,8 @@ eureka:
     fetchRegistry: false
   dashboard:
     enabled: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info

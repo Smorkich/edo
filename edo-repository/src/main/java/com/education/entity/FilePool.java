@@ -1,7 +1,11 @@
 package com.education.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -15,9 +19,8 @@ import java.util.UUID;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
-@Builder(builderMethodName = "builderfilePool")
+@SuperBuilder
 @Table(name = "file_pool")
 public class FilePool extends BaseEntity {
 
