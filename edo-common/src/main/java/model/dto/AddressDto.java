@@ -9,7 +9,6 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@Builder
 @ApiModel(value = "Объект для передачи данных")
 @Builder
 public class AddressDto {

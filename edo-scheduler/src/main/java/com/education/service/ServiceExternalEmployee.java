@@ -4,5 +4,5 @@ package com.education.service;
  * Интерфейс с методом save
  */
 public interface ServiceExternalEmployee {
-    void save();
+    void dataSyncMethodIsRunningItRunsEveryHour();
 }

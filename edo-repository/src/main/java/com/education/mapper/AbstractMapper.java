@@ -1,5 +1,7 @@
 package com.education.mapper;
 
+import com.education.entity.BaseEntity;
+
 import java.util.Collection;
 
 /**

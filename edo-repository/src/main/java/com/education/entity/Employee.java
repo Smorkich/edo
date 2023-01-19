@@ -2,6 +2,8 @@ package com.education.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -49,7 +51,7 @@ public class Employee extends BaseEntity {
     /**
      * address - Адрес
      */
-    @OneToOne(fetch = LAZY,cascade = CascadeType.ALL)
+    @OneToOne(fetch = LAZY)
     @JoinColumn(name = "address")
     private Address address;
 
@@ -93,7 +95,6 @@ public class Employee extends BaseEntity {
      * birthDate - Дата рождения
      */
     @Column(name = "birth_date")
-    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate birthDate;
 
     /**
@@ -117,7 +118,7 @@ public class Employee extends BaseEntity {
     /**
      * department - Департамент
      */
-    @OneToOne(fetch = LAZY,cascade = CascadeType.ALL)
+    @OneToOne(fetch = LAZY)
     @JoinColumn(name = "department")
     private Department department;
 
