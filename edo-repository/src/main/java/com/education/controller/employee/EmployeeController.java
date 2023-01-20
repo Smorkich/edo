@@ -1,6 +1,6 @@
 package com.education.controller.employee;
 
-
+import com.education.entity.Employee;
 import com.education.service.employee.impl.EmployeeServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -19,7 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 import java.util.List;
 
-import static com.education.mapper.EmployeeMapper.EmployeeMapper.EMPLOYEE_MAPPER;
+import static com.education.mapper.EmployeeMapper.EMPLOYEE_MAPPER;
+
 
 /**
  * @author George Kiladze
