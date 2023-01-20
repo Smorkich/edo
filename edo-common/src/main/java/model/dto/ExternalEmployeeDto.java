@@ -23,7 +23,7 @@ import java.time.ZonedDateTime;
 @ToString
 public class ExternalEmployeeDto {
 
-        @ApiModelProperty(value = "Имя")
+        @ApiModelProperty(value = "Пол")
         private String gender;
         @ApiModelProperty(value = "Имя")
         private  Name name;
