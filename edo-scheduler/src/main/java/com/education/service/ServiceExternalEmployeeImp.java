@@ -48,7 +48,8 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
 
 
     @Override
-    @Scheduled(cron = "${cron.employee}")
+    //@Scheduled(cron = "${cron.employee}")
+    @Scheduled(fixedDelayString = "PT01M")
     public void dataSyncMethodIsRunningItRunsEveryHour() {
         log.info("The data synchronization method has started, it starts every hour");
         String json = restTemplate.getForObject(jobScheduler.getEmployeeUrl(), String.class);
