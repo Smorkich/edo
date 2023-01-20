@@ -32,7 +32,7 @@ public interface FilePoolRepository extends JpaRepository<FilePool, Long> {
      * @return
      */
     @Modifying
-    @Query(nativeQuery = true, value = "update edo.file_pool set archived_date = now() where id =:id and archived_date is null")
+    @Query(nativeQuery = true, value = "update file_pool set archived_date = now() where id =:id and archived_date is null")
     void moveToArchived(@Param(value = "id") Long id);
 
 }

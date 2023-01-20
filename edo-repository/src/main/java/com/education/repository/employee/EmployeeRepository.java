@@ -22,6 +22,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> findByIdInAndArchivedDateNull(Iterable<Long> ids);
 
     @Modifying
-    @Query(nativeQuery = true, value = "update edo.employee set archived_date = now() where id =:id and archived_date is null")
+    @Query(nativeQuery = true, value = "update employee set archived_date = now() where id =:id and archived_date is null")
     void moveToArchived(@Param(value = "id") Long id);
 }

@@ -18,7 +18,7 @@ import java.util.List;
 @Repository
 public interface DepartmentRepository extends JpaRepository<Department, Long> {
     @Modifying
-    @Query(nativeQuery = true, value = "update edo.department set archived_date = now() where id =:id and archived_date is null")
+    @Query(nativeQuery = true, value = "update department set archived_date = now() where id =:id and archived_date is null")
     void removeToArchived(@Param(value = "id") Long id);
     Department findByIdAndArchivedDateNull(Long id);
 

@@ -18,7 +18,7 @@ public interface NomenclatureRepository extends JpaRepository<Nomenclature,Long>
 
     /** Query request for set a date to archived_date field */
     @Modifying
-    @Query(nativeQuery = true, value = "update edo.nomenclature set archived_date = now() where id =:id")
+    @Query(nativeQuery = true, value = "update nomenclature set archived_date = now() where id =:id")
     void moveToArchive(@Param("id") Long id);
 
     /** Query request for searching not archived entity by id */
