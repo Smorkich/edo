@@ -1,8 +1,7 @@
 package com.education.controller.filePool;
 
 import com.education.entity.FilePool;
-import com.education.service.filePoll.FilePoolService;
-import com.education.util.FilePoolUtil;
+import com.education.service.filePool.FilePoolService;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.List;
 
-import static com.education.util.FilePoolUtil.*;
+import static com.education.mapper.FilePoolMapper.FILE_POOL_MAPPER;
 
 /**
  * @author Nadezhda Pupina
@@ -34,9 +33,9 @@ public class FilePoolController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FilePoolDto> save(@RequestBody @Valid FilePoolDto filePoolDto) {
         log.info("Send a post-request to post new Address to database");
-        filePoolService.save(toFilePool(filePoolDto));
+        FilePool save = filePoolService.save(FILE_POOL_MAPPER.toEntity(filePoolDto));
         log.info("Response: {} was added to database", filePoolDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(FILE_POOL_MAPPER.toDto(save), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Удаляет файл", notes = "Файл должен существовать")
@@ -52,7 +51,7 @@ public class FilePoolController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FilePoolDto> findById(@PathVariable Long id) {
         log.info("Sent GET request to get author with id={} from the database", id);
-        var filePoolDto = toDto(filePoolService.findById(id));
+        var filePoolDto = FILE_POOL_MAPPER.toDto(filePoolService.findById(id));
         log.info("Response from database:{}", filePoolDto);
         return new ResponseEntity<>(filePoolDto, HttpStatus.OK);
     }
@@ -61,7 +60,7 @@ public class FilePoolController {
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<FilePoolDto>> findAll() {
         log.info("Send a get-request to get all file from database");
-        var filePoolDto = listFilePooDto(filePoolService.findAll());
+        var filePoolDto = FILE_POOL_MAPPER.toDto(filePoolService.findAll());
         log.info("Response from database: {}", filePoolDto);
         return new ResponseEntity<>(filePoolDto, HttpStatus.OK);
     }
@@ -76,14 +75,13 @@ public class FilePoolController {
     @ApiOperation(value = "Предоставление файла без архивации")
     @GetMapping("/noArchived/{id}")
     private ResponseEntity<FilePoolDto> getFileNotArchived(@PathVariable Long id) {
-        return new ResponseEntity<>(toDto(filePoolService.findByIdAndArchivedDateNull(id)), HttpStatus.OK);
+        return new ResponseEntity<>(FILE_POOL_MAPPER.toDto(filePoolService.findByIdAndArchivedDateNull(id)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Предоставление файлов без архивации")
     @GetMapping("/noArchived/{ids}")
-    private  ResponseEntity<List<FilePoolDto>> getFilesNotArchived(@PathVariable List <Long> ids) {
-        List<FilePoolDto> filePoolDto = filePoolService.findByIdInAndArchivedDateNull(ids)
-                .stream().map(FilePoolUtil::toDto).toList();
+    private  ResponseEntity<Collection<FilePoolDto>> getFilesNotArchived(@PathVariable List <Long> ids) {
+        Collection<FilePoolDto> filePoolDto = FILE_POOL_MAPPER.toDto(filePoolService.findByIdInAndArchivedDateNull(ids));
         return  new ResponseEntity<>(filePoolDto,HttpStatus.OK);
     }
 

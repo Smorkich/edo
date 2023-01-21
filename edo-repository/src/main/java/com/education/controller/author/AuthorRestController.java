@@ -1,7 +1,6 @@
 package com.education.controller.author;
 
-import static com.education.util.AuthorUtil.*;
-
+import com.education.entity.Author;
 import com.education.service.author.AuthorService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -13,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+
+import static com.education.mapper.AuthorMapper.AUTHOR_MAPPER;
 
 /**
  * Рест-контроллер для Author
@@ -30,7 +31,7 @@ public class AuthorRestController {
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AuthorDto>> getAllAuthors() {
         log.info("Sent GET request to get all authors from the database");
-        var authorDtoCollection = listAuthorDtos(authorService.findAll());
+        var authorDtoCollection = AUTHOR_MAPPER.toDto(authorService.findAll());
         log.info("Response from database:{}", authorDtoCollection);
         return new ResponseEntity<>(authorDtoCollection, HttpStatus.OK);
     }
@@ -39,9 +40,9 @@ public class AuthorRestController {
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> addAuthorAction(@RequestBody AuthorDto authorDto) {
         log.info("Send POST request to add author to databases: {}", authorDto);
-        authorService.save(toAuthor(authorDto));
+        Author save = authorService.save(AUTHOR_MAPPER.toEntity(authorDto));
         log.info("Author added to database");
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(AUTHOR_MAPPER.toDto(save),HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Delete author", notes = "Author must exist")
@@ -57,7 +58,7 @@ public class AuthorRestController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> getAuthorById(@PathVariable Long id) {
         log.info("Sent GET request to get author with id={} from the database", id);
-        var authorDto = toDto(authorService.findById(id));
+        var authorDto = AUTHOR_MAPPER.toDto(authorService.findById(id));
         log.info("Response from database:{}", authorDto);
         return new ResponseEntity<>(authorDto, HttpStatus.OK);
     }

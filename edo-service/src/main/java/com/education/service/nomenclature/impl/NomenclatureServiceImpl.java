@@ -1,4 +1,5 @@
-package com.education.service.nomenclature;
+package com.education.service.nomenclature.impl;
+
 
 import com.education.service.nomenclature.NomenclatureService;
 import lombok.AllArgsConstructor;

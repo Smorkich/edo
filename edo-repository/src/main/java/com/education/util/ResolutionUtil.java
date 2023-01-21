@@ -104,10 +104,10 @@ public class ResolutionUtil {
                 resolutionDto.getArchivedDate(),
                 resolutionDto.getLastActionDate(),
                 resolutionDto.getType(),
-                toEmployee(resolutionDto.getCreatorDto()),
-                toEmployee(resolutionDto.getSignerDto()),
-                toListEmployee(resolutionDto.getExecutorDto()),
-                toEmployee(resolutionDto.getCuratorDto()),
+                toEmployee(resolutionDto.getCreator()),
+                toEmployee(resolutionDto.getSigner()),
+                toListEmployee(resolutionDto.getExecutor()),
+                toEmployee(resolutionDto.getCurator()),
                 resolutionDto.getSerialNumber()
         );
     }

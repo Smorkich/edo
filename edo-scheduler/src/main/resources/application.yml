@@ -18,3 +18,9 @@ integration:
 
 minio:
   cron: 0 0 1 * * MON
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info
