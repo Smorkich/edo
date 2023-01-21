@@ -8,9 +8,16 @@ import model.dto.EmployeeDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
+import java.util.Collections;
 
 
 /**
@@ -89,4 +96,16 @@ public class EmployeeController {
         return new ResponseEntity<Collection<EmployeeDto>>(employeeDto, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Предоставление сотрудников по ФИО")
+    @GetMapping(value = "/search")
+    public ResponseEntity<Collection<EmployeeDto>> findAllByFullName(@RequestParam("fullName") String fullName) {
+        if (fullName.length() < 3) {
+            log.info("Send empty collection, characters less than 3");
+            return new ResponseEntity<>(Collections.emptyList(), HttpStatus.OK);
+        }
+        log.info("Send a response with the requested full name");
+        Collection<EmployeeDto> employeeDto = employeeService.findAllByFullName(fullName);
+        log.info("The operation was successful, they got employee with full name ={}", fullName);
+        return new ResponseEntity<>(employeeDto, HttpStatus.OK);
+    }
 }

@@ -1,6 +1,7 @@
 package com.education.service.emloyee.impl;
 
 import com.education.service.emloyee.EmployeeService;
+import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.EmployeeDto;
@@ -23,6 +24,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     static final String URL = "http://edo-repository/api/repository/employee";
     private final RestTemplate restTemplate;
+    private final URIBuilderUtil uriBuilder;
 
     @Override
     public void save(EmployeeDto employeeDto) {
@@ -64,5 +66,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Collection<EmployeeDto> findByIdInAndArchivedDateNull(String ids) {
         log.info("Sent a request to receive the employee not archived in edo - repository");
         return restTemplate.getForObject(URL + "/notArchivedAll/" + ids, List.class);
+    }
+
+    @Override
+    public Collection<EmployeeDto> findAllByFullName(String fullName) {
+        String uri = uriBuilder.buildURI("edo-repository", "/api/repository/employee/search")
+                .addParameter("fullName", fullName).toString();
+        log.info("URI with full name parameter built");
+        Collection<EmployeeDto> employeeDtoList = restTemplate.getForObject(uri, Collection.class);
+        log.info("Taken employee list from service by rest template");
+        return employeeDtoList;
     }
 }
