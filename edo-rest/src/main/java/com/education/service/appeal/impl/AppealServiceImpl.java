@@ -6,6 +6,10 @@ import com.education.service.filepool.FilePoolService;
 import com.education.service.question.QuestionService;
 import lombok.AllArgsConstructor;
 import model.dto.AppealDto;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -34,12 +38,12 @@ public class AppealServiceImpl implements AppealService {
     public AppealDto save(AppealDto appealDto) {
 
         //Сохранение новых авторов и маппинг чтобы у авторов были id из таблицы
+        appealDto.setAppealsStatus(NEW_STATUS);
+        appealDto.setCreationDate(ZonedDateTime.now());
 
         appealDto.setAuthors(appealDto.getAuthors().stream()
                 .map(authorService::save)
                 .collect(Collectors.toList()));
-        appealDto.setAppealsStatus(NEW_STATUS);
-        appealDto.setCreationDate(ZonedDateTime.now());
 
         appealDto.setQuestions(appealDto.getQuestions().stream()
                 .map(questionService::save)
@@ -49,6 +53,9 @@ public class AppealServiceImpl implements AppealService {
                 .map(filePoolService::save)
                 .collect(Collectors.toList()));
 
-        return restTemplate.postForObject(URL, appealDto, AppealDto.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        return restTemplate.exchange(URL, HttpMethod.POST, new HttpEntity<>(appealDto, headers), AppealDto.class).getBody();
     }
 }
