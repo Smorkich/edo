@@ -26,6 +26,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     void moveToArchived(@Param(value = "date") ZonedDateTime zonedDateTime, @Param(value = "id") Long id);
 
     @Modifying
-    @Query("FROM Employee e WHERE CONCAT(e.lastName, ' ', e.firstName, ' ', e.middleName) LIKE CONCAT(:fullName, '%') ORDER BY e.lastName")
+    @Query("FROM Employee e WHERE e.fioNominative LIKE CONCAT(:fullName, '%') ORDER BY e.lastName")
     List<Employee> findAllByFullName(@Param(value = "fullName") String fullName);
 }
