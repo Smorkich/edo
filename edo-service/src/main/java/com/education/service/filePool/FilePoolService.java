@@ -1,5 +1,6 @@
 package com.education.service.filePool;
 import model.dto.FilePoolDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
 
@@ -48,5 +49,11 @@ public interface FilePoolService {
      * findAllByIdNotArchived - находит все файлы без архивной даты по id
      */
     Collection<FilePoolDto> findAllByIdNotArchived(String ids);
+
+    /**
+     * uploadOneFile - загружает входящий файл в файловое хранилище
+     * @param file
+     */
+    void uploadOneFile(MultipartFile file);
 
 }

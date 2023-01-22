@@ -7,7 +7,9 @@ import lombok.extern.log4j.Log4j2;
 import model.dto.FilePoolDto;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Collection;
 
 @Log4j2
@@ -85,6 +87,14 @@ public class FilePoolController {
     private ResponseEntity<Collection<FilePoolDto>> findAllByIdNotArchived(@PathVariable(name = "ids") String ids) {
         log.info("send a response with the files not archived of the assigned IDs");
         return new ResponseEntity<>(filePoolService.findAllByIdNotArchived(ids), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Uploading file to file storage")
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<HttpStatus> uploadOneFile(@RequestParam("file") MultipartFile file) throws IOException {
+        filePoolService.uploadOneFile(file);
+        log.info("Upload file named: {}", file.getOriginalFilename());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }
