@@ -85,6 +85,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeDto> save(@RequestBody EmployeeDto employeeDto) {
         log.info("Starting the save operation");
         Long id = employeeService.save(EMPLOYEE_MAPPER.toEntity(employeeDto));
+        System.out.println(id);
         EmployeeDto employeeDto1 = EMPLOYEE_MAPPER.toDto(employeeService.findById(id));
         log.info("Saving the employee");
         return new ResponseEntity<>(employeeDto1, HttpStatus.CREATED);
