@@ -69,7 +69,7 @@ public class EmployeeController {
     public ResponseEntity<Collection<EmployeeDto>> findAllById(@PathVariable List<Long> ids) {
         log.info("Send a response with the employee of the assigned IDs");
         Collection<EmployeeDto> employeeDto = toDto(employeeService.findAllById(ids));
-        log.info("The operation was successful, we got the employee by id = {} ", ids);
+        log.info("The operation was successful, we got the employee by id ={} ", ids);
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
 
