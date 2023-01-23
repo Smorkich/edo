@@ -64,7 +64,12 @@ public class MinioServiceImpl implements MinioService {
     }
 
     @Override
-    public boolean isAvailable(MultipartFile file) {
-        return false;
+    public boolean isAvailable(MultipartFile currentFile) {
+
+        String extension = StringUtils.getFilenameExtension(currentFile.getOriginalFilename());
+        boolean isAvailable = extension.equals("doc") || extension.equals("docx")
+                || extension.equals("png") || extension.equals("jpeg") || extension.equals("jpg");
+        return isAvailable;
+
     }
 }
