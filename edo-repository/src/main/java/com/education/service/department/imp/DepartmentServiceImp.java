@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -98,5 +99,17 @@ public class DepartmentServiceImp implements DepartmentService {
     @Transactional(readOnly = true)
     public List<Department> findByAllIdNotArchived(Iterable<Long> ids) {
         return repository.findByIdInAndArchivedDateNull(ids);
+    }
+
+    /**
+     * сохраняет коллекцию департметов
+     *
+     * @param departments
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void saveCollection(Collection<Department> departments) {
+        repository.saveAll(departments);
     }
 }

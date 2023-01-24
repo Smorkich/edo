@@ -16,5 +16,5 @@ public interface DepartmentService {
     Collection<Department> findByAllId(Iterable<Long> ids);
     Department findByIdNotArchived(Long id);
     Collection<Department> findByAllIdNotArchived(Iterable<Long> ids);
-
+    void saveCollection(Collection<Department> departments);
 }

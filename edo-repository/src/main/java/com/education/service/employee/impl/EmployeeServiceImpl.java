@@ -4,6 +4,8 @@ import com.education.entity.Address;
 import com.education.entity.Department;
 import com.education.entity.Employee;
 import com.education.repository.employee.EmployeeRepository;
+import com.education.service.address.AddressService;
+import com.education.service.department.DepartmentService;
 import com.education.service.employee.EmployeeService;
 import com.github.aleksandy.petrovich.Case;
 import com.github.aleksandy.petrovich.Petrovich;
@@ -12,11 +14,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * @author Kiladze George
@@ -31,6 +32,8 @@ import java.util.Optional;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final AddressService addressService;
+    private final DepartmentService departmentService;
 
     /**
      * добавляет сотрудника
@@ -153,6 +156,54 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public List<Employee> saveCollection (Collection<Employee> employees) {
+//        employees.forEach(employee -> {
+//            employee.setCreationDate(ZonedDateTime.now());
+//            Petrovich.Names names = new Petrovich.Names(employee.getLastName(), employee.getFirstName(), employee.getMiddleName(), null);
+//            Petrovich petrovich = new Petrovich();
+//            String fioDative = petrovich.inflectTo(names, Case.DATIVE).lastName
+//                    .concat(StringUtils.SPACE)
+//                    .concat(petrovich.inflectTo(names, Case.DATIVE).firstName)
+//                    .concat(StringUtils.SPACE)
+//                    .concat(petrovich.inflectTo(names, Case.DATIVE).middleName);
+//            employee.setFioDative(fioDative);
+//
+//            String fioGenitive = petrovich.inflectTo(names, Case.GENITIVE).lastName
+//                    .concat(StringUtils.SPACE)
+//                    .concat(petrovich.inflectTo(names, Case.GENITIVE).firstName)
+//                    .concat(StringUtils.SPACE)
+//                    .concat(petrovich.inflectTo(names, Case.GENITIVE).middleName);
+//            employee.setFioGenitive(fioGenitive);
+//
+//            String fioNominative = petrovich.inflectTo(names, Case.NOMINATIVE).lastName
+//                    .concat(StringUtils.SPACE)
+//                    .concat(petrovich.inflectTo(names, Case.NOMINATIVE).firstName)
+//                    .concat(StringUtils.SPACE)
+//                    .concat(petrovich.inflectTo(names, Case.NOMINATIVE).middleName);
+//            employee.setFioNominative(fioNominative);
+//            employee.getDepartment().setCreationDate(ZonedDateTime.now());
+//        });
+
+        Collection<Address> addresses = new ArrayList<>();
+        Collection<Department> departments = new ArrayList<>();
+
+        employees.forEach(employee -> {
+            addresses.add(employee.getAddress());
+            departments.add(employee.getDepartment());
+        });
+
+        addressService.saveCollection(addresses);
+        departmentService.saveCollection(departments);
+
+//        Collection<Address> departmentsAddresses = new ArrayList<>();
+//        Collection<Department> departmentsDepartments = new ArrayList<>();
+//
+//        departments.forEach(department -> {
+//            departmentsAddresses.add(department.getAddress());
+//            departmentsDepartments.add(department.getDepartment());
+//        });
+//
+
+
         return employeeRepository.saveAll(employees);
     }
 }

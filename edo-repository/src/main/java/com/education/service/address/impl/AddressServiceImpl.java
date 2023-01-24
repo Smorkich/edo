@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -65,5 +66,15 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public List<Address> findAll() {
         return addressRepository.findAll();
+    }
+
+    /**
+     * Метод, который сохраняет коллекцию адресов
+     * @param addresses
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void saveCollection(Collection<Address> addresses) {
+        addressRepository.saveAll(addresses);
     }
 }
