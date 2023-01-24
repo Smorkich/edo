@@ -143,4 +143,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employee> findByIdInAndArchivedDateNull(Iterable<Long> ids) {
         return employeeRepository.findByIdInAndArchivedDateNull(ids);
     }
+
+    /**
+     * Сохранение коллекции сотрудников
+     *
+     * @param employees
+     * @return
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<Employee> saveCollection (Collection<Employee> employees) {
+        return employeeRepository.saveAll(employees);
+    }
 }

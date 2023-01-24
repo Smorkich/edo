@@ -1,44 +1,27 @@
 package com.education.service;
 
 
-
 import com.education.job.JobScheduler;
 import com.education.mapper.ConvertEmployee;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.education.util.URIBuilderUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.netflix.appinfo.InstanceInfo;
-import com.netflix.discovery.EurekaClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.EmployeeDto;
 import model.dto.ExternalEmployeeDto;
-import model.util.UriBuilderUtil;
-
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.loadbalancer.LoadBalanced;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Random;
-
+import java.util.Collection;
 
 import static model.constant.ConstantScheduler.EDO_REPOSITORY_NAME;
 import static model.constant.ConstantScheduler.URL_DEPARTMENT_PATH;
-import static model.constant.ConstantScheduler.URL_EMPLOYEE_PATH;
-
-import static org.apache.http.HttpVersion.HTTP;
+import static model.constant.ConstantScheduler.URL_EMPLOYEE_SAVE_PATH;
 
 /**
  * @author Usolkin Dmitry & Kostenko Aleksandr
@@ -50,45 +33,20 @@ import static org.apache.http.HttpVersion.HTTP;
 public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
 
     private final ObjectMapper objectMapper;
-    private final EurekaClient eurekaClient;
-
-    /*Удалить*/
-   // @LoadBalanced
-
-
-    private final RestTemplate restTemplate = new RestTemplate();
+    private final URIBuilderUtil uriBuilderUtil;
     private final JobScheduler jobScheduler;
     private final ConvertEmployee convertEmployee;
+    private final RestTemplate restTemplate;
 
 
 
     @Override
     //@Scheduled(cron = "${cron.employee}")
     @Scheduled(fixedDelayString = "PT04M")
-    public void dataSyncMethodIsRunningItRunsEveryHour() {
+    public void dataSyncEveryHour() {
         log.info("The data synchronization method has started, it starts every hour");
 
-
-        log.info("Received JSON from the client");
-        int random = new Random().nextInt(eurekaClient.getApplication(EDO_REPOSITORY_NAME).getInstances().size());
-        log.info("Created a random number , for instances");
-        System.out.println(random);
-        String host = eurekaClient.getApplication(EDO_REPOSITORY_NAME).getInstances().get(random).getHostName();
-
-        int info1 = eurekaClient.getApplication(EDO_REPOSITORY_NAME).getInstances().size();
-        System.out.println(info1);
-        String urlCreateRestEmployee = UriBuilderUtil.getUrlEmployeeDepartment(HTTP, host, random, URL_EMPLOYEE_PATH, eurekaClient
-                .getApplication(EDO_REPOSITORY_NAME).getInstances().get(random).getPort());
-
-        String urlCreateRestDepartment = UriBuilderUtil.getUrlEmployeeDepartment(HTTP, host, random, URL_DEPARTMENT_PATH, eurekaClient
-                .getApplication(EDO_REPOSITORY_NAME).getInstances().get(random).getPort());
-        log.info("Using Eureka Client, we created a URL for requests via RestTemplate");
-
-
-
-        /**Преобразование JSON с помощью ObjectMapper в объект ExternalEmployeeDto*/
-
-        List<ExternalEmployeeDto> externalEmployeesDto = null;
+        Collection<ExternalEmployeeDto> externalEmployeesDto = null;
         try {
             URL url = new URL(jobScheduler.getEmployeeUrl());
             externalEmployeesDto = objectMapper.readValue(url, new TypeReference<>() {
@@ -96,36 +54,20 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        log.info("Converted JSON using ObjectMapper into an object ExternalEmployeeDto ");
 
-        /**Преобразование ExternalEmployeeDto в employeeDto, направил на контроллер
-         * сохранения и заархивировал ExternalEmployeeDto, поле которого IsDeleted = true*/
-        for (ExternalEmployeeDto externalEmployeeDto : externalEmployeesDto) {
-            EmployeeDto employeeDto1 = convertEmployee.toDto(externalEmployeeDto);
-            System.out.println(employeeDto1.toString());
+        String uriEmployeeSavePath = uriBuilderUtil.buildURI(EDO_REPOSITORY_NAME, URL_EMPLOYEE_SAVE_PATH).toString();
+        String uriDepartmentPath = uriBuilderUtil.buildURI(EDO_REPOSITORY_NAME, URL_DEPARTMENT_PATH).toString();
 
-
-
-//            EmployeeDto employeeDto = restTemplate.postForObject("http://localhost:58091/api/repository/employee", convertEmployee.toDto(externalEmployeeDto), EmployeeDto.class);
-          EmployeeDto employeeDto = restTemplate.postForObject(urlCreateRestEmployee , convertEmployee.toDto(externalEmployeeDto), EmployeeDto.class);
-
-            HTTP://192.168.50.232:61055/api/repository/employee
-
-            if (externalEmployeeDto.isDelete()) {
-
-                restTemplate.postForObject(urlCreateRestEmployee + "/" + employeeDto.getId(), null, String.class);
+        Collection<EmployeeDto> employeeDtos = externalEmployeesDto.stream().map(externalEmployee -> {
+            EmployeeDto employeeDto = convertEmployee.toDto(externalEmployee);
+            if (externalEmployee.isDelete()) {
+                employeeDto.setArchivedDate(ZonedDateTime.now());
             }
-            if (externalEmployeeDto.getCompany().isDelete()) {
+            return employeeDto;
+        }).toList();
 
-                restTemplate.postForObject(urlCreateRestDepartment + "/" + employeeDto.getDepartment().getId(), null, String.class);
-            }
-        }
-        log.info("converted an external user into That, directed to the save controller and archived an external user whose field IsDeleted = true");
-
-
+        restTemplate.postForObject(uriEmployeeSavePath, employeeDtos,  EmployeeDto.class);
     }
-
-
 }
 
 

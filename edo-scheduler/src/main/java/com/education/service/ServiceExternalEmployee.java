@@ -4,5 +4,5 @@ package com.education.service;
  * Интерфейс с методом dataSyncMethodIsRunningItRunsEveryHour
  */
 public interface ServiceExternalEmployee {
-    void dataSyncMethodIsRunningItRunsEveryHour();
+    void dataSyncEveryHour();
 }

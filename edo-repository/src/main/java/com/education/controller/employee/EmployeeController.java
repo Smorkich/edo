@@ -133,4 +133,18 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
 
+    /**
+     * Сохраняет коллекция з
+     *
+     * @param employeeDto - Коллекция сотрудников
+     */
+    @ApiOperation(value = "Сохранение коллекции сотрудников")
+    @PostMapping(value = "/collection")
+    public ResponseEntity<Collection<Employee>> saveCollection(@RequestBody Collection<EmployeeDto> employeeDto) {
+        log.info("Send a response with the collection employee");
+        Collection<Employee> collection = employeeService.saveCollection(EMPLOYEE_MAPPER.toEntity(employeeDto));
+        log.info("The operation was successful, they saved the collection");
+        return new ResponseEntity<>(collection, HttpStatus.OK);
+    }
+
 }

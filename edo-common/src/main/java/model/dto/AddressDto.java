@@ -45,8 +45,10 @@ public class AddressDto {
 
     @ApiModelProperty(value = "Квартира")
     private String flat;
+
     @ApiModelProperty(value = "долгота")
     private String longitude;
+
     @ApiModelProperty(value = "широта")
     private String latitude;
 }
