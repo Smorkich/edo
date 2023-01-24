@@ -1,6 +1,7 @@
 package com.education.service.employee;
 
 import com.education.entity.Employee;
+import model.dto.EmployeeDto;
 
 import java.util.Collection;
 
@@ -24,5 +25,5 @@ public interface EmployeeService {
 
     Collection<Employee> findByIdInAndArchivedDateNull(Iterable<Long> ids);
 
-    Collection<Employee> saveCollection(Collection<Employee> employees);
+    Collection<Employee> saveCollection(Collection<EmployeeDto> employees);
 }

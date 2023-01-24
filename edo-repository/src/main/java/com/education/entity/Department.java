@@ -7,7 +7,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,7 +29,6 @@ import static jakarta.persistence.FetchType.LAZY;
 @Table(name = "department")
 @SuperBuilder
 @ToString
-
 public class Department extends BaseEntity {
 
     /* Поле короткое имя*/
@@ -57,7 +55,6 @@ public class Department extends BaseEntity {
     private String phone;
 
     /* Поле с вышестоящим департаментом */
-
     @OneToOne(fetch = LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "department")
     private Department department;

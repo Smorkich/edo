@@ -20,7 +20,6 @@ import java.time.ZonedDateTime;
 import java.util.Collection;
 
 import static model.constant.ConstantScheduler.EDO_REPOSITORY_NAME;
-import static model.constant.ConstantScheduler.URL_DEPARTMENT_PATH;
 import static model.constant.ConstantScheduler.URL_EMPLOYEE_SAVE_PATH;
 
 /**
@@ -38,11 +37,8 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
     private final ConvertEmployee convertEmployee;
     private final RestTemplate restTemplate;
 
-
-
     @Override
-    //@Scheduled(cron = "${cron.employee}")
-    @Scheduled(fixedDelayString = "PT04M")
+    @Scheduled(cron = "${cron.employee}")
     public void dataSyncEveryHour() {
         log.info("The data synchronization method has started, it starts every hour");
 
@@ -56,12 +52,14 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
         }
 
         String uriEmployeeSavePath = uriBuilderUtil.buildURI(EDO_REPOSITORY_NAME, URL_EMPLOYEE_SAVE_PATH).toString();
-        String uriDepartmentPath = uriBuilderUtil.buildURI(EDO_REPOSITORY_NAME, URL_DEPARTMENT_PATH).toString();
 
         Collection<EmployeeDto> employeeDtos = externalEmployeesDto.stream().map(externalEmployee -> {
             EmployeeDto employeeDto = convertEmployee.toDto(externalEmployee);
             if (externalEmployee.isDelete()) {
                 employeeDto.setArchivedDate(ZonedDateTime.now());
+            }
+            if (externalEmployee.getCompany().isDelete()) {
+                employeeDto.getDepartment().setArchivedDate(ZonedDateTime.now());
             }
             return employeeDto;
         }).toList();

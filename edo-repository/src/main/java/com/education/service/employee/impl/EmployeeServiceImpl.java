@@ -10,6 +10,9 @@ import com.education.service.employee.EmployeeService;
 import com.github.aleksandy.petrovich.Case;
 import com.github.aleksandy.petrovich.Petrovich;
 import lombok.AllArgsConstructor;
+import model.dto.AddressDto;
+import model.dto.DepartmentDto;
+import model.dto.EmployeeDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,28 +49,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Long save(Employee employee) {
 
         employee.setCreationDate(ZonedDateTime.now());
-        Petrovich.Names names = new Petrovich.Names(employee.getLastName(), employee.getFirstName(), employee.getMiddleName(), null);
-        Petrovich petrovich = new Petrovich();
-        String fioDative = petrovich.inflectTo(names, Case.DATIVE).lastName
-                .concat(StringUtils.SPACE)
-                .concat(petrovich.inflectTo(names, Case.DATIVE).firstName)
-                .concat(StringUtils.SPACE)
-                .concat(petrovich.inflectTo(names, Case.DATIVE).middleName);
-        employee.setFioDative(fioDative);
-
-        String fioGenitive = petrovich.inflectTo(names, Case.GENITIVE).lastName
-                .concat(StringUtils.SPACE)
-                .concat(petrovich.inflectTo(names, Case.GENITIVE).firstName)
-                .concat(StringUtils.SPACE)
-                .concat(petrovich.inflectTo(names, Case.GENITIVE).middleName);
-        employee.setFioGenitive(fioGenitive);
-
-        String fioNominative = petrovich.inflectTo(names, Case.NOMINATIVE).lastName
-                .concat(StringUtils.SPACE)
-                .concat(petrovich.inflectTo(names, Case.NOMINATIVE).firstName)
-                .concat(StringUtils.SPACE)
-                .concat(petrovich.inflectTo(names, Case.NOMINATIVE).middleName);
-        employee.setFioNominative(fioNominative);
+        petrovichConstructor(employee);
         employee.getDepartment().setCreationDate(ZonedDateTime.now());
 
         employeeRepository.save(employee);
@@ -150,60 +132,126 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * Сохранение коллекции сотрудников
      *
-     * @param employees
+     * @param employeeDtos
      * @return
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<Employee> saveCollection (Collection<Employee> employees) {
-//        employees.forEach(employee -> {
-//            employee.setCreationDate(ZonedDateTime.now());
-//            Petrovich.Names names = new Petrovich.Names(employee.getLastName(), employee.getFirstName(), employee.getMiddleName(), null);
-//            Petrovich petrovich = new Petrovich();
-//            String fioDative = petrovich.inflectTo(names, Case.DATIVE).lastName
-//                    .concat(StringUtils.SPACE)
-//                    .concat(petrovich.inflectTo(names, Case.DATIVE).firstName)
-//                    .concat(StringUtils.SPACE)
-//                    .concat(petrovich.inflectTo(names, Case.DATIVE).middleName);
-//            employee.setFioDative(fioDative);
-//
-//            String fioGenitive = petrovich.inflectTo(names, Case.GENITIVE).lastName
-//                    .concat(StringUtils.SPACE)
-//                    .concat(petrovich.inflectTo(names, Case.GENITIVE).firstName)
-//                    .concat(StringUtils.SPACE)
-//                    .concat(petrovich.inflectTo(names, Case.GENITIVE).middleName);
-//            employee.setFioGenitive(fioGenitive);
-//
-//            String fioNominative = petrovich.inflectTo(names, Case.NOMINATIVE).lastName
-//                    .concat(StringUtils.SPACE)
-//                    .concat(petrovich.inflectTo(names, Case.NOMINATIVE).firstName)
-//                    .concat(StringUtils.SPACE)
-//                    .concat(petrovich.inflectTo(names, Case.NOMINATIVE).middleName);
-//            employee.setFioNominative(fioNominative);
-//            employee.getDepartment().setCreationDate(ZonedDateTime.now());
-//        });
+    public List<Employee> saveCollection (Collection<EmployeeDto> employeeDtos) {
 
+        Collection<Employee> employees = new ArrayList<>();
         Collection<Address> addresses = new ArrayList<>();
         Collection<Department> departments = new ArrayList<>();
 
-        employees.forEach(employee -> {
+        employeeDtos.forEach(employeeDto -> {
+            Employee employee = toEntity(employeeDto);
+            employee.setCreationDate(ZonedDateTime.now());
+            petrovichConstructor(employee);
+            employee.getDepartment().setCreationDate(ZonedDateTime.now());
+            employee.getDepartment().setDepartment(null);
             addresses.add(employee.getAddress());
             departments.add(employee.getDepartment());
+            employees.add(employee);
         });
 
         addressService.saveCollection(addresses);
         departmentService.saveCollection(departments);
 
-//        Collection<Address> departmentsAddresses = new ArrayList<>();
-//        Collection<Department> departmentsDepartments = new ArrayList<>();
-//
-//        departments.forEach(department -> {
-//            departmentsAddresses.add(department.getAddress());
-//            departmentsDepartments.add(department.getDepartment());
-//        });
-//
-
-
         return employeeRepository.saveAll(employees);
+    }
+
+    /**
+     * Конструктор падежей
+     *
+     * @param employee
+     * @return
+     */
+    private Employee petrovichConstructor(Employee employee) {
+        Petrovich.Names names = new Petrovich.Names(employee.getLastName(), employee.getFirstName(), employee.getMiddleName(), null);
+        Petrovich petrovich = new Petrovich();
+        String fioDative = petrovich.inflectTo(names, Case.DATIVE).lastName
+                .concat(StringUtils.SPACE)
+                .concat(petrovich.inflectTo(names, Case.DATIVE).firstName)
+                .concat(StringUtils.SPACE)
+                .concat(petrovich.inflectTo(names, Case.DATIVE).middleName);
+        employee.setFioDative(fioDative);
+
+        String fioGenitive = petrovich.inflectTo(names, Case.GENITIVE).lastName
+                .concat(StringUtils.SPACE)
+                .concat(petrovich.inflectTo(names, Case.GENITIVE).firstName)
+                .concat(StringUtils.SPACE)
+                .concat(petrovich.inflectTo(names, Case.GENITIVE).middleName);
+        employee.setFioGenitive(fioGenitive);
+
+        String fioNominative = petrovich.inflectTo(names, Case.NOMINATIVE).lastName
+                .concat(StringUtils.SPACE)
+                .concat(petrovich.inflectTo(names, Case.NOMINATIVE).firstName)
+                .concat(StringUtils.SPACE)
+                .concat(petrovich.inflectTo(names, Case.NOMINATIVE).middleName);
+        employee.setFioNominative(fioNominative);
+        return employee;
+    }
+
+    /**
+     * Маппинг Entity из EntityDto
+     *
+     * @param employeeDto
+     * @return
+     */
+    private Employee toEntity(EmployeeDto employeeDto) {
+        AddressDto address = employeeDto.getAddress();
+        DepartmentDto department = employeeDto.getDepartment();
+        AddressDto departmentAddress = department.getAddress();
+        Employee builtEmployee = Employee.builder()
+                .firstName(employeeDto.getFirstName())
+                .lastName(employeeDto.getLastName())
+                .middleName(employeeDto.getMiddleName())
+                .address(Address.builder()
+                        .fullAddress(address.getFullAddress())
+                        .street(address.getStreet())
+                        .house(address.getHouse())
+                        .index(address.getIndex())
+                        .housing(address.getHousing())
+                        .building(address.getBuilding())
+                        .city(address.getCity())
+                        .region(address.getRegion())
+                        .country(address.getCountry())
+                        .flat(address.getFlat())
+                        .longitude(address.getLongitude())
+                        .latitude(address.getLatitude()).build())
+                .phone(employeeDto.getPhone())
+                .workPhone(employeeDto.getWorkPhone())
+                .birthDate(employeeDto.getBirthDate())
+                .username(employeeDto.getUsername())
+                .archivedDate(employeeDto.getArchivedDate())
+                .department(Department.builder()
+                        .shortName(department.getShortName())
+                        .fullName(department.getFullName())
+                        .address(Address.builder()
+                                .fullAddress(departmentAddress.getFullAddress())
+                                .street(departmentAddress.getStreet())
+                                .house(departmentAddress.getHouse())
+                                .index(departmentAddress.getIndex())
+                                .housing(departmentAddress.getHousing())
+                                .building(departmentAddress.getBuilding())
+                                .city(departmentAddress.getCity())
+                                .region(departmentAddress.getRegion())
+                                .country(departmentAddress.getCountry())
+                                .flat(departmentAddress.getFlat())
+                                .longitude(departmentAddress.getLongitude())
+                                .latitude(departmentAddress.getLatitude()).build())
+                        .phone(department.getPhone())
+                        .archivedDate(department.getArchivedDate()).build()).build();
+        return builtEmployee;
+    }
+
+    /**
+     * Маппинг коллекции Entity из EntityDto
+     *
+     * @param employeeDtos
+     * @return
+     */
+    private Collection<Employee> toEntity(Collection<EmployeeDto> employeeDtos) {
+        return employeeDtos.stream().map(this::toEntity).toList();
     }
 }
