@@ -1,5 +1,7 @@
 package com.education.service.employee.impl;
 
+import com.education.entity.Address;
+import com.education.entity.Department;
 import com.education.entity.Employee;
 import com.education.repository.employee.EmployeeRepository;
 import com.education.service.employee.EmployeeService;
@@ -10,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -38,6 +41,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long save(Employee employee) {
+
         employee.setCreationDate(ZonedDateTime.now());
         Petrovich.Names names = new Petrovich.Names(employee.getLastName(), employee.getFirstName(), employee.getMiddleName(), null);
         Petrovich petrovich = new Petrovich();
@@ -62,7 +66,9 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .concat(petrovich.inflectTo(names, Case.NOMINATIVE).middleName);
         employee.setFioNominative(fioNominative);
         employee.getDepartment().setCreationDate(ZonedDateTime.now());
+
         employeeRepository.save(employee);
+
         return employee.getId();
     }
 

@@ -26,13 +26,14 @@ public class DepartmentDto {
     private String shortName;
     @ApiModelProperty(value = "полное имя")
     private String fullName;
-    @ApiModelProperty(value = "адресс")
+    @ApiModelProperty(value = "адрес")
     private AddressDto address;
     @ApiModelProperty(value = "номер телефона")
     private String phone;
+
     @ApiModelProperty(value = "внешний индификатор, который будем получать из чужого хранилища")
     private Long externalId;
-    @ApiModelProperty(value = "вышестоящий департамент")
 
+    @ApiModelProperty(value = "вышестоящий департамент")
     private DepartmentDto department;
 }
