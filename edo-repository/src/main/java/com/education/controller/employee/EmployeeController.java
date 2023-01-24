@@ -1,6 +1,5 @@
 package com.education.controller.employee;
 
-import com.education.entity.Employee;
 import com.education.service.employee.impl.EmployeeServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -32,7 +31,6 @@ import static com.education.mapper.EmployeeMapper.EMPLOYEE_MAPPER;
 @RequestMapping("/api/repository/employee")
 @AllArgsConstructor
 public class EmployeeController {
-
     private final EmployeeServiceImpl employeeService;
 
     /**
@@ -128,7 +126,7 @@ public class EmployeeController {
     @GetMapping(value = "/notArchivedAll/{ids}")
     public ResponseEntity<Collection<EmployeeDto>> findByAllIdNotArchived(@PathVariable List<Long> ids) {
         log.info("Send a response with the employee not archived of the assigned IDs");
-        Collection<EmployeeDto> employeeDto = employeeService.findByIdInAndArchivedDateNull(ids).stream().map(i -> EMPLOYEE_MAPPER.toDto(i)).toList();
+        Collection<EmployeeDto> employeeDto = employeeService.findByIdInAndArchivedDateNull(ids).stream().map(EMPLOYEE_MAPPER::toDto).toList();
         log.info("The operation was successful, they got the non-archived employee by id ={}", ids);
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
@@ -140,9 +138,9 @@ public class EmployeeController {
      */
     @ApiOperation(value = "Сохраняет коллекцию сотрудников")
     @PostMapping(value = "/collection")
-    public ResponseEntity<Collection<Employee>> saveCollection(@RequestBody Collection<EmployeeDto> employeeDto) {
+    public ResponseEntity<Collection<EmployeeDto>> saveCollection(@RequestBody Collection<EmployeeDto> employeeDto) {
         log.info("Send a response with the collection employee");
-        Collection<Employee> collection = employeeService.saveCollection(employeeDto);
+        Collection<EmployeeDto> collection = employeeService.saveCollection(employeeDto).stream().map(EMPLOYEE_MAPPER::toDto).toList();
         log.info("The operation was successful, they saved the collection");
         return new ResponseEntity<>(collection, HttpStatus.OK);
     }

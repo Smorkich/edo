@@ -137,7 +137,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<Employee> saveCollection (Collection<EmployeeDto> employeeDtos) {
+    public Collection<Employee> saveCollection (Collection<EmployeeDto> employeeDtos) {
 
         Collection<Employee> employees = new ArrayList<>();
         Collection<Address> addresses = new ArrayList<>();
@@ -202,7 +202,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         AddressDto address = employeeDto.getAddress();
         DepartmentDto department = employeeDto.getDepartment();
         AddressDto departmentAddress = department.getAddress();
-        Employee builtEmployee = Employee.builder()
+        return Employee.builder()
                 .firstName(employeeDto.getFirstName())
                 .lastName(employeeDto.getLastName())
                 .middleName(employeeDto.getMiddleName())
@@ -242,7 +242,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                                 .latitude(departmentAddress.getLatitude()).build())
                         .phone(department.getPhone())
                         .archivedDate(department.getArchivedDate()).build()).build();
-        return builtEmployee;
     }
 
     /**
