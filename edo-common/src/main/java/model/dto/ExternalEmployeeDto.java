@@ -54,7 +54,7 @@ public class ExternalEmployeeDto {
         private boolean isDelete;
         @Getter
         @Setter
-        @ApiModel(value = "Класс для поля name, в котором присутсвуют поля ФИО")
+        @ApiModel(value = "Класс для поля name, в котором присутствуют поля ФИО")
          public static class Name {
                 private String last;
                 private String middle;
@@ -62,7 +62,7 @@ public class ExternalEmployeeDto {
         }
         @Getter
         @Setter
-        @ApiModel(value = "Класс для поля street, в котором присутсвуют поля номера улицы и имени")
+        @ApiModel(value = "Класс для поля street, в котором присутствуют поля номера улицы и имени")
         @ToString
         public static  class Location {
                 private Street street;
@@ -101,7 +101,7 @@ public class ExternalEmployeeDto {
 
         @Getter
         @Setter
-        @ApiModel(value = "Информация по ауетнтификации и авторизации")
+        @ApiModel(value = "Информация по аутентификации и авторизации")
         public static  class Login {
                 private String uuid;
                 private String username;
