@@ -2,6 +2,7 @@ package com.education.service.question.impl;
 
 import com.education.service.question.QuestionService;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import model.dto.QuestionDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -15,14 +16,20 @@ import java.util.List;
  */
 @Service
 @AllArgsConstructor
+@Log4j2
 public class QuestionServiceImpl implements QuestionService {
 
     private final String URL = "http://edo-repository/api/repository/question";
     private final RestTemplate restTemplate;
 
     @Override
-    public void save(QuestionDto questionDto) {
-        restTemplate.postForObject(URL, questionDto, QuestionDto.class);
+    public QuestionDto save(QuestionDto questionDto) {
+        try {
+            return restTemplate.postForObject(URL, questionDto, QuestionDto.class);
+        } catch (Exception e) {
+            log.warn("Saving question {}, failed!", questionDto);
+            throw e;
+        }
     }
 
     @Override

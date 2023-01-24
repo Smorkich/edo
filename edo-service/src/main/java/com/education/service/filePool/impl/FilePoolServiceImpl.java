@@ -23,8 +23,13 @@ public class FilePoolServiceImpl implements FilePoolService {
     private final RestTemplate restTemplate;
 
     @Override
-    public void save(FilePoolDto filePoolDto) {
-        restTemplate.postForObject(URL, filePoolDto, FilePoolDto.class);
+    public FilePoolDto save(FilePoolDto filePoolDto) {
+        try {
+            return restTemplate.postForObject(URL, filePoolDto, FilePoolDto.class);
+        } catch (Exception e) {
+            log.warn("Saving file {}, failed!", filePoolDto);
+            throw e;
+        }
     }
 
     @Override
@@ -53,7 +58,7 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public FilePoolDto findByIdNotArchived(Long id) {
-        return restTemplate.getForObject(URL + "/notArchived/" + id,FilePoolDto.class);
+        return restTemplate.getForObject(URL + "/notArchived/" + id, FilePoolDto.class);
     }
 
     @Override
