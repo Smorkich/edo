@@ -1,6 +1,5 @@
 package com.education.controller.employee;
 
-import com.education.entity.Employee;
 import com.education.service.employee.impl.EmployeeServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -19,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 import java.util.List;
+
+import static com.education.mapper.EmployeeMapper.EMPLOYEE_MAPPER;
 
 /**
  * @author George Kiladze
@@ -42,7 +43,7 @@ public class EmployeeController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeDto> findById(@PathVariable Long id) {
         log.info("Send a response with the employee of the assigned id");
-        EmployeeDto employeeDto = toDto(employeeService.findById(id));
+        EmployeeDto employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findById(id));
         log.info("The operation was successful, we got the employee by id = {}", id);
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
@@ -54,7 +55,7 @@ public class EmployeeController {
     @GetMapping("/all")
     public ResponseEntity<Collection<EmployeeDto>> findAll() {
         log.info("Send a response with the employees");
-        Collection<EmployeeDto> employeeDto = toDto(employeeService.findAll());
+        Collection<EmployeeDto> employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findAll());
         log.info("The operation was successful, we got the all employees");
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
@@ -68,7 +69,7 @@ public class EmployeeController {
     @GetMapping("/all/{ids}")
     public ResponseEntity<Collection<EmployeeDto>> findAllById(@PathVariable List<Long> ids) {
         log.info("Send a response with the employee of the assigned IDs");
-        Collection<EmployeeDto> employeeDto = toDto(employeeService.findAllById(ids));
+        Collection<EmployeeDto> employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findAllById(ids));
         log.info("The operation was successful, we got the employee by id ={} ", ids);
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
@@ -82,7 +83,7 @@ public class EmployeeController {
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeDto> save(@RequestBody EmployeeDto employeeDto) {
         log.info("Starting the save operation");
-        employeeService.save(toEntity(employeeDto));
+        employeeService.save(EMPLOYEE_MAPPER.toEntity(employeeDto));
         log.info("Saving the employee");
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -110,7 +111,7 @@ public class EmployeeController {
     @GetMapping(value = "/notArchived/{id}")
     public ResponseEntity<EmployeeDto> findByIdNotArchived(@PathVariable Long id) {
         log.info("Send a response with the employee not archived of the assigned ID");
-        EmployeeDto employeeDto = toDto(employeeService.findByIdAndArchivedDateNull(id));
+        EmployeeDto employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findByIdAndArchivedDateNull(id));
         log.info("The operation was successful, they got the non-archived employee by id ={}", id);
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
@@ -124,7 +125,7 @@ public class EmployeeController {
     @GetMapping(value = "/notArchivedAll/{ids}")
     public ResponseEntity<Collection<EmployeeDto>> findByAllIdNotArchived(@PathVariable List<Long> ids) {
         log.info("Send a response with the employee not archived of the assigned IDs");
-        Collection<EmployeeDto> employeeDto = employeeService.findByIdInAndArchivedDateNull(ids).stream().map(this::toDto).toList();
+        Collection<EmployeeDto> employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findByIdInAndArchivedDateNull(ids));
         log.info("The operation was successful, they got the non-archived employee by id ={}", ids);
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
@@ -138,56 +139,9 @@ public class EmployeeController {
     @GetMapping(value = "/search")
     public ResponseEntity<Collection<EmployeeDto>> findAllByFullName(@RequestParam("fullName") String fullName) {
         log.info("Send a response with the requested full name");
-        Collection<EmployeeDto> employeeDto = toDto(employeeService.findAllByFullName(fullName));
+        Collection<EmployeeDto> employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findAllByFullName(fullName));
         log.info("The operation was successful, they got employee with full name ={}", fullName);
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
-    }
-
-    public EmployeeDto toDto(Employee employee) {
-
-        return EmployeeDto.builder()
-                .id(employee.getId())
-                .firstName(employee.getFirstName())
-                .lastName(employee.getLastName())
-                .middleName(employee.getMiddleName())
-                .address(employee.getAddress())
-                .fioDative(employee.getFioDative())
-                .fioNominative(employee.getFioNominative())
-                .fioGenitive(employee.getFioGenitive())
-                .externalId(employee.getExternalId())
-                .phone(employee.getPhone())
-                .workPhone(employee.getWorkPhone())
-                .birthDate(employee.getBirthDate())
-                .username(employee.getUsername())
-                .creationDate(employee.getCreationDate())
-                .archivedDate(employee.getArchivedDate())
-                .build();
-
-    }
-
-    public List<EmployeeDto> toDto(Collection<Employee> employee) {
-        return employee.stream().map(this::toDto).toList();
-    }
-
-    public Employee toEntity(EmployeeDto employeeDto) {
-
-        return Employee.builder()
-                .firstName(employeeDto.getFirstName())
-                .lastName(employeeDto.getLastName())
-                .middleName(employeeDto.getMiddleName())
-                .address(employeeDto.getAddress())
-                .fioDative(employeeDto.getFioDative())
-                .fioNominative(employeeDto.getFioNominative())
-                .fioGenitive(employeeDto.getFioGenitive())
-                .externalId(employeeDto.getExternalId())
-                .phone(employeeDto.getPhone())
-                .workPhone(employeeDto.getWorkPhone())
-                .birthDate(employeeDto.getBirthDate())
-                .username(employeeDto.getUsername())
-                .creationDate(employeeDto.getCreationDate())
-                .archivedDate(employeeDto.getArchivedDate())
-                .build();
-
     }
 
 }
