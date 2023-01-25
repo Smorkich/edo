@@ -1,7 +1,5 @@
 package com.education.controller.address;
 
-import com.education.entity.Address;
-
 import com.education.service.address.AddressService;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
@@ -11,10 +9,15 @@ import model.dto.AddressDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
-import java.util.List;
 
 import static com.education.mapper.AddressMapper.ADDRESS_MAPPER;
 
@@ -76,53 +79,4 @@ public class AddressController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
-    /**
-     * Маппинг сущности "Address" в DTO "AddressDto"
-     */
-//    public AddressDto toDto(Address address) {
-//        return new AddressDto(
-//                address.getId(),
-//                address.getFullAddress(),
-//                address.getStreet(),
-//                address.getHouse(),
-//                address.getIndex(),
-//                address.getHousing(),
-//                address.getBuilding(),
-//                address.getCity(),
-//                address.getRegion(),
-//                address.getCountry(),
-//                address.getFlat(),
-//                address.getLongitude(),
-//                address.getLatitude()
-//        );
-//    }
-
-    /**
-     * Маппинг листа сущностей "Address" в лист DTO "AddressDto"
-     */
-//    public List<AddressDto> toDto(Collection<Address> addresses) {
-//        return addresses.stream()
-//                .map(this::toDto)
-//                .toList();
-//    }
-
-    /**
-     * Маппинг DTO "AddressDto" в сущность "Address"
-     */
-//    public Address toEntity(AddressDto addressDto) {
-//        return new Address(
-//                addressDto.getFullAddress(),
-//                addressDto.getStreet(),
-//                addressDto.getHouse(),
-//                addressDto.getIndex(),
-//                addressDto.getHousing(),
-//                addressDto.getBuilding(),
-//                addressDto.getCity(),
-//                addressDto.getRegion(),
-//                addressDto.getCountry(),
-//                addressDto.getFlat(),
-//                addressDto.getLongitude(),
-//                addressDto.getLatitude()
-//        );
-//    }
 }

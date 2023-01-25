@@ -30,14 +30,14 @@ public class ResolutionRestController {
      */
     private ResolutionService resolutionService;
 
-//    @ApiOperation(value = "Добавление резолюции")
-//    @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON)
-//    public ResponseEntity<ResolutionDto> saveResolution(@RequestBody ResolutionDto resolutionDto) {
-//        log.info("POST request has been sent");
-//        resolutionService.save(toResolution(resolutionDto));
-//        log.info("{} has has been added", resolutionDto);
-//        return new ResponseEntity<>(HttpStatus.CREATED);
-//    }
+    @ApiOperation(value = "Добавление резолюции")
+    @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON)
+    public ResponseEntity<ResolutionDto> saveResolution(@RequestBody ResolutionDto resolutionDto) {
+        log.info("POST request has been sent");
+        resolutionService.save(RESOLUTION_MAPPER.toEntity(resolutionDto));
+        log.info("{} has has been added", resolutionDto);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
     @ApiOperation(value = "Перемещение в архив")
     @PatchMapping(value = "/move/{id}", produces = MediaType.APPLICATION_JSON)
