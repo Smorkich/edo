@@ -1,6 +1,11 @@
 spring:
   application:
     name: edo-rest
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 128MB
+      max-request-size: 128MB
 server:
   port: 0
 eureka:
