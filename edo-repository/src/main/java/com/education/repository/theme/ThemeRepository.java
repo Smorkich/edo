@@ -18,7 +18,7 @@ public interface ThemeRepository extends JpaRepository<Theme, Long> {
      * Метод устанавливает дату архивации
      */
     @Modifying
-    @Query(nativeQuery = true, value = "update theme set  archived_date = now() where id =:id")
+    @Query(nativeQuery = true, value = "update theme set archived_date = now() where id =:id and archived_date is null")
     void moveToArchive(@Param("id") Long id);
 
     Theme findByIdAndArchivedDateNull(Long id);

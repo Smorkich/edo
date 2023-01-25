@@ -47,8 +47,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void moveToArchived(Long id) {
-        ZonedDateTime zonedDateTime = ZonedDateTime.now();
-        employeeRepository.moveToArchived(zonedDateTime, id);
+        employeeRepository.moveToArchived(id);
     }
 
     /**

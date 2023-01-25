@@ -22,10 +22,10 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     List<Employee> findByIdInAndArchivedDateNull(Iterable<Long> ids);
 
     @Modifying
-    @Query("UPDATE Employee e SET e.archivedDate = :date WHERE e.id = :id and e.archivedDate is null")
-    void moveToArchived(@Param(value = "date") ZonedDateTime zonedDateTime, @Param(value = "id") Long id);
+    @Query(nativeQuery = true, value = "update employee set archived_date = now() where id =:id and archived_date is null")
+    void moveToArchived(@Param(value = "id") Long id);
 
     @Modifying
-    @Query(nativeQuery = true, value = "SELECT * FROM employee e WHERE e.fio_nominative LIKE CONCAT(:fullName, '%') ORDER BY e.last_name LIMIT 7")
+    @Query(nativeQuery = true, value = "select * from employee e where e.fio_nominative like concat(:fullName, '%') order by e.last_name limit 7")
     List<Employee> findAllByFullName(@Param(value = "fullName") String fullName);
 }
