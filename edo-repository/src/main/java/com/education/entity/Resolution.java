@@ -1,11 +1,9 @@
 package com.education.entity;
 
-import model.enums.ResolutionType;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import model.enum_.ResolutionType;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -16,8 +14,9 @@ import java.util.List;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
 @Getter
+@Setter
+@SuperBuilder
 @Table(name = "resolution")
 public class Resolution extends BaseEntity {
 

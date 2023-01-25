@@ -51,9 +51,9 @@ public class QuestionController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<QuestionDto> save(@RequestBody QuestionDto questionDto) {
         log.info("Send a post-request to post new Question to database");
-        questionService.save(QUESTION_MAPPER.toEntity(questionDto));
+        var saved = questionService.save(QUESTION_MAPPER.toEntity(questionDto));
         log.info("Response: {} was added to database", questionDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(QUESTION_MAPPER.toDto(saved), HttpStatus.CREATED);
     }
 
     //DELETE /api/repository/question/{id}

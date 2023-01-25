@@ -6,14 +6,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * Realize noFeignClient
+ * реализация noFeignClient
  */
-@Component
-public class MinIONoFeignClient {
 
-    @Bean
+@Component
+public class FeignClient {
     @LoadBalanced
-    RestTemplate restTemplate() {
+    @Bean
+    public RestTemplate restTemplate() {
         return new RestTemplate();
     }
 }

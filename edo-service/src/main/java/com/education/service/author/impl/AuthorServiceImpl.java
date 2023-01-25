@@ -25,7 +25,6 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void save(AuthorDto authorDto) {
         restTemplate.postForObject(URL, authorDto, AuthorDto.class);
-
     }
 
     /**

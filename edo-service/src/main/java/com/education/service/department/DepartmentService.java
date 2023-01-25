@@ -1,4 +1,4 @@
-package com.education.service;
+package com.education.service.department;
 
 
 import model.dto.DepartmentDto;

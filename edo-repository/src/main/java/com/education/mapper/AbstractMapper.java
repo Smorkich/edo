@@ -1,30 +1,19 @@
 package com.education.mapper;
 
-
-
-import com.education.entity.BaseEntity;
-import com.education.entity.Department;
-import model.dto.DepartmentDto;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
-
-
 import java.util.Collection;
-
 
 /**
  * @author Usolkin Dmitry
  * Общий интерфейс для маппинга сущностей в дто и обратно
  */
 
-public interface
-AbstractMapper <Entity extends BaseEntity,Dto> {
+public interface AbstractMapper<Entity, Dto> {
 
     Dto toDto(Entity entity);
 
     Entity toEntity(Dto dto);
 
-    Collection <Dto> toDto(Collection<Entity> entities);
+    Collection<Dto> toDto(Collection<Entity> entities);
 
     Collection<Entity> toEntity(Collection<Dto> dtoEntities);
 

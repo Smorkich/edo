@@ -43,7 +43,6 @@ public class EmployeeController {
 
     /**
      * предоставляет всех сотрудников
-     *
      */
     @ApiOperation(value = "Предоставление сотрудников по назначеным идентификаторам")
     @GetMapping("/all")
@@ -152,7 +151,7 @@ public class EmployeeController {
 
     public Employee toEntity(EmployeeDto employeeDto) {
 
-        return Employee.employeeBuilder()
+        return Employee.builder()
                 .firstName(employeeDto.getFirstName())
                 .lastName(employeeDto.getLastName())
                 .middleName(employeeDto.getMiddleName())

@@ -1,14 +1,11 @@
 package com.education.controller;
 
-import com.education.service.DepartmentService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.education.service.department.DepartmentService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import model.dto.DepartmentDto;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
-import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * @author Usolkin Dmitry

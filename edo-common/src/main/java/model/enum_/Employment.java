@@ -1,4 +1,4 @@
-package model.enums;
+package model.enum_;
 
 /**
  * Enum "model.enums.Employment" - трудоустройство автора обращения (Безработный, Работник, Учащийся)
@@ -18,13 +18,5 @@ public enum Employment {
      */
     Employment(String status) {
         this.status = status;
-    }
-
-    /**
-     * Переопределенный toString() для того, чтобы Enum записывался в БД на русском языке
-     */
-    @Override
-    public String toString() {
-        return status;
     }
 }
