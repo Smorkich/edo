@@ -18,8 +18,8 @@ public interface NomenclatureRepository extends JpaRepository<Nomenclature,Long>
 
     /** Query request for set a date to archived_date field */
     @Modifying
-    @Query(value = "update Nomenclature nomenclature set  nomenclature.archivedDate =:archDate where nomenclature.id =:id")
-    void moveToArchive( @Param("archDate") ZonedDateTime date, @Param("id") Long id);
+    @Query(nativeQuery = true, value = "update nomenclature set archived_date = now() where id =:id")
+    void moveToArchive(@Param("id") Long id);
 
     /** Query request for searching not archived entity by id */
     @Query("select u from Nomenclature u where u.archivedDate is null and u.id =:id")
