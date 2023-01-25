@@ -35,7 +35,7 @@ public class ConvertEmployee {
                 .workPhone(externalEmployeeDto.getCell())
                 .birthDate(externalEmployeeDto.getDob().getDate())
                 .username(externalEmployeeDto.getLogin().getUsername())
-                .externalId(0L)
+                .externalId(externalEmployeeDto.getId().getValue())
                 .department(DepartmentDto.builder()
                         .shortName(externalEmployeeDto.getCompany().getName())
                         .fullName(externalEmployeeDto.getCompany().getName())
@@ -53,7 +53,7 @@ public class ConvertEmployee {
                                 .longitude(externalEmployeeDto.getCompany().getLocation().getCoordinates().getLongitude())
                                 .build())
                         .phone(externalEmployeeDto.getPhone())
-                        .externalId(0l)
+                        .externalId(externalEmployeeDto.getCompany().getId().getValue())
                         .build())
                 .build();
     }

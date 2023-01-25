@@ -77,7 +77,7 @@ public class Employee extends BaseEntity {
      * externalId - Внешний индификатор, который будем получать из чужого хранилища
      */
     @Column(name = "external_id")
-    private long externalId;
+    private String externalId;
 
     /**
      * phone - Номер телефона сотовый

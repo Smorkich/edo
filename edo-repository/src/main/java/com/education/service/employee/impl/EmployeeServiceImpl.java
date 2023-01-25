@@ -10,9 +10,6 @@ import com.education.service.employee.EmployeeService;
 import com.github.aleksandy.petrovich.Case;
 import com.github.aleksandy.petrovich.Petrovich;
 import lombok.AllArgsConstructor;
-import model.dto.AddressDto;
-import model.dto.DepartmentDto;
-import model.dto.EmployeeDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -132,26 +129,23 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * Сохранение коллекции сотрудников
      *
-     * @param employeeDtos
+     * @param employees
      * @return
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Collection<Employee> saveCollection (Collection<EmployeeDto> employeeDtos) {
+    public Collection<Employee> saveCollection (Collection<Employee> employees) {
 
-        Collection<Employee> employees = new ArrayList<>();
         Collection<Address> addresses = new ArrayList<>();
         Collection<Department> departments = new ArrayList<>();
 
-        employeeDtos.forEach(employeeDto -> {
-            Employee employee = toEntity(employeeDto);
-            employee.setCreationDate(ZonedDateTime.now());
-            petrovichConstructor(employee);
-            employee.getDepartment().setCreationDate(ZonedDateTime.now());
-            employee.getDepartment().setDepartment(null);
-            addresses.add(employee.getAddress());
-            departments.add(employee.getDepartment());
-            employees.add(employee);
+         employees.forEach(employee -> {
+             petrovichConstructor(employee);
+             employee.setCreationDate(ZonedDateTime.now());
+             employee.getDepartment().setCreationDate(ZonedDateTime.now());
+             employee.getDepartment().setDepartment(null);
+             addresses.add(employee.getAddress());
+             departments.add(employee.getDepartment());
         });
 
         addressService.saveCollection(addresses);
@@ -166,7 +160,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param employee
      * @return
      */
-    private Employee petrovichConstructor(Employee employee) {
+    private static Employee petrovichConstructor(Employee employee) {
         Petrovich.Names names = new Petrovich.Names(employee.getLastName(), employee.getFirstName(), employee.getMiddleName(), null);
         Petrovich petrovich = new Petrovich();
         String fioDative = petrovich.inflectTo(names, Case.DATIVE).lastName
@@ -190,67 +184,5 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .concat(petrovich.inflectTo(names, Case.NOMINATIVE).middleName);
         employee.setFioNominative(fioNominative);
         return employee;
-    }
-
-    /**
-     * Маппинг Entity из EntityDto
-     *
-     * @param employeeDto
-     * @return
-     */
-    private Employee toEntity(EmployeeDto employeeDto) {
-        AddressDto address = employeeDto.getAddress();
-        DepartmentDto department = employeeDto.getDepartment();
-        AddressDto departmentAddress = department.getAddress();
-        return Employee.builder()
-                .firstName(employeeDto.getFirstName())
-                .lastName(employeeDto.getLastName())
-                .middleName(employeeDto.getMiddleName())
-                .address(Address.builder()
-                        .fullAddress(address.getFullAddress())
-                        .street(address.getStreet())
-                        .house(address.getHouse())
-                        .index(address.getIndex())
-                        .housing(address.getHousing())
-                        .building(address.getBuilding())
-                        .city(address.getCity())
-                        .region(address.getRegion())
-                        .country(address.getCountry())
-                        .flat(address.getFlat())
-                        .longitude(address.getLongitude())
-                        .latitude(address.getLatitude()).build())
-                .phone(employeeDto.getPhone())
-                .workPhone(employeeDto.getWorkPhone())
-                .birthDate(employeeDto.getBirthDate())
-                .username(employeeDto.getUsername())
-                .archivedDate(employeeDto.getArchivedDate())
-                .department(Department.builder()
-                        .shortName(department.getShortName())
-                        .fullName(department.getFullName())
-                        .address(Address.builder()
-                                .fullAddress(departmentAddress.getFullAddress())
-                                .street(departmentAddress.getStreet())
-                                .house(departmentAddress.getHouse())
-                                .index(departmentAddress.getIndex())
-                                .housing(departmentAddress.getHousing())
-                                .building(departmentAddress.getBuilding())
-                                .city(departmentAddress.getCity())
-                                .region(departmentAddress.getRegion())
-                                .country(departmentAddress.getCountry())
-                                .flat(departmentAddress.getFlat())
-                                .longitude(departmentAddress.getLongitude())
-                                .latitude(departmentAddress.getLatitude()).build())
-                        .phone(department.getPhone())
-                        .archivedDate(department.getArchivedDate()).build()).build();
-    }
-
-    /**
-     * Маппинг коллекции Entity из EntityDto
-     *
-     * @param employeeDtos
-     * @return
-     */
-    private Collection<Employee> toEntity(Collection<EmployeeDto> employeeDtos) {
-        return employeeDtos.stream().map(this::toEntity).toList();
     }
 }

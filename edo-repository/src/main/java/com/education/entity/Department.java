@@ -48,7 +48,7 @@ public class Department extends BaseEntity {
     скачиваем из чужого хранилища)
      */
     @Column(name = "external_id")
-    private Long externalId;
+    private String externalId;
 
     /* Поле с номером телефона*/
     @Column(name = "phone")

@@ -126,7 +126,7 @@ public class EmployeeController {
     @GetMapping(value = "/notArchivedAll/{ids}")
     public ResponseEntity<Collection<EmployeeDto>> findByAllIdNotArchived(@PathVariable List<Long> ids) {
         log.info("Send a response with the employee not archived of the assigned IDs");
-        Collection<EmployeeDto> employeeDto = employeeService.findByIdInAndArchivedDateNull(ids).stream().map(EMPLOYEE_MAPPER::toDto).toList();
+        Collection<EmployeeDto> employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findByIdInAndArchivedDateNull(ids));
         log.info("The operation was successful, they got the non-archived employee by id ={}", ids);
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
@@ -140,7 +140,7 @@ public class EmployeeController {
     @PostMapping(value = "/collection")
     public ResponseEntity<Collection<EmployeeDto>> saveCollection(@RequestBody Collection<EmployeeDto> employeeDto) {
         log.info("Send a response with the collection employee");
-        Collection<EmployeeDto> collection = employeeService.saveCollection(employeeDto).stream().map(EMPLOYEE_MAPPER::toDto).toList();
+        Collection<EmployeeDto> collection = EMPLOYEE_MAPPER.toDto(employeeService.saveCollection(EMPLOYEE_MAPPER.toEntity(employeeDto)));
         log.info("The operation was successful, they saved the collection");
         return new ResponseEntity<>(collection, HttpStatus.OK);
     }

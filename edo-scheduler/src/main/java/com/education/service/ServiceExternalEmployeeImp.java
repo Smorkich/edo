@@ -37,17 +37,17 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
     private final ConvertEmployee convertEmployee;
     private final RestTemplate restTemplate;
 
+    /**
+     * Каждый час синхронизиреут внешних пользователей
+     */
     @Override
     @Scheduled(cron = "${cron.employee}")
     public void dataSyncEveryHour() {
 
         log.info("The data synchronization method has started, it starts every hour");
-        Collection<ExternalEmployeeDto> externalEmployeesDto = null;
+        Collection<ExternalEmployeeDto> externalEmployeesDto;
         try {
-            URL url = new URL(jobScheduler.getEmployeeUrl());
-            log.info("Got URL from endpoint");
-            externalEmployeesDto = objectMapper.readValue(url, new TypeReference<>() {
-            });
+            externalEmployeesDto = objectMapper.readValue(new URL(jobScheduler.getEmployeeUrl()), new TypeReference<>() {});
             log.info("Get all users from JSON and save to collection");
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -58,12 +58,11 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
         log.info("Started the conversion process externalEmployeeDto in EmployeeDto");
         Collection<EmployeeDto> employeeDtos = externalEmployeesDto.stream().map(externalEmployee -> {
             EmployeeDto employeeDto = convertEmployee.toDto(externalEmployee);
-
-            /**Проверяем если пользователь удален, ставим дату архивации*/
+            /*Проверяем если пользователь удален, ставим дату архивации*/
             if (externalEmployee.isDelete()) {
                 employeeDto.setArchivedDate(ZonedDateTime.now());
             }
-            /**Проверяем если компания удалена, ставим дату архивации*/
+            /*Проверяем если компания удалена, ставим дату архивации*/
             if (externalEmployee.getCompany().isDelete()) {
                 employeeDto.getDepartment().setArchivedDate(ZonedDateTime.now());
             }

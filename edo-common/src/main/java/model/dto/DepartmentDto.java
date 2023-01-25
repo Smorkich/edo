@@ -37,7 +37,7 @@ public class DepartmentDto {
     private String phone;
 
     @ApiModelProperty(value = "внешний индификатор, который будем получать из чужого хранилища")
-    private Long externalId;
+    private String externalId;
 
     @ApiModelProperty(value = "вышестоящий департамент")
     private DepartmentDto department;

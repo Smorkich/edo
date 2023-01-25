@@ -41,7 +41,7 @@ public class EmployeeDto {
     private String fioGenitive;
 
     @ApiModelProperty(value = "Внешний индификатор, который будем получать из чужого хранилища")
-    private Long externalId;
+    private String externalId;
 
     @ApiModelProperty(value = "Номер телефона сотовый")
     private String phone;
