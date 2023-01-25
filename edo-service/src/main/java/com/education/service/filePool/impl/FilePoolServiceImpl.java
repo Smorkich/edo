@@ -2,7 +2,6 @@ package com.education.service.filePool.impl;
 
 import com.education.service.filePool.FilePoolService;
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import model.dto.FilePoolDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -15,7 +14,6 @@ import java.util.List;
  * Сервис реализует методы jpa repository и обычные методы
  */
 @Service
-@Log4j2
 @AllArgsConstructor
 public class FilePoolServiceImpl implements FilePoolService {
 
@@ -24,12 +22,7 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public FilePoolDto save(FilePoolDto filePoolDto) {
-        try {
-            return restTemplate.postForObject(URL, filePoolDto, FilePoolDto.class);
-        } catch (Exception e) {
-            log.warn("Saving file {}, failed!", filePoolDto);
-            throw e;
-        }
+        return restTemplate.postForObject(URL, filePoolDto, FilePoolDto.class);
     }
 
     @Override

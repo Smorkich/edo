@@ -2,7 +2,6 @@ package com.education.service.author.impl;
 
 import com.education.service.author.AuthorService;
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import model.dto.AuthorDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -15,7 +14,6 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-@Log4j2
 public class AuthorServiceImpl implements AuthorService {
 
     static final String URL = "http://edo-repository/api/repository/author";
@@ -26,12 +24,7 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     public AuthorDto save(AuthorDto authorDto) {
-        try {
-            return restTemplate.postForObject(URL, authorDto, AuthorDto.class);
-        } catch (Exception e) {
-            log.warn("Saving author {}, failed!", authorDto);
-            throw e;
-        }
+        return restTemplate.postForObject(URL, authorDto, AuthorDto.class);
     }
 
     /**

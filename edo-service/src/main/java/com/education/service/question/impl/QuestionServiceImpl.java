@@ -24,12 +24,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionDto save(QuestionDto questionDto) {
-        try {
-            return restTemplate.postForObject(URL, questionDto, QuestionDto.class);
-        } catch (Exception e) {
-            log.warn("Saving question {}, failed!", questionDto);
-            throw e;
-        }
+        return restTemplate.postForObject(URL, questionDto, QuestionDto.class);
     }
 
     @Override

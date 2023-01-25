@@ -5,7 +5,6 @@ import com.education.service.author.AuthorService;
 import com.education.service.filePool.FilePoolService;
 import com.education.service.question.QuestionService;
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
 import model.dto.AppealDto;
 import model.dto.AuthorDto;
 import model.dto.FilePoolDto;
@@ -30,7 +29,6 @@ import static model.enum_.Status.NEW_STATUS;
  */
 @Service
 @AllArgsConstructor
-@Log4j2
 public class AppealServiceImpl implements AppealService {
 
     private final RestTemplate restTemplate;
@@ -109,7 +107,6 @@ public class AppealServiceImpl implements AppealService {
 
             return restTemplate.exchange(URL, HttpMethod.POST, new HttpEntity<>(appealDto, headers), AppealDto.class).getBody();
         } catch (Exception e) {
-            log.warn("Saving appeal {}, failed!", appealDto);
 
             // Удаление сохранённых вложенных сущностей
             savedAuthors.forEach(authorDto -> authorService.delete(authorDto.getId()));
