@@ -37,6 +37,12 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.8.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.education</groupId>
+            <artifactId>edo-common</artifactId>
+            <version>0.0.1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
