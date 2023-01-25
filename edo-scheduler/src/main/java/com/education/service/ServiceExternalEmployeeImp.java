@@ -19,8 +19,8 @@ import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 
-import static model.constant.ConstantScheduler.EDO_REPOSITORY_NAME;
-import static model.constant.ConstantScheduler.URL_EMPLOYEE_SAVE_PATH;
+import static model.constant.Constant.EDO_REPOSITORY_NAME;
+import static model.constant.Constant.URL_EMPLOYEE_SAVE_PATH;
 
 /**
  * @author Usolkin Dmitry & Kostenko Aleksandr & Kryukov Andrey
@@ -38,7 +38,7 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
     private final RestTemplate restTemplate;
 
     /**
-     * Каждый час синхронизиреут внешних пользователей
+     * Каждый час синхронизирует внешних пользователей
      */
     @Override
     @Scheduled(cron = "${cron.employee}")

@@ -6,6 +6,7 @@ import org.springframework.web.client.RestTemplate;
 
 /**
  * @author Andrey Kryukov
+ *  RestTemplateConfig  создание bean RestTemplate и его конфигурация
  */
 @Configuration
 public class RestTemplateConfig {
