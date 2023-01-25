@@ -5,7 +5,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: noreply.ros.edo@gmail.com
-    password: ezbghhqgfhduhigl
+    password: euygbysjvnxrnvjf
     test-connection: true # Проверка подключения при старте приложения
     properties:
       mail:
