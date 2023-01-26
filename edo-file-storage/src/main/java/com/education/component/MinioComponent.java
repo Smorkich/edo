@@ -38,7 +38,7 @@ public class MinioComponent {
                     .stream(inputStream, -1, 104857600)
                     .build());
         } catch (Exception e) {
-            log.error("Error while put object in MinIO {}", e);
+            log.error("Error while put object in MinIO {}", e.getMessage());
             throw new MinIOPutException(e.getMessage());
         }
     }
@@ -53,7 +53,7 @@ public class MinioComponent {
                             .object(objectName)
                             .build());
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            log.error("Upload failed: {}",e.getMessage());
         }
         return stream;
     }
@@ -66,7 +66,7 @@ public class MinioComponent {
                     .object(objectNumber)
                     .build());
         } catch (MinioException e) {
-            System.out.println("Delete failed: " + e.getMessage());
+            log.error("Delete failed: {}", e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,11 +74,11 @@ public class MinioComponent {
 
     public void checkConnection() {
         try {
-            System.out.println("Starting connection to MINIO server");
+            log.info("Starting connection to MINIO server");
             List<Bucket> blist = minioClient.listBuckets();
-            System.out.println("Connection success, total buckets: " + blist.size());
+            log.info("Connection success, total buckets: " + blist.size());
         } catch (MinioException e) {
-            System.out.println("Connection failed for AKhmed: " + e.getMessage());
+            log.error("Connection failed: {}", e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }
