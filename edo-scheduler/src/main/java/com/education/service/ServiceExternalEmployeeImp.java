@@ -19,7 +19,8 @@ import java.net.URL;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 
-import static model.constant.Constant.EDO_REPOSITORY_NAME;
+
+import static model.constant.Constant.EDO_SERVICE_NAME;
 import static model.constant.Constant.URL_EMPLOYEE_SAVE_PATH;
 
 /**
@@ -41,7 +42,8 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
      * Каждый час синхронизирует внешних пользователей
      */
     @Override
-    @Scheduled(cron = "${cron.employee}")
+//    @Scheduled(cron = "${cron.employee}")
+    @Scheduled(fixedDelayString = "PT05M")
     public void dataSyncEveryHour() {
 
         log.info("The data synchronization method has started, it starts every hour");
@@ -52,7 +54,7 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        String uriEmployeeSavePath = uriBuilderUtil.buildURI(EDO_REPOSITORY_NAME, URL_EMPLOYEE_SAVE_PATH).toString();
+        String uriEmployeeSavePath = uriBuilderUtil.buildURI(EDO_SERVICE_NAME, URL_EMPLOYEE_SAVE_PATH).toString();
         log.info("Got a URL to save Employee to the database");
 
         log.info("Started the conversion process externalEmployeeDto in EmployeeDto");

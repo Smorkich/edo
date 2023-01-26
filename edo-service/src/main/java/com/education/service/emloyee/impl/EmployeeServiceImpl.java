@@ -65,4 +65,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         log.info("Sent a request to receive the employee not archived in edo - repository");
         return restTemplate.getForObject(URL + "/notArchivedAll/" + ids, List.class);
     }
+
+    /**
+     * Сохраняет коллекцию сотрудников
+     */
+    @Override
+    public Collection<EmployeeDto> saveCollection(Collection<EmployeeDto> employeeDto) {
+        log.info("Sent a request to to save a collection of employees, in edo - repository");
+        return restTemplate.postForObject(URL + "/collection", employeeDto, Collection.class);
+    }
 }
