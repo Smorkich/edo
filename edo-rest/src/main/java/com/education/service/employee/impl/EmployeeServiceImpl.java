@@ -10,6 +10,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collection;
 
+import static model.constant.Constant.EDO_SERVICE_NAME;
+import static model.constant.Constant.EMPLOYEE_FIO_SEARCH_PARAMETER;
+
 
 /**
  * @author Kryukov Andrey
@@ -20,15 +23,13 @@ import java.util.Collection;
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
     private final RestTemplate restTemplate;
-    private final URIBuilderUtil uriBuilder;
 
     @Override
     public Collection<EmployeeDto> findAllByFullName(String fullName) {
-        String uri = uriBuilder.buildURI("edo-service", "/api/service/employee/search")
-                .addParameter("fullName", fullName).toString();
-        log.info("URI with full name parameter built");
-        Collection<EmployeeDto> employeeDtoList = restTemplate.getForObject(uri, Collection.class);
-        log.info("Taken employee list from service by rest template");
-        return employeeDtoList;
+        log.info("Build uri to service");
+        String uri = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, "/api/service/employee/search")
+                .addParameter(EMPLOYEE_FIO_SEARCH_PARAMETER, fullName).toString();
+        log.info("Sent a request to receive the employee collection with requested full name");
+        return restTemplate.getForObject(uri, Collection.class);
     }
 }

@@ -1,12 +1,17 @@
 package com.education.util;
 
+import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
-import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.http.client.utils.URIBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static org.apache.http.HttpHost.DEFAULT_SCHEME_NAME;
+
 
 /**
  * @author Andrey Kryukov
@@ -14,30 +19,32 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 @Component
 @Log4j2
-@AllArgsConstructor
 public class URIBuilderUtil {
-    private final EurekaClient eurekaClient;
+    private static EurekaClient eurekaClient;
 
     /**
      * Билдит динамический URI до сервиса
-     * @param service - service name (edo-service example)
-     * @param path - uri path (/api/service/employee/search example)
-     * @return
+     * @param service - service name
+     * @param path - uri path
+     * @return URIBuilder instance
      */
-    public URIBuilder buildURI(String service, String path) {
-        log.info("URI build started");
-        int randomRepositoryInstance = ThreadLocalRandom.current().nextInt(eurekaClient.getApplication(service).getInstances().size());
-        log.info("Defined random instance");
-        String host = eurekaClient.getApplication(service).getInstances().get(randomRepositoryInstance).getHostName();
-        log.info("Taken host from service by eureka");
-        int port = eurekaClient.getApplication(service).getInstances().get(randomRepositoryInstance).getPort();
-        log.info("Taken port from service by eureka");
-        URIBuilder uriBuilder = new URIBuilder()
-                .setScheme("http")
-                .setHost(host)
-                .setPort(port)
+    public static URIBuilder buildURI(String service, String path) {
+        log.info("Get all instances of required service");
+        List<InstanceInfo> instances = eurekaClient.getApplication(service).getInstances();
+        log.info("Define random instance");
+        int randomInstance = ThreadLocalRandom.current().nextInt(instances.size());
+        log.info("Get certain instance of service");
+        InstanceInfo instance = instances.get(randomInstance);
+        log.info("Build uri to service");
+        return new URIBuilder()
+                .setScheme(DEFAULT_SCHEME_NAME)
+                .setHost(instance.getHostName())
+                .setPort(instance.getPort())
                 .setPath(path);
-        log.info("URI built");
-        return uriBuilder;
+    }
+
+    @Autowired
+    public void eurekaClientInjector(EurekaClient externalEurekaClient) {
+        eurekaClient = externalEurekaClient;
     }
 }

@@ -11,9 +11,11 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Collection;
 import java.util.List;
 
+import static model.constant.Constant.EDO_REPOSITORY_NAME;
+import static model.constant.Constant.EMPLOYEE_FIO_SEARCH_PARAMETER;
 
 /**
- * @author Kiladze George
+ * @author Kiladze George & Kryukov Andrey
  * Сервис, который соединяет реализацию двух модулей через RestTemplate
  * Имеет все те же операции, что и service в edo-repository
  */
@@ -24,7 +26,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     static final String URL = "http://edo-repository/api/repository/employee";
     private final RestTemplate restTemplate;
-    private final URIBuilderUtil uriBuilder;
 
     @Override
     public void save(EmployeeDto employeeDto) {
@@ -70,11 +71,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Collection<EmployeeDto> findAllByFullName(String fullName) {
-        String uri = uriBuilder.buildURI("edo-repository", "/api/repository/employee/search")
-                .addParameter("fullName", fullName).toString();
-        log.info("URI with full name parameter built");
-        Collection<EmployeeDto> employeeDtoList = restTemplate.getForObject(uri, Collection.class);
-        log.info("Taken employee list from service by rest template");
-        return employeeDtoList;
+        log.info("Build uri to repository");
+        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/employee/search")
+                .addParameter(EMPLOYEE_FIO_SEARCH_PARAMETER, fullName).toString();
+        log.info("Sent a request to receive the employee collection with requested full name");
+        return restTemplate.getForObject(uri, Collection.class);
     }
 }
