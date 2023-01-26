@@ -4,7 +4,9 @@ import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
 import com.education.service.filePool.FilePoolService;
 import com.education.service.question.QuestionService;
+import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
+import model.constant.Constant;
 import model.dto.AppealDto;
 import model.dto.AuthorDto;
 import model.dto.FilePoolDto;
@@ -102,10 +104,12 @@ public class AppealServiceImpl implements AppealService {
                     })
                     .collect(Collectors.toList()));
 
+
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
+            String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/appeal").toString();
 
-            return restTemplate.exchange(URL, HttpMethod.POST, new HttpEntity<>(appealDto, headers), AppealDto.class).getBody();
+            return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(appealDto, headers), AppealDto.class).getBody();
         } catch (Exception e) {
 
             // Удаление сохранённых вложенных сущностей

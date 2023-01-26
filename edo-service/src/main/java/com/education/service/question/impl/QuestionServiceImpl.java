@@ -1,8 +1,10 @@
 package com.education.service.question.impl;
 
 import com.education.service.question.QuestionService;
+import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import model.constant.Constant;
 import model.dto.QuestionDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -24,7 +26,9 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionDto save(QuestionDto questionDto) {
-        return restTemplate.postForObject(URL, questionDto, QuestionDto.class);
+        String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/question").toString();
+
+        return restTemplate.postForObject(uri, questionDto, QuestionDto.class);
     }
 
     @Override

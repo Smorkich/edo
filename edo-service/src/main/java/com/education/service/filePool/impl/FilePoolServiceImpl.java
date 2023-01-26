@@ -1,7 +1,9 @@
 package com.education.service.filePool.impl;
 
 import com.education.service.filePool.FilePoolService;
+import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
+import model.constant.Constant;
 import model.dto.FilePoolDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -22,7 +24,9 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public FilePoolDto save(FilePoolDto filePoolDto) {
-        return restTemplate.postForObject(URL, filePoolDto, FilePoolDto.class);
+        String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/filePool").toString();
+
+        return restTemplate.postForObject(uri, filePoolDto, FilePoolDto.class);
     }
 
     @Override
