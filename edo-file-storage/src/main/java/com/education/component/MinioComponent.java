@@ -7,8 +7,10 @@ import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
 import io.minio.errors.MinioException;
 import io.minio.messages.Bucket;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -16,15 +18,13 @@ import java.io.InputStream;
 import java.util.List;
 
 @Slf4j
+@Log4j2
+@RequiredArgsConstructor
 @Component
 public class MinioComponent {
 
-    @Autowired
-    private MinioClient minioClient;
+    private final MinioClient minioClient;
 
-    public MinioComponent() {
-
-    }
 
     @Value("${minio.bucket-name}")
     private String bucketName;
