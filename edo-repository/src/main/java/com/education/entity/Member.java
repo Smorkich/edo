@@ -30,7 +30,7 @@ public class Member extends BaseEntity {
     private MemberType type;
 
     /**
-     * Дата создания резолюции
+     * Дата создания участника
      */
     @Column(name = "creation_date")
     private ZonedDateTime creationDate;
@@ -57,7 +57,7 @@ public class Member extends BaseEntity {
      * Блок листа согласования в котором находится участник
      */
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "approval_block_id")
+    @JoinColumn(name = "approval_block_id", referencedColumnName = "id")
     private ApprovalBlock approvalBlock;
 
     /**
@@ -67,9 +67,10 @@ public class Member extends BaseEntity {
     private int ordinalNumber;
 
     /**
-     * Сотрудник
+     * Содержит ссылку на сотрудника, который является участником
      */
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
+
 }
