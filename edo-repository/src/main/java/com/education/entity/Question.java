@@ -9,6 +9,8 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
+import java.util.Collection;
+import java.util.HashSet;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 
@@ -50,5 +52,15 @@ public class Question extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "theme_id", referencedColumnName = "id")
     private Theme theme;
+
+    /**
+     * Несколько "resolution" - Один вопрос может иметь много резолюций
+     */
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "question_resolution",
+            joinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "resolution_id", referencedColumnName = "id"))
+    private Collection<Resolution> resolution = new HashSet<>();
 
 }

@@ -81,6 +81,16 @@ public class Resolution extends BaseEntity {
     @Column(name = "serial_number")
     private String serialNumber;
 
+    /**
+     * Признак Резолюции - черновик
+     */
+    @Column(name = "draft")
+    private Boolean draft;
 
+    /**
+     * Описание что должен сделать Executor
+     */
+    @Column(name = "task")
+    private String task;
 
 }
