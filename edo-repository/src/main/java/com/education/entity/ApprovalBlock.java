@@ -36,7 +36,7 @@ public class ApprovalBlock extends BaseEntity {
      * Участник перенаправивший лист согласования
      */
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_who_redirected_approval", referencedColumnName = "id")
+    @JoinColumn(name = "member_who_redirected_approval_id", referencedColumnName = "id")
     private Member memberWhoRedirectedApproval;
 
     /**
