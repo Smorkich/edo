@@ -50,10 +50,4 @@ public interface FilePoolService {
      */
     Collection<FilePoolDto> findAllByIdNotArchived(String ids);
 
-    /**
-     * uploadOneFile - загружает входящий файл в файловое хранилище
-     * @param file
-     */
-    void uploadOneFile(MultipartFile file);
-
 }

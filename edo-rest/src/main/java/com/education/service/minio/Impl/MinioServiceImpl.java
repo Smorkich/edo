@@ -1,6 +1,7 @@
 package com.education.service.minio.Impl;
 
 import com.education.service.minio.MinioService;
+import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
@@ -18,12 +19,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static model.constant.Constant.EDO_SERVICE_NAME;
+
 @Service
 @AllArgsConstructor
 public class MinioServiceImpl implements MinioService {
 
     private static final String URL = "http://edo-file-storage/api/file-storage";
-    private static final String SERVICE_URL = "http://edo-service/api/service/filePool";
     private RestTemplate restTemplate;
 
     @Override
@@ -48,10 +50,11 @@ public class MinioServiceImpl implements MinioService {
 
         HttpEntity requestEntity = new HttpEntity<>(body, headers);
 
+        String uri = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, "/api/service/minio/upload")
+                .toString();
+
         try {
-            restTemplate.postForObject(String.format("%s%s", SERVICE_URL, "/upload"),
-                    requestEntity,
-                    String.class);
+            restTemplate.postForObject(uri, requestEntity, String.class);
         } finally {
             fileToSend.delete();
         }

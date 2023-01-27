@@ -89,12 +89,4 @@ public class FilePoolController {
         return new ResponseEntity<>(filePoolService.findAllByIdNotArchived(ids), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Uploading file to file storage")
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<HttpStatus> uploadOneFile(@RequestParam("file") MultipartFile file) throws IOException {
-        filePoolService.uploadOneFile(file);
-        log.info("Upload file named: {}", file.getOriginalFilename());
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
 }
