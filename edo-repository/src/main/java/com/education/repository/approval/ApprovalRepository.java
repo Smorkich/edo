@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Служит для отправки запросов к БД.
@@ -31,5 +31,5 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     /**
      * Достаёт все листы согласования без даты архивации по указанным индексам
      */
-    List<Approval> findByIdInAndArchivedDateNull(Iterable<Long> ids);
+    Collection<Approval> findByIdInAndArchivedDateNull(Iterable<Long> ids);
 }
