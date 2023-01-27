@@ -25,6 +25,10 @@ public class ApprovalBlock extends BaseEntity {
      * Содержит ссылку на лист согласования, за которым закреплён блок
      */
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinTable(name = "approval_approvalblock",
+            joinColumns = {@JoinColumn(name = "participantapprovalblock_id", referencedColumnName = "id"),
+                    @JoinColumn(name = "signatoryapprovalblock_id", referencedColumnName = "id")},
+            inverseJoinColumns = @JoinColumn(name = "approval_id", referencedColumnName = "id"))
     @JoinColumn(name = "approval_id", referencedColumnName = "id")
     private Approval approval;
 
@@ -47,7 +51,7 @@ public class ApprovalBlock extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "approvalblock_member",
             joinColumns = @JoinColumn(name = "approvalblock_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "member_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "participant_id", referencedColumnName = "id"))
     private Collection<Member> participants;
 
     /**
@@ -56,7 +60,7 @@ public class ApprovalBlock extends BaseEntity {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "approvalblock_member",
             joinColumns = @JoinColumn(name = "approvalblock_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "member_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "signatory_id", referencedColumnName = "id"))
     private Collection<Member> signatories;
 
 }
