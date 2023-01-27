@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import model.enum_.ApprovalBlockType;
 
 import java.util.Collection;
 
@@ -22,13 +23,16 @@ import java.util.Collection;
 public class ApprovalBlock extends BaseEntity {
 
     /**
+     * Тип блока листа согласования
+     */
+    @Column(name = "approvalblock_type")
+    @Enumerated(EnumType.STRING)
+    private ApprovalBlockType type;
+
+    /**
      * Содержит ссылку на лист согласования, за которым закреплён блок
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinTable(name = "approval_approvalblock",
-            joinColumns = {@JoinColumn(name = "participantapprovalblock_id", referencedColumnName = "id"),
-                    @JoinColumn(name = "signatoryapprovalblock_id", referencedColumnName = "id")},
-            inverseJoinColumns = @JoinColumn(name = "approval_id", referencedColumnName = "id"))
     @JoinColumn(name = "approval_id", referencedColumnName = "id")
     private Approval approval;
 
@@ -49,18 +53,18 @@ public class ApprovalBlock extends BaseEntity {
      * Участники (пустые, если это блок с подписантами)
      */
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "approvalblock_member",
+    @JoinTable(name = "approvalblock_participant",
             joinColumns = @JoinColumn(name = "approvalblock_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "participant_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "member_id", referencedColumnName = "id"))
     private Collection<Member> participants;
 
     /**
      * Подписанты (пустой, если это блок с участниками)
      */
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "approvalblock_member",
+    @JoinTable(name = "approvalblock_signatory",
             joinColumns = @JoinColumn(name = "approvalblock_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "signatory_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "member_id", referencedColumnName = "id"))
     private Collection<Member> signatories;
 
 }

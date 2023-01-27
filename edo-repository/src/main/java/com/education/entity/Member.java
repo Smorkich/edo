@@ -57,10 +57,7 @@ public class Member extends BaseEntity {
      * Блок листа согласования в котором находится участник
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinTable(name = "approvalblock_member",
-            joinColumns = {@JoinColumn(name = "participant_id", referencedColumnName = "id"),
-                    @JoinColumn(name = "signatory_id", referencedColumnName = "id")},
-            inverseJoinColumns = @JoinColumn(name = "approvalblock_id", referencedColumnName = "id"))
+    @JoinColumn(name = "approvalblock_id", referencedColumnName = "id")
     private ApprovalBlock approvalBlock;
 
     /**

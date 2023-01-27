@@ -33,9 +33,9 @@ public class Approval extends BaseEntity {
      * Блоки с участниками
      */
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "approval_approvalblock",
+    @JoinTable(name = "approval_participantapprovalblock",
             joinColumns = @JoinColumn(name = "approval_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "participantapprovalblock_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "approvalblock_id", referencedColumnName = "id"))
     private Collection<ApprovalBlock> participantApprovalBlocks;
 
     /**
@@ -98,9 +98,9 @@ public class Approval extends BaseEntity {
      * Блоки с Подписантами
      */
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "approval_approvalblock",
+    @JoinTable(name = "approval_signatoryapprovalblock",
             joinColumns = @JoinColumn(name = "approval_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "signatoryapprovalblock_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "approvalblock_id", referencedColumnName = "id"))
     private Collection<ApprovalBlock> signatoryApprovalBlocks;
 
 }
