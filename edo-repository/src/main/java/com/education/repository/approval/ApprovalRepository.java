@@ -24,6 +24,11 @@ public interface ApprovalRepository extends JpaRepository<Approval, Long> {
     void moveToArchive(@Param("id") Long id);
 
     /**
+     * Достаёт все листы согласования без даты архивации
+     */
+    Collection<Approval> findAllByArchivedDateIsNull();
+
+    /**
      * Достаёт лист согласования без даты архивации по индексу
      */
     Approval findByIdAndArchivedDateNull(Long id);
