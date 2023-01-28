@@ -6,8 +6,10 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.education.mapper.ApprovalBlockMapper.APPROVAL_BLOCK_MAPPER;
+
 /**
- * Rest-контроллер сущности Member для отправки запросов от клиентов к БД
+ * Rest-контроллер сущности ApprovalBlock для отправки запросов от клиентов к БД
  */
 @RestController
 @AllArgsConstructor
