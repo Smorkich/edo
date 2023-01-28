@@ -23,4 +23,6 @@ public interface EmployeeService {
     Employee findByIdAndArchivedDateNull(Long id);
 
     Collection<Employee> findByIdInAndArchivedDateNull(Iterable<Long> ids);
+
+    Collection<Employee> findAllByFullName(String name);
 }
