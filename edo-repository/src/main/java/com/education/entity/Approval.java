@@ -23,7 +23,7 @@ import java.util.Collection;
 public class Approval extends BaseEntity {
 
     /**
-     * Cодержит ссылку на обращение, за которым закреплён лист согласования
+     * Содержит ссылку на обращение, за которым закреплён лист согласования
      */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "appeal_id", referencedColumnName = "id")

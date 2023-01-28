@@ -50,7 +50,7 @@ public class ApprovalBlock extends BaseEntity {
     private int ordinalNumber;
 
     /**
-     * Участники (пустые, если это блок с подписантами)
+     * Участники (пустой, если это блок с подписантами)
      */
     @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "approvalblock_participant",
