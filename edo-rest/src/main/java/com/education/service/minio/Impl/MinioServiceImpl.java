@@ -3,23 +3,23 @@ package com.education.service.minio.Impl;
 import com.education.service.minio.MinioService;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
+import static model.constant.Constant.DOC;
+import static model.constant.Constant.DOCX;
 import static model.constant.Constant.EDO_SERVICE_NAME;
+import static model.constant.Constant.JPEG;
+import static model.constant.Constant.JPG;
+import static model.constant.Constant.PNG;
 
 @Service
 @AllArgsConstructor
@@ -36,29 +36,20 @@ public class MinioServiceImpl implements MinioService {
     @Override
     public void uploadOneFile(MultipartFile currentFile) throws IOException {
 
-        String extension = StringUtils.getFilenameExtension(currentFile.getOriginalFilename());
-
-        Path tempFile = Files.createTempFile(null, String.format(".%s", extension));
-        Files.write(tempFile, currentFile.getBytes());
-        File fileToSend = tempFile.toFile();
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", new FileSystemResource(fileToSend));
+        LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        body.add("file", currentFile.getResource());
 
-        HttpEntity requestEntity = new HttpEntity<>(body, headers);
+        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
         String uri = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, "/api/service/minio/upload")
                 .toString();
 
-        try {
-            restTemplate.postForObject(uri, requestEntity, String.class);
-        } finally {
-            fileToSend.delete();
-        }
-
+        restTemplate.postForEntity(uri,
+                requestEntity,
+                String.class);
     }
 
     @Override
@@ -68,11 +59,8 @@ public class MinioServiceImpl implements MinioService {
 
     @Override
     public boolean isAvailable(MultipartFile currentFile) {
-
         String extension = StringUtils.getFilenameExtension(currentFile.getOriginalFilename());
-        boolean isAvailable = extension.equals("doc") || extension.equals("docx")
-                || extension.equals("png") || extension.equals("jpeg") || extension.equals("jpg");
-        return isAvailable;
-
+        return DOC.equals(extension) || DOCX.equals(extension)
+                || PNG.equals(extension) || JPEG.equals(extension) || JPG.equals(extension);
     }
 }

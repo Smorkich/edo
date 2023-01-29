@@ -28,8 +28,9 @@ public class MinioController {
     @ApiOperation(value = "Uploading file to file storage")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> uploadOneFile(@RequestParam("file") MultipartFile file) {
+        log.info("Start upload file named: {}", file.getOriginalFilename());
         minioService.uploadOneFile(file);
-        log.info("Upload file named: {}", file.getOriginalFilename());
+        log.info("End upload file named: {}", file.getOriginalFilename());
         return new ResponseEntity<>("success", HttpStatus.OK);
     }
 

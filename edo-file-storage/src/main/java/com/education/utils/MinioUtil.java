@@ -10,24 +10,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class MinioUtil {
 
-    /**
-     * Folder for uploading file from it to MINIO-server
-     */
-    @Getter
-    @Value("${minio.sourcefolder}")
-    private String forUploadFolder;
-
-    /**
-     * Folder for downloading file from MINIO-server
-     */
-    @Getter
-    @Value("${minio.targetfolder}")
-    private String forDownloadingFolder;
 
     /**
      * Bucket`s name
      */
     @Getter
-    @Value("${minio.targetfolder}")
+    @Value("${minio.bucket-name}")
     private String myBucketname;
 }
