@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class MinioUtil {
 
-
     /**
      * Bucket`s name
      */
