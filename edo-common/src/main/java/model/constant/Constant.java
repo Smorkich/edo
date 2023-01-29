@@ -14,7 +14,7 @@ public final class Constant {
     public static final String EDO_SERVICE_NAME = "edo-service";
     public static final String EDO_FILE_STORAGE_NAME = "edo-file-storage";
 
-    // Extensions
+    // Extensions for file-storage
     public static final String PNG = "png";
     public static final String JPEG = "jpeg";
     public static final String JPG = "jpg";
