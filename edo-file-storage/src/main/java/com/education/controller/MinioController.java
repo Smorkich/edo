@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 
 import static model.constant.Constant.PDF;
 
@@ -45,7 +46,7 @@ public class MinioController {
 
         try (var inDoc = minioComponent.convertFileToPDF(file, extension)) {
             String contentType = "application/pdf";
-            String fileName = file.getOriginalFilename().replace(String.format(".%s", extension), String.format(".%s", PDF));
+            String fileName = String.format("%s.%s", UUID.randomUUID().toString(), PDF);
             minioComponent.postObject(fileName, inDoc, contentType);
             return ResponseEntity.ok().body(String.format("File is uploaded. Name: %s, type: %s", fileName, contentType));
         } catch (IOException e) {
