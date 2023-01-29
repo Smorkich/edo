@@ -24,9 +24,8 @@ public class URIBuilderUtil {
 
     /**
      * Билдит динамический URI до сервиса
-     *
      * @param service - service name
-     * @param path    - uri path
+     * @param path - uri path
      * @return URIBuilder instance
      */
     public static URIBuilder buildURI(String service, String path) {
