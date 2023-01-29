@@ -26,8 +26,8 @@ public class MemberDto implements Serializable {
     private Long id;
 
     @ApiModelProperty(value = "Тип участника согласования")
-
     private MemberType type;
+
     @ApiModelProperty(value = "Дата создания участника")
     private ZonedDateTime creationDate;
 

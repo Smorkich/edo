@@ -6,8 +6,8 @@ create table if not exists member
     execution_date    timestamp with time zone,
     date_of_receiving timestamp with time zone,
     end_date          timestamp with time zone,
-    ordinal_number    int,
-    employee_id       bigint references employee (id)
+    ordinal_number    int                      not null,
+    employee_id       bigint                   not null references employee (id)
 );
 
 comment on table member is 'Участник';
