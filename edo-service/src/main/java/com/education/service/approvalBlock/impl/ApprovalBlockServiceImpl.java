@@ -66,6 +66,10 @@ public class ApprovalBlockServiceImpl implements ApprovalBlockService {
                         })
                         .collect(Collectors.toList()));
             }
+
+            String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approvalBlock").toString();
+
+            return restTemplate.postForObject(uri, approvalBlockDto, ApprovalBlockDto.class);
         } catch (Exception e) {
 
             // Удаление сохранённых вложенных участников
@@ -73,10 +77,6 @@ public class ApprovalBlockServiceImpl implements ApprovalBlockService {
 
             throw e;
         }
-
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approvalBlock").toString();
-
-        return restTemplate.postForObject(uri, approvalBlockDto, ApprovalBlockDto.class);
     }
 
     /**

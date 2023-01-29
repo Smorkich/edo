@@ -35,8 +35,6 @@ public class MemberServiceImpl implements MemberService {
         // Установка даты создания для участника
         memberDto.setCreationDate(ZonedDateTime.now());
 
-        // ******************** продумать логику удаления *********************
-
         String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/member").toString();
 
         return restTemplate.postForObject(uri, memberDto, MemberDto.class);

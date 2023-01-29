@@ -37,6 +37,8 @@ public class ApprovalServiceImpl implements ApprovalService {
         // Валидация листа согласования
         validator.validateApprovalDto(approvalDto);
 
+        // ******************** продумать логику удаления вложенных сущностей *********************
+
         // Установка даты создания для листа согласования
         approvalDto.setCreationDate(ZonedDateTime.now());
 
