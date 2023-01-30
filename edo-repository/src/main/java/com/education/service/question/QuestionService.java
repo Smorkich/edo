@@ -12,7 +12,7 @@ public interface QuestionService {
     /**
      * Метод сохранения нового адреса в БД
      */
-    void save(Question question);
+    Question save(Question question);
 
     /**
      * Метод удаления адреса из БД

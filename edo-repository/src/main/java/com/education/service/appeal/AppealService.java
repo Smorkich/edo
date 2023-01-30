@@ -2,7 +2,6 @@ package com.education.service.appeal;
 
 import com.education.entity.Appeal;
 
-import java.time.ZonedDateTime;
 import java.util.Collection;
 
 /**
@@ -13,7 +12,7 @@ public interface AppealService {
     /**
      * Сохранение обращения
      */
-    void save(Appeal appeal);
+    Appeal save(Appeal appeal);
 
     /**
      * Удаление обращения

@@ -1,4 +1,4 @@
-package com.education.service.filePoll;
+package com.education.service.filePool;
 
 import com.education.entity.FilePool;
 
@@ -13,7 +13,7 @@ public interface FilePoolService {
     /**
      * save - сохраняет новый файл в бд
      */
-    void save(FilePool filePool);
+    FilePool save(FilePool filePool);
 
     /**
      * delete - удаляет файл из бд

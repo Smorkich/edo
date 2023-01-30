@@ -5,6 +5,8 @@ import com.education.component.MinioComponent;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import model.dto.EmployeeDto;
+import model.dto.FilePoolDto;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.UUID;
+
+import static model.constant.Constant.DOC;
+import static model.constant.Constant.DOCX;
+import static model.constant.Constant.JPEG;
+import static model.constant.Constant.PDF;
+import static model.constant.Constant.PNG;
 
 /**
  * RestController of edo-file-storage.
@@ -38,12 +46,14 @@ public class MinioController {
      */
     @ApiOperation("send request to upload file to buckets from source")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity uploadFileToMinIO(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadFileToMinIO(@RequestParam("file") MultipartFile file,
+                                                    @RequestParam("key") String key,
+                                                    @RequestParam("fileName") String fileName) {
         try(InputStream in = new ByteArrayInputStream(file.getBytes())) {
-            String fileName = UUID.randomUUID().toString();
             String contentType = file.getContentType();
-            minioComponent.postObject(fileName, in, contentType);
-            return ResponseEntity.ok().body("File is uploaded. Name: " + fileName + " type: " + contentType);
+            minioComponent.postObject(key, in, contentType);
+            log.info("Upload file named: {};  Type: {}; Key: {}.", fileName, contentType, key);
+            return ResponseEntity.ok().body("File is uploaded. \nName: " + fileName + "; \ntype: " + contentType + "; \nkey: " + key);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -64,19 +74,19 @@ public class MinioController {
         InputStream is = minioComponent.getObject(fileName);
         MediaType contentType = null;
         switch (type) {
-            case "pdf":
+            case PDF:
                 contentType = MediaType.APPLICATION_PDF;
                 break;
-            case "png":
+            case PNG:
                 contentType = MediaType.IMAGE_PNG;
                 break;
-            case "jpeg":
+            case JPEG:
                 contentType = MediaType.IMAGE_JPEG;
                 break;
-            case "doc":
+            case DOC:
                 contentType = new MediaType("application", "msword");
                 break;
-            case "docx":
+            case DOCX:
                 contentType = new MediaType("application", "vnd.openxmlformats-officedocument.wordprocessingml.document");
                 break;
         }

@@ -2,7 +2,8 @@ package com.education.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import model.enums.Employment;
+import lombok.experimental.SuperBuilder;
+import model.enum_.Employment;
 
 /**
  * Класс (сущность) "Author", наследуется от класса "BaseEntity"
@@ -12,7 +13,7 @@ import model.enums.Employment;
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder(builderMethodName = "authorBuilder")
+@SuperBuilder
 @Table(name = "author")
 public class Author extends BaseEntity {
 
@@ -50,7 +51,7 @@ public class Author extends BaseEntity {
      * Поле "mobilePhone" - номер телефона автора (мобильный)
      */
     @Column(name = "mobile_phone")
-    private int mobilePhone;
+    private String mobilePhone;
 
     /**
      * Поле "email" - адрес электронной почты автора

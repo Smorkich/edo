@@ -3,7 +3,11 @@ package com.education.entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
@@ -14,7 +18,7 @@ import java.time.ZonedDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder(builderMethodName = "employeeBuilder")
+@SuperBuilder
 
 /**
  * @author George Kiladze

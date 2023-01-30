@@ -24,8 +24,8 @@ public class NomenclatureServiceImpl implements NomenclatureService {
      * Method saves new entity in DB by accepting json-body object
      */
     @Transactional(rollbackFor = Exception.class)
-    public void save(Nomenclature nomenclature) {
-        repository.save(nomenclature);
+    public Nomenclature save(Nomenclature nomenclature) {
+        return repository.saveAndFlush(nomenclature);
     }
 
     /**
@@ -33,14 +33,14 @@ public class NomenclatureServiceImpl implements NomenclatureService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void moveToArchive(Long id) {
-        repository.moveToArchive(ZonedDateTime.now(), id);
+        repository.moveToArchive(id);
     }
 
     /**
      * Method searches for an entity of Nomenclature
      */
-    public Optional<Nomenclature> findById(Long id) {
-        return repository.findById(id);
+    public Nomenclature findById(Long id) {
+        return repository.findById(id).orElse(null);
     }
 
     /**

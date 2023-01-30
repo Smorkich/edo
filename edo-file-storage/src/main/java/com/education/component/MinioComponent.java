@@ -29,11 +29,11 @@ public class MinioComponent {
     @Value("${minio.bucket-name}")
     private String bucketName;
 
-    public void postObject(String objectName, InputStream inputStream, String contentType) {
+    public void postObject(String key, InputStream inputStream, String contentType) {
         try (inputStream) {
             minioClient.putObject(PutObjectArgs.builder()
                     .bucket(bucketName)
-                    .object(objectName)
+                    .object(key)
                     .contentType(contentType)
                     .stream(inputStream, -1, 104857600)
                     .build());
@@ -45,9 +45,8 @@ public class MinioComponent {
 
     public InputStream getObject(String objectName) {
 
-        InputStream stream = null;
         try {
-            stream = minioClient
+                   return minioClient
                     .getObject(GetObjectArgs.builder()
                             .bucket(bucketName)
                             .object(objectName)
@@ -55,7 +54,7 @@ public class MinioComponent {
         } catch (Exception e) {
             log.error("Upload failed: {}",e.getMessage());
         }
-        return stream;
+        return null;
     }
 
     public void deleteObjects(String objectNumber) {

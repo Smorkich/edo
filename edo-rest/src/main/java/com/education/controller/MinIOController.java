@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,6 +20,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import static model.constant.Constant.DOC;
+import static model.constant.Constant.DOCX;
+import static model.constant.Constant.JPEG;
+import static model.constant.Constant.PDF;
+import static model.constant.Constant.PNG;
 
 /**
  * RestController of edo-rest for redirect
@@ -37,13 +44,17 @@ public class MinIOController {
      * Request consist of object`s name.
      */
     @ApiOperation("send request to upload file to buckets from source")
-    @PostMapping("/upload")
-    public ResponseEntity uploadOneFile(@RequestParam("file") MultipartFile file) throws IOException {
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<String> uploadOneFile(@RequestParam("file") MultipartFile file) throws IOException {
+        if (!service.isAvailable(file)) {
+            return ResponseEntity.badRequest().body("Неверный формат файла");
+        }
         log.info("Upload file named: {}", file.getOriginalFilename());
-        service.uploadOneFile(file);
+        String fileName = file.getOriginalFilename();
         String contentType = file.getContentType();
-        log.info("Upload file named: {}", file.getOriginalFilename());
-        return ResponseEntity.ok().body("File is uploaded. Name: " + file.getOriginalFilename() + " type: " + contentType);
+        service.uploadOneFile(file);
+        log.info("Upload file named: {};  Type: {}.", fileName, contentType);
+        return ResponseEntity.ok().body("File is uploaded. \nName: " + fileName + " \ntype: " + contentType);
     }
 
     /**
@@ -59,19 +70,19 @@ public class MinIOController {
         InputStream is = resource.getInputStream();
         MediaType contentType = null;
         switch (type) {
-            case "pdf":
+            case PDF:
                 contentType = MediaType.APPLICATION_PDF;
                 break;
-            case "png":
+            case PNG:
                 contentType = MediaType.IMAGE_PNG;
                 break;
-            case "jpeg":
+            case JPEG:
                 contentType = MediaType.IMAGE_JPEG;
                 break;
-            case "doc":
+            case DOC:
                 contentType = new MediaType("application", "msword");
                 break;
-            case "docx":
+            case DOCX:
                 contentType = new MediaType("application", "vnd.openxmlformats-officedocument.wordprocessingml.document");
                 break;
         }

@@ -38,7 +38,7 @@ public class DepartmentServiceImp implements DepartmentService {
     }
 
     /**
-     * заносит дату архивации, тем самым арххивируя департамент
+     * заносит дату архивации, тем самым архивируя департамент
      *
      * @param id
      */
@@ -46,7 +46,7 @@ public class DepartmentServiceImp implements DepartmentService {
     @Transactional(rollbackFor = Exception.class)
     public void removeToArchived(Long id) {
         ZonedDateTime zonedDateTime = ZonedDateTime.now();
-        repository.removeToArchived(zonedDateTime,id);
+        repository.removeToArchived(id);
     }
 
     /**

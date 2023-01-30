@@ -6,11 +6,10 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 /**
- * @author Nadezhda Pupina
- * Интерфейс для реализации конвертации вопроса в ДТО и обратно
+ * Интерфейс для реализации конвертации департамента в ДТО и обратно
  */
 
-@Mapper(componentModel = "spring")
+@Mapper
 public interface QuestionMapper extends AbstractMapper<Question, QuestionDto> {
     QuestionMapper QUESTION_MAPPER = Mappers.getMapper(QuestionMapper.class);
 
