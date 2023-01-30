@@ -40,7 +40,7 @@ public class DepartmentController {
      * @param id
      * @return
      */
-    @ApiOperation(value = "Предоставление департамента по индентификатору")
+    @ApiOperation(value = "Предоставление департамента по идентификатору")
     @GetMapping("/{id}")
     private ResponseEntity<DepartmentDto> getDepartment(@PathVariable(name = "id") Long id) {
         log.info("send a response with the department of the assigned id");
@@ -100,11 +100,10 @@ public class DepartmentController {
      * @param departmentDto
      * @return
      */
-    @ApiOperation(value = "Добавлнение департамента")
+    @ApiOperation(value = "Добавленение департамента")
     @PostMapping
     private ResponseEntity<Long> saveDepartment(@RequestBody DepartmentDto departmentDto) {
         log.info("Starting the save operation");
-        System.out.println(departmentDto.getAddress());
         Long idSaveDep = departmentService.save((Department) DEPARTMENT_MAPPER.toEntity(departmentDto));
         log.info("saving the department and displaying its full name in the response");
         return new ResponseEntity<>( idSaveDep, HttpStatus.OK);

@@ -40,7 +40,7 @@ public class Department extends BaseEntity {
     private String fullName;
 
     /* Поле адрес*/
-    @OneToOne(fetch = LAZY,cascade = CascadeType.PERSIST)
+    @OneToOne(fetch = LAZY)
     @JoinColumn (name = "address")
     private Address address;
 
@@ -55,7 +55,7 @@ public class Department extends BaseEntity {
     private String phone;
 
     /* Поле с вышестоящим департаментом */
-    @OneToOne(fetch = LAZY,cascade = CascadeType.ALL)
+    @OneToOne(fetch = LAZY)
     @JoinColumn(name = "department")
     private Department department;
 

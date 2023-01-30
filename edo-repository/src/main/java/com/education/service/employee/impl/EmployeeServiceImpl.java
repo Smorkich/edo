@@ -136,7 +136,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional(rollbackFor = Exception.class)
     public Collection<Employee> saveCollection (Collection<Employee> employees) {
 
-        Collection<Address> addresses = new ArrayList<>();
+        Collection<Address> addressesDepartments = new ArrayList<>();
+        Collection<Address> addressesEmployees = new ArrayList<>();
         Collection<Department> departments = new ArrayList<>();
 
          employees.forEach(employee -> {
@@ -144,12 +145,15 @@ public class EmployeeServiceImpl implements EmployeeService {
              employee.setCreationDate(ZonedDateTime.now());
              employee.getDepartment().setCreationDate(ZonedDateTime.now());
              employee.getDepartment().setDepartment(null);
-             addresses.add(employee.getAddress());
+            // addresses.add(employee.getAddress());
+             addressesDepartments.add(employee.getDepartment().getAddress());
              departments.add(employee.getDepartment());
+             addressesEmployees.add(employee.getAddress());
         });
 
-        addressService.saveCollection(addresses);
+        addressService.saveCollection(addressesDepartments);
         departmentService.saveCollection(departments);
+        addressService.saveCollection(addressesEmployees);
 
         return employeeRepository.saveAll(employees);
     }
