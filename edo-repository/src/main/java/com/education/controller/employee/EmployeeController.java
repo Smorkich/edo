@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class EmployeeController {
      */
     @ApiOperation(value = "Предоставление сотрудника по индентификатору")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EmployeeDto> findById(@PathVariable Long id) {
+    public ResponseEntity<EmployeeDto> findById(@PathVariable Long id) throws URISyntaxException {
         log.info("Send a response with the employee of the assigned id");
         EmployeeDto employeeDto = toDto(employeeService.findById(id));
         log.info("The operation was successful, we got the employee by id ={}", id);
@@ -46,7 +47,7 @@ public class EmployeeController {
      */
     @ApiOperation(value = "Предоставление сотрудников по назначеным идентификаторам")
     @GetMapping("/all")
-    public ResponseEntity<Collection<EmployeeDto>> findAll() {
+    public ResponseEntity<Collection<EmployeeDto>> findAll() throws URISyntaxException {
         log.info("Send a response with the employees");
         Collection<EmployeeDto> employeeDto = toDto(employeeService.findAll());
         log.info("The operation was successful, we got the all employees");
@@ -60,7 +61,7 @@ public class EmployeeController {
      */
     @ApiOperation(value = "Предоставление сотрудников по назначеным идентификаторам")
     @GetMapping("/all/{ids}")
-    public ResponseEntity<Collection<EmployeeDto>> findAllById(@PathVariable List<Long> ids) {
+    public ResponseEntity<Collection<EmployeeDto>> findAllById(@PathVariable List<Long> ids) throws URISyntaxException {
         log.info("Send a response with the employee of the assigned IDs");
         Collection<EmployeeDto> employeeDto = toDto(employeeService.findAllById(ids));
         log.info("The operation was successful, we got the employee by id = {} ", ids);
@@ -74,7 +75,7 @@ public class EmployeeController {
      */
     @ApiOperation(value = "Создает сотрудника")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EmployeeDto> save(@RequestBody EmployeeDto employeeDto) {
+    public ResponseEntity<EmployeeDto> save(@RequestBody EmployeeDto employeeDto) throws URISyntaxException {
         log.info("Starting the save operation");
         employeeService.save(toEntity(employeeDto));
         log.info("Saving the employee");
@@ -88,7 +89,7 @@ public class EmployeeController {
      */
     @ApiOperation(value = "Архивация сотрудника с занесением времени архивации")
     @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> moveToArchived(@PathVariable Long id) {
+    public ResponseEntity<Void> moveToArchived(@PathVariable Long id) throws URISyntaxException {
         log.info("Starting the archiving operation");
         employeeService.moveToArchived(id);
         log.info("Archiving the employee");
@@ -102,7 +103,7 @@ public class EmployeeController {
      */
     @ApiOperation(value = "Предоставление сотрудника без архивирования по идентификатору")
     @GetMapping(value = "/notArchived/{id}")
-    public ResponseEntity<EmployeeDto> findByIdNotArchived(@PathVariable Long id) {
+    public ResponseEntity<EmployeeDto> findByIdNotArchived(@PathVariable Long id) throws URISyntaxException {
         log.info("Send a response with the employee not archived of the assigned ID");
         EmployeeDto employeeDto = toDto(employeeService.findByIdAndArchivedDateNull(id));
         log.info("The operation was successful, they got the non-archived employee by id ={}", id);
@@ -116,7 +117,7 @@ public class EmployeeController {
      */
     @ApiOperation(value = "Предоставление сотрудников без архивирования по идентификатору")
     @GetMapping(value = "/notArchivedAll/{ids}")
-    public ResponseEntity<Collection<EmployeeDto>> findByAllIdNotArchived(@PathVariable List<Long> ids) {
+    public ResponseEntity<Collection<EmployeeDto>> findByAllIdNotArchived(@PathVariable List<Long> ids) throws URISyntaxException {
         log.info("Send a response with the employee not archived of the assigned IDs");
         Collection<EmployeeDto> employeeDto = employeeService.findByIdInAndArchivedDateNull(ids).stream().map(this::toDto).toList();
         log.info("The operation was successful, they got the non-archived employee by id ={}", ids);

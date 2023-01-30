@@ -2,6 +2,7 @@ package com.education.service.employee;
 
 import com.education.entity.Employee;
 
+import java.net.URISyntaxException;
 import java.util.Collection;
 
 /**
@@ -10,17 +11,17 @@ import java.util.Collection;
  */
 public interface EmployeeService {
 
-    void save(Employee employee);
+    void save(Employee employee) throws URISyntaxException;
 
-    void moveToArchived(Long id);
+    void moveToArchived(Long id) throws URISyntaxException;
 
-    Employee findById(Long id);
+    Employee findById(Long id) throws URISyntaxException;
 
-    Collection<Employee> findAll();
+    Collection<Employee> findAll() throws URISyntaxException;
 
-    Collection<Employee> findAllById(Iterable<Long> ids);
+    Collection<Employee> findAllById(Iterable<Long> ids) throws URISyntaxException;
 
-    Employee findByIdAndArchivedDateNull(Long id);
+    Employee findByIdAndArchivedDateNull(Long id) throws URISyntaxException;
 
-    Collection<Employee> findByIdInAndArchivedDateNull(Iterable<Long> ids);
+    Collection<Employee> findByIdInAndArchivedDateNull(Iterable<Long> ids) throws URISyntaxException;
 }

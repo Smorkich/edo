@@ -5,11 +5,13 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.QuestionDto;
+import org.bouncycastle.util.Iterable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URISyntaxException;
 import java.util.List;
 
 import static com.education.mapper.QuestionMapper.QUESTION_MAPPER;
@@ -29,7 +31,7 @@ public class QuestionController {
     //GET ONE /api/repository/question/{id}
     @ApiOperation(value = "Возвращает вопрос по id", notes = "Вопрос должен существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    private ResponseEntity<QuestionDto> findById(@PathVariable(name = "id") Long id) {
+    private ResponseEntity<QuestionDto> findById(@PathVariable(name = "id") Long id) throws URISyntaxException {
         log.info("Send a get-request to get Question with id = {} from database", id);
         QuestionDto questionDto = QUESTION_MAPPER.toDto(questionService.findById(id));
         log.info("The operation was successful, we got the Question by id ={}", id);
@@ -39,9 +41,9 @@ public class QuestionController {
     //GET ALL /api/repository/question/all/{ids}
     @ApiOperation(value = "Возвращает все вопросы", notes = "Вопросы должны существовать")
     @GetMapping("/all/{ids}")
-    private ResponseEntity<List<QuestionDto>> findAll(@PathVariable(name = "ids") List<Long> ids) {
+    private ResponseEntity<List<QuestionDto>> findAll(@PathVariable(name = "ids") List<Long> ids) throws URISyntaxException {
         log.info("Send a get-request to get all Question from database");
-        List<QuestionDto> questionDtos = (List<QuestionDto>) QUESTION_MAPPER.toDto(questionService.findAll());
+        List<QuestionDto> questionDtos = (List<QuestionDto>) QUESTION_MAPPER.toDto(questionService.findAll(ids));
         log.info("The operation was successful, they got the non-archived Question by id ={}", ids);
         return new ResponseEntity<>(questionDtos, HttpStatus.OK);
     }
@@ -49,7 +51,7 @@ public class QuestionController {
     //POST /api/repository/question
     @ApiOperation(value = "Создает вопрос в БД", notes = "Вопрос должен существовать")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<QuestionDto> save(@RequestBody QuestionDto questionDto) {
+    public ResponseEntity<QuestionDto> save(@RequestBody QuestionDto questionDto) throws URISyntaxException {
         log.info("Send a post-request to post new Question to database");
         var saved = questionService.save(QUESTION_MAPPER.toEntity(questionDto));
         log.info("Response: {} was added to database", questionDto);
@@ -59,7 +61,7 @@ public class QuestionController {
     //DELETE /api/repository/question/{id}
     @ApiOperation(value = "Удаляет вопрос из БД", notes = "Вопрос должен существовать")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Long> delete(@PathVariable("id") long id) {
+    public ResponseEntity<Long> delete(@PathVariable("id") long id) throws URISyntaxException {
         log.info("Send a delete-request to delete Question with id = {} from database", id);
         questionService.delete(questionService.findById(id));
         log.info("Response: Question with id = {} was deleted from database", id);
@@ -69,7 +71,7 @@ public class QuestionController {
     //POST /api/repository/question/move/{id}
     @ApiOperation(value = "Добавляет в вопрос дату архивации", notes = "Вопрос должен существовать")
     @PostMapping("/move/{id}")
-    private ResponseEntity<QuestionDto> moveToArchive(@PathVariable(name = "id") Long id) {
+    private ResponseEntity<QuestionDto> moveToArchive(@PathVariable(name = "id") Long id) throws URISyntaxException {
         log.info("Starting the archiving operation");
         questionService.moveToArchive(id);
         log.info("Added archiving date");
@@ -80,7 +82,7 @@ public class QuestionController {
     //GET ONE WITHOUT ARCHIVED DATE /api/repository/question/notArchived/{id}
     @ApiOperation(value = "Возвращает вопрос без архивации по id", notes = "Вопрос должен существовать")
     @GetMapping("/notArchived/{id}")
-    private ResponseEntity<QuestionDto> findByIdAndArchivedDateNull(@PathVariable(name = "id") Long id) {
+    private ResponseEntity<QuestionDto> findByIdAndArchivedDateNull(@PathVariable(name = "id") Long id) throws URISyntaxException {
         log.info("send a response with the Question not archived of the assigned ID");
         QuestionDto questionDto = QUESTION_MAPPER.toDto(questionService.findByIdAndArchivedDateNull(id));
         log.info("The operation was successful, they got the non-archived Question by id ={}", id);
@@ -90,7 +92,7 @@ public class QuestionController {
     //GET ALL WITHOUT ARCHIVED DATE /api/repository/question/notArchivedAll/{ids}
     @ApiOperation(value = "Возвращает вопросы без архивации по id", notes = "Вопросы должны существовать")
     @GetMapping("/notArchivedAll/{ids}")
-    private ResponseEntity<List<QuestionDto>> findByAllIdNotArchived(@PathVariable(name = "ids") List<Long> ids) {
+    private ResponseEntity<List<QuestionDto>> findByAllIdNotArchived(@PathVariable(name = "ids") List<Long> ids) throws URISyntaxException {
         log.info("send a response with the Question not archived of the assigned IDs");
         List<QuestionDto> questionDto = (List<QuestionDto>) QUESTION_MAPPER.toDto(questionService.findByAllIdNotArchived(ids));
         log.info("The operation was successful, they got the non-archived Question by id ={}", ids);

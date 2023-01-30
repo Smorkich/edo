@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URISyntaxException;
 import java.util.Collection;
 
 import static com.education.mapper.AuthorMapper.AUTHOR_MAPPER;
@@ -29,7 +30,7 @@ public class AuthorRestController {
 
     @ApiOperation(value = "Gets all authors", notes = "Author must exist")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<AuthorDto>> getAllAuthors() {
+    public ResponseEntity<Collection<AuthorDto>> getAllAuthors() throws URISyntaxException {
         log.info("Sent GET request to get all authors from the database");
         var authorDtoCollection = AUTHOR_MAPPER.toDto(authorService.findAll());
         log.info("Response from database:{}", authorDtoCollection);
@@ -38,7 +39,7 @@ public class AuthorRestController {
 
     @ApiOperation(value = "Add author", notes = "Author not must exist")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthorDto> addAuthorAction(@RequestBody AuthorDto authorDto) {
+    public ResponseEntity<AuthorDto> addAuthorAction(@RequestBody AuthorDto authorDto) throws URISyntaxException {
         log.info("Send POST request to add author to databases: {}", authorDto);
         Author save = authorService.save(AUTHOR_MAPPER.toEntity(authorDto));
         log.info("Author added to database");
@@ -47,7 +48,7 @@ public class AuthorRestController {
 
     @ApiOperation(value = "Delete author", notes = "Author must exist")
     @DeleteMapping("/{id}")
-    public ResponseEntity<AuthorDto> deleteAuthor(@PathVariable Long id) {
+    public ResponseEntity<AuthorDto> deleteAuthor(@PathVariable Long id) throws URISyntaxException {
         log.info("Send DELETE request to delete author with id={} to databases", id);
         authorService.delete(id);
         log.info("Author was deleted from the database");
@@ -56,7 +57,7 @@ public class AuthorRestController {
 
     @ApiOperation(value = "Gets authors by id", notes = "Author must exist")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthorDto> getAuthorById(@PathVariable Long id) {
+    public ResponseEntity<AuthorDto> getAuthorById(@PathVariable Long id) throws URISyntaxException {
         log.info("Sent GET request to get author with id={} from the database", id);
         var authorDto = AUTHOR_MAPPER.toDto(authorService.findById(id));
         log.info("Response from database:{}", authorDto);

@@ -8,6 +8,14 @@ import lombok.NoArgsConstructor;
 public class Constant {
 
     public static final String ADDRESS_URL = "api/repository/address";
-
+    public static final String APPEAL_URL = "api/repository/appeal";
+    public static final String AUTHOR_URL = "api/repository/author";
+    public static final String DEPARTMENT_URL = "api/repository/department";
+    public static final String EMPLOYEE_URL = "api/repository/employee";
+    public static final String FILEPOOL_URL = "api/repository/filePool";
+    public static final String NOMENCLATURE_URL = "api/repository/nomenclature";
+    public static final String QUESTION_URL = "api/repository/question";
+    public static final String RESOLUTION_URL = "api/repository/resolution";
+    public static final String THEME_URL = "api/repository/theme";
 
 }

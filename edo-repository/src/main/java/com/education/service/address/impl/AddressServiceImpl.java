@@ -46,7 +46,7 @@ public class AddressServiceImpl implements AddressService {
                 .setPort(instance.getPort())
                 .setPath(ADDRESS_URL)
                 .setPath("/");
-        restTemplate.getForObject(builder.build(), Address.class);
+        restTemplate.postForObject(builder.build(), address, Address.class);
     }
 
     /**
@@ -63,7 +63,8 @@ public class AddressServiceImpl implements AddressService {
                 .setPath(ADDRESS_URL)
                 .setPath("/")
                 .setPath(String.valueOf(address.getId()));
-        restTemplate.getForObject(builder.build(), Address.class);
+        restTemplate.delete(builder.build());
+
     }
 
     /**
