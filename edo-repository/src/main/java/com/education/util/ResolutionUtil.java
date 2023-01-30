@@ -98,25 +98,25 @@ public class ResolutionUtil {
     /**
      * Метод для конвертации Dto в Резолюцию
      */
-    public static Resolution toResolution(ResolutionDto resolutionDto) {
-        return new Resolution(
-                resolutionDto.getCreationDate(),
-                resolutionDto.getArchivedDate(),
-                resolutionDto.getLastActionDate(),
-                resolutionDto.getType(),
-                toEmployee(resolutionDto.getCreator()),
-                toEmployee(resolutionDto.getSigner()),
-                toListEmployee(resolutionDto.getExecutor()),
-                toEmployee(resolutionDto.getCurator()),
-                resolutionDto.getSerialNumber()
-        );
-    }
+//    public static Resolution toResolution(ResolutionDto resolutionDto) {
+//        return new Resolution(
+//                resolutionDto.getCreationDate(),
+//                resolutionDto.getArchivedDate(),
+//                resolutionDto.getLastActionDate(),
+//                resolutionDto.getType(),
+//                toEmployee(resolutionDto.getCreator()),
+//                toEmployee(resolutionDto.getSigner()),
+//                toListEmployee(resolutionDto.getExecutor()),
+//                toEmployee(resolutionDto.getCurator()),
+//                resolutionDto.getSerialNumber()
+//        );
+//    }
 
-    public static List<Resolution> toListResolutions(Collection<ResolutionDto> resolutionDtos) {
-        return resolutionDtos.stream()
-                .map(ResolutionUtil::toResolution)
-                .collect(Collectors.toList());
-    }
+//    public static List<Resolution> toListResolutions(Collection<ResolutionDto> resolutionDtos) {
+//        return resolutionDtos.stream()
+//                .map(ResolutionUtil::toResolution)
+//                .collect(Collectors.toList());
+//    }
 
     public static List<ResolutionDto> toListResolutionsDto(Collection<Resolution> resolutions) {
         return resolutions.stream()
