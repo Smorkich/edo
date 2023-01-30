@@ -1,5 +1,6 @@
 package com.education.service.filePool;
 import model.dto.FilePoolDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
 
@@ -12,7 +13,7 @@ public interface FilePoolService {
     /**
      * save - сохраняет новый файл в бд
      */
-    void save(FilePoolDto filePool);
+    FilePoolDto save(FilePoolDto filePool);
 
     /**
      * delete - удаляет файл из бд

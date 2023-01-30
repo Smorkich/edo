@@ -33,7 +33,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void moveToArchive(Long id) {
-        repository.moveToArchive(ZonedDateTime.now(), id);
+        repository.moveToArchive(id);
     }
 
     /**

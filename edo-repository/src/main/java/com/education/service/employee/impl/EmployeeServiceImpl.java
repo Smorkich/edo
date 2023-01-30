@@ -43,15 +43,9 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Long save(Employee employee) {
-
+    public void save(Employee employee) {
         employee.setCreationDate(ZonedDateTime.now());
-        casesConstructor(employee);
-        employee.getDepartment().setCreationDate(ZonedDateTime.now());
-
         employeeRepository.save(employee);
-
-        return employee.getId();
     }
 
     /**
@@ -63,8 +57,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void moveToArchived(Long id) {
-        ZonedDateTime zonedDateTime = ZonedDateTime.now();
-        employeeRepository.moveToArchived(zonedDateTime, id);
+        employeeRepository.moveToArchived(id);
     }
 
     /**
@@ -125,6 +118,19 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employee> findByIdInAndArchivedDateNull(Iterable<Long> ids) {
         return employeeRepository.findByIdInAndArchivedDateNull(ids);
     }
+
+    /**
+     * предоставляет сторудников по ФИО
+     *
+     * @param fullName
+     * @return
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<Employee> findAllByFullName(String fullName) {
+        return employeeRepository.findAllByFullName(fullName);
+    }
+
 
     /**
      * Сохранение коллекции сотрудников

@@ -17,7 +17,7 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
      * Метод ставит дату архивации
      */
     @Modifying
-    @Query(nativeQuery = true, value = "update appeal set archived_date = now where id =:id")
+    @Query(nativeQuery = true, value = "update appeal set archived_date = now() where id =:id and archived_date is null")
     void moveToArchive(@Param("id") Long id);
 
     /**
