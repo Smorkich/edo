@@ -46,7 +46,7 @@ public class MemberDto implements Serializable {
     @ApiModelProperty(value = "Номер по порядку согласования и порядку отображения на UI")
     private int ordinalNumber;
 
-    @ApiModelProperty(value = "Дата получения")
+    @ApiModelProperty(value = "Сотрудник, который является участником")
     private EmployeeDto employee;
 
 }
