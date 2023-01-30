@@ -2,12 +2,16 @@ package com.education.service.approval.impl;
 
 import com.education.service.approval.ApprovalService;
 import com.education.service.approvalBlock.ApprovalBlockService;
+import com.education.service.emloyee.EmployeeService;
 import com.education.service.member.MemberService;
 import com.education.util.URIBuilderUtil;
 import com.education.util.Validator;
 import lombok.AllArgsConstructor;
 import model.dto.ApprovalBlockDto;
 import model.dto.ApprovalDto;
+import model.dto.EmployeeDto;
+import model.dto.MemberDto;
+import model.enum_.MemberType;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -33,6 +37,9 @@ public class ApprovalServiceImpl implements ApprovalService {
     private final ApprovalBlockService approvalBlockService;
     private final MemberService memberService;
     private final Validator validator;
+
+    // Используется для заглушки
+    private final EmployeeService employeeService;
 
     /**
      * Отправляет post-запрос в edo-repository для сохранения листа согласования
@@ -71,7 +78,13 @@ public class ApprovalServiceImpl implements ApprovalService {
                     .collect(Collectors.toList()));
 
             // Сохранение инициатора
-            approvalDto.setInitiator(memberService.save(approvalDto.getInitiator()));
+            approvalDto.setInitiator(memberService.save(MemberDto.builder()
+                    // Заменить на нормальный метод получения текущего пользователя, после написания security!!!
+                    .employee(getCurrentUser())
+                    .creationDate(ZonedDateTime.now())
+                    .ordinalNumber(0)
+                    .type(MemberType.INITIATOR)
+                    .build()));
 
             // Установка даты создания для листа согласования
             approvalDto.setCreationDate(ZonedDateTime.now());
@@ -169,5 +182,13 @@ public class ApprovalServiceImpl implements ApprovalService {
         String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/archive/all/findByIdInAndArchivedDateNull/" + ids).toString();
 
         return restTemplate.getForObject(uri, List.class);
+    }
+
+    /**
+     * Заглушка для получения текущего пользователя. Обязательно должен быть хотя бы 1 employee в БД!
+     * После написания Security убрать!!!
+     */
+    private EmployeeDto getCurrentUser() {
+        return employeeService.findAll().stream().findAny().get();
     }
 }

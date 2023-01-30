@@ -75,6 +75,7 @@ public class ApprovalBlockServiceImpl implements ApprovalBlockService {
             // Удаление сохранённых вложенных участников
             savedMembers.forEach(memberDto -> memberService.delete(memberDto.getId()));
 
+
             throw e;
         }
     }
