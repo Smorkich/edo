@@ -45,8 +45,8 @@ public class ApprovalBlockServiceImpl implements ApprovalBlockService {
         // Список, который хранит новых участников
         List<MemberDto> savedMembers = new ArrayList<>();
 
-        // Сохранение участников согласования
         try {
+            // Сохранение участников согласования
             if (approvalBlockDto.getType().equals(ApprovalBlockType.PARTICIPANT_BLOCK)) {
                 approvalBlockDto.setParticipants(approvalBlockDto.getParticipants().stream()
                         .map(memberDto -> {

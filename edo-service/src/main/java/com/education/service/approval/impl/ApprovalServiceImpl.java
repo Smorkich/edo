@@ -1,16 +1,25 @@
 package com.education.service.approval.impl;
 
 import com.education.service.approval.ApprovalService;
+import com.education.service.approvalBlock.ApprovalBlockService;
+import com.education.service.member.MemberService;
 import com.education.util.URIBuilderUtil;
 import com.education.util.Validator;
 import lombok.AllArgsConstructor;
+import model.dto.ApprovalBlockDto;
 import model.dto.ApprovalDto;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static model.constant.Constant.EDO_REPOSITORY_NAME;
 
@@ -21,6 +30,8 @@ import static model.constant.Constant.EDO_REPOSITORY_NAME;
 @AllArgsConstructor
 public class ApprovalServiceImpl implements ApprovalService {
     private final RestTemplate restTemplate;
+    private final ApprovalBlockService approvalBlockService;
+    private final MemberService memberService;
     private final Validator validator;
 
     /**
@@ -37,14 +48,45 @@ public class ApprovalServiceImpl implements ApprovalService {
         // Валидация листа согласования
         validator.validateApprovalDto(approvalDto);
 
-        // ******************** продумать логику удаления вложенных сущностей *********************
+        // Список, который хранит новые блоки
+        List<ApprovalBlockDto> savedApprovalBlocks = new ArrayList<>();
 
-        // Установка даты создания для листа согласования
-        approvalDto.setCreationDate(ZonedDateTime.now());
+        try {
+            // Сохранение блоков согласования
+            approvalDto.setParticipantApprovalBlocks(approvalDto.getParticipantApprovalBlocks().stream()
+                    .map(approvalBlockDto -> {
+                        approvalBlockDto = approvalBlockService.save(approvalBlockDto);
+                        savedApprovalBlocks.add(approvalBlockDto);
 
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval").toString();
+                        return approvalBlockDto;
+                    })
+                    .collect(Collectors.toList()));
+            approvalDto.setSignatoryApprovalBlocks(approvalDto.getSignatoryApprovalBlocks().stream()
+                    .map(approvalBlockDto -> {
+                        approvalBlockDto = approvalBlockService.save(approvalBlockDto);
+                        savedApprovalBlocks.add(approvalBlockDto);
 
-        return restTemplate.postForObject(uri, approvalDto, ApprovalDto.class);
+                        return approvalBlockDto;
+                    })
+                    .collect(Collectors.toList()));
+
+            // Сохранение инициатора
+            approvalDto.setInitiator(memberService.save(approvalDto.getInitiator()));
+
+            // Установка даты создания для листа согласования
+            approvalDto.setCreationDate(ZonedDateTime.now());
+
+            String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval").toString();
+
+            return restTemplate.postForObject(uri, approvalDto, ApprovalDto.class);
+        } catch (Exception e) {
+
+            // Удаление сохранённых вложенных сущностей
+            savedApprovalBlocks.forEach(approvalBlockDto -> approvalBlockService.delete(approvalBlockDto.getId()));
+            if (approvalDto.getInitiator().getId() != null) memberService.delete(approvalDto.getInitiator().getId());
+
+            throw e;
+        }
     }
 
     /**
@@ -88,14 +130,15 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     /**
-     * Отправляет post-запрос в edo-repository для добавления даты архивации листу согласования
+     * Отправляет patch-запрос в edo-repository для добавления даты архивации листу согласования
      */
     @Override
     public ApprovalDto moveToArchive(Long id) {
-        ApprovalDto approvalDto = findById(id);
         String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/move/" + id).toString();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return restTemplate.postForObject(uri, approvalDto, ApprovalDto.class);
+        return restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<>(headers), ApprovalDto.class).getBody();
     }
 
     /**
@@ -103,7 +146,7 @@ public class ApprovalServiceImpl implements ApprovalService {
      */
     @Override
     public ApprovalDto findByIdNotArchived(Long id) {
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/archive/" + id).toString();
+        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/findByIdNotArchived/" + id).toString();
 
         return restTemplate.getForObject(uri, ApprovalDto.class);
     }
@@ -113,7 +156,7 @@ public class ApprovalServiceImpl implements ApprovalService {
      */
     @Override
     public Collection<ApprovalDto> findAllNotArchived() {
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/archive/all").toString();
+        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/findAllNotArchived").toString();
 
         return restTemplate.getForObject(uri, List.class);
     }
@@ -123,7 +166,7 @@ public class ApprovalServiceImpl implements ApprovalService {
      */
     @Override
     public Collection<ApprovalDto> findByIdInAndArchivedDateNull(Iterable<Long> ids) {
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/archive/all/" + ids).toString();
+        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/archive/all/findByIdInAndArchivedDateNull/" + ids).toString();
 
         return restTemplate.getForObject(uri, List.class);
     }

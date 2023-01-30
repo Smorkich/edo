@@ -1,15 +1,10 @@
 package com.education.controller.approval;
 
-import com.education.entity.Appeal;
-import com.education.entity.Approval;
 import com.education.service.approval.ApprovalService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import model.dto.AddressDto;
-import model.dto.AppealDto;
 import model.dto.ApprovalDto;
-import model.dto.FilePoolDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,9 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 
-import static com.education.mapper.AppealMapper.APPEAL_MAPPER;
 import static com.education.mapper.ApprovalMapper.APPROVAL_MAPPER;
-import static com.education.mapper.FilePoolMapper.FILE_POOL_MAPPER;
 
 /**
  * Rest-контроллер сущности Approval для отправки запросов от клиентов к БД
@@ -58,7 +51,7 @@ public class ApprovalRestController {
     }
 
     @ApiOperation(value = "Возвращает все листы согласования")
-    @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<ApprovalDto>> findAll() {
         log.info("Send a get-request to get all approvals from database");
         var listApprovalDto = APPROVAL_MAPPER.toDto(approvalService.findAll());

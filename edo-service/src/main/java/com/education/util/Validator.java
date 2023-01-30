@@ -62,6 +62,18 @@ public class Validator {
      */
     public void validateApprovalDto(ApprovalDto approvalDto) {
 
+        // Проверка на соответствие типу
+        if (approvalDto.getSignatoryApprovalBlocks().stream()
+                .map(ApprovalBlockDto::getType)
+                .toList().contains(ApprovalBlockType.PARTICIPANT_BLOCK)) {
+            throw new IllegalArgumentException("Signatory approval blocks cannot be of type PARTICIPANT_BLOCK.");
+        }
+        if (approvalDto.getParticipantApprovalBlocks().stream()
+                .map(ApprovalBlockDto::getType)
+                .toList().contains(ApprovalBlockType.SIGNATORY_BLOCK)) {
+            throw new IllegalArgumentException("Participant approval blocks cannot be of type SIGNATORY_BLOCK.");
+        }
+
         // Проверка на отсутствие повторяющихся порядковых номеров у блоков с участниками
         if (approvalDto.getParticipantApprovalBlocks().stream()
                 .map(ApprovalBlockDto::getOrdinalNumber)
