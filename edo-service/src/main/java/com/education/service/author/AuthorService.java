@@ -4,7 +4,7 @@ import model.dto.AuthorDto;
 import java.util.Collection;
 
 public interface AuthorService {
-    void save(AuthorDto author);
+    AuthorDto save(AuthorDto author);
 
     void delete(Long id);
 
