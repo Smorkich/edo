@@ -22,16 +22,13 @@ public interface AppealService {
     /**
      * Сохранение обращения
      */
-    void save(AppealDto appealDto);
+    AppealDto save(AppealDto appealDto);
 
     /**
      * Удаления обращения по Id
      */
     void delete(Long id);
 
-    /**
-     * Перенос обращения в архив по id
-     */
     void moveToArchive(Long id);
 
     /**

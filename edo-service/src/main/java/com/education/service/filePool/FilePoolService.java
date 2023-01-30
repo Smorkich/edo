@@ -12,7 +12,7 @@ public interface FilePoolService {
     /**
      * save - сохраняет новый файл в бд
      */
-    void save(FilePoolDto filePool);
+    FilePoolDto save(FilePoolDto filePool);
 
     /**
      * delete - удаляет файл из бд

@@ -23,8 +23,8 @@ public class AuthorServiceImpl implements AuthorService {
      * Сохранение Author
      */
     @Override
-    public void save(AuthorDto authorDto) {
-        restTemplate.postForObject(URL, authorDto, AuthorDto.class);
+    public AuthorDto save(AuthorDto authorDto) {
+       return restTemplate.postForObject(URL, authorDto, AuthorDto.class);
     }
 
     /**

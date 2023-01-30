@@ -4,9 +4,11 @@ import com.education.entity.Appeal;
 import com.education.repository.appeal.AppealRepository;
 import com.education.service.appeal.AppealService;
 import lombok.AllArgsConstructor;
+import model.enum_.Status;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.Collection;
 
 /**
@@ -18,9 +20,6 @@ public class AppealServiceImpl implements AppealService {
 
     private AppealRepository appealRepository;
 
-    /**
-     * Сохранение обращения
-     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Appeal save(Appeal appeal) {
@@ -60,7 +59,10 @@ public class AppealServiceImpl implements AppealService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void moveToArchive(Long id) {
-        appealRepository.moveToArchive(id);
+        appealRepository.findByIdAndArchivedDateIsNull(id).ifPresent(entity -> {
+            entity.setAppealsStatus(Status.ARCHIVE);
+            entity.setArchivedDate(ZonedDateTime.now());
+        });
     }
 
     /**

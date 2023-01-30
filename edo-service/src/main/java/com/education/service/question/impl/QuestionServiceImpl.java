@@ -21,8 +21,8 @@ public class QuestionServiceImpl implements QuestionService {
     private final RestTemplate restTemplate;
 
     @Override
-    public void save(QuestionDto questionDto) {
-        restTemplate.postForObject(URL, questionDto, QuestionDto.class);
+    public QuestionDto save(QuestionDto questionDto) {
+       return restTemplate.postForObject(URL, questionDto, QuestionDto.class);
     }
 
     @Override

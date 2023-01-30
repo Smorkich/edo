@@ -23,8 +23,8 @@ public class FilePoolServiceImpl implements FilePoolService {
     private final RestTemplate restTemplate;
 
     @Override
-    public void save(FilePoolDto filePoolDto) {
-        restTemplate.postForObject(URL, filePoolDto, FilePoolDto.class);
+    public FilePoolDto save(FilePoolDto filePoolDto) {
+       return restTemplate.postForObject(URL, filePoolDto, FilePoolDto.class);
     }
 
     @Override

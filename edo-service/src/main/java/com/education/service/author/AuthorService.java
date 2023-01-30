@@ -4,7 +4,10 @@ import model.dto.AuthorDto;
 import java.util.Collection;
 
 public interface AuthorService {
-    void save(AuthorDto author);
+    /**
+     * Метод сохранения нового обращения в БД
+     */
+    AuthorDto save(AuthorDto authorDto);
 
     void delete(Long id);
 
