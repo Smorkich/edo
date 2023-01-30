@@ -1,5 +1,7 @@
 package com.education.service.minio;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 
 /**
@@ -16,7 +18,7 @@ public interface MinioService {
      * Method upload the file to server MinIo.
      * Variable "objectName" means name of object, uploadibg to the bucket of minio server.
      */
-    void uploadOneFile(String objectName) throws IOException;
+    void uploadOneFile(MultipartFile file) throws IOException;
 
     /**
      * Method download the file from server MinIo.
@@ -25,4 +27,6 @@ public interface MinioService {
      * to target folder.
      */
     void downloadOneFile(String objectName);
+
+    boolean isAvailable(MultipartFile file);
 }

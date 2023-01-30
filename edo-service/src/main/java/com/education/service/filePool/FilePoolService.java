@@ -1,5 +1,6 @@
 package com.education.service.filePool;
 import model.dto.FilePoolDto;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
 
