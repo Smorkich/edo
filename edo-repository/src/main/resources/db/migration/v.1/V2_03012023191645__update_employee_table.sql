@@ -1,25 +1,16 @@
 ALTER TABLE employee
-    DROP COLUMN first_name,
-    DROP COLUMN last_name,
-    DROP COLUMN middle_name,
-    DROP COLUMN fio_dative,
-    DROP COLUMN fio_nominative,
-    DROP COLUMN fio_genitive,
-    DROP COLUMN phone,
-    DROP COLUMN work_phone,
-    DROP COLUMN username,
+    ALTER COLUMN first_name TYPE varchar(100),
+    ALTER COLUMN last_name TYPE varchar(100),
+    ALTER COLUMN middle_name TYPE varchar(100),
+    ALTER COLUMN fio_dative TYPE varchar(100),
+    ALTER COLUMN fio_nominative TYPE varchar(100),
+    ALTER COLUMN fio_genitive TYPE varchar(100),
+    ALTER COLUMN phone TYPE varchar(100),
+    ALTER COLUMN work_phone TYPE varchar(100),
+    ALTER COLUMN username TYPE varchar(100),
     DROP COLUMN address;
 
 alter table if exists employee
-    add first_name varchar(100),
-    add last_name varchar(100),
-    add middle_name varchar(100),
-    add fio_dative varchar(100),
-    add fio_nominative varchar(100),
-    add fio_genitive varchar(100),
-    add phone varchar(100),
-    add work_phone varchar(100),
-    add username varchar(100),
     add department BIGINT REFERENCES department(id),
     add address BIGINT REFERENCES address(id);
 

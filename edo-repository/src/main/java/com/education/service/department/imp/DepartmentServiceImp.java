@@ -34,7 +34,6 @@ public class DepartmentServiceImp implements DepartmentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long save(Department department) {
-        System.out.println(department);
         if(department.getDepartment()!= null) {
             department.getDepartment().setCreationDate(ZonedDateTime.now());
         }

@@ -46,7 +46,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Long save(Employee employee) {
 
         employee.setCreationDate(ZonedDateTime.now());
-        petrovichConstructor(employee);
+        casesConstructor(employee);
         employee.getDepartment().setCreationDate(ZonedDateTime.now());
 
         employeeRepository.save(employee);
@@ -141,11 +141,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         Collection<Department> departments = new ArrayList<>();
 
          employees.forEach(employee -> {
-             petrovichConstructor(employee);
+             casesConstructor(employee);
              employee.setCreationDate(ZonedDateTime.now());
              employee.getDepartment().setCreationDate(ZonedDateTime.now());
              employee.getDepartment().setDepartment(null);
-            // addresses.add(employee.getAddress());
+
              addressesDepartments.add(employee.getDepartment().getAddress());
              departments.add(employee.getDepartment());
              addressesEmployees.add(employee.getAddress());
@@ -164,7 +164,7 @@ public class EmployeeServiceImpl implements EmployeeService {
      * @param employee
      * @return
      */
-    private static Employee petrovichConstructor(Employee employee) {
+    private static Employee casesConstructor(Employee employee) {
         Petrovich.Names names = new Petrovich.Names(employee.getLastName(), employee.getFirstName(), employee.getMiddleName(), null);
         Petrovich petrovich = new Petrovich();
         String fioDative = petrovich.inflectTo(names, Case.DATIVE).lastName
