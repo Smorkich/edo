@@ -23,8 +23,10 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public ApprovalDto save(ApprovalDto approvalDto) {
         String uri = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, "/api/service/approval").toString();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return restTemplate.postForObject(uri, approvalDto, ApprovalDto.class);
+        return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(approvalDto, headers), ApprovalDto.class).getBody();
     }
 
     @Override
@@ -56,12 +58,12 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     @Override
-    public ApprovalDto moveToArchive(Long id) {
+    public void moveToArchive(Long id) {
         String uri = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, "/api/service/approval/move/" + id).toString();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<>(headers), ApprovalDto.class).getBody();
+        restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<>(headers), ApprovalDto.class).getBody();
     }
 
     @Override

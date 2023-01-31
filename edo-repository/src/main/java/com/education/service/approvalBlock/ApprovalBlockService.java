@@ -9,7 +9,7 @@ public interface ApprovalBlockService {
     /**
      * Сохраняет новый блок листа согласования
      */
-    void save(ApprovalBlock approvalBlock);
+    ApprovalBlock save(ApprovalBlock approvalBlock);
 
     /**
      * Поиск блока листа согласования по индексу

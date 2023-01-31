@@ -33,7 +33,7 @@ public interface ApprovalService {
     /**
      * Перенести в архив лист согласования
      */
-    ApprovalDto moveToArchive(Long id);
+    void moveToArchive(Long id);
 
     /**
      * Поиск листа согласования не из архива по индексу

@@ -4,6 +4,10 @@ import com.education.service.member.MemberService;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import model.dto.MemberDto;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -36,8 +40,10 @@ public class MemberServiceImpl implements MemberService {
         memberDto.setCreationDate(ZonedDateTime.now());
 
         String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/member").toString();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return restTemplate.postForObject(uri, memberDto, MemberDto.class);
+        return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(memberDto, headers), MemberDto.class).getBody();
     }
 
     /**

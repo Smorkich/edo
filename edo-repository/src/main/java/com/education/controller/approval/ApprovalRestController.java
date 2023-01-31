@@ -1,5 +1,6 @@
 package com.education.controller.approval;
 
+import com.education.entity.Approval;
 import com.education.service.approval.ApprovalService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -38,9 +39,9 @@ public class ApprovalRestController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApprovalDto> save(@RequestBody ApprovalDto approvalDto) {
         log.info("Send a post-request to post new Approval to database");
-        approvalService.save(APPROVAL_MAPPER.toEntity(approvalDto));
+        Approval savedApproval = approvalService.save(APPROVAL_MAPPER.toEntity(approvalDto));
         log.info("Response: {} was added to database", approvalDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(APPROVAL_MAPPER.toDto(savedApproval), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Возвращает лист согласования по id")

@@ -9,7 +9,7 @@ public interface MemberService {
     /**
      * Сохраняет нового участника
      */
-    void save(Member member);
+    Member save(Member member);
 
     /**
      * Поиск участника по индексу

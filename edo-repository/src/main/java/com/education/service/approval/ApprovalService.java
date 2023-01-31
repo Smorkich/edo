@@ -9,7 +9,7 @@ public interface ApprovalService {
     /**
      * Сохраняет новый лист согласования
      */
-    void save(Approval approval);
+    Approval save(Approval approval);
 
     /**
      * Поиск листа согласования по индексу

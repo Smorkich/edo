@@ -23,8 +23,8 @@ public class MemberServiceImpl implements MemberService {
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void save(Member member) {
-        memberRepository.save(member);
+    public Member save(Member member) {
+        return memberRepository.save(member);
     }
 
     /**

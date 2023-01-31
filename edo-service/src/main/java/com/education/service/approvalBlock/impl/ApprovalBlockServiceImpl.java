@@ -8,6 +8,10 @@ import model.dto.ApprovalBlockDto;
 import com.education.util.Validator;
 import model.dto.MemberDto;
 import model.enum_.ApprovalBlockType;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -68,8 +72,10 @@ public class ApprovalBlockServiceImpl implements ApprovalBlockService {
             }
 
             String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approvalBlock").toString();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
-            return restTemplate.postForObject(uri, approvalBlockDto, ApprovalBlockDto.class);
+            return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(approvalBlockDto, headers), ApprovalBlockDto.class).getBody();
         } catch (Exception e) {
 
             // Удаление сохранённых вложенных участников

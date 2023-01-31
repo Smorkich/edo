@@ -90,13 +90,15 @@ public class ApprovalServiceImpl implements ApprovalService {
             approvalDto.setCreationDate(ZonedDateTime.now());
 
             String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval").toString();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
 
-            return restTemplate.postForObject(uri, approvalDto, ApprovalDto.class);
+            return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(approvalDto, headers), ApprovalDto.class).getBody();
         } catch (Exception e) {
 
             // Удаление сохранённых вложенных сущностей
+            if (approvalDto.getInitiator() != null) memberService.delete(approvalDto.getInitiator().getId());
             savedApprovalBlocks.forEach(approvalBlockDto -> approvalBlockService.delete(approvalBlockDto.getId()));
-            if (approvalDto.getInitiator().getId() != null) memberService.delete(approvalDto.getInitiator().getId());
 
             throw e;
         }
@@ -146,12 +148,12 @@ public class ApprovalServiceImpl implements ApprovalService {
      * Отправляет patch-запрос в edo-repository для добавления даты архивации листу согласования
      */
     @Override
-    public ApprovalDto moveToArchive(Long id) {
+    public void moveToArchive(Long id) {
         String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/move/" + id).toString();
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
-        return restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<>(headers), ApprovalDto.class).getBody();
+        restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<>(headers), ApprovalDto.class).getBody();
     }
 
     /**
@@ -185,10 +187,10 @@ public class ApprovalServiceImpl implements ApprovalService {
     }
 
     /**
-     * Заглушка для получения текущего пользователя. Обязательно должен быть хотя бы 1 employee в БД!
+     * Заглушка для получения текущего пользователя. Обязательно должен быть employee с id = 1 в БД!
      * После написания Security убрать!!!
      */
     private EmployeeDto getCurrentUser() {
-        return employeeService.findAll().stream().findAny().get();
+        return employeeService.findById(1L);
     }
 }

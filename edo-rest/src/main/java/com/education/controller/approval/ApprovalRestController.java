@@ -36,9 +36,9 @@ public class ApprovalRestController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApprovalDto> save(@RequestBody ApprovalDto approvalDto) {
         log.info("Send a post-request to post new Approval to database");
-        approvalService.save(approvalDto);
+        ApprovalDto savedApproval = approvalService.save(approvalDto);
         log.info("Response: {} was added to database", approvalDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(savedApproval, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Возвращает лист согласования по id")

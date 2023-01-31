@@ -1,5 +1,6 @@
 package com.education.controller.member;
 
+import com.education.entity.Member;
 import com.education.service.member.MemberService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -36,9 +37,9 @@ public class MemberRestController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<MemberDto> save(@RequestBody MemberDto memberDto) {
         log.info("Send a post-request to post new Member to database");
-        memberService.save(MEMBER_MAPPER.toEntity(memberDto));
+        Member savedMember = memberService.save(MEMBER_MAPPER.toEntity(memberDto));
         log.info("Response: {} was added to database", memberDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(MEMBER_MAPPER.toDto(savedMember), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Возвращает участника листа согласования по id")

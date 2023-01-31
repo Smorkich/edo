@@ -42,13 +42,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto findById(Long id) {
         log.info("Sent a request to receive the employee in edo - repository");
-        return restTemplate.getForObject(URL + "/" + id, EmployeeDto.class);
+        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/employee/" + id).toString();
+        return restTemplate.getForObject(uri, EmployeeDto.class);
     }
 
     @Override
     public Collection<EmployeeDto> findAll() {
         log.info("Sent a request to receive all employee in edo - repository");
-        return restTemplate.getForObject(URL + "/all", List.class);
+        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/employee/all").toString();
+        return restTemplate.getForObject(uri, List.class);
     }
 
     @Override

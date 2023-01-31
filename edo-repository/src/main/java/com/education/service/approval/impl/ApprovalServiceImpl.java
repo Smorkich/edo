@@ -27,8 +27,8 @@ public class ApprovalServiceImpl implements ApprovalService {
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void save(Approval approval) {
-        approvalRepository.save(approval);
+    public Approval save(Approval approval) {
+        return approvalRepository.save(approval);
     }
 
     /**
