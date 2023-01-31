@@ -1,4 +1,4 @@
-package com.education.controller;
+package com.education.controller.minio;
 
 import com.education.service.minio.MinioService;
 import io.swagger.annotations.ApiOperation;
@@ -6,10 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalTime;
@@ -30,12 +28,15 @@ public class MinIOController {
      * Redirect request to upload file from bucket of MINIO-server.
      * Request consist of object`s name.
      */
-    @ApiOperation("send request to upload file to bucjets from source")
-    @GetMapping("/upload/{name}")
-    public ResponseEntity<HttpStatus> uploadOneFile(@PathVariable("name") String name) throws IOException {
-        log.info("Upload file named: ", name);
-        service.uploadOneFile(name);
-        log.info("Upload file named: ", name);
+    @ApiOperation("send request to upload file to buckets from source")
+    @PostMapping("/upload")
+    public ResponseEntity<HttpStatus> uploadOneFile(@RequestParam("file") MultipartFile file) throws IOException {
+        if (!service.isAvailable(file)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        service.uploadOneFile(file);
+        log.info("Upload file named: {}", file.getOriginalFilename());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

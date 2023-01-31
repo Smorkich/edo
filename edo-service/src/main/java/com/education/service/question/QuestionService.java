@@ -13,7 +13,7 @@ public interface QuestionService {
     /**
      * Метод сохранения нового вопроса в БД
      */
-    void save(QuestionDto questionDto);
+    QuestionDto save(QuestionDto questionDto);
 
     /**
      * Метод удаления вопроса из БД

@@ -22,7 +22,7 @@ public interface AppealService {
     /**
      * Сохранение обращения
      */
-    void save(AppealDto appealDto);
+    AppealDto save(AppealDto appealDto);
 
     /**
      * Удаления обращения по Id

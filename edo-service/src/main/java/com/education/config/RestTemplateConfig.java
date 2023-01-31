@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
 
 /**
- * @author Andrey Kryukov
+ * @author Anna Artemyeva
  */
 @Configuration
 public class RestTemplateConfig {
