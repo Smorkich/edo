@@ -15,7 +15,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Random;
 
-import static model.constant.Constant.DEPARTMENT_URL;
+import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.*;
 
 
 /**
@@ -36,12 +37,7 @@ public class DepartmentServiceImp implements DepartmentService {
 
     @Override
     public void save(DepartmentDto department) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(DEPARTMENT_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, DEPARTMENT_URL)
                 .setPath("/");
         restTemplate.postForObject(builder.build(), department, DepartmentDto.class);
         log.info("sent a request to save the department in edo - repository");
@@ -49,12 +45,7 @@ public class DepartmentServiceImp implements DepartmentService {
 
     @Override
     public void removeToArchived(Long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(DEPARTMENT_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, DEPARTMENT_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
         restTemplate.delete(builder.build());
@@ -64,12 +55,7 @@ public class DepartmentServiceImp implements DepartmentService {
     @Override
     public DepartmentDto findById(Long id) throws URISyntaxException {
         log.info("sent a request to receive the department in edo - repository");
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(DEPARTMENT_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, DEPARTMENT_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.build(), DepartmentDto.class);
@@ -78,12 +64,7 @@ public class DepartmentServiceImp implements DepartmentService {
     @Override
     public List<DepartmentDto> findByAllId(String ids) throws URISyntaxException {
         log.info("sent a request to receive the departments in edo - repository");
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(DEPARTMENT_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, DEPARTMENT_URL)
                 .setPath("/all/")
                 .setPath(String.valueOf(ids));
         return restTemplate.getForObject(builder.build(), List.class);
@@ -92,12 +73,7 @@ public class DepartmentServiceImp implements DepartmentService {
     @Override
     public DepartmentDto findByIdNotArchived(Long id) throws URISyntaxException {
         log.info("sent a request to receive the department not archived in edo - repository");
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(DEPARTMENT_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, DEPARTMENT_URL)
                 .setPath("/notArchived/")
                 .setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.build(), DepartmentDto.class);
@@ -107,12 +83,7 @@ public class DepartmentServiceImp implements DepartmentService {
     @Override
     public List<DepartmentDto> findByAllIdNotArchived(String ids) throws URISyntaxException {
         log.info("sent a request to receive the departments not archived in edo - repository");
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(DEPARTMENT_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, DEPARTMENT_URL)
                 .setPath("/notArchivedAll/")
                 .setPath(String.valueOf(ids));
         return restTemplate.getForObject(builder.build(), List.class);

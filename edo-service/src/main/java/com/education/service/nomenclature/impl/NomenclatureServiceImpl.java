@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import static model.constant.Constant.NOMENCLATURE_URL;
+import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.*;
 
 @AllArgsConstructor
 @Service
@@ -28,24 +29,14 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
     @Override
     public void save(NomenclatureDto nomenclatureDto) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(NOMENCLATURE_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
                 .setPath("/add");
         restTemplate.postForObject(builder.build(), nomenclatureDto, NomenclatureDto.class);
     }
 
     @Override
     public NomenclatureDto findById(Long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(NOMENCLATURE_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
                 .setPath("/find/")
                 .setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.build(), NomenclatureDto.class);
@@ -53,12 +44,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
     @Override
     public List<NomenclatureDto> findAllById(String ids) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(NOMENCLATURE_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
                 .setPath("/allId?id=")
                 .setPath(String.valueOf(ids));
         return restTemplate.getForObject(builder.build(), List.class);
@@ -66,12 +52,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
     @Override
     public void deleteById(Long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(NOMENCLATURE_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
                 .setPath("/delete/")
                 .setPath(String.valueOf(id));
         restTemplate.delete(builder.build());
@@ -79,12 +60,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
     @Override
     public void moveToArchive(Long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(NOMENCLATURE_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
                 .setPath("/move/")
                 .setPath(String.valueOf(id));
         restTemplate.postForObject(builder.build(),null, NomenclatureDto.class);
@@ -92,12 +68,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
     @Override
     public NomenclatureDto findByIdNotArchived(Long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(NOMENCLATURE_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
                 .setPath("/find_not_archived/")
                 .setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.build(), NomenclatureDto.class);
@@ -105,12 +76,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
     @Override
     public List<NomenclatureDto> findAllByIdNotArchived(String ids) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(NOMENCLATURE_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
                 .setPath("/find_not_archived_List?id=")
                 .setPath(String.valueOf(ids));
         return restTemplate.getForObject(builder.build(), List.class);

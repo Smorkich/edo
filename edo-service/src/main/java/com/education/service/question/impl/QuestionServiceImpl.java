@@ -16,7 +16,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-import static model.constant.Constant.QUESTION_URL;
+import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.*;
 
 /**
  * @author Nadezhda Pupina
@@ -33,24 +34,14 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionDto save(QuestionDto questionDto) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(QUESTION_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
                 .setPath("/");
         return restTemplate.postForObject(builder.build(), questionDto, QuestionDto.class);
     }
 
     @Override
     public void delete(long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(QUESTION_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
         restTemplate.delete(builder.build());
@@ -58,12 +49,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public String findById(long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(QUESTION_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.build(), String.class);
@@ -71,12 +57,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Collection<QuestionDto> findByAllId(String ids) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(QUESTION_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
                 .setPath("/all/")
                 .setPath(String.valueOf(ids));
         return restTemplate.getForObject(builder.build(), Collection.class);
@@ -84,12 +65,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public void moveToArchived(Long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(QUESTION_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
         restTemplate.postForObject(builder.build(), null, String.class);
@@ -97,12 +73,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionDto findByIdNotArchived(Long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(QUESTION_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
                 .setPath("/notArchived/")
                 .setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.build(), QuestionDto.class);
@@ -110,12 +81,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Collection<QuestionDto> findByAllIdNotArchived(String ids) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(QUESTION_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
                 .setPath("/notArchivedAll/")
                 .setPath(String.valueOf(ids));
         return restTemplate.getForObject(builder.build(), Collection.class);

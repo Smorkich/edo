@@ -15,7 +15,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-import static model.constant.Constant.FILEPOOL_URL;
+import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.*;
 
 /**
  * @author Nadezhda Pupina
@@ -31,24 +32,14 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public FilePoolDto save(FilePoolDto filePoolDto) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(FILEPOOL_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
                 .setPath("/");
         return restTemplate.postForObject(builder.build(), filePoolDto, FilePoolDto.class);
     }
 
     @Override
     public void delete(Long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(FILEPOOL_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
         restTemplate.delete(builder.build());
@@ -56,36 +47,21 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public String findById(Long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(FILEPOOL_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.build(), String.class);
     }
 
     public String findAll() throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(FILEPOOL_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
                 .setPath("/all");
         return restTemplate.getForObject(builder.build(), String.class);
     }
 
     @Override
     public Collection<FilePoolDto> findAllById(String ids) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(FILEPOOL_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
                 .setPath("/")
                 .setPath(String.valueOf(ids));
         return restTemplate.getForObject(builder.build(), Collection.class);
@@ -93,12 +69,7 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public void moveToArchive(Long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(FILEPOOL_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
         restTemplate.postForObject(builder.build(), null, String.class);
@@ -106,12 +77,7 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public FilePoolDto findByIdNotArchived(Long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(FILEPOOL_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
                 .setPath("/notArchived/")
                 .setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.build(), FilePoolDto.class);
@@ -119,12 +85,7 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public Collection<FilePoolDto> findAllByIdNotArchived(String ids) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(FILEPOOL_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
                 .setPath("/notArchivedAll/")
                 .setPath(String.valueOf(ids));
         return restTemplate.getForObject(builder.build(), Collection.class);

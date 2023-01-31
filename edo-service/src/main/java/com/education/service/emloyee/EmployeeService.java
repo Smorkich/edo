@@ -17,13 +17,16 @@ public interface EmployeeService {
 
     EmployeeDto findById(Long id) throws URISyntaxException;
 
-    Collection<EmployeeDto> findAll() throws URISyntaxException;
+    Collection<EmployeeDto> findAll();
 
-    Collection<EmployeeDto> findAllById(String ids) throws URISyntaxException;
+    Collection<EmployeeDto> findAllById(String ids);
 
-    EmployeeDto findByIdAndArchivedDateNull(Long id) throws URISyntaxException;
+    EmployeeDto findByIdAndArchivedDateNull(Long id);
 
-    Collection<EmployeeDto> findByIdInAndArchivedDateNull(String ids) throws URISyntaxException;
+    Collection<EmployeeDto> findByIdInAndArchivedDateNull(String ids);
 
-    Collection<EmployeeDto> findAllByFullName(String fullName) throws URISyntaxException;
+    Collection<EmployeeDto> findAllByFullName(String fullName);
+
+    Collection<EmployeeDto> saveCollection(Collection<EmployeeDto> employeeDto);
+
 }

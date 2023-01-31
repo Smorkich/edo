@@ -12,7 +12,8 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Random;
 
-import static model.constant.Constant.ADDRESS_URL;
+import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.*;
 
 /**
  * Service в "edo-service", служит для связи контроллера и RestTemplate
@@ -38,14 +39,7 @@ public class AddressServiceImpl implements AddressService {
      * Метод, который возвращает адрес по Id
      */
     public String findById(long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-service").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(ADDRESS_URL)
-                .setPath("/")
-                .setPath(String.valueOf(id));
+        var builder = buildURI(EDO_REPOSITORY_NAME, ADDRESS_URL).setPath("/").setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.build(), String.class);
     }
 
@@ -53,13 +47,7 @@ public class AddressServiceImpl implements AddressService {
      * Метод, который возвращает все адреса
      */
     public String findAll() throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-service").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(ADDRESS_URL)
-                .setPath("/all");
+        var builder = buildURI(EDO_REPOSITORY_NAME, ADDRESS_URL).setPath("/all");
         return restTemplate.getForObject(builder.build(), String.class);
     }
 
@@ -67,13 +55,7 @@ public class AddressServiceImpl implements AddressService {
      * Метод сохранения нового адреса в БД
      */
     public void save(AddressDto addressDto) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-service").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(ADDRESS_URL)
-                .setPath("/");
+        var builder = buildURI(EDO_REPOSITORY_NAME, ADDRESS_URL).setPath("/");
         restTemplate.postForObject(builder.build(), addressDto, AddressDto.class);
     }
 
@@ -81,12 +63,7 @@ public class AddressServiceImpl implements AddressService {
      * Метод удаления адреса из БД
      */
     public void delete(long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-service").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(ADDRESS_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, ADDRESS_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
         restTemplate.delete(builder.build());

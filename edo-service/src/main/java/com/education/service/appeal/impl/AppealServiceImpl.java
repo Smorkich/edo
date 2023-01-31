@@ -28,7 +28,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import static model.constant.Constant.APPEAL_URL;
+import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.*;
 import static model.enum_.Status.NEW_STATUS;
 
 /**
@@ -51,12 +52,7 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public AppealDto findById(Long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(APPEAL_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.build(), AppealDto.class);
@@ -66,8 +62,9 @@ public class AppealServiceImpl implements AppealService {
      * Нахождение всех обращений
      */
     @Override
-    public Collection<AppealDto> findAll() {
-        return restTemplate.getForObject(URL, Collection.class);
+    public Collection<AppealDto> findAll() throws URISyntaxException {
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL);
+        return restTemplate.getForObject(builder.build(), Collection.class);
     }
 
     /**
@@ -104,7 +101,11 @@ public class AppealServiceImpl implements AppealService {
             appealDto.setQuestions(appealDto.getQuestions().stream()
                     .map(questionDto -> {
                         if (questionDto.getId() == null) {
-                            questionDto = questionService.save(questionDto);
+                            try {
+                                questionDto = questionService.save(questionDto);
+                            } catch (URISyntaxException e) {
+                                throw new RuntimeException(e);
+                            }
                             savedQuestions.add(questionDto);
                         }
                         return questionDto;
@@ -115,7 +116,11 @@ public class AppealServiceImpl implements AppealService {
             appealDto.setFile(appealDto.getFile().stream()
                     .map(filePoolDto -> {
                         if (filePoolDto.getId() == null) {
-                            filePoolDto = filePoolService.save(filePoolDto);
+                            try {
+                                filePoolDto = filePoolService.save(filePoolDto);
+                            } catch (URISyntaxException e) {
+                                throw new RuntimeException(e);
+                            }
                             savedFiles.add(filePoolDto);
                         }
                         return filePoolDto;
@@ -125,21 +130,34 @@ public class AppealServiceImpl implements AppealService {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            var instances = eurekaClient.getApplication("edo-repository").getInstances();
-            var instance = instances.get(new Random().nextInt(instances.size()));
-            var builder = new URIBuilder();
-            builder.setHost(instance.getHostName())
-                    .setPort(instance.getPort())
-                    .setPath(APPEAL_URL)
+            var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
                     .setPath("/");
 
             return restTemplate.getForObject(builder.build(), AppealDto.class);
         } catch (Exception e) {
 
             // Удаление сохранённых вложенных сущностей
-            savedAuthors.forEach(authorDto -> authorService.delete(authorDto.getId()));
-            savedFiles.forEach(filePoolDto -> filePoolService.delete(filePoolDto.getId()));
-            savedQuestions.forEach(questionDto -> questionService.delete(questionDto.getId()));
+            savedAuthors.forEach(authorDto -> {
+                try {
+                    authorService.delete(authorDto.getId());
+                } catch (URISyntaxException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+            savedFiles.forEach(filePoolDto -> {
+                try {
+                    filePoolService.delete(filePoolDto.getId());
+                } catch (URISyntaxException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+            savedQuestions.forEach(questionDto -> {
+                try {
+                    questionService.delete(questionDto.getId());
+                } catch (URISyntaxException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
 
             throw e;
         }
@@ -150,12 +168,7 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public void delete(Long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(APPEAL_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
         restTemplate.delete(builder.build());
@@ -168,12 +181,7 @@ public class AppealServiceImpl implements AppealService {
     public void moveToArchive(Long id) throws URISyntaxException {
         AppealDto appeal = findById(id);
         appeal.setArchivedDate(ZonedDateTime.now());
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(APPEAL_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
                 .setPath("/move/")
                 .setPath(String.valueOf(id));
         restTemplate.put(builder.build(), appeal);
@@ -184,12 +192,7 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public AppealDto findByIdNotArchived(Long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(APPEAL_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
                 .setPath("/findByIdNotArchived/")
                 .setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.build(), AppealDto.class);
@@ -200,12 +203,7 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public Collection<AppealDto> findAllNotArchived() throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(APPEAL_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
                 .setPath("/findByIdNotArchived");
         return restTemplate.getForObject(builder.build(), Collection.class);
     }

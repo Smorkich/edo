@@ -14,7 +14,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
-import static model.constant.Constant.THEME_URL;
+import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.*;
 
 /**
  * @author AlexeySpiridonov
@@ -32,12 +33,7 @@ public class ThemeServiceImp implements ThemeService {
     @Override
     public void save(ThemeDto themeDto) throws URISyntaxException {
         log.info("sent a request to save the theme in edo - repository");
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(THEME_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, THEME_URL)
                 .setPath("/");
         restTemplate.postForObject(builder.build(), themeDto, ThemeDto.class);
         log.info("sent a request to save the theme in edo - repository");
@@ -45,12 +41,7 @@ public class ThemeServiceImp implements ThemeService {
 
     @Override
     public void moveToArchived(Long id) throws URISyntaxException {
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(THEME_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, THEME_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
         restTemplate.postForObject(builder.build(), null, ThemeDto.class);
@@ -60,12 +51,7 @@ public class ThemeServiceImp implements ThemeService {
     @Override
     public ThemeDto findById(Long id) throws URISyntaxException {
         log.info("sent a request to receive the theme in edo - repository");
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(THEME_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, THEME_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.build(), ThemeDto.class);
@@ -74,12 +60,7 @@ public class ThemeServiceImp implements ThemeService {
     @Override
     public Collection<ThemeDto> findByAllId(String ids) throws URISyntaxException {
         log.info("sent a request to receive the theme in edo - repository");
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(THEME_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, THEME_URL)
                 .setPath("/all/")
                 .setPath(String.valueOf(ids));
         return restTemplate.getForObject(builder.build(), List.class);
@@ -88,12 +69,7 @@ public class ThemeServiceImp implements ThemeService {
     @Override
     public ThemeDto findByIdNotArchived(Long id) throws URISyntaxException {
         log.info("sent a request to receive the theme not archived in edo - repository");
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(THEME_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, THEME_URL)
                 .setPath("/NotArchived/")
                 .setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.build(), ThemeDto.class);
@@ -102,12 +78,7 @@ public class ThemeServiceImp implements ThemeService {
     @Override
     public Collection<ThemeDto> findByAllIdNotArchived(String ids) throws URISyntaxException {
         log.info("sent a request to receive the theme not archived in edo - repository");
-        var instances = eurekaClient.getApplication("edo-repository").getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(THEME_URL)
+        var builder = buildURI(EDO_REPOSITORY_NAME, THEME_URL)
                 .setPath("/NotArchivedAll/")
                 .setPath(String.valueOf(ids));
         return restTemplate.getForObject(builder.build(), List.class);

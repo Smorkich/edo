@@ -18,7 +18,7 @@ public interface AppealService {
     /**
      * Нахождение всех обращений
      */
-    Collection<AppealDto> findAll();
+    Collection<AppealDto> findAll() throws URISyntaxException;
 
     /**
      * Сохранение обращения
