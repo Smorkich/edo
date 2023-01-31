@@ -2,6 +2,7 @@ package com.education.service.emloyee;
 
 import model.dto.EmployeeDto;
 
+import java.net.URISyntaxException;
 import java.util.Collection;
 
 /**
@@ -10,19 +11,19 @@ import java.util.Collection;
  */
 public interface EmployeeService {
 
-    void save(EmployeeDto employeeDto);
+    void save(EmployeeDto employeeDto) throws URISyntaxException;
 
-    void moveToArchived(Long id);
+    void moveToArchived(Long id) throws URISyntaxException;
 
-    EmployeeDto findById(Long id);
+    EmployeeDto findById(Long id) throws URISyntaxException;
 
-    Collection<EmployeeDto> findAll();
+    Collection<EmployeeDto> findAll() throws URISyntaxException;
 
-    Collection<EmployeeDto> findAllById(String ids);
+    Collection<EmployeeDto> findAllById(String ids) throws URISyntaxException;
 
-    EmployeeDto findByIdAndArchivedDateNull(Long id);
+    EmployeeDto findByIdAndArchivedDateNull(Long id) throws URISyntaxException;
 
-    Collection<EmployeeDto> findByIdInAndArchivedDateNull(String ids);
+    Collection<EmployeeDto> findByIdInAndArchivedDateNull(String ids) throws URISyntaxException;
 
-    Collection<EmployeeDto> findAllByFullName(String fullName);
+    Collection<EmployeeDto> findAllByFullName(String fullName) throws URISyntaxException;
 }

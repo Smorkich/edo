@@ -3,6 +3,7 @@ package com.education.service.department;
 
 import model.dto.DepartmentDto;
 
+import java.net.URISyntaxException;
 import java.util.Collection;
 
 
@@ -12,16 +13,16 @@ import java.util.Collection;
  */
 public interface DepartmentService {
 
-    void save(DepartmentDto departmentDto);
+    void save(DepartmentDto departmentDto) throws URISyntaxException;
 
-    void removeToArchived(Long id);
+    void removeToArchived(Long id) throws URISyntaxException;
 
-    DepartmentDto findById(Long id);
+    DepartmentDto findById(Long id) throws URISyntaxException;
 
-    Collection<DepartmentDto> findByAllId(String ids);
+    Collection<DepartmentDto> findByAllId(String ids) throws URISyntaxException;
 
-    DepartmentDto findByIdNotArchived(Long id);
+    DepartmentDto findByIdNotArchived(Long id) throws URISyntaxException;
 
-    Collection<DepartmentDto> findByAllIdNotArchived(String ids);
+    Collection<DepartmentDto> findByAllIdNotArchived(String ids) throws URISyntaxException;
 
 }

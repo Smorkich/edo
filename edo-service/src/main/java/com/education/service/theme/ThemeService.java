@@ -2,6 +2,7 @@ package com.education.service.theme;
 
 import model.dto.ThemeDto;
 
+import java.net.URISyntaxException;
 import java.util.Collection;
 
 /**
@@ -9,15 +10,15 @@ import java.util.Collection;
  */
 
 public interface ThemeService {
-    void save(ThemeDto themeDto);
+    void save(ThemeDto themeDto) throws URISyntaxException;
 
-    void moveToArchived(Long id);
+    void moveToArchived(Long id) throws URISyntaxException;
 
-    ThemeDto findById(Long id);
+    ThemeDto findById(Long id) throws URISyntaxException;
 
-    Collection<ThemeDto> findByAllId(String ids);
+    Collection<ThemeDto> findByAllId(String ids) throws URISyntaxException;
 
-    ThemeDto findByIdNotArchived(Long id);
+    ThemeDto findByIdNotArchived(Long id) throws URISyntaxException;
 
-    Collection<ThemeDto> findByAllIdNotArchived(String ids);
+    Collection<ThemeDto> findByAllIdNotArchived(String ids) throws URISyntaxException;
 }

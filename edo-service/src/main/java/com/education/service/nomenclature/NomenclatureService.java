@@ -3,6 +3,7 @@ package com.education.service.nomenclature;
 
 import model.dto.NomenclatureDto;
 
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -15,38 +16,38 @@ public interface NomenclatureService {
     /**
      * Method saves new entity in DB by accepting json-body object
      */
-    void save(NomenclatureDto nomenclatureDto);
+    void save(NomenclatureDto nomenclatureDto) throws URISyntaxException;
 
     /**
      * Method searches for an entity of Nomenclature
      */
-    NomenclatureDto findById(Long id);
+    NomenclatureDto findById(Long id) throws URISyntaxException;
 
     /**
      * Method searches for set of entities of Nomenclature by their ids: "?id = 1,2,3,4,5,6... "
      */
-    List<NomenclatureDto> findAllById(String ids);
+    List<NomenclatureDto> findAllById(String ids) throws URISyntaxException;
 
 
     /**
      * Delete entity of Nomenclature by its id
      */
-    void deleteById(Long id);
+    void deleteById(Long id) throws URISyntaxException;
 
     /**
      * the Method fills in the field with the value and set date
      */
-    void moveToArchive(Long id);
+    void moveToArchive(Long id) throws URISyntaxException;
 
     /**
      * Method searches for an entity of Nomenclature that archiveDate fild is null
      */
-    NomenclatureDto findByIdNotArchived(Long id);
+    NomenclatureDto findByIdNotArchived(Long id) throws URISyntaxException;
 
     /**
      * Method searches for set of entities of Nomenclature that archiveDate filds are null
      */
-    List<NomenclatureDto> findAllByIdNotArchived(String ids);
+    List<NomenclatureDto> findAllByIdNotArchived(String ids) throws URISyntaxException;
 
 
 }

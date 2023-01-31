@@ -2,6 +2,7 @@ package com.education.service.question;
 
 import model.dto.QuestionDto;
 
+import java.net.URISyntaxException;
 import java.util.Collection;
 
 /**
@@ -13,36 +14,36 @@ public interface QuestionService {
     /**
      * Метод сохранения нового вопроса в БД
      */
-    QuestionDto save(QuestionDto questionDto);
+    QuestionDto save(QuestionDto questionDto) throws URISyntaxException;
 
     /**
      * Метод удаления вопроса из БД
      */
-    void delete(long id);
+    void delete(long id) throws URISyntaxException;
 
     /**
      * Метод возвращает вопрос по Id
      */
-    String findById(long id);
+    String findById(long id) throws URISyntaxException;
 
     /**
      * Метод возвращает все вопросы
      */
-    Collection<QuestionDto> findByAllId(String ids);
+    Collection<QuestionDto> findByAllId(String ids) throws URISyntaxException;
 
     /**
      * Метод заполняет поле значением и установленной датой
      */
-    void moveToArchived(Long id);
+    void moveToArchived(Long id) throws URISyntaxException;
 
     /**
      * Метод ищет объект Question, у которого поле archiveDate имеет значение null
      */
-    QuestionDto findByIdNotArchived(Long id);
+    QuestionDto findByIdNotArchived(Long id) throws URISyntaxException;
 
     /**
      * Метод ищет сущности Question, у которых поля archiveDate имеют значение null
      */
-    Collection<QuestionDto> findByAllIdNotArchived(String ids);
+    Collection<QuestionDto> findByAllIdNotArchived(String ids) throws URISyntaxException;
 
 }
