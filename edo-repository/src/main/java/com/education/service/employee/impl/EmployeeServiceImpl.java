@@ -84,7 +84,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     /**
-     * предоставляет сотрудников по некоскольким id
+     * предоставляет сотрудников по нескольким id
      *
      * @param ids
      * @return
@@ -96,7 +96,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     /**
-     * предоставляет заархивированного сторудника по id
+     * предоставляет заархивированного сотрудника по id
      *
      * @param id
      * @return
@@ -108,7 +108,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     /**
-     * предоставляет заархивированных сторудников по нескольким id
+     * предоставляет заархивированных сотрудников по нескольким id
      *
      * @param ids
      * @return

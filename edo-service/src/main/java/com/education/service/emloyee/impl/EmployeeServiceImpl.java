@@ -83,7 +83,9 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     public Collection<EmployeeDto> saveCollection(Collection<EmployeeDto> employeeDto) {
+        log.info("Build uri to repository");
+        String uriEmployeeSavePath = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/employee").toString();
         log.info("Sent a request to to save a collection of employees, in edo - repository");
-        return restTemplate.postForObject(URL + "/collection", employeeDto, Collection.class);
+        return restTemplate.postForObject(uriEmployeeSavePath + "/collection", employeeDto, Collection.class);
     }
 }

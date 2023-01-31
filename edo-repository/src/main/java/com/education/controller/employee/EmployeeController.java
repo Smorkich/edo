@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +39,7 @@ public class EmployeeController {
      *
      * @param id
      */
-    @ApiOperation(value = "Предоставление сотрудника по индентификатору")
+    @ApiOperation(value = "Предоставление сотрудника по идентификатору")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeDto> findById(@PathVariable Long id) {
         log.info("Send a response with the employee of the assigned id");
@@ -78,15 +79,14 @@ public class EmployeeController {
      *
      * @param employeeDto
      */
+
     @ApiOperation(value = "Создает сотрудника")
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+       @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeDto> save(@RequestBody EmployeeDto employeeDto) {
         log.info("Starting the save operation");
-        Long id = employeeService.save(EMPLOYEE_MAPPER.toEntity(employeeDto));
-        log.info("Assigned to employee id={}", id);
-        EmployeeDto employeeDto1 = EMPLOYEE_MAPPER.toDto(employeeService.findById(id));
+         employeeService.save(EMPLOYEE_MAPPER.toEntity(employeeDto));
         log.info("Saving the employee");
-        return new ResponseEntity<>(employeeDto1, HttpStatus.CREATED);
+        return new ResponseEntity<>(employeeDto, HttpStatus.CREATED);
     }
 
     /**
