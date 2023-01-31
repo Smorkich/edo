@@ -66,6 +66,7 @@ public class AppealServiceImpl implements AppealService {
             entity.setAppealsStatus(Status.ARCHIVE);
             entity.setArchivedDate(ZonedDateTime.now());
         });
+
     }
 
     /**
