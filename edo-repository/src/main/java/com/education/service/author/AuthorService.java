@@ -2,17 +2,16 @@ package com.education.service.author;
 
 import com.education.entity.Author;
 
-import java.net.URISyntaxException;
 import java.util.Collection;
 
 public interface AuthorService {
-    Author save(Author author) throws URISyntaxException;
+    Author save(Author author);
 
-    void delete(Long id) throws URISyntaxException;
+    void delete(Long id);
 
-    Author findById(Long id) throws URISyntaxException;
+    Author findById(Long id);
 
-//    Collection<Author> findAllById(Iterable<Long> ids);
+    Collection<Author> findAllById(Iterable<Long> ids);
 
-    Collection<Author> findAll() throws URISyntaxException;
+    Collection<Author> findAll();
 }

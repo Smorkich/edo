@@ -2,7 +2,6 @@ package com.education.service.filePool;
 
 import com.education.entity.FilePool;
 
-import java.net.URISyntaxException;
 import java.util.Collection;
 
 /**
@@ -14,42 +13,42 @@ public interface FilePoolService {
     /**
      * save - сохраняет новый файл в бд
      */
-    FilePool save(FilePool filePool) throws URISyntaxException;
+    FilePool save(FilePool filePool);
 
     /**
      * delete - удаляет файл из бд
      */
-    void delete(Long id) throws URISyntaxException;
+    void delete(Long id);
 
     /**
      * findById - находит файл по id
      */
-    FilePool findById(Long id) throws URISyntaxException;
+    FilePool findById(Long id);
 
     /**
      * findAllById - выводит список всех файлов по id
      */
-//    Collection<FilePool> findAllById(Iterable<Long> ids);
+    Collection<FilePool> findAllById(Iterable<Long> ids);
 
     /**
      * findAllById - выводит список всех файлов
      */
-    Collection<FilePool> findAll() throws URISyntaxException;
+    Collection<FilePool> findAll();
 
     /**
      * moveToArchive - заполняет архивную дату
      */
-    void moveToArchive(Long id) throws URISyntaxException;
+    void moveToArchive(Long id);
 
     /**
      * findByIdNotArchived - находит файл без архивной даты по id
      */
-    FilePool findByIdAndArchivedDateNull(Long id) throws URISyntaxException;
+    FilePool findByIdAndArchivedDateNull(Long id);
 
     /**
      * findAllByIdNotArchived - находит все файлы без архивной даты по id
      */
-    Collection<FilePool> findByIdInAndArchivedDateNull(Iterable<Long> ids) throws URISyntaxException;
+    Collection<FilePool> findByIdInAndArchivedDateNull(Iterable<Long> ids);
 
 
 }

@@ -2,7 +2,6 @@ package com.education.service.appeal;
 
 import com.education.entity.Appeal;
 
-import java.net.URISyntaxException;
 import java.util.Collection;
 
 /**
@@ -13,35 +12,35 @@ public interface AppealService {
     /**
      * Сохранение обращения
      */
-    Appeal save(Appeal appeal) throws URISyntaxException;
+    Appeal save(Appeal appeal);
 
     /**
      * Удаление обращения
      */
-    void delete(Long id) throws URISyntaxException;
+    void delete(Long id);
 
     /**
      * Нахождение обращения по id
      */
-    Appeal findById(Long id) throws URISyntaxException;
+    Appeal findById(Long id);
 
     /**
      * Нахождение всех обращений
      */
-    Collection<Appeal> findAll() throws URISyntaxException;
+    Collection<Appeal> findAll();
 
     /**
      * Перенос в архив обращения
      */
-    void moveToArchive(Long id) throws URISyntaxException;
+    void moveToArchive(Long id);
 
     /**
      * Нахождение обращения по id не из архива
      */
-    Appeal findByIdNotArchived(Long id) throws URISyntaxException;
+    Appeal findByIdNotArchived(Long id);
 
     /**
      * Нахождение всех обращений не из архива
      */
-    Collection<Appeal> findAllNotArchived() throws URISyntaxException;
+    Collection<Appeal> findAllNotArchived();
 }
