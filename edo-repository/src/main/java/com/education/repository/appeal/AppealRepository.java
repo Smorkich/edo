@@ -14,7 +14,7 @@ import java.util.Optional;
 public interface AppealRepository extends JpaRepository<Appeal, Long> {
 
     /**
-     * Метод ставит дату архивации и обновляет статус
+     * Метод достает сообщение по id
      */
     Optional<Appeal> findByIdAndArchivedDateIsNull(Long id);
 

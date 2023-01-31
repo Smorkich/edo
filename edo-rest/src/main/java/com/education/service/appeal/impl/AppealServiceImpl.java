@@ -22,13 +22,14 @@ import static model.enum_.Status.NEW_STATUS;
 public class AppealServiceImpl implements AppealService {
 
     private static final String URL = "http://edo-service/api/service/appeal";
-    private final RestTemplate restTemplate;
 
+    private final RestTemplate restTemplate;
 
     @Override
     public AppealDto save(AppealDto appealDto) {
         return restTemplate.postForObject(URL, appealDto, AppealDto.class);
     }
+
     @Override
     public void moveToArchive(Long id) {
         restTemplate.put(URL + "/move/" + id, AppealDto.class);

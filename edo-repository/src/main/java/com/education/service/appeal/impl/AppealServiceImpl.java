@@ -20,6 +20,9 @@ public class AppealServiceImpl implements AppealService {
 
     private AppealRepository appealRepository;
 
+    /**
+     * Сохранение нового сообщения
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Appeal save(Appeal appeal) {
@@ -54,7 +57,7 @@ public class AppealServiceImpl implements AppealService {
     }
 
     /**
-     * Перенос в архив обращения
+     * Перенос в архив обращения и изменение статуса на (ARCHIVE)
      */
     @Override
     @Transactional(rollbackFor = Exception.class)

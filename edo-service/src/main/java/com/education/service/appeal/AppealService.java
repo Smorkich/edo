@@ -29,6 +29,9 @@ public interface AppealService {
      */
     void delete(Long id);
 
+    /**
+     * Перенос обращения в архив по id
+     */
     void moveToArchive(Long id);
 
     /**

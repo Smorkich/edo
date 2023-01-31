@@ -66,6 +66,7 @@ public class AppealServiceImpl implements AppealService {
 
         return restTemplate.postForObject(URL, appealDto, AppealDto.class);
     }
+
     /**
      * Удаления обращения по Id
      */

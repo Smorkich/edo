@@ -30,7 +30,6 @@ public class AppealController {
         return new ResponseEntity<>(save, HttpStatus.CREATED);
     }
 
-
     @ApiOperation(value = "В строке таблицы Appeal заполняет поле archivedDate", notes = "Строка в Appeal должна существовать")
     @PutMapping(value = "/move/{id}")
     public ResponseEntity<AppealDto> moveToArchive(@PathVariable Long id) {

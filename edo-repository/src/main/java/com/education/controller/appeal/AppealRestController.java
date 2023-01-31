@@ -82,7 +82,6 @@ public class AppealRestController {
         return new ResponseEntity<>(APPEAL_MAPPER.toDto(appealService.findById(appeal.getId())), HttpStatus.CREATED);
     }
 
-
     @ApiOperation(value = "Находит строку таблицы Appeal по id",
             notes = "Строка в Appeal должна существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
