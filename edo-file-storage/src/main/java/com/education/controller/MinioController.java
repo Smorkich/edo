@@ -10,6 +10,7 @@ import model.dto.FilePoolDto;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
 
@@ -49,7 +51,8 @@ public class MinioController {
     public ResponseEntity<String> uploadFileToMinIO(@RequestParam("file") MultipartFile file,
                                                     @RequestParam("key") String key,
                                                     @RequestParam("fileName") String fileName) {
-        try(InputStream in = new ByteArrayInputStream(file.getBytes())) {
+        String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
+        try(var inDoc = minioComponent.convertFileToPDF(file, extension)) {
             String contentType = file.getContentType();
             minioComponent.postObject(key, in, contentType);
             log.info("Upload file named: {};  Type: {}; Key: {}.", fileName, contentType, key);
@@ -59,7 +62,6 @@ public class MinioController {
         }
         return ResponseEntity.badRequest().body("Something wrong.");
     }
-
 
     /**
      * Request to download file from MINIO-server.

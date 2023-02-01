@@ -19,3 +19,9 @@ minio:
   username: admin
   password: password
   bucket-name: my-bucketname
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info

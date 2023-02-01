@@ -1,10 +1,10 @@
-package com.education.service;
+package com.education.service.department.impl;
 
 
+import com.education.service.department.DepartmentService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.DepartmentDto;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import org.springframework.web.client.RestTemplate;
@@ -63,4 +63,6 @@ public class DepartmentServiceImp implements DepartmentService {
         log.info("sent a request to receive the departments not archived in edo - repository");
         return restTemplate.getForObject(URL + "/notArchivedAll/" + ids, List.class);
     }
+
+
 }

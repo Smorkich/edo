@@ -108,4 +108,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     public List<Employee> findByIdInAndArchivedDateNull(Iterable<Long> ids) {
         return employeeRepository.findByIdInAndArchivedDateNull(ids);
     }
+
+    /**
+     * предоставляет сторудников по ФИО
+     *
+     * @param fullName
+     * @return
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<Employee> findAllByFullName(String fullName) {
+        return employeeRepository.findAllByFullName(fullName);
+    }
+
 }

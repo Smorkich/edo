@@ -1,6 +1,7 @@
 package com.education.service.emloyee.impl;
 
 import com.education.service.emloyee.EmployeeService;
+import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.EmployeeDto;
@@ -10,9 +11,11 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Collection;
 import java.util.List;
 
+import static model.constant.Constant.EDO_REPOSITORY_NAME;
+import static model.constant.Constant.EMPLOYEE_FIO_SEARCH_PARAMETER;
 
 /**
- * @author Kiladze George
+ * @author Kiladze George & Kryukov Andrey
  * Сервис, который соединяет реализацию двух модулей через RestTemplate
  * Имеет все те же операции, что и service в edo-repository
  */
@@ -64,5 +67,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Collection<EmployeeDto> findByIdInAndArchivedDateNull(String ids) {
         log.info("Sent a request to receive the employee not archived in edo - repository");
         return restTemplate.getForObject(URL + "/notArchivedAll/" + ids, List.class);
+    }
+
+    @Override
+    public Collection<EmployeeDto> findAllByFullName(String fullName) {
+        log.info("Build uri to repository");
+        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/employee/search")
+                .addParameter(EMPLOYEE_FIO_SEARCH_PARAMETER, fullName).toString();
+        log.info("Sent a request to receive the employee collection with requested full name");
+        return restTemplate.getForObject(uri, Collection.class);
     }
 }

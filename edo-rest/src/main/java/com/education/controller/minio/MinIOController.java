@@ -1,4 +1,4 @@
-package com.education.controller;
+package com.education.controller.minio;
 
 import com.education.service.minio.MinioService;
 import io.swagger.annotations.ApiOperation;
