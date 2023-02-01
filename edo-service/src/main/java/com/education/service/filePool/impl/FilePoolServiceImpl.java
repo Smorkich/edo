@@ -1,8 +1,9 @@
 package com.education.service.filePool.impl;
 
 import com.education.service.filePool.FilePoolService;
+import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
+import model.constant.Constant;
 import model.dto.FilePoolDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -15,7 +16,6 @@ import java.util.List;
  * Сервис реализует методы jpa repository и обычные методы
  */
 @Service
-@Log4j2
 @AllArgsConstructor
 public class FilePoolServiceImpl implements FilePoolService {
 
@@ -24,7 +24,9 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public FilePoolDto save(FilePoolDto filePoolDto) {
-       return restTemplate.postForObject(URL, filePoolDto, FilePoolDto.class);
+        String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/filePool").toString();
+
+        return restTemplate.postForObject(uri, filePoolDto, FilePoolDto.class);
     }
 
     @Override
@@ -53,7 +55,7 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public FilePoolDto findByIdNotArchived(Long id) {
-        return restTemplate.getForObject(URL + "/notArchived/" + id,FilePoolDto.class);
+        return restTemplate.getForObject(URL + "/notArchived/" + id, FilePoolDto.class);
     }
 
     @Override

@@ -1,22 +1,17 @@
 package com.education.service.appeal.impl;
 
 import com.education.service.appeal.AppealService;
-import com.education.service.author.AuthorService;
-import com.education.service.filepool.FilePoolService;
-import com.education.service.question.QuestionService;
+import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
+import model.constant.Constant;
 import model.dto.AppealDto;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.ZonedDateTime;
-import java.util.stream.Collectors;
-
-import static model.enum_.Status.NEW_STATUS;
-
-/**
- * Service в "edo-rest", служит для связи контроллера и RestTemplate
- */
 @Service
 @AllArgsConstructor
 public class AppealServiceImpl implements AppealService {
@@ -25,9 +20,16 @@ public class AppealServiceImpl implements AppealService {
 
     private final RestTemplate restTemplate;
 
+    /**
+     * Отправляет запрос в edo-service на сохранение AppealDTO
+     */
     @Override
     public AppealDto save(AppealDto appealDto) {
-        return restTemplate.postForObject(URL, appealDto, AppealDto.class);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        String uri = URIBuilderUtil.buildURI(Constant.EDO_SERVICE_NAME, "api/service/appeal").toString();
+
+        return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(appealDto, headers), AppealDto.class).getBody();
     }
 
     @Override

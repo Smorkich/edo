@@ -1,7 +1,9 @@
 package com.education.service.author.impl;
 
 import com.education.service.author.AuthorService;
+import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
+import model.constant.Constant;
 import model.dto.AuthorDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -24,7 +26,9 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     public AuthorDto save(AuthorDto authorDto) {
-       return restTemplate.postForObject(URL, authorDto, AuthorDto.class);
+        String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/author").toString();
+
+        return restTemplate.postForObject(uri, authorDto, AuthorDto.class);
     }
 
     /**
