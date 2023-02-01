@@ -43,7 +43,7 @@ public class QuestionController {
     @GetMapping("/all/{ids}")
     private ResponseEntity<List<QuestionDto>> findAll(@PathVariable(name = "ids") List<Long> ids) throws URISyntaxException {
         log.info("Send a get-request to get all Question from database");
-        List<QuestionDto> questionDtos = (List<QuestionDto>) QUESTION_MAPPER.toDto(questionService.findAll(ids));
+        List<QuestionDto> questionDtos = (List<QuestionDto>) QUESTION_MAPPER.toDto(questionService.findAll());
         log.info("The operation was successful, they got the non-archived Question by id ={}", ids);
         return new ResponseEntity<>(questionDtos, HttpStatus.OK);
     }
