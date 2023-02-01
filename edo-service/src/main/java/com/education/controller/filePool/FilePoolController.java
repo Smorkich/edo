@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Collection;
 
 @Log4j2
@@ -22,7 +23,7 @@ public class FilePoolController {
 
     @ApiOperation(value = "Add file", notes = "file not must exist")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FilePoolDto> save(@RequestBody FilePoolDto filePoolDto) {
+    public ResponseEntity<FilePoolDto> save(@RequestBody FilePoolDto filePoolDto) throws URISyntaxException {
         log.info("Send POST request to add file to databases: {}", filePoolDto);
         filePoolService.save(filePoolDto);
         log.info("file added to database");
@@ -31,7 +32,7 @@ public class FilePoolController {
 
     @ApiOperation(value = "Delete file", notes = "file must exist")
     @DeleteMapping("/{id}")
-    public ResponseEntity<FilePoolDto> delete(@PathVariable Long id) {
+    public ResponseEntity<FilePoolDto> delete(@PathVariable Long id) throws URISyntaxException {
         log.info("Send DELETE request to delete file with id={} to databases", id);
         filePoolService.delete(id);
         log.info("file was deleted from the database");
@@ -40,7 +41,7 @@ public class FilePoolController {
 
     @ApiOperation(value = "Gets files by id", notes = "file must exist")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> findById(@PathVariable("id") long id) {
+    public ResponseEntity<String> findById(@PathVariable("id") long id) throws URISyntaxException {
         log.info("Send a get-request to get file with id = {} from edo-repository ", id);
         var filePoolDto = filePoolService.findById(id);
         log.info("Response from edo-repository: {}", filePoolDto);
@@ -49,7 +50,7 @@ public class FilePoolController {
 
     @ApiOperation(value = "Gets all files", notes = "file must exist")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> findAll() {
+    public ResponseEntity<String> findAll() throws URISyntaxException {
         log.info("Sent GET request to get all file from the database");
         var fileDto = filePoolService.findAll();
         log.info("Response from database:{}", fileDto);
@@ -58,7 +59,7 @@ public class FilePoolController {
 
     @ApiOperation(value = "Providing files by assigned IDs")
     @GetMapping("/all/{ids}")
-    private ResponseEntity<Collection<FilePoolDto>> findAllById(@PathVariable(name = "ids") String ids) {
+    private ResponseEntity<Collection<FilePoolDto>> findAllById(@PathVariable(name = "ids") String ids) throws URISyntaxException {
         log.info("Send a response with the files of the assigned IDs");
         var fileDto = filePoolService.findAllById(ids);
         log.info("Response from database:{}", fileDto);
@@ -68,7 +69,7 @@ public class FilePoolController {
 
     @ApiOperation(value = "Archiving a file with adding archive time\n")
     @PostMapping("/{id}")
-    private String moveToArchive(@PathVariable(name = "id") Long id) {
+    private String moveToArchive(@PathVariable(name = "id") Long id) throws URISyntaxException {
         log.info("Start update a file");
         filePoolService.moveToArchive(id);
         log.info("Update a file");
@@ -77,14 +78,14 @@ public class FilePoolController {
 
     @ApiOperation(value = "Providing a file without archiving by id")
     @GetMapping("/NotArchived/{id}")
-    private ResponseEntity<FilePoolDto> findByIdNotArchived(@PathVariable(name = "id") Long id) {
+    private ResponseEntity<FilePoolDto> findByIdNotArchived(@PathVariable(name = "id") Long id) throws URISyntaxException {
         log.info("send a response with the file not archived of the assigned ID");
         return new ResponseEntity<>(filePoolService.findByIdNotArchived(id), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Providing files without archiving by assigned ids")
     @GetMapping("/NotArchivedAll/{ids}")
-    private ResponseEntity<Collection<FilePoolDto>> findAllByIdNotArchived(@PathVariable(name = "ids") String ids) {
+    private ResponseEntity<Collection<FilePoolDto>> findAllByIdNotArchived(@PathVariable(name = "ids") String ids) throws URISyntaxException {
         log.info("send a response with the files not archived of the assigned IDs");
         return new ResponseEntity<>(filePoolService.findAllByIdNotArchived(ids), HttpStatus.OK);
     }

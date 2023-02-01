@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URISyntaxException;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -35,7 +36,7 @@ public class EmployeeController {
 
     @ApiOperation(value = "Создает сотрудника")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EmployeeDto> save(@RequestBody EmployeeDto employeeDto) {
+    public ResponseEntity<EmployeeDto> save(@RequestBody EmployeeDto employeeDto) throws URISyntaxException {
         log.info("Starting the save operation");
         employeeService.save(employeeDto);
         log.info("Saving the employee");
@@ -44,7 +45,7 @@ public class EmployeeController {
 
     @ApiOperation(value = "Архивация сотрудника с занесением времени архивации")
     @PostMapping(value = "/{id}")
-    public ResponseEntity<Void> moveToArchived(@PathVariable Long id) {
+    public ResponseEntity<Void> moveToArchived(@PathVariable Long id) throws URISyntaxException {
         log.info("Starting the archiving operation");
         employeeService.moveToArchived(id);
         log.info("Archiving the employee");
@@ -53,7 +54,7 @@ public class EmployeeController {
 
     @ApiOperation(value = "Предоставление сотрудника по индентификатору")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<EmployeeDto> findById(@PathVariable Long id) {
+    public ResponseEntity<EmployeeDto> findById(@PathVariable Long id) throws URISyntaxException {
         log.info("Send a response with the employee of the assigned id");
         EmployeeDto employeeDto = employeeService.findById(id);
         log.info("The operation was successful, we got the employee by id ={}", id);

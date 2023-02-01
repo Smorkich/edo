@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URISyntaxException;
 import java.util.Collection;
 
 /**
@@ -30,7 +31,7 @@ public class DepartmentController {
 
     @ApiOperation(value = "Предоставление департамента по индентификатору")
     @GetMapping(value = "/{id}")
-    private ResponseEntity<DepartmentDto> getDepartment(@PathVariable(name = "id") Long id) {
+    private ResponseEntity<DepartmentDto> getDepartment(@PathVariable(name = "id") Long id) throws URISyntaxException {
         log.info("send a response with the department of the assigned id");
         var departmentDto = departmentService.findById(id);
         log.info("The operation was successful, we got the department by id ={}", id);
@@ -39,7 +40,7 @@ public class DepartmentController {
 
     @ApiOperation(value = "Предоставление департамента без архивации по идентификатору")
     @GetMapping("/notArchived/{id}")
-    private ResponseEntity<DepartmentDto> getDepartmentNotArchived(@PathVariable(name = "id") Long id) {
+    private ResponseEntity<DepartmentDto> getDepartmentNotArchived(@PathVariable(name = "id") Long id) throws URISyntaxException {
         log.info("send a response with the department not archived of the assigned ID");
         var depNotArc = departmentService.findByIdNotArchived(id);
         log.info("The operation was successful, they got the non-archived department by id ={}", id);
@@ -48,7 +49,7 @@ public class DepartmentController {
 
     @ApiOperation(value = "Предоставление дапартаментов без архивации по назначеным идентификаторам")
     @GetMapping("/notArchivedAll/{ids}")
-    private ResponseEntity<Collection<DepartmentDto>> getDepartmentsNotArchived(@PathVariable(name = "ids") String ids) {
+    private ResponseEntity<Collection<DepartmentDto>> getDepartmentsNotArchived(@PathVariable(name = "ids") String ids) throws URISyntaxException {
         log.info("send a response with the departments not archived of the assigned IDs");
         var depsNotArc = departmentService.findByAllIdNotArchived(ids);
         log.info("The operation was successful, they got the non-archived department by id ={}", ids);
@@ -57,7 +58,7 @@ public class DepartmentController {
 
     @ApiOperation(value = "Предоставление дапартаментов  по назначеным идентификаторам")
     @GetMapping("/all/{ids}")
-    private ResponseEntity<Collection<DepartmentDto>> getDepartments(@PathVariable(name = "ids") String ids) {
+    private ResponseEntity<Collection<DepartmentDto>> getDepartments(@PathVariable(name = "ids") String ids) throws URISyntaxException {
         log.info("send a response with the departments of the assigned IDs");
         var deps = departmentService.findByAllId(ids);
         log.info("The operation was successful, we got the departments by id ={}", ids);
@@ -66,7 +67,7 @@ public class DepartmentController {
 
     @ApiOperation(value = "Добавлнение департамента")
     @PostMapping
-    private String saveDepartment(@RequestBody DepartmentDto departmentDto) {
+    private String saveDepartment(@RequestBody DepartmentDto departmentDto) throws URISyntaxException {
         log.info("Starting the save operation");
         departmentService.save(departmentDto);
         log.info("saving the department and displaying its full name in the response");
@@ -75,7 +76,7 @@ public class DepartmentController {
 
     @ApiOperation(value = "Архивация департамента с занесением времени архивации")
     @PostMapping("/{id}")
-    private String deleteUser(@PathVariable(name = "id") Long id) {
+    private String deleteUser(@PathVariable(name = "id") Long id) throws URISyntaxException {
         log.info("Starting the archiving operation");
         departmentService.removeToArchived(id);
         log.info("Archiving a department");
