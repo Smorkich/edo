@@ -10,6 +10,7 @@ import com.education.service.employee.EmployeeService;
 import com.github.aleksandy.petrovich.Case;
 import com.github.aleksandy.petrovich.Petrovich;
 import lombok.AllArgsConstructor;
+import model.dto.EmployeeDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -140,21 +141,54 @@ public class EmployeeServiceImpl implements EmployeeService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public Collection<Employee> saveCollection (Collection<Employee> employees) {
+    public Collection<Employee> saveCollection(Collection<Employee> employees) {
 
         Collection<Address> addressesDepartments = new ArrayList<>();
         Collection<Address> addressesEmployees = new ArrayList<>();
         Collection<Department> departments = new ArrayList<>();
 
-         employees.forEach(employee -> {
-             casesConstructor(employee);
-             employee.setCreationDate(ZonedDateTime.now());
-             employee.getDepartment().setCreationDate(ZonedDateTime.now());
-             employee.getDepartment().setDepartment(null);
+        employees.forEach(employee -> {
+            addCases(employee);
 
-             addressesDepartments.add(employee.getDepartment().getAddress());
-             departments.add(employee.getDepartment());
-             addressesEmployees.add(employee.getAddress());
+            /* Создание пользователя который найден в таблице по ExternalId */
+            Employee employeeEx = employeeRepository.findByExternalId(employee.getExternalId());
+            /* Проверка есть ли пользователь с ExternalId в БД */
+            if (employeeEx==null) {
+
+                employee.setCreationDate(ZonedDateTime.now());
+                employee.getDepartment().setCreationDate(ZonedDateTime.now());
+                employee.getDepartment().setDepartment(null);
+
+                addressesDepartments.add(employee.getDepartment().getAddress());
+                departments.add(employee.getDepartment());
+                addressesEmployees.add(employee.getAddress());
+
+            } else {
+
+                /* Добавление id пользователю который найден в таблице по ExternalId */
+                employee.setId(employeeEx.getId());
+                employee.getDepartment().setDepartment(null);
+
+                /* Поиск id адреса департамента по пользователю который найден в таблице по ExternalId */
+                Long empExDepartmentAddressId = employeeEx.getDepartment().getAddress().getId();
+                Address addressesDepartment = employee.getDepartment().getAddress();
+                addressesDepartment.setId(empExDepartmentAddressId);
+                addressesDepartments.add(addressesDepartment);
+
+                /* Поиск id департамента по пользователю который найден в таблице по ExternalId */
+                Long empExDepartmentId = employeeEx.getDepartment().getId();
+                Department department = employee.getDepartment();
+                department.setId(empExDepartmentId);
+                departments.add(department);
+
+                /* Поиск id адреса пользователя который найден в таблице по ExternalId */
+                Long empExAddressId = employeeEx.getAddress().getId();
+                Address addressEmployee = employee.getAddress();
+                addressEmployee.setId(empExAddressId);
+                addressesEmployees.add(addressEmployee);
+
+            }
+
         });
 
         addressService.saveCollection(addressesDepartments);
@@ -164,13 +198,14 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employeeRepository.saveAll(employees);
     }
 
+
     /**
      * Конструктор падежей
      *
      * @param employee
      * @return
      */
-    private static Employee casesConstructor(Employee employee) {
+    private static void addCases(Employee employee) {
         Petrovich.Names names = new Petrovich.Names(employee.getLastName(), employee.getFirstName(), employee.getMiddleName(), null);
         Petrovich petrovich = new Petrovich();
         String fioDative = petrovich.inflectTo(names, Case.DATIVE).lastName
@@ -193,6 +228,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .concat(StringUtils.SPACE)
                 .concat(petrovich.inflectTo(names, Case.NOMINATIVE).middleName);
         employee.setFioNominative(fioNominative);
-        return employee;
+
     }
 }
