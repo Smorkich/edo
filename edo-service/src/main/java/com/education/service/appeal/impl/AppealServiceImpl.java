@@ -4,9 +4,6 @@ import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
 import com.education.service.filePool.FilePoolService;
 import com.education.service.question.QuestionService;
-import com.education.service.author.AuthorService;
-import com.education.service.filePool.FilePoolService;
-import com.education.service.question.QuestionService;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import model.constant.Constant;
@@ -43,9 +40,6 @@ public class AppealServiceImpl implements AppealService {
     private final FilePoolService filePoolService;
     private final String URL = "http://edo-repository/api/repository/appeal";
 
-    private final AuthorService authorService;
-    private final QuestionService questionService;
-    private final FilePoolService filePoolService;
 
     /**
      * Нахождение обращения по id
