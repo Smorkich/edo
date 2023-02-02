@@ -40,9 +40,6 @@ public class MemberDto implements Serializable {
     @ApiModelProperty(value = "Дата завершения действия")
     private ZonedDateTime endDate;
 
-    @ApiModelProperty(value = "Блок листа согласования в котором находится участник")
-    private ApprovalBlockDto approvalBlock;
-
     @ApiModelProperty(value = "Номер по порядку согласования и порядку отображения на UI")
     private int ordinalNumber;
 

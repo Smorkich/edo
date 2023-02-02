@@ -59,23 +59,11 @@ public class ApprovalServiceImpl implements ApprovalService {
         List<ApprovalBlockDto> savedApprovalBlocks = new ArrayList<>();
 
         try {
-            // Сохранение блоков согласования
-            approvalDto.setParticipantApprovalBlocks(approvalDto.getParticipantApprovalBlocks().stream()
-                    .map(approvalBlockDto -> {
-                        approvalBlockDto = approvalBlockService.save(approvalBlockDto);
-                        savedApprovalBlocks.add(approvalBlockDto);
+            Collection<ApprovalBlockDto> participantApprovalBlocks = approvalDto.getParticipantApprovalBlocks();
+            Collection<ApprovalBlockDto> signatoryApprovalBlocks = approvalDto.getSignatoryApprovalBlocks();
 
-                        return approvalBlockDto;
-                    })
-                    .collect(Collectors.toList()));
-            approvalDto.setSignatoryApprovalBlocks(approvalDto.getSignatoryApprovalBlocks().stream()
-                    .map(approvalBlockDto -> {
-                        approvalBlockDto = approvalBlockService.save(approvalBlockDto);
-                        savedApprovalBlocks.add(approvalBlockDto);
-
-                        return approvalBlockDto;
-                    })
-                    .collect(Collectors.toList()));
+            // Установка даты создания для листа согласования
+            approvalDto.setCreationDate(ZonedDateTime.now());
 
             // Сохранение инициатора
             approvalDto.setInitiator(memberService.save(MemberDto.builder()
@@ -86,19 +74,39 @@ public class ApprovalServiceImpl implements ApprovalService {
                     .type(MemberType.INITIATOR)
                     .build()));
 
-            // Установка даты создания для листа согласования
-            approvalDto.setCreationDate(ZonedDateTime.now());
-
+            // Сохранение листа согласования без блоков
+            approvalDto.setSignatoryApprovalBlocks(null);
+            approvalDto.setParticipantApprovalBlocks(null);
             String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval").toString();
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
+            approvalDto = restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(approvalDto, headers), ApprovalDto.class).getBody();
+            Long approvalId = approvalDto.getId();
+
+            // Сохранение блоков согласования
+            approvalDto.setParticipantApprovalBlocks(participantApprovalBlocks.stream()
+                    .map(approvalBlockDto -> {
+                        approvalBlockDto = approvalBlockService.save(approvalBlockDto, approvalId);
+                        savedApprovalBlocks.add(approvalBlockDto);
+
+                        return approvalBlockDto;
+                    })
+                    .collect(Collectors.toList()));
+            approvalDto.setSignatoryApprovalBlocks(signatoryApprovalBlocks.stream()
+                    .map(approvalBlockDto -> {
+                        approvalBlockDto = approvalBlockService.save(approvalBlockDto, approvalId);
+                        savedApprovalBlocks.add(approvalBlockDto);
+
+                        return approvalBlockDto;
+                    })
+                    .collect(Collectors.toList()));
 
             return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(approvalDto, headers), ApprovalDto.class).getBody();
         } catch (Exception e) {
 
-            // Удаление сохранённых вложенных сущностей
-            if (approvalDto.getInitiator() != null) memberService.delete(approvalDto.getInitiator().getId());
+            // Удаление сохранённых сущностей
             savedApprovalBlocks.forEach(approvalBlockDto -> approvalBlockService.delete(approvalBlockDto.getId()));
+            if (approvalDto.getId() != null) delete(approvalDto.getId());
 
             throw e;
         }

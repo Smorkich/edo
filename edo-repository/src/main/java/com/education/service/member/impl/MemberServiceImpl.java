@@ -1,6 +1,7 @@
 package com.education.service.member.impl;
 
 import com.education.entity.Member;
+import com.education.repository.approvalBlock.ApprovalBlockRepository;
 import com.education.repository.member.MemberRepository;
 import com.education.service.member.MemberService;
 import lombok.AllArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.Collection;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+    private final ApprovalBlockRepository approvalBlockRepository;
 
     /**
      * Метод принимает сущность Member и сохраняет её в БД
@@ -64,4 +66,15 @@ public class MemberServiceImpl implements MemberService {
     public void delete(Long id) {
         memberRepository.deleteById(id);
     }
+
+    /**
+     * Метод принимает сущность Member и сохраняет её в БД со ссылкой на ApprovalBlock
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Member saveWithLinkToApprovalBlock(Member member, Long approvalBlockId) {
+        member.setApprovalBlock(approvalBlockRepository.findById(approvalBlockId).orElse(null));
+        return memberRepository.save(member);
+    }
+
 }

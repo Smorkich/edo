@@ -47,6 +47,27 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
+     * Отправляет post-запрос в edo-repository для сохранения участника со ссылкой на блок согласования
+     */
+    @Override
+    public MemberDto save(MemberDto memberDto, Long approvalBlockId) {
+
+        // Проверка на отсутствие индекса у участника
+        if (memberDto.getId() != null) {
+            throw new IllegalArgumentException("The member must be without an id");
+        }
+
+        // Установка даты создания для участника
+        memberDto.setCreationDate(ZonedDateTime.now());
+
+        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/member/saveWithLinkToApprovalBlock/" + approvalBlockId).toString();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(memberDto, headers), MemberDto.class).getBody();
+    }
+
+    /**
      * Отправляет get-запрос в edo-repository для получения участника по индексу
      */
     @Override

@@ -77,4 +77,13 @@ public class MemberRestController {
         log.info("Response: member with id = {} was deleted from database", id);
         return new ResponseEntity<>(id, HttpStatus.ACCEPTED);
     }
+
+    @ApiOperation(value = "Добавляет новую запись в таблицу Member со ссылкой на ApprovalBlock")
+    @PostMapping(value ="saveWithLinkToApprovalBlock/{approvalBlockId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<MemberDto> saveWithLinkToApprovalBlock(@RequestBody MemberDto memberDto, @PathVariable Long approvalBlockId) {
+        log.info("Send a post-request to post new Member to database with link to ApprovalBlock");
+        Member savedMember = memberService.saveWithLinkToApprovalBlock(MEMBER_MAPPER.toEntity(memberDto), approvalBlockId);
+        log.info("Response: {} was added to database", memberDto);
+        return new ResponseEntity<>(MEMBER_MAPPER.toDto(savedMember), HttpStatus.CREATED);
+    }
 }

@@ -30,4 +30,9 @@ public interface ApprovalBlockService {
      * Удалить блок листа согласования по индексу
      */
     void delete(Long id);
+
+    /**
+     * Сохраняет новый блок листа согласования со ссылкой на лист согласования
+     */
+    ApprovalBlock saveWithLinkToApproval(ApprovalBlock approvalBlock, Long approvalId);
 }

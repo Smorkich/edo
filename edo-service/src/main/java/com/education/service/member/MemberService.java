@@ -12,6 +12,11 @@ public interface MemberService {
     MemberDto save(MemberDto memberDto);
 
     /**
+     * Сохраняет нового участника со ссылкой на блок согласования
+     */
+    MemberDto save(MemberDto memberDto, Long approvalBlockId);
+
+    /**
      * Поиск участника по индексу
      */
     MemberDto findById(Long id);

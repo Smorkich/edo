@@ -50,20 +50,32 @@ public class ApprovalBlockServiceImpl implements ApprovalBlockService {
         List<MemberDto> savedMembers = new ArrayList<>();
 
         try {
+            Collection<MemberDto> participants = approvalBlockDto.getParticipants();
+            Collection<MemberDto> signatories = approvalBlockDto.getSignatories();
+
+            // Сохранение блока согласования без участников
+            approvalBlockDto.setSignatories(null);
+            approvalBlockDto.setParticipants(null);
+            String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approvalBlock").toString();
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            approvalBlockDto = restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(approvalBlockDto, headers), ApprovalBlockDto.class).getBody();
+            Long approvalBlockId = approvalBlockDto.getId();
+
             // Сохранение участников согласования
             if (approvalBlockDto.getType().equals(ApprovalBlockType.PARTICIPANT_BLOCK)) {
-                approvalBlockDto.setParticipants(approvalBlockDto.getParticipants().stream()
+                approvalBlockDto.setParticipants(participants.stream()
                         .map(memberDto -> {
-                            memberDto = memberService.save(memberDto);
+                            memberDto = memberService.save(memberDto, approvalBlockId);
                             savedMembers.add(memberDto);
 
                             return memberDto;
                         })
                         .collect(Collectors.toList()));
             } else {
-                approvalBlockDto.setSignatories(approvalBlockDto.getSignatories().stream()
+                approvalBlockDto.setSignatories(signatories.stream()
                         .map(memberDto -> {
-                            memberDto = memberService.save(memberDto);
+                            memberDto = memberService.save(memberDto, approvalBlockId);
                             savedMembers.add(memberDto);
 
                             return memberDto;
@@ -71,16 +83,76 @@ public class ApprovalBlockServiceImpl implements ApprovalBlockService {
                         .collect(Collectors.toList()));
             }
 
-            String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approvalBlock").toString();
+            return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(approvalBlockDto, headers), ApprovalBlockDto.class).getBody();
+        } catch (Exception e) {
+
+            // Удаление сохранённых сущностей
+            savedMembers.forEach(memberDto -> memberService.delete(memberDto.getId()));
+            if (approvalBlockDto.getId() != null) {
+                delete(approvalBlockDto.getId());
+            }
+
+            throw e;
+        }
+    }
+
+    /**
+     * Отправляет post-запрос в edo-repository для сохранения блока согласования со ссылкой на лист согласования
+     */
+    @Override
+    public ApprovalBlockDto save(ApprovalBlockDto approvalBlockDto, Long approvalId) {
+
+        // Проверка на отсутствие индекса у блока согласования
+        if (approvalBlockDto.getId() != null) {
+            throw new IllegalArgumentException("The approval block must be without an id");
+        }
+
+        // Валидация блока согласования
+        validator.validateApprovalBlockDto(approvalBlockDto);
+
+        // Список, который хранит новых участников
+        List<MemberDto> savedMembers = new ArrayList<>();
+
+        try {
+            Collection<MemberDto> participants = approvalBlockDto.getParticipants();
+            Collection<MemberDto> signatories = approvalBlockDto.getSignatories();
+
+            // Сохранение блока согласования без участников
+            approvalBlockDto.setSignatories(null);
+            approvalBlockDto.setParticipants(null);
+            String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approvalBlock/saveWithLinkToApproval/" + approvalId).toString();
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
+            approvalBlockDto = restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(approvalBlockDto, headers), ApprovalBlockDto.class).getBody();
+            Long approvalBlockId = approvalBlockDto.getId();
+
+            // Сохранение участников согласования
+            if (approvalBlockDto.getType().equals(ApprovalBlockType.PARTICIPANT_BLOCK)) {
+                approvalBlockDto.setParticipants(participants.stream()
+                        .map(memberDto -> {
+                            memberDto = memberService.save(memberDto, approvalBlockId);
+                            savedMembers.add(memberDto);
+
+                            return memberDto;
+                        })
+                        .collect(Collectors.toList()));
+            } else {
+                approvalBlockDto.setSignatories(signatories.stream()
+                        .map(memberDto -> {
+                            memberDto = memberService.save(memberDto, approvalBlockId);
+                            savedMembers.add(memberDto);
+
+                            return memberDto;
+                        })
+                        .collect(Collectors.toList()));
+            }
 
             return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(approvalBlockDto, headers), ApprovalBlockDto.class).getBody();
         } catch (Exception e) {
 
-            // Удаление сохранённых вложенных участников
+            // Удаление сохранённых сущностей
             savedMembers.forEach(memberDto -> memberService.delete(memberDto.getId()));
-
+            if (approvalBlockDto.getId() != null) delete(approvalBlockDto.getId());
 
             throw e;
         }

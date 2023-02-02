@@ -1,6 +1,7 @@
 package com.education.service.approvalBlock.impl;
 
 import com.education.entity.ApprovalBlock;
+import com.education.repository.approval.ApprovalRepository;
 import com.education.repository.approvalBlock.ApprovalBlockRepository;
 import com.education.service.approvalBlock.ApprovalBlockService;
 import com.education.service.member.MemberService;
@@ -19,6 +20,7 @@ public class ApprovalBlockServiceImpl implements ApprovalBlockService {
 
     private final ApprovalBlockRepository approvalBlockRepository;
     private final MemberService memberService;
+    private final ApprovalRepository approvalRepository;
 
     /**
      * Метод принимает сущность ApprovalBlock и сохраняет её в БД
@@ -64,8 +66,6 @@ public class ApprovalBlockServiceImpl implements ApprovalBlockService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(Long id) {
-
-        // Удаление всех вложенных сущностей
         ApprovalBlock approvalBlock = findById(id);
         if (approvalBlock != null) {
             approvalBlock.getSignatories().forEach(member -> memberService.delete(member.getId()));
@@ -73,5 +73,15 @@ public class ApprovalBlockServiceImpl implements ApprovalBlockService {
         }
 
         approvalBlockRepository.deleteById(id);
+    }
+
+    /**
+     * Метод принимает сущность ApprovalBlock и сохраняет её в БД со ссылкой на Approval
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public ApprovalBlock saveWithLinkToApproval(ApprovalBlock approvalBlock, Long approvalId) {
+        approvalBlock.setApproval(approvalRepository.findById(approvalId).orElse(null));
+        return approvalBlockRepository.save(approvalBlock);
     }
 }

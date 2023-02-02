@@ -11,6 +11,11 @@ public interface ApprovalBlockService {
     ApprovalBlockDto save(ApprovalBlockDto approvalBlockDto);
 
     /**
+     * Сохраняет новый блок листа согласования со ссылкой на лист согласования
+     */
+    ApprovalBlockDto save(ApprovalBlockDto approvalBlockDto, Long approvalId);
+
+    /**
      * Поиск блока листа согласования по индексу
      */
     ApprovalBlockDto findById(Long id);

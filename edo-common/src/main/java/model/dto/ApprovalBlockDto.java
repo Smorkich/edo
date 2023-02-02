@@ -29,9 +29,6 @@ public class ApprovalBlockDto implements Serializable {
     @ApiModelProperty(value = "Тип блока листа согласования")
     private ApprovalBlockType type;
 
-    @ApiModelProperty(value = "Лист согласования, за которым закреплён блок")
-    private ApprovalDto approval;
-
     @ApiModelProperty(value = "Участник перенаправивший лист согласования")
     private MemberDto memberWhoRedirectedApproval;
 

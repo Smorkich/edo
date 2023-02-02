@@ -36,7 +36,7 @@ public class ApprovalBlockRestController {
     @ApiOperation(value = "Добавляет новую запись в таблицу approval_block")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApprovalBlockDto> save(@RequestBody ApprovalBlockDto approvalBlockDto) {
-        log.info("Send a post-request to post new Member to database");
+        log.info("Send a post-request to post new ApprovalBlock to database");
         ApprovalBlock savedApprovalBlock = approvalBlockService.save(APPROVAL_BLOCK_MAPPER.toEntity(approvalBlockDto));
         log.info("Response: {} was added to database", approvalBlockDto);
         return new ResponseEntity<>(APPROVAL_BLOCK_MAPPER.toDto(savedApprovalBlock), HttpStatus.CREATED);
@@ -76,5 +76,14 @@ public class ApprovalBlockRestController {
         approvalBlockService.delete(id);
         log.info("Response: approval block with id = {} was deleted from database", id);
         return new ResponseEntity<>(id, HttpStatus.ACCEPTED);
+    }
+
+    @ApiOperation(value = "Добавляет новую запись в таблицу approval_block со ссылкой на Approval")
+    @PostMapping(value = "saveWithLinkToApproval/{approvalId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ApprovalBlockDto> saveWithLinkToApproval(@RequestBody ApprovalBlockDto approvalBlockDto, @PathVariable Long approvalId) {
+        log.info("Send a post-request to post new ApprovalBlock to database with link to Approval");
+        ApprovalBlock savedApprovalBlock = approvalBlockService.saveWithLinkToApproval(APPROVAL_BLOCK_MAPPER.toEntity(approvalBlockDto), approvalId);
+        log.info("Response: {} was added to database", approvalBlockDto);
+        return new ResponseEntity<>(APPROVAL_BLOCK_MAPPER.toDto(savedApprovalBlock), HttpStatus.CREATED);
     }
 }

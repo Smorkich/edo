@@ -30,4 +30,9 @@ public interface MemberService {
      * Удалить участника по индексу
      */
     void delete(Long id);
+
+    /**
+     * Сохраняет нового участника cо ссылкой на блок согласования
+     */
+    Member saveWithLinkToApprovalBlock(Member member, Long approvalBlockId);
 }

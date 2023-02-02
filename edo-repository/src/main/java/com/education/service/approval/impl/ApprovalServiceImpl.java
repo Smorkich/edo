@@ -66,16 +66,13 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(Long id) {
-
-        // Удаление всех вложенных сущностей
         Approval approval = findById(id);
         if (approval != null) {
-            memberService.delete(approval.getInitiator().getId());
             approval.getParticipantApprovalBlocks().forEach(approvalBlock -> approvalBlockService.delete(approvalBlock.getId()));
             approval.getSignatoryApprovalBlocks().forEach(approvalBlock -> approvalBlockService.delete(approvalBlock.getId()));
+            approvalRepository.deleteById(approval.getId());
+            memberService.delete(approval.getInitiator().getId());
         }
-
-        approvalRepository.deleteById(id);
     }
 
     /**
