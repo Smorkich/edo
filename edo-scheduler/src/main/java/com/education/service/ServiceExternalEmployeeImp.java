@@ -16,9 +16,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.net.URL;
-import java.time.ZonedDateTime;
 import java.util.Collection;
-
 
 import static model.constant.Constant.EDO_SERVICE_NAME;
 
@@ -34,7 +32,6 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
 
     private final ObjectMapper objectMapper;
     private final JobScheduler jobScheduler;
-    private final ConvertEmployee convertEmployee;
     private final RestTemplate restTemplate;
 
     /**
@@ -44,7 +41,6 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
    // @Scheduled(cron = "${cron.employee}")
     @Scheduled(fixedDelayString = "PT04M")
     public void dataSyncEveryHour() {
-
         log.info("The data synchronization method has started, it starts every hour");
         Collection<ExternalEmployeeDto> externalEmployeesDto;
         try {
@@ -55,22 +51,7 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
         }
         String uriEmployeeSavePath = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, "/api/service/employee/collection").toString();
         log.info("Got a URL to save Employee to the database");
-
-        log.info("Started the conversion process externalEmployeeDto in EmployeeDto");
-        Collection<EmployeeDto> employeeDtos = externalEmployeesDto.stream().map(externalEmployee -> {
-            EmployeeDto employeeDto = convertEmployee.toDto(externalEmployee);
-            /*Проверяем если пользователь удален, ставим дату архивации*/
-            if (externalEmployee.isDelete()) {
-                employeeDto.setArchivedDate(ZonedDateTime.now());
-            }
-            /*Проверяем если компания удалена, ставим дату архивации*/
-            if (externalEmployee.getCompany().isDelete()) {
-                employeeDto.getDepartment().setArchivedDate(ZonedDateTime.now());
-                /*Проверяем если компания удалена, ставим дату архивации работника*/
-                employeeDto.setArchivedDate(ZonedDateTime.now());
-            }
-            return employeeDto;
-        }).toList();
+        Collection<EmployeeDto> employeeDtos = ConvertEmployee.toDto(externalEmployeesDto);
         log.info("Finished the conversion process externalEmployeeDto in EmployeeDto");
         restTemplate.postForObject(uriEmployeeSavePath, employeeDtos, EmployeeDto.class);
         log.info("Sent a save request to the EmployeeDto database");

@@ -1,12 +1,12 @@
 package com.education.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,6 +28,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @AllArgsConstructor
 @Table(name = "department")
 @SuperBuilder
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 public class Department extends BaseEntity {
 
@@ -47,6 +48,7 @@ public class Department extends BaseEntity {
     /* Поле с внешним идентификатором, у себя не создаем сущность,
     скачиваем из чужого хранилища)
      */
+    @EqualsAndHashCode.Include
     @Column(name = "external_id")
     private String externalId;
 

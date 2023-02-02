@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -144,7 +145,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         Collection<Address> addressesDepartments = new ArrayList<>();
         Collection<Address> addressesEmployees = new ArrayList<>();
-        Collection<Department> departments = new ArrayList<>();
+        Collection<Department> departments = new HashSet<>();
 
         Collection<Employee> employeesFromDb = employeeRepository.findAll();
         Collection<Department> departmentsFromDb = departmentService.findAll();
@@ -154,12 +155,17 @@ public class EmployeeServiceImpl implements EmployeeService {
                 if (employeeFromDb.getExternalId().equals(employee.getExternalId())) {
                     employee.setId(employeeFromDb.getId());
                     employee.getAddress().setId(employeeFromDb.getAddress().getId());
-                } else {
-                    employee.setCreationDate(ZonedDateTime.now());
+                    employee.setCreationDate(employeeFromDb.getCreationDate());
                 }
-                departments.add(employee.getDepartment());
-                addressesEmployees.add(employee.getAddress());
             });
+            if (employee.getCreationDate()==null){
+                employee.setCreationDate(ZonedDateTime.now());
+            }
+            departments.add(employee.getDepartment());
+            employee.setDepartment(departments.stream()
+                    .filter(department -> department.getExternalId().equals(employee.getDepartment().getExternalId()))
+                    .findAny().get());
+            addressesEmployees.add(employee.getAddress());
             addCases(employee);
         });
 
@@ -168,11 +174,14 @@ public class EmployeeServiceImpl implements EmployeeService {
                 if (departmentFromDb.getExternalId().equals(department.getExternalId())) {
                     department.setId(departmentFromDb.getId());
                     department.getAddress().setId(departmentFromDb.getAddress().getId());
-                } else {
-                    department.setCreationDate(ZonedDateTime.now());
+                    department.setCreationDate(departmentFromDb.getCreationDate());
                 }
-                addressesDepartments.add(department.getAddress());
             });
+            if (department.getCreationDate()==null){
+                department.setCreationDate(ZonedDateTime.now());
+            }
+            department.setDepartment(null);
+            addressesDepartments.add(department.getAddress());
         });
 
         addressService.saveCollection(addressesDepartments);
@@ -180,42 +189,6 @@ public class EmployeeServiceImpl implements EmployeeService {
         addressService.saveCollection(addressesEmployees);
 
         return employeeRepository.saveAll(employees);
-
-            /* Создание пользователя который найден в таблице по ExternalId */
-            /* Проверка есть ли пользователь с ExternalId в БД */
-//            if (employeeEx==null) {
-//
-//
-//                employee.getDepartment().setCreationDate(ZonedDateTime.now());
-//                employee.getDepartment().setDepartment(null);
-//
-//                addressesDepartments.add(employee.getDepartment().getAddress());
-//                departments.add(employee.getDepartment());
-//                addressesEmployees.add(employee.getAddress());
-//
-//            } else {
-//
-//                /* Поиск id адреса департамента по пользователю который найден в таблице по ExternalId */
-//                Long empExDepartmentAddressId = employeeEx.getDepartment().getAddress().getId();
-//                Address addressesDepartment = employee.getDepartment().getAddress();
-//                addressesDepartment.setId(empExDepartmentAddressId);
-//                addressesDepartments.add(addressesDepartment);
-//
-//                /* Поиск id департамента по пользователю который найден в таблице по ExternalId */
-//                Long empExDepartmentId = employeeEx.getDepartment().getId();
-//                Department department = employee.getDepartment();
-//                department.setId(empExDepartmentId);
-//                departments.add(department);
-//
-//                /* Поиск id адреса пользователя который найден в таблице по ExternalId */
-//                Long empExAddressId = employeeEx.getAddress().getId();
-//                Address addressEmployee = employee.getAddress();
-//                addressEmployee.setId(empExAddressId);
-//                addressesEmployees.add(addressEmployee);
-//
-//            }
-//
-//        });
     }
 
 
