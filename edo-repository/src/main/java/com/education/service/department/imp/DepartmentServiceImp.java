@@ -111,4 +111,14 @@ public class DepartmentServiceImp implements DepartmentService {
     public void saveCollection(Collection<Department> departments) {
         repository.saveAll(departments);
     }
+
+    /**
+     * достает все департаменты
+     *
+     * @return
+     */
+    @Override
+    public Collection<Department> findAll() {
+        return repository.findAll();
+    }
 }

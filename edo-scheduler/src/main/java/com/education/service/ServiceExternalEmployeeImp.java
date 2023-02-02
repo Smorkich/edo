@@ -33,7 +33,6 @@ import static model.constant.Constant.EDO_SERVICE_NAME;
 public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
 
     private final ObjectMapper objectMapper;
-    private final URIBuilderUtil uriBuilderUtil;
     private final JobScheduler jobScheduler;
     private final ConvertEmployee convertEmployee;
     private final RestTemplate restTemplate;
@@ -54,7 +53,7 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        String uriEmployeeSavePath = uriBuilderUtil.buildURI(EDO_SERVICE_NAME, "/api/service/employee/collection").toString();
+        String uriEmployeeSavePath = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, "/api/service/employee/collection").toString();
         log.info("Got a URL to save Employee to the database");
 
         log.info("Started the conversion process externalEmployeeDto in EmployeeDto");

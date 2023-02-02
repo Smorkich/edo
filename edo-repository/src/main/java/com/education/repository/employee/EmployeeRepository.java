@@ -1,7 +1,6 @@
 package com.education.repository.employee;
 
 import com.education.entity.Employee;
-import model.dto.EmployeeDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

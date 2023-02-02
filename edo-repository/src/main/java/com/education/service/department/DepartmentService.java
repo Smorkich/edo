@@ -1,6 +1,7 @@
 package com.education.service.department;
 
 import com.education.entity.Department;
+
 import java.util.Collection;
 
 
@@ -17,4 +18,5 @@ public interface DepartmentService {
     Department findByIdNotArchived(Long id);
     Collection<Department> findByAllIdNotArchived(Iterable<Long> ids);
     void saveCollection(Collection<Department> departments);
+    Collection<Department> findAll();
 }

@@ -10,7 +10,6 @@ import com.education.service.employee.EmployeeService;
 import com.github.aleksandy.petrovich.Case;
 import com.github.aleksandy.petrovich.Petrovich;
 import lombok.AllArgsConstructor;
-import model.dto.EmployeeDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -147,48 +146,33 @@ public class EmployeeServiceImpl implements EmployeeService {
         Collection<Address> addressesEmployees = new ArrayList<>();
         Collection<Department> departments = new ArrayList<>();
 
+        Collection<Employee> employeesFromDb = employeeRepository.findAll();
+        Collection<Department> departmentsFromDb = departmentService.findAll();
+
         employees.forEach(employee -> {
-            addCases(employee);
-
-            /* Создание пользователя который найден в таблице по ExternalId */
-            Employee employeeEx = employeeRepository.findByExternalId(employee.getExternalId());
-            /* Проверка есть ли пользователь с ExternalId в БД */
-            if (employeeEx==null) {
-
-                employee.setCreationDate(ZonedDateTime.now());
-                employee.getDepartment().setCreationDate(ZonedDateTime.now());
-                employee.getDepartment().setDepartment(null);
-
-                addressesDepartments.add(employee.getDepartment().getAddress());
+            employeesFromDb.forEach(employeeFromDb -> {
+                if (employeeFromDb.getExternalId().equals(employee.getExternalId())) {
+                    employee.setId(employeeFromDb.getId());
+                    employee.getAddress().setId(employeeFromDb.getAddress().getId());
+                } else {
+                    employee.setCreationDate(ZonedDateTime.now());
+                }
                 departments.add(employee.getDepartment());
                 addressesEmployees.add(employee.getAddress());
+            });
+            addCases(employee);
+        });
 
-            } else {
-
-                /* Добавление id пользователю который найден в таблице по ExternalId */
-                employee.setId(employeeEx.getId());
-                employee.getDepartment().setDepartment(null);
-
-                /* Поиск id адреса департамента по пользователю который найден в таблице по ExternalId */
-                Long empExDepartmentAddressId = employeeEx.getDepartment().getAddress().getId();
-                Address addressesDepartment = employee.getDepartment().getAddress();
-                addressesDepartment.setId(empExDepartmentAddressId);
-                addressesDepartments.add(addressesDepartment);
-
-                /* Поиск id департамента по пользователю который найден в таблице по ExternalId */
-                Long empExDepartmentId = employeeEx.getDepartment().getId();
-                Department department = employee.getDepartment();
-                department.setId(empExDepartmentId);
-                departments.add(department);
-
-                /* Поиск id адреса пользователя который найден в таблице по ExternalId */
-                Long empExAddressId = employeeEx.getAddress().getId();
-                Address addressEmployee = employee.getAddress();
-                addressEmployee.setId(empExAddressId);
-                addressesEmployees.add(addressEmployee);
-
-            }
-
+        departments.forEach(department -> {
+            departmentsFromDb.forEach(departmentFromDb -> {
+                if (departmentFromDb.getExternalId().equals(department.getExternalId())) {
+                    department.setId(departmentFromDb.getId());
+                    department.getAddress().setId(departmentFromDb.getAddress().getId());
+                } else {
+                    department.setCreationDate(ZonedDateTime.now());
+                }
+                addressesDepartments.add(department.getAddress());
+            });
         });
 
         addressService.saveCollection(addressesDepartments);
@@ -196,6 +180,42 @@ public class EmployeeServiceImpl implements EmployeeService {
         addressService.saveCollection(addressesEmployees);
 
         return employeeRepository.saveAll(employees);
+
+            /* Создание пользователя который найден в таблице по ExternalId */
+            /* Проверка есть ли пользователь с ExternalId в БД */
+//            if (employeeEx==null) {
+//
+//
+//                employee.getDepartment().setCreationDate(ZonedDateTime.now());
+//                employee.getDepartment().setDepartment(null);
+//
+//                addressesDepartments.add(employee.getDepartment().getAddress());
+//                departments.add(employee.getDepartment());
+//                addressesEmployees.add(employee.getAddress());
+//
+//            } else {
+//
+//                /* Поиск id адреса департамента по пользователю который найден в таблице по ExternalId */
+//                Long empExDepartmentAddressId = employeeEx.getDepartment().getAddress().getId();
+//                Address addressesDepartment = employee.getDepartment().getAddress();
+//                addressesDepartment.setId(empExDepartmentAddressId);
+//                addressesDepartments.add(addressesDepartment);
+//
+//                /* Поиск id департамента по пользователю который найден в таблице по ExternalId */
+//                Long empExDepartmentId = employeeEx.getDepartment().getId();
+//                Department department = employee.getDepartment();
+//                department.setId(empExDepartmentId);
+//                departments.add(department);
+//
+//                /* Поиск id адреса пользователя который найден в таблице по ExternalId */
+//                Long empExAddressId = employeeEx.getAddress().getId();
+//                Address addressEmployee = employee.getAddress();
+//                addressEmployee.setId(empExAddressId);
+//                addressesEmployees.add(addressEmployee);
+//
+//            }
+//
+//        });
     }
 
 
