@@ -34,11 +34,12 @@ import static model.enum_.Status.NEW_STATUS;
 public class AppealServiceImpl implements AppealService {
 
     private final RestTemplate restTemplate;
-    private final String URL = "http://edo-repository/api/repository/appeal";
 
     private final AuthorService authorService;
     private final QuestionService questionService;
     private final FilePoolService filePoolService;
+    private final String URL = "http://edo-repository/api/repository/appeal";
+
 
     /**
      * Нахождение обращения по id
@@ -57,7 +58,7 @@ public class AppealServiceImpl implements AppealService {
     }
 
     /**
-     * Сохранение обращения
+     * Изменение обращения, добавление status,маппинг  Authors,Questions
      */
     @Override
     public AppealDto save(AppealDto appealDto) {
@@ -134,9 +135,8 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public void moveToArchive(Long id) {
-        AppealDto appeal = findById(id);
-        appeal.setArchivedDate(ZonedDateTime.now());
-        restTemplate.postForObject(URL + "/move/" + id, appeal, AppealDto.class);
+        var appealDto = findById(id);
+        restTemplate.put(URL + "/move/" + id, appealDto, AppealDto.class);
     }
 
     /**
