@@ -38,8 +38,7 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
      * Каждый час синхронизирует внешних пользователей
      */
     @Override
-   // @Scheduled(cron = "${cron.employee}")
-    @Scheduled(fixedDelayString = "PT04M")
+    @Scheduled(cron = "${cron.employee}")
     public void dataSyncEveryHour() {
         log.info("The data synchronization method has started, it starts every hour");
         Collection<ExternalEmployeeDto> externalEmployeesDto;
