@@ -4,7 +4,6 @@ import com.education.entity.ApprovalBlock;
 import com.education.repository.approval.ApprovalRepository;
 import com.education.repository.approvalBlock.ApprovalBlockRepository;
 import com.education.service.approvalBlock.ApprovalBlockService;
-import com.education.service.member.MemberService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +18,6 @@ import java.util.Collection;
 public class ApprovalBlockServiceImpl implements ApprovalBlockService {
 
     private final ApprovalBlockRepository approvalBlockRepository;
-    private final MemberService memberService;
     private final ApprovalRepository approvalRepository;
 
     /**
@@ -66,12 +64,6 @@ public class ApprovalBlockServiceImpl implements ApprovalBlockService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(Long id) {
-        ApprovalBlock approvalBlock = findById(id);
-        if (approvalBlock != null) {
-            approvalBlock.getSignatories().forEach(member -> memberService.delete(member.getId()));
-            approvalBlock.getParticipants().forEach(member -> memberService.delete(member.getId()));
-        }
-
         approvalBlockRepository.deleteById(id);
     }
 
