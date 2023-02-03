@@ -50,7 +50,7 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
         }
         String uriEmployeeSavePath = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, "/api/service/employee/collection").toString();
         log.info("Got a URL to save Employee to the database");
-        Collection<EmployeeDto> employeeDtos = ConvertEmployee.toDto(externalEmployeesDto);
+        var employeeDtos = ConvertEmployee.toDto(externalEmployeesDto);
         log.info("Finished the conversion process externalEmployeeDto in EmployeeDto");
         restTemplate.postForObject(uriEmployeeSavePath, employeeDtos, EmployeeDto.class);
         log.info("Sent a save request to the EmployeeDto database");
