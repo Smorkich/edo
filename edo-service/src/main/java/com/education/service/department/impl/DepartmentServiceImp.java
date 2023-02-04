@@ -29,7 +29,6 @@ public class DepartmentServiceImp implements DepartmentService {
 
     @Override
     public void save(DepartmentDto department) {
-        System.out.println(department);
         restTemplate.postForObject(URL, department, Long.class);
         log.info("sent a request to save the department in edo - repository");
     }

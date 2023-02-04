@@ -104,7 +104,7 @@ public class DepartmentController {
     @PostMapping
     private ResponseEntity<Long> saveDepartment(@RequestBody DepartmentDto departmentDto) {
         log.info("Starting the save operation");
-        Long idSaveDep = departmentService.save((Department) DEPARTMENT_MAPPER.toEntity(departmentDto));
+        Long idSaveDep = departmentService.save(DEPARTMENT_MAPPER.toEntity(departmentDto));
         log.info("saving the department and displaying its full name in the response");
         return new ResponseEntity<>( idSaveDep, HttpStatus.OK);
     }

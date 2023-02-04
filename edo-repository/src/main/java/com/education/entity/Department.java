@@ -28,7 +28,6 @@ import static jakarta.persistence.FetchType.LAZY;
 @AllArgsConstructor
 @Table(name = "department")
 @SuperBuilder
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 public class Department extends BaseEntity {
 
@@ -48,7 +47,6 @@ public class Department extends BaseEntity {
     /* Поле с внешним идентификатором, у себя не создаем сущность,
     скачиваем из чужого хранилища)
      */
-    @EqualsAndHashCode.Include
     @Column(name = "external_id")
     private String externalId;
 

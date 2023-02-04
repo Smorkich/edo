@@ -8,8 +8,8 @@ import model.dto.ExternalEmployeeDto;
 import org.springframework.stereotype.Component;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * @author Usolkin Dmitry
@@ -19,12 +19,7 @@ import java.util.Collection;
 public class ConvertEmployee {
 
     public static Collection<EmployeeDto> toDto(Collection<ExternalEmployeeDto> externalEmployeeDtos) {
-        Collection<EmployeeDto> employeeDtos = new ArrayList<>();
-        externalEmployeeDtos.forEach(externalEmployeeDto -> {
-            EmployeeDto employeeDto = toDto(externalEmployeeDto);
-            employeeDtos.add(employeeDto);
-        });
-        return employeeDtos;
+        return externalEmployeeDtos.stream().map(ConvertEmployee::toDto).collect(Collectors.toList());
     }
 
     public static EmployeeDto toDto(ExternalEmployeeDto externalEmployeeDto) {
@@ -39,11 +34,8 @@ public class ConvertEmployee {
                 .username(externalEmployeeDto.getLogin().getUsername())
                 .externalId(externalEmployeeDto.getId().getValue())
                 .department(departmentToDto(externalEmployeeDto.getCompany()).phone(externalEmployeeDto.getPhone()).build())
+                .archivedDate(externalEmployeeDto.isDelete() ? ZonedDateTime.now() : null)
                 .build();
-        /*Проверяем если работник удален, ставим дату архивации*/
-        if (externalEmployeeDto.isDelete()) {
-            employeeDto.setArchivedDate(ZonedDateTime.now());
-        }
         /*Проверяем если компания удалена, ставим дату архивации компании и сотрудника*/
         if (externalEmployeeDto.getCompany().isDelete()) {
             employeeDto.getDepartment().setArchivedDate(ZonedDateTime.now());

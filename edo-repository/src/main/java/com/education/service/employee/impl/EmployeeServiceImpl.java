@@ -17,8 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author Kiladze George
@@ -143,9 +145,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Transactional(rollbackFor = Exception.class)
     public Collection<Employee> saveCollection(Collection<Employee> employees) {
 
-        Collection<Address> addressesDepartments = new ArrayList<>();
-        Collection<Address> addressesEmployees = new ArrayList<>();
-        Collection<Department> departments = new HashSet<>();
+        Collection<Address> addresses = new ArrayList<>();
+        Collection<Department> departments = new ArrayList<>();
 
         Collection<Employee> employeesFromDb = employeeRepository.findAll();
         Collection<Department> departmentsFromDb = departmentService.findAll();
@@ -162,14 +163,19 @@ public class EmployeeServiceImpl implements EmployeeService {
                 employee.setCreationDate(ZonedDateTime.now());
             }
             departments.add(employee.getDepartment());
-            employee.setDepartment(departments.stream()
-                    .filter(department -> department.getExternalId().equals(employee.getDepartment().getExternalId()))
-                    .findAny().get());
-            addressesEmployees.add(employee.getAddress());
+            addresses.add(employee.getAddress());
             addCases(employee);
         });
 
-        departments.forEach(department -> {
+        Collection<Department> distinctDepartments = new ArrayList<>(departments.stream()
+                .collect(Collectors.toMap(Department::getExternalId, Function.identity(), ((department1, department2) -> department1)))
+                .values());
+
+        employees.forEach(employee -> employee.setDepartment(distinctDepartments.stream()
+                .filter(department -> department.getExternalId().equals(employee.getDepartment().getExternalId()))
+                .findAny().orElseThrow(() -> new NoSuchElementException("Ошибка при связывании объектов"))));
+
+        distinctDepartments.forEach(department -> {
             departmentsFromDb.forEach(departmentFromDb -> {
                 if (departmentFromDb.getExternalId().equals(department.getExternalId())) {
                     department.setId(departmentFromDb.getId());
@@ -181,12 +187,11 @@ public class EmployeeServiceImpl implements EmployeeService {
                 department.setCreationDate(ZonedDateTime.now());
             }
             department.setDepartment(null);
-            addressesDepartments.add(department.getAddress());
+            addresses.add(department.getAddress());
         });
 
-        addressService.saveCollection(addressesDepartments);
-        departmentService.saveCollection(departments);
-        addressService.saveCollection(addressesEmployees);
+        addressService.saveCollection(addresses);
+        departmentService.saveCollection(distinctDepartments);
 
         return employeeRepository.saveAll(employees);
     }

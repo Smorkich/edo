@@ -34,10 +34,12 @@ public class DepartmentServiceImp implements DepartmentService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Long save(Department department) {
-        if(department.getDepartment()!= null) {
+        if(department.getDepartment()!= null && department.getDepartment().getCreationDate() == null) {
             department.getDepartment().setCreationDate(ZonedDateTime.now());
         }
-        department.setCreationDate(ZonedDateTime.now());
+        if (department.getCreationDate() == null){
+            department.setCreationDate(ZonedDateTime.now());
+        }
         repository.save(department);
         return department.getId();
     }
