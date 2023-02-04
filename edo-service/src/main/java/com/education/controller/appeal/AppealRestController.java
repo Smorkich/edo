@@ -24,7 +24,7 @@ public class AppealRestController {
 
     @ApiOperation(value = "В строке таблицы Appeal заполняет поле archivedDate", notes = "Строка в Appeal должна существовать")
     @PutMapping(value = "/move/{id}")
-    public ResponseEntity<AppealDto> moveToArchive(@PathVariable Long id) {
+    public ResponseEntity<AppealDto> moveToArchive(@PathVariable Long id) throws URISyntaxException {
         appealService.moveToArchive(id);
         log.info("Moving appeal with id: {} to edo-repository is success!", id);
         return new ResponseEntity<>(appealService.findById(id), HttpStatus.OK);
@@ -68,7 +68,7 @@ public class AppealRestController {
 
     @ApiOperation(value = "Принимает обращение, отправляет на edo-repository", notes = "Обращение должен существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AppealDto> save(@RequestBody AppealDto appealDto) {
+    public ResponseEntity<AppealDto> save(@RequestBody AppealDto appealDto) throws URISyntaxException {
         log.info("Send a post-request to edo-repository to post new Appeal to database");
         var save = appealService.save(appealDto);
         log.info("sending to edo-repository", save);
