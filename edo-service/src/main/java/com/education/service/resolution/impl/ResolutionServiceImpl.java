@@ -22,8 +22,7 @@ import static model.constant.Constant.*;
 public class ResolutionServiceImpl implements ResolutionService {
 
     private RestTemplate restTemplate;
-    private final EurekaClient eurekaClient;
-    private final String URL = "http://edo-repository/api/repository/resolution";
+
 
     @Override
     public void save(ResolutionDto resolutionDto) throws URISyntaxException {

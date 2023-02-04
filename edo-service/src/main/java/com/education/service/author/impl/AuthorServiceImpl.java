@@ -26,9 +26,7 @@ import static model.constant.Constant.*;
 @AllArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
-    static final String URL = "http://edo-repository/api/repository/author";
     private final RestTemplate restTemplate;
-    private final EurekaClient eurekaClient;
 
     /**
      * Сохранение Author

@@ -28,9 +28,7 @@ import static model.constant.Constant.*;
 @Log4j2
 public class QuestionServiceImpl implements QuestionService {
 
-    private final String URL = "http://edo-repository/api/repository/question";
     private final RestTemplate restTemplate;
-    private final EurekaClient eurekaClient;
 
     @Override
     public QuestionDto save(QuestionDto questionDto) throws URISyntaxException {

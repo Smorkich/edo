@@ -28,9 +28,7 @@ import static model.constant.Constant.*;
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
-    static final String URL = "http://edo-repository/api/repository/employee";
     private final RestTemplate restTemplate;
-    private final EurekaClient eurekaClient;
 
     @Override
     public void save(EmployeeDto employeeDto)  {

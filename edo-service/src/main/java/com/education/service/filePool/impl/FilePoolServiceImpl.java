@@ -26,9 +26,8 @@ import static model.constant.Constant.*;
 @AllArgsConstructor
 public class FilePoolServiceImpl implements FilePoolService {
 
-    static final String URL = "http://edo-repository/api/repository/filePool";
     private final RestTemplate restTemplate;
-    private final EurekaClient eurekaClient;
+
 
     @Override
     public FilePoolDto save(FilePoolDto filePoolDto) throws URISyntaxException {

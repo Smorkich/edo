@@ -40,8 +40,6 @@ import static model.enum_.Status.NEW_STATUS;
 public class AppealServiceImpl implements AppealService {
 
     private final RestTemplate restTemplate;
-    private final EurekaClient eurekaClient;
-    private final String URL = "http://edo-repository/api/repository/appeal";
 
     private final AuthorService authorService;
     private final QuestionService questionService;

@@ -7,6 +7,7 @@ import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -37,11 +38,16 @@ public class URIBuilderUtil {
         log.info("Get certain instance of service");
         InstanceInfo instance = instances.get(randomInstance);
         log.info("Build uri to service");
-        return new URIBuilder()
-                .setScheme(DEFAULT_SCHEME_NAME)
-                .setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(path);
+        try {
+            return new URIBuilder()
+                    .setScheme(DEFAULT_SCHEME_NAME)
+                    .setHost(instance.getHostName())
+                    .setPort(instance.getPort())
+                    .setPath(path);
+        } catch (Exception e) {
+            log.error("Error building URI: ", e);
+            return null;
+        }
     }
 
     @Autowired

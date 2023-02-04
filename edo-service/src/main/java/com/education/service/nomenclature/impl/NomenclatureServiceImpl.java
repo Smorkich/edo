@@ -23,9 +23,7 @@ import static model.constant.Constant.*;
 @Log4j2
 public class NomenclatureServiceImpl implements NomenclatureService {
 
-    private final String URL = "http://edo-repository/api/repository/nomenclature";
     private RestTemplate restTemplate;
-    private final EurekaClient eurekaClient;
 
     @Override
     public void save(NomenclatureDto nomenclatureDto) throws URISyntaxException {

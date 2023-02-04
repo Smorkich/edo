@@ -26,9 +26,8 @@ import static model.constant.Constant.*;
 @AllArgsConstructor
 public class ThemeServiceImp implements ThemeService {
 
-    static final String URL = "http://edo-repository/api/repository/theme";
     private final RestTemplate restTemplate;
-    private final EurekaClient eurekaClient;
+
 
     @Override
     public void save(ThemeDto themeDto) throws URISyntaxException {

@@ -22,10 +22,7 @@ import static model.constant.Constant.*;
 @AllArgsConstructor
 public class AddressServiceImpl implements AddressService {
 
-    /**
-     * Константа "URL" хранит URL по которому мы делаем запрос при помощи RestTemplate
-     */
-    private final String URL = "http://edo-repository/api/repository/address";
+
 
     /**
      * Поле "restTemplate" нужно для вызова RestTemplate,
@@ -33,7 +30,6 @@ public class AddressServiceImpl implements AddressService {
      */
     private final RestTemplate restTemplate;
 
-    private final EurekaClient eurekaClient;
 
     /**
      * Метод, который возвращает адрес по Id

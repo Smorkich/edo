@@ -28,11 +28,8 @@ import static model.constant.Constant.*;
 @Log4j2
 @AllArgsConstructor
 public class DepartmentServiceImp implements DepartmentService {
-    private static final String URL = "http://edo-repository/api/repository/department";
 
     private final RestTemplate restTemplate;
-    private final EurekaClient eurekaClient;
-
 
 
     @Override

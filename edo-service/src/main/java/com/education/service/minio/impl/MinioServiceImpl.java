@@ -16,8 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Random;
 
-import static model.constant.Constant.EDO_FILE_STORAGE_NAME;
-import static model.constant.Constant.FILEPOOL_URL;
+import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.*;
 
 /**
  * @author Anna Artemyeva
@@ -39,14 +39,10 @@ public class MinioServiceImpl implements MinioService {
         body.add("file", currentFile.getResource());
 
         HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
-        var instances = eurekaClient.getApplication(EDO_FILE_STORAGE_NAME).getInstances();
-        var instance = instances.get(new Random().nextInt(instances.size()));
-        var builder = new URIBuilder();
-        String uri = builder.setHost(instance.getHostName())
-                .setPort(instance.getPort())
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
                 .setPath("/api/file-storage/upload").toString();
 
-        restTemplate.postForEntity(uri,
+        restTemplate.postForEntity(builder,
                 requestEntity,
                 String.class);
     }
