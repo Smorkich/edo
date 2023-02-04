@@ -44,6 +44,8 @@ public class AppealServiceImpl implements AppealService {
     private final AuthorService authorService;
     private final QuestionService questionService;
     private final FilePoolService filePoolService;
+    private final String URL = "http://edo-repository/api/repository/appeal";
+
 
     /**
      * Нахождение обращения по id
@@ -66,7 +68,7 @@ public class AppealServiceImpl implements AppealService {
     }
 
     /**
-     * Сохранение обращения
+     * Изменение обращения, добавление status,маппинг  Authors,Questions
      */
     @Override
     public AppealDto save(AppealDto appealDto) throws URISyntaxException {
