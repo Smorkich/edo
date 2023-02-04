@@ -54,7 +54,6 @@ public class MinioComponent {
 
     private final MinioClient minioClient;
 
-
     @Value("${minio.bucket-name}")
     private String bucketName;
 
@@ -73,15 +72,14 @@ public class MinioComponent {
     }
 
     public InputStream getObject(String objectName) {
-
         try {
-                   return minioClient
+            return minioClient
                     .getObject(GetObjectArgs.builder()
                             .bucket(bucketName)
                             .object(objectName)
                             .build());
         } catch (Exception e) {
-            log.error("Upload failed: {}",e.getMessage());
+            log.error("Upload failed: {}", e.getMessage());
         }
         return null;
     }
@@ -118,7 +116,6 @@ public class MinioComponent {
         } else if (isWordFile(file)) {
             return convertWordFileToPDF(file, extension);
         }
-
         return new ByteArrayInputStream(new byte[0]);
     }
 

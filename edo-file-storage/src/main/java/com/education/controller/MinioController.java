@@ -5,8 +5,6 @@ import com.education.component.MinioComponent;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import model.dto.EmployeeDto;
-import model.dto.FilePoolDto;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,14 +18,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Set;
 import java.util.UUID;
 
 import static model.constant.Constant.DOC;
 import static model.constant.Constant.DOCX;
 import static model.constant.Constant.JPEG;
+import static model.constant.Constant.JPG;
 import static model.constant.Constant.PDF;
 import static model.constant.Constant.PNG;
 
@@ -52,15 +51,24 @@ public class MinioController {
                                                     @RequestParam("key") String key,
                                                     @RequestParam("fileName") String fileName) {
         String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
-        try(var inDoc = minioComponent.convertFileToPDF(file, extension)) {
+        if (Set.of(JPEG, JPG, DOC, DOCX, PNG).contains(extension)) {
+            try (var inDoc = minioComponent.convertFileToPDF(file, extension)) {
+                String contentType = "application/pdf";
+                fileName = String.format("%s.%s", UUID.randomUUID(), PDF);
+                minioComponent.postObject(fileName, inDoc, contentType);
+                return ResponseEntity.ok().body(String.format("File is uploaded. Name: %s, type: %s", fileName, contentType));
+            } catch (IOException e) {
+                return ResponseEntity.badRequest().body("Something wrong.");
+            }
+        }
+        try (var in = file.getInputStream()) {
             String contentType = file.getContentType();
             minioComponent.postObject(key, in, contentType);
             log.info("Upload file named: {};  Type: {}; Key: {}.", fileName, contentType, key);
             return ResponseEntity.ok().body("File is uploaded. \nName: " + fileName + "; \ntype: " + contentType + "; \nkey: " + key);
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().body("Something wrong.");
         }
-        return ResponseEntity.badRequest().body("Something wrong.");
     }
 
     /**
@@ -101,7 +109,7 @@ public class MinioController {
     /**
      * Request to delete old file in the MINIO-server`s bucket
      */
-    @ApiOperation("send request to upload file to bucjets from source")
+    @ApiOperation("send request to upload file to buckets from source")
     @DeleteMapping("/delete/{storageFileId}")
     public ResponseEntity delete(@PathVariable("storageFileId") String storageFileId) {
         log.info("Delete outdated objects in MINIO-server");
