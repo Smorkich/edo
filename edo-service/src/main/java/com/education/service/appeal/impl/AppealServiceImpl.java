@@ -86,11 +86,7 @@ public class AppealServiceImpl implements AppealService {
             appealDto.setAuthors(appealDto.getAuthors().stream()
                     .map(authorDto -> {
                         if (authorDto.getId() == null) {
-                            try {
-                                authorDto = authorService.save(authorDto);
-                            } catch (URISyntaxException e) {
-                                throw new RuntimeException(e);
-                            }
+                            authorDto = authorService.save(authorDto);
                             savedAuthors.add(authorDto);
                         }
                         return authorDto;
@@ -101,11 +97,7 @@ public class AppealServiceImpl implements AppealService {
             appealDto.setQuestions(appealDto.getQuestions().stream()
                     .map(questionDto -> {
                         if (questionDto.getId() == null) {
-                            try {
-                                questionDto = questionService.save(questionDto);
-                            } catch (URISyntaxException e) {
-                                throw new RuntimeException(e);
-                            }
+                            questionDto = questionService.save(questionDto);
                             savedQuestions.add(questionDto);
                         }
                         return questionDto;
@@ -116,11 +108,7 @@ public class AppealServiceImpl implements AppealService {
             appealDto.setFile(appealDto.getFile().stream()
                     .map(filePoolDto -> {
                         if (filePoolDto.getId() == null) {
-                            try {
-                                filePoolDto = filePoolService.save(filePoolDto);
-                            } catch (URISyntaxException e) {
-                                throw new RuntimeException(e);
-                            }
+                            filePoolDto = filePoolService.save(filePoolDto);
                             savedFiles.add(filePoolDto);
                         }
                         return filePoolDto;
@@ -138,25 +126,13 @@ public class AppealServiceImpl implements AppealService {
 
             // Удаление сохранённых вложенных сущностей
             savedAuthors.forEach(authorDto -> {
-                try {
-                    authorService.delete(authorDto.getId());
-                } catch (URISyntaxException ex) {
-                    throw new RuntimeException(ex);
-                }
+                authorService.delete(authorDto.getId());
             });
             savedFiles.forEach(filePoolDto -> {
-                try {
-                    filePoolService.delete(filePoolDto.getId());
-                } catch (URISyntaxException ex) {
-                    throw new RuntimeException(ex);
-                }
+                filePoolService.delete(filePoolDto.getId());
             });
             savedQuestions.forEach(questionDto -> {
-                try {
-                    questionService.delete(questionDto.getId());
-                } catch (URISyntaxException ex) {
-                    throw new RuntimeException(ex);
-                }
+                questionService.delete(questionDto.getId());
             });
 
             throw e;
