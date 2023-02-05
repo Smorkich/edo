@@ -147,14 +147,8 @@ public class ApprovalServiceImpl implements ApprovalService {
      */
     @Override
     public void delete(Long id) {
-        ApprovalDto approvalDto = findById(id);
-        if (approvalDto != null) {
-            approvalDto.getParticipantApprovalBlocks().forEach(approvalBlock -> approvalBlockService.delete(approvalBlock.getId()));
-            approvalDto.getSignatoryApprovalBlocks().forEach(approvalBlock -> approvalBlockService.delete(approvalBlock.getId()));
-            String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/" + id).toString();
-            restTemplate.delete(uri);
-            memberService.delete(approvalDto.getInitiator().getId());
-        }
+        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/" + id).toString();
+        restTemplate.delete(uri);
 
     }
 

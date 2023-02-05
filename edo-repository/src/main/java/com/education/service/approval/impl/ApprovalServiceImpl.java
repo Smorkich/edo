@@ -2,7 +2,9 @@ package com.education.service.approval.impl;
 
 import com.education.entity.Approval;
 import com.education.repository.approval.ApprovalRepository;
+import com.education.repository.member.MemberRepository;
 import com.education.service.approval.ApprovalService;
+import com.education.service.approvalBlock.ApprovalBlockService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,8 @@ import java.util.Collection;
 public class ApprovalServiceImpl implements ApprovalService {
 
     private final ApprovalRepository approvalRepository;
+    private final ApprovalBlockService approvalBlockService;
+    private final MemberRepository memberRepository;
 
     /**
      * Метод принимает сущность Approval и сохраняет её в БД
@@ -62,6 +66,12 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void delete(Long id) {
+        Approval approval = findById(id);
+        if (approval != null) {
+            approval.getParticipantApprovalBlocks().forEach(approvalBlock -> approvalBlockService.delete(approvalBlock.getId()));
+            approval.getSignatoryApprovalBlocks().forEach(approvalBlock -> approvalBlockService.delete(approvalBlock.getId()));
+            memberRepository.deleteById(approval.getInitiator().getId());
+        }
         approvalRepository.deleteById(id);
     }
 
