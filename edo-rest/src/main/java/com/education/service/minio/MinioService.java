@@ -27,6 +27,4 @@ public interface MinioService {
      * to target folder.
      */
     void downloadOneFile(String objectName);
-
-    boolean isAvailable(MultipartFile file);
 }

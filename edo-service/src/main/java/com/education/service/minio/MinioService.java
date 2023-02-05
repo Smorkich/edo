@@ -7,11 +7,9 @@ import org.springframework.web.multipart.MultipartFile;
  * Интерфейс с методами для Minio
  */
 public interface MinioService {
-
     /**
      * uploadOneFile - загружает входящий файл в файловое хранилище
      * @param file
      */
     void uploadOneFile(MultipartFile file);
-
 }
