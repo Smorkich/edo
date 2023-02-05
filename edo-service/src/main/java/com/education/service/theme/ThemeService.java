@@ -10,15 +10,15 @@ import java.util.Collection;
  */
 
 public interface ThemeService {
-    void save(ThemeDto themeDto) throws URISyntaxException;
+    void save(ThemeDto themeDto);
 
-    void moveToArchived(Long id) throws URISyntaxException;
+    void moveToArchived(Long id);
 
-    ThemeDto findById(Long id) throws URISyntaxException;
+    ThemeDto findById(Long id);
 
-    Collection<ThemeDto> findByAllId(String ids) throws URISyntaxException;
+    Collection<ThemeDto> findByAllId(String ids);
 
-    ThemeDto findByIdNotArchived(Long id) throws URISyntaxException;
+    ThemeDto findByIdNotArchived(Long id);
 
-    Collection<ThemeDto> findByAllIdNotArchived(String ids) throws URISyntaxException;
+    Collection<ThemeDto> findByAllIdNotArchived(String ids);
 }

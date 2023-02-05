@@ -11,11 +11,11 @@ import java.util.Collection;
  */
 public interface EmployeeService {
 
-    void save(EmployeeDto employeeDto) throws URISyntaxException;
+    void save(EmployeeDto employeeDto);
 
-    void moveToArchived(Long id) throws URISyntaxException;
+    void moveToArchived(Long id);
 
-    EmployeeDto findById(Long id) throws URISyntaxException;
+    EmployeeDto findById(Long id);
 
     Collection<EmployeeDto> findAll();
 

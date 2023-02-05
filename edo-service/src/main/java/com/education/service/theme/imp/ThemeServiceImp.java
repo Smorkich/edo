@@ -30,56 +30,56 @@ public class ThemeServiceImp implements ThemeService {
 
 
     @Override
-    public void save(ThemeDto themeDto) throws URISyntaxException {
+    public void save(ThemeDto themeDto) {
         log.info("sent a request to save the theme in edo - repository");
         var builder = buildURI(EDO_REPOSITORY_NAME, THEME_URL)
                 .setPath("/");
-        restTemplate.postForObject(builder.build(), themeDto, ThemeDto.class);
+        restTemplate.postForObject(builder.toString(), themeDto, ThemeDto.class);
         log.info("sent a request to save the theme in edo - repository");
     }
 
     @Override
-    public void moveToArchived(Long id) throws URISyntaxException {
+    public void moveToArchived(Long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, THEME_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
-        restTemplate.postForObject(builder.build(), null, ThemeDto.class);
+        restTemplate.postForObject(builder.toString(), null, ThemeDto.class);
         log.info("sent a request to archive the theme in edo - repository");
     }
 
     @Override
-    public ThemeDto findById(Long id) throws URISyntaxException {
+    public ThemeDto findById(Long id) {
         log.info("sent a request to receive the theme in edo - repository");
         var builder = buildURI(EDO_REPOSITORY_NAME, THEME_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
-        return restTemplate.getForObject(builder.build(), ThemeDto.class);
+        return restTemplate.getForObject(builder.toString(), ThemeDto.class);
     }
 
     @Override
-    public Collection<ThemeDto> findByAllId(String ids) throws URISyntaxException {
+    public Collection<ThemeDto> findByAllId(String ids) {
         log.info("sent a request to receive the theme in edo - repository");
         var builder = buildURI(EDO_REPOSITORY_NAME, THEME_URL)
                 .setPath("/all/")
                 .setPath(String.valueOf(ids));
-        return restTemplate.getForObject(builder.build(), List.class);
+        return restTemplate.getForObject(builder.toString(), List.class);
     }
 
     @Override
-    public ThemeDto findByIdNotArchived(Long id) throws URISyntaxException {
+    public ThemeDto findByIdNotArchived(Long id) {
         log.info("sent a request to receive the theme not archived in edo - repository");
         var builder = buildURI(EDO_REPOSITORY_NAME, THEME_URL)
                 .setPath("/NotArchived/")
                 .setPath(String.valueOf(id));
-        return restTemplate.getForObject(builder.build(), ThemeDto.class);
+        return restTemplate.getForObject(builder.toString(), ThemeDto.class);
     }
 
     @Override
-    public Collection<ThemeDto> findByAllIdNotArchived(String ids) throws URISyntaxException {
+    public Collection<ThemeDto> findByAllIdNotArchived(String ids) {
         log.info("sent a request to receive the theme not archived in edo - repository");
         var builder = buildURI(EDO_REPOSITORY_NAME, THEME_URL)
                 .setPath("/NotArchivedAll/")
                 .setPath(String.valueOf(ids));
-        return restTemplate.getForObject(builder.build(), List.class);
+        return restTemplate.getForObject(builder.toString(), List.class);
     }
 }

@@ -13,16 +13,16 @@ import java.util.Collection;
  */
 public interface DepartmentService {
 
-    void save(DepartmentDto departmentDto) throws URISyntaxException;
+    void save(DepartmentDto departmentDto);
 
-    void removeToArchived(Long id) throws URISyntaxException;
+    void removeToArchived(Long id);
 
-    DepartmentDto findById(Long id) throws URISyntaxException;
+    DepartmentDto findById(Long id);
 
-    Collection<DepartmentDto> findByAllId(String ids) throws URISyntaxException;
+    Collection<DepartmentDto> findByAllId(String ids);
 
-    DepartmentDto findByIdNotArchived(Long id) throws URISyntaxException;
+    DepartmentDto findByIdNotArchived(Long id);
 
-    Collection<DepartmentDto> findByAllIdNotArchived(String ids) throws URISyntaxException;
+    Collection<DepartmentDto> findByAllIdNotArchived(String ids);
 
 }

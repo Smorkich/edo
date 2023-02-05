@@ -30,64 +30,64 @@ public class FilePoolServiceImpl implements FilePoolService {
 
 
     @Override
-    public FilePoolDto save(FilePoolDto filePoolDto) throws URISyntaxException {
+    public FilePoolDto save(FilePoolDto filePoolDto) {
         var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
                 .setPath("/");
-        return restTemplate.postForObject(builder.build(), filePoolDto, FilePoolDto.class);
+        return restTemplate.postForObject(builder.toString(), filePoolDto, FilePoolDto.class);
     }
 
     @Override
-    public void delete(Long id) throws URISyntaxException {
+    public void delete(Long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
-        restTemplate.delete(builder.build());
+        restTemplate.delete(builder.toString());
     }
 
     @Override
-    public String findById(Long id) throws URISyntaxException {
+    public String findById(Long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
-        return restTemplate.getForObject(builder.build(), String.class);
+        return restTemplate.getForObject(builder.toString(), String.class);
     }
 
-    public String findAll() throws URISyntaxException {
+    public String findAll() {
         var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
                 .setPath("/all");
-        return restTemplate.getForObject(builder.build(), String.class);
+        return restTemplate.getForObject(builder.toString(), String.class);
     }
 
     @Override
-    public Collection<FilePoolDto> findAllById(String ids) throws URISyntaxException {
+    public Collection<FilePoolDto> findAllById(String ids) {
         var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
                 .setPath("/")
                 .setPath(String.valueOf(ids));
-        return restTemplate.getForObject(builder.build(), Collection.class);
+        return restTemplate.getForObject(builder.toString(), Collection.class);
     }
 
     @Override
-    public void moveToArchive(Long id) throws URISyntaxException {
+    public void moveToArchive(Long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
-        restTemplate.postForObject(builder.build(), null, String.class);
+        restTemplate.postForObject(builder.toString(), null, String.class);
     }
 
     @Override
-    public FilePoolDto findByIdNotArchived(Long id) throws URISyntaxException {
+    public FilePoolDto findByIdNotArchived(Long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
                 .setPath("/notArchived/")
                 .setPath(String.valueOf(id));
-        return restTemplate.getForObject(builder.build(), FilePoolDto.class);
+        return restTemplate.getForObject(builder.toString(), FilePoolDto.class);
     }
 
     @Override
-    public Collection<FilePoolDto> findAllByIdNotArchived(String ids) throws URISyntaxException {
+    public Collection<FilePoolDto> findAllByIdNotArchived(String ids) {
         var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
                 .setPath("/notArchivedAll/")
                 .setPath(String.valueOf(ids));
-        return restTemplate.getForObject(builder.build(), Collection.class);
+        return restTemplate.getForObject(builder.toString(), Collection.class);
     }
 
 }

@@ -29,7 +29,7 @@ public class ResolutionController {
 
     @ApiOperation(value = "Добавление резолюции")
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON)
-    public ResponseEntity<ResolutionDto> saveResolution(@RequestBody ResolutionDto resolutionDto) throws URISyntaxException {
+    public ResponseEntity<ResolutionDto> saveResolution(@RequestBody ResolutionDto resolutionDto) {
         log.info("POST request has been sent");
         resolutionService.save(resolutionDto);
         log.info("{} has has been added", resolutionDto);
@@ -38,7 +38,7 @@ public class ResolutionController {
 
     @ApiOperation(value = "Перемещение в архив")
     @PostMapping(value = "/move/{id}", produces = MediaType.APPLICATION_JSON)
-    public ResponseEntity<ResolutionDto> moveToArchive(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<ResolutionDto> moveToArchive(@PathVariable Long id) {
         log.info("PATCH request has been sent");
         resolutionService.moveToArchive(id);
         var resolutionDto = resolutionService.findById(id);
@@ -48,7 +48,7 @@ public class ResolutionController {
 
     @ApiOperation(value = "Поиск резолюции по id")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON)
-    public ResponseEntity<ResolutionDto> findById(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<ResolutionDto> findById(@PathVariable Long id) {
         log.info("GET request to search for resolution with id = {} has been sent", id);
         var resolutionDto = resolutionService.findById(id);
         log.info("Resolution with id = {} was found", id);
@@ -57,7 +57,7 @@ public class ResolutionController {
 
     @ApiOperation(value = "Поиск всех резолюций")
     @GetMapping(value = "/all/{id}", produces = MediaType.APPLICATION_JSON)
-    public ResponseEntity<Collection<ResolutionDto>> findAll(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<Collection<ResolutionDto>> findAll(@PathVariable Long id) {
         log.info("GET request to search for all resolutions has been sent");
         var resolutionDto = resolutionService.findAllById(id);
         log.info("Resolutions was found");
@@ -66,7 +66,7 @@ public class ResolutionController {
 
     @ApiOperation(value = "Поиск не архивированной резолюции по id")
     @GetMapping(value = "/notArchived/{id}")
-    public ResponseEntity<ResolutionDto> findByIdNotArchived(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<ResolutionDto> findByIdNotArchived(@PathVariable Long id) {
         log.info("GET request to search for an unarchived resolution has been sent");
         var resolutionDto = resolutionService.findByIdNotArchived(id);
         log.info("Resolution with id = {} was found", id);
@@ -75,7 +75,7 @@ public class ResolutionController {
 
     @ApiOperation(value = "Поиск всех не архивированных резолюций")
     @GetMapping(value = "/notArchived/all/{id}")
-    public ResponseEntity<Collection<ResolutionDto>> findAllByIdNotArchived(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<Collection<ResolutionDto>> findAllByIdNotArchived(@PathVariable Long id) {
         log.info("GET request to search for all unarchived resolutions has been sent");
         var resolutionDto = resolutionService.findAllByIdNotArchived(id);
         log.info("Resolutions was found");

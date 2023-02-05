@@ -43,7 +43,7 @@ public class DepartmentController {
      */
     @ApiOperation(value = "Предоставление департамента по индентификатору")
     @GetMapping("/{id}")
-    private ResponseEntity<DepartmentDto> getDepartment(@PathVariable(name = "id") Long id) throws URISyntaxException {
+    private ResponseEntity<DepartmentDto> getDepartment(@PathVariable(name = "id") Long id) {
         log.info("send a response with the department of the assigned id");
         DepartmentDto department = DEPARTMENT_MAPPER.toDto(departmentService.findById(id));
         log.info("The operation was successful, we got the department by id ={}",id);
@@ -58,7 +58,7 @@ public class DepartmentController {
      */
     @ApiOperation(value = "Предоставление департамента без архивации по идентификатору")
     @GetMapping("/notArchived/{id}")
-    private ResponseEntity<DepartmentDto> getDepartmentNotArchived(@PathVariable(name = "id") Long id) throws URISyntaxException {
+    private ResponseEntity<DepartmentDto> getDepartmentNotArchived(@PathVariable(name = "id") Long id) {
         log.info("send a response with the department not archived of the assigned ID");
         DepartmentDto department = DEPARTMENT_MAPPER.toDto(departmentService.findByIdNotArchived(id));
         log.info("The operation was successful, they got the non-archived department by id ={}",id);
@@ -73,7 +73,7 @@ public class DepartmentController {
      */
     @ApiOperation(value = "Предоставление дапартаментов без архивации по назначеным идентификаторам")
     @GetMapping("/notArchivedAll/{ids}")
-    private ResponseEntity<List<DepartmentDto>> getDepartmentsNotArchived(@PathVariable(name = "ids") List<Long> ids) throws URISyntaxException {
+    private ResponseEntity<List<DepartmentDto>> getDepartmentsNotArchived(@PathVariable(name = "ids") List<Long> ids) {
         log.info("send a response with the departments not archived of the assigned IDs");
         List<DepartmentDto> departments =(List<DepartmentDto>) DEPARTMENT_MAPPER.toDto(departmentService.findByAllIdNotArchived(ids));
         log.info("The operation was successful, they got the non-archived department by id ={}",ids);
@@ -88,7 +88,7 @@ public class DepartmentController {
      */
     @ApiOperation(value = "Предоставление дапартаментов  по назначеным идентификаторам")
     @GetMapping("/all/{ids}")
-    private ResponseEntity<List<DepartmentDto>> getDepartments(@PathVariable(name = "ids") List<Long> ids) throws URISyntaxException {
+    private ResponseEntity<List<DepartmentDto>> getDepartments(@PathVariable(name = "ids") List<Long> ids) {
         log.info("send a response with the departments of the assigned IDs");
         List<DepartmentDto> departments = (List<DepartmentDto>) DEPARTMENT_MAPPER.toDto(departmentService.findByAllId(ids));
         log.info("The operation was successful, we got the departments by id = {} ",ids);
@@ -103,7 +103,7 @@ public class DepartmentController {
      */
     @ApiOperation(value = "Добавлнение департамента")
     @PostMapping
-    private ResponseEntity<String> saveDepartment(@RequestBody DepartmentDto departmentDto) throws URISyntaxException {
+    private ResponseEntity<String> saveDepartment(@RequestBody DepartmentDto departmentDto) {
         log.info("Starting the save operation");
         departmentService.save((Department) DEPARTMENT_MAPPER.toEntity(departmentDto));
         log.info("saving the department and displaying its full name in the response");
@@ -118,7 +118,7 @@ public class DepartmentController {
      */
     @ApiOperation(value = "Архивация департамента с занесением времени архивации")
     @PostMapping("/{id}")
-    private ResponseEntity<String> deleteUser(@PathVariable(name = "id") Long id) throws URISyntaxException {
+    private ResponseEntity<String> deleteUser(@PathVariable(name = "id") Long id) {
         log.info("Starting the archiving operation");
         departmentService.removeToArchived(id);
         log.info("Archiving a department");

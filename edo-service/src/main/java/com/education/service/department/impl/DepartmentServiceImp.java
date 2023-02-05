@@ -33,57 +33,57 @@ public class DepartmentServiceImp implements DepartmentService {
 
 
     @Override
-    public void save(DepartmentDto department) throws URISyntaxException {
+    public void save(DepartmentDto department) {
         var builder = buildURI(EDO_REPOSITORY_NAME, DEPARTMENT_URL)
                 .setPath("/");
-        restTemplate.postForObject(builder.build(), department, DepartmentDto.class);
+        restTemplate.postForObject(builder.toString(), department, DepartmentDto.class);
         log.info("sent a request to save the department in edo - repository");
     }
 
     @Override
-    public void removeToArchived(Long id) throws URISyntaxException {
+    public void removeToArchived(Long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, DEPARTMENT_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
-        restTemplate.delete(builder.build());
+        restTemplate.delete(builder.toString());
         log.info("sent a request to archive the department in edo - repository");
     }
 
     @Override
-    public DepartmentDto findById(Long id) throws URISyntaxException {
+    public DepartmentDto findById(Long id) {
         log.info("sent a request to receive the department in edo - repository");
         var builder = buildURI(EDO_REPOSITORY_NAME, DEPARTMENT_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
-        return restTemplate.getForObject(builder.build(), DepartmentDto.class);
+        return restTemplate.getForObject(builder.toString(), DepartmentDto.class);
     }
 
     @Override
-    public List<DepartmentDto> findByAllId(String ids) throws URISyntaxException {
+    public List<DepartmentDto> findByAllId(String ids) {
         log.info("sent a request to receive the departments in edo - repository");
         var builder = buildURI(EDO_REPOSITORY_NAME, DEPARTMENT_URL)
                 .setPath("/all/")
                 .setPath(String.valueOf(ids));
-        return restTemplate.getForObject(builder.build(), List.class);
+        return restTemplate.getForObject(builder.toString(), List.class);
     }
 
     @Override
-    public DepartmentDto findByIdNotArchived(Long id) throws URISyntaxException {
+    public DepartmentDto findByIdNotArchived(Long id) {
         log.info("sent a request to receive the department not archived in edo - repository");
         var builder = buildURI(EDO_REPOSITORY_NAME, DEPARTMENT_URL)
                 .setPath("/notArchived/")
                 .setPath(String.valueOf(id));
-        return restTemplate.getForObject(builder.build(), DepartmentDto.class);
+        return restTemplate.getForObject(builder.toString(), DepartmentDto.class);
 
     }
 
     @Override
-    public List<DepartmentDto> findByAllIdNotArchived(String ids) throws URISyntaxException {
+    public List<DepartmentDto> findByAllIdNotArchived(String ids) {
         log.info("sent a request to receive the departments not archived in edo - repository");
         var builder = buildURI(EDO_REPOSITORY_NAME, DEPARTMENT_URL)
                 .setPath("/notArchivedAll/")
                 .setPath(String.valueOf(ids));
-        return restTemplate.getForObject(builder.build(), List.class);
+        return restTemplate.getForObject(builder.toString(), List.class);
     }
 
 

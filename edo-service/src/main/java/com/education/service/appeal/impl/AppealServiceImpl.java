@@ -51,27 +51,27 @@ public class AppealServiceImpl implements AppealService {
      * Нахождение обращения по id
      */
     @Override
-    public AppealDto findById(Long id) throws URISyntaxException {
+    public AppealDto findById(Long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
-        return restTemplate.getForObject(builder.build(), AppealDto.class);
+        return restTemplate.getForObject(builder.toString(), AppealDto.class);
     }
 
     /**
      * Нахождение всех обращений
      */
     @Override
-    public Collection<AppealDto> findAll() throws URISyntaxException {
+    public Collection<AppealDto> findAll() {
         var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL);
-        return restTemplate.getForObject(builder.build(), Collection.class);
+        return restTemplate.getForObject(builder.toString(), Collection.class);
     }
 
     /**
      * Изменение обращения, добавление status,маппинг  Authors,Questions
      */
     @Override
-    public AppealDto save(AppealDto appealDto) throws URISyntaxException {
+    public AppealDto save(AppealDto appealDto) {
         // Назначения статуса и времени создания
         appealDto.setAppealsStatus(NEW_STATUS);
         appealDto.setCreationDate(ZonedDateTime.now());
@@ -133,7 +133,7 @@ public class AppealServiceImpl implements AppealService {
             var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
                     .setPath("/");
 
-            return restTemplate.getForObject(builder.build(), AppealDto.class);
+            return restTemplate.getForObject(builder.toString(), AppealDto.class);
         } catch (Exception e) {
 
             // Удаление сохранённых вложенных сущностей
@@ -167,44 +167,44 @@ public class AppealServiceImpl implements AppealService {
      * Удаления обращения по Id
      */
     @Override
-    public void delete(Long id) throws URISyntaxException {
+    public void delete(Long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
-        restTemplate.delete(builder.build());
+        restTemplate.delete(builder.toString());
     }
 
     /**
      * Перенос обращения в архив по id
      */
     @Override
-    public void moveToArchive(Long id) throws URISyntaxException {
+    public void moveToArchive(Long id) {
         AppealDto appeal = findById(id);
         appeal.setArchivedDate(ZonedDateTime.now());
         var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
                 .setPath("/move/")
                 .setPath(String.valueOf(id));
-        restTemplate.put(builder.build(), appeal);
+        restTemplate.put(builder.toString(), appeal);
     }
 
     /**
      * Нахождение обращения по id не из архива
      */
     @Override
-    public AppealDto findByIdNotArchived(Long id) throws URISyntaxException {
+    public AppealDto findByIdNotArchived(Long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
                 .setPath("/findByIdNotArchived/")
                 .setPath(String.valueOf(id));
-        return restTemplate.getForObject(builder.build(), AppealDto.class);
+        return restTemplate.getForObject(builder.toString(), AppealDto.class);
     }
 
     /**
      * Нахождение всех обращений не из архива
      */
     @Override
-    public Collection<AppealDto> findAllNotArchived() throws URISyntaxException {
+    public Collection<AppealDto> findAllNotArchived() {
         var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
                 .setPath("/findByIdNotArchived");
-        return restTemplate.getForObject(builder.build(), Collection.class);
+        return restTemplate.getForObject(builder.toString(), Collection.class);
     }
 }

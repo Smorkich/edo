@@ -37,7 +37,7 @@ public class AddressController {
     //GET ONE /api/repository/address/{id}
     @ApiOperation(value = "Возвращает адрес по id", notes = "Адрес должен существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AddressDto> findById(@PathVariable("id") long id) throws URISyntaxException {
+    public ResponseEntity<AddressDto> findById(@PathVariable("id") long id) {
         log.info("Send a get-request to get Address with id = {} from database", id);
         var addressDto = toDto(addressService.findById(id));
         log.info("Response from database: {}", addressDto);
@@ -48,7 +48,7 @@ public class AddressController {
     //GET ALL /api/repository/address/all
     @ApiOperation(value = "Возвращает все адреса", notes = "Адреса должны существовать")
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AddressDto>> findAll() throws URISyntaxException {
+    public ResponseEntity<List<AddressDto>> findAll() {
         log.info("Send a get-request to get all Addresse from database");
         var addressDtos = toDto(addressService.findAll());
         log.info("Response from database: {}", addressDtos);
@@ -58,7 +58,7 @@ public class AddressController {
     //POST /api/repository/address
     @ApiOperation(value = "Создает адрес в БД", notes = "Адрес должен существовать")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AddressDto> save(@RequestBody @Valid AddressDto addressDto) throws URISyntaxException {
+    public ResponseEntity<AddressDto> save(@RequestBody @Valid AddressDto addressDto) {
         log.info("Send a post-request to post new Address to database");
         addressService.save(toEntity(addressDto));
         log.info("Response: {} was added to database", addressDto);
@@ -68,7 +68,7 @@ public class AddressController {
     //DELETE /api/repository/address/{id}
     @ApiOperation(value = "Удаляет адрес из БД", notes = "Адрес должен существовать")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Long> delete(@PathVariable("id") long id) throws URISyntaxException {
+    public ResponseEntity<Long> delete(@PathVariable("id") long id) {
         log.info("Send a delete-request to delete Address with id = {} from database", id);
         addressService.delete(addressService.findById(id));
         log.info("Response: Address with id = {} was deleted from database", id);

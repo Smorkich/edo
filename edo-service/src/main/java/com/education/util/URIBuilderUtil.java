@@ -38,16 +38,11 @@ public class URIBuilderUtil {
         log.info("Get certain instance of service");
         InstanceInfo instance = instances.get(randomInstance);
         log.info("Build uri to service");
-        try {
-            return new URIBuilder()
+        return new URIBuilder()
                     .setScheme(DEFAULT_SCHEME_NAME)
                     .setHost(instance.getHostName())
                     .setPort(instance.getPort())
                     .setPath(path);
-        } catch (Exception e) {
-            log.error("Error building URI: ", e);
-            return null;
-        }
     }
 
     @Autowired

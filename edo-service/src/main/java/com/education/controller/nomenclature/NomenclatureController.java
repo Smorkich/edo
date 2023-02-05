@@ -31,7 +31,7 @@ public class NomenclatureController {
      */
     @ApiOperation("Method delete Nomenclature by Id")
     @DeleteMapping(value = "/delete/{id}")
-    public String deleteById(@PathVariable Long id) throws URISyntaxException {
+    public String deleteById(@PathVariable Long id) {
         log.info("delete entity with id = {}", id);
         service.deleteById(id);
         log.info("Entity with id = {} was deleted", id);
@@ -43,7 +43,7 @@ public class NomenclatureController {
      */
     @ApiOperation("Method delete Nomenclature by Id")
     @GetMapping(value = "/find/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NomenclatureDto> findById(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<NomenclatureDto> findById(@PathVariable Long id) {
         log.info("Serching entity with id = {}", id);
         NomenclatureDto nomenclatureDto = service.findById(id);
         log.info("Entity {} has been found", nomenclatureDto);
@@ -55,7 +55,7 @@ public class NomenclatureController {
      */
     @ApiOperation("find all entites of nomenclature which are in Collectionn<Long> of id")
     @GetMapping(value = "/all")
-    public ResponseEntity<List<NomenclatureDto>> findAllByIdController(@RequestParam("id") String ids) throws URISyntaxException {
+    public ResponseEntity<List<NomenclatureDto>> findAllByIdController(@RequestParam("id") String ids) {
         log.info("Searching entity with id list = {}", ids);
         List<NomenclatureDto> nomenclatureDtoList = service.findAllById(ids);
         log.info("List of entities has been identified: {}", nomenclatureDtoList);
@@ -67,7 +67,7 @@ public class NomenclatureController {
      */
     @ApiOperation(value = "MOVE TO ARHCIVE (SET DATE)")
     @GetMapping("/move/{id}")
-    public ResponseEntity<NomenclatureDto> move(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<NomenclatureDto> move(@PathVariable Long id) {
         log.debug("Set field archived_date with actual datetime");
         service.moveToArchive(id);
         log.debug("Set field archived_date with actual datetime");
@@ -80,7 +80,7 @@ public class NomenclatureController {
      */
     @ApiOperation(value = "Method finds nomenclature if it has not been archived")
     @GetMapping("/notArch/{id}")
-    public ResponseEntity<NomenclatureDto> findByIdNotArchivedController(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<NomenclatureDto> findByIdNotArchivedController(@PathVariable Long id) {
         log.info("Searching entity with empty archived_date field");
         NomenclatureDto nomenclatureDto = service.findByIdNotArchived(id);
         log.info("Archived object has been identified: {}", nomenclatureDto);
@@ -92,7 +92,7 @@ public class NomenclatureController {
      */
     @ApiOperation(value = "find list of Nomenclature`s entities if they have not been archived")
     @GetMapping(value = "/notArchList", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<NomenclatureDto>> findAllByIdNotArchivedController(@RequestParam("id") String ids) throws URISyntaxException {
+    public ResponseEntity<List<NomenclatureDto>> findAllByIdNotArchivedController(@RequestParam("id") String ids) {
         log.info("Searching entities with empty archived_date fields");
         List<NomenclatureDto> nomenclatureDtoList = service.findAllByIdNotArchived(ids);
         log.info("Archived objects has been identified: {}", nomenclatureDtoList);
@@ -104,7 +104,7 @@ public class NomenclatureController {
      */
     @ApiOperation("save new entity of Nomenclature by request with json-body")
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NomenclatureDto> saveDefaultEntity(@RequestBody NomenclatureDto nomenclatureDto) throws URISyntaxException {
+    public ResponseEntity<NomenclatureDto> saveDefaultEntity(@RequestBody NomenclatureDto nomenclatureDto) {
         log.info(" DTO object of Nomenclature ({}) will be saved ", nomenclatureDto);
         service.save(nomenclatureDto);
         log.info("DTO object: {} has been saved ", nomenclatureDto);

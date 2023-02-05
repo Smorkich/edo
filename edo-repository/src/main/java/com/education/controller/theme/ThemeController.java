@@ -31,7 +31,7 @@ public class ThemeController {
 
     @ApiOperation(value = "Создает тему обращения", notes = "Тема обращения должна существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Theme>  save(@RequestBody ThemeDto themeDto) throws URISyntaxException {
+    public ResponseEntity<Theme>  save(@RequestBody ThemeDto themeDto) {
         log.info("Starting the save operation");
         themeService.save(THEME_MAPPER.toEntity(themeDto));
         log.info("POST request successful");
@@ -40,7 +40,7 @@ public class ThemeController {
 
     @ApiOperation(value = "Удаляет тему обращения", notes = "Тема обращения должна существовать")
     @DeleteMapping("/{id}")
-    public ResponseEntity<ThemeDto> delete(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<ThemeDto> delete(@PathVariable Long id) {
         log.info("DELETE: /api/repository/filePool/" + id);
         themeService.delete(id);
         log.info("DELETE request successful");
@@ -50,7 +50,7 @@ public class ThemeController {
 
     @ApiOperation(value = "Gets authors by id", notes = "Author must exist")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ThemeDto> findById(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<ThemeDto> findById(@PathVariable Long id) {
         log.info("Sent GET request to get author with id={} from the database", id);
         var themeDto = THEME_MAPPER.toDto(themeService.findById(id));
         log.info("Response from database:{}", themeDto);
@@ -59,7 +59,7 @@ public class ThemeController {
 
     @ApiOperation(value = "Выводит id всех файлов", notes = "Файлы должны существовать")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<ThemeDto>> findAll() throws URISyntaxException {
+    public ResponseEntity<Collection<ThemeDto>> findAll() {
         log.info("Sent GET request to get all authors from the database");
         var themeDtoCollection = THEME_MAPPER.toDto(themeService.findAll());
         log.info("Response from database:{}");
@@ -68,7 +68,7 @@ public class ThemeController {
 
     @ApiOperation(value = "Добавляет в тему дату архивации", notes = "Тема должна существовать")
     @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    private ResponseEntity<String> moveToArchive(@PathVariable(name = "id") Long id) throws URISyntaxException {
+    private ResponseEntity<String> moveToArchive(@PathVariable(name = "id") Long id) {
         log.info("Starting the archiving theme");
         themeService.moveToArchive(id);
         log.info("Archiving a theme");
@@ -78,13 +78,13 @@ public class ThemeController {
 
         @ApiOperation(value = "Предоставление темы без архивации")
     @GetMapping("/noArchived/{id}")
-    private ResponseEntity<ThemeDto> getThemeNotArchived(@PathVariable Long id) throws URISyntaxException {
+    private ResponseEntity<ThemeDto> getThemeNotArchived(@PathVariable Long id) {
         return new ResponseEntity<>(THEME_MAPPER.toDto(themeService.findByIdAndArchivedDateNull(id)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Предоставление тем без архивации")
     @GetMapping("/noArchived/{ids}")
-    private  ResponseEntity<Collection<ThemeDto>> getThemesNotArchived(@PathVariable List<Long> ids) throws URISyntaxException {
+    private  ResponseEntity<Collection<ThemeDto>> getThemesNotArchived(@PathVariable List<Long> ids) {
         Collection<ThemeDto> themeDto = THEME_MAPPER.toDto(themeService.findByIdInAndArchivedDateNull(ids));
         return  new ResponseEntity<>(themeDto,HttpStatus.OK);
     }

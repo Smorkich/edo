@@ -31,57 +31,57 @@ public class QuestionServiceImpl implements QuestionService {
     private final RestTemplate restTemplate;
 
     @Override
-    public QuestionDto save(QuestionDto questionDto) throws URISyntaxException {
+    public QuestionDto save(QuestionDto questionDto) {
         var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
                 .setPath("/");
-        return restTemplate.postForObject(builder.build(), questionDto, QuestionDto.class);
+        return restTemplate.postForObject(builder.toString(), questionDto, QuestionDto.class);
     }
 
     @Override
-    public void delete(long id) throws URISyntaxException {
+    public void delete(long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
-        restTemplate.delete(builder.build());
+        restTemplate.delete(builder.toString());
     }
 
     @Override
-    public String findById(long id) throws URISyntaxException {
+    public String findById(long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
-        return restTemplate.getForObject(builder.build(), String.class);
+        return restTemplate.getForObject(builder.toString(), String.class);
     }
 
     @Override
-    public Collection<QuestionDto> findByAllId(String ids) throws URISyntaxException {
+    public Collection<QuestionDto> findByAllId(String ids) {
         var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
                 .setPath("/all/")
                 .setPath(String.valueOf(ids));
-        return restTemplate.getForObject(builder.build(), Collection.class);
+        return restTemplate.getForObject(builder.toString(), Collection.class);
     }
 
     @Override
-    public void moveToArchived(Long id) throws URISyntaxException {
+    public void moveToArchived(Long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
-        restTemplate.postForObject(builder.build(), null, String.class);
+        restTemplate.postForObject(builder.toString(), null, String.class);
     }
 
     @Override
-    public QuestionDto findByIdNotArchived(Long id) throws URISyntaxException {
+    public QuestionDto findByIdNotArchived(Long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
                 .setPath("/notArchived/")
                 .setPath(String.valueOf(id));
-        return restTemplate.getForObject(builder.build(), QuestionDto.class);
+        return restTemplate.getForObject(builder.toString(), QuestionDto.class);
     }
 
     @Override
-    public Collection<QuestionDto> findByAllIdNotArchived(String ids) throws URISyntaxException {
+    public Collection<QuestionDto> findByAllIdNotArchived(String ids) {
         var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
                 .setPath("/notArchivedAll/")
                 .setPath(String.valueOf(ids));
-        return restTemplate.getForObject(builder.build(), Collection.class);
+        return restTemplate.getForObject(builder.toString(), Collection.class);
     }
 }

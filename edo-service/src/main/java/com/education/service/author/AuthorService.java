@@ -5,11 +5,11 @@ import java.net.URISyntaxException;
 import java.util.Collection;
 
 public interface AuthorService {
-    AuthorDto save(AuthorDto author) throws URISyntaxException;
+    AuthorDto save(AuthorDto author);
 
-    void delete(Long id) throws URISyntaxException;
+    void delete(Long id);
 
-    AuthorDto findById(Long id) throws URISyntaxException;
+    AuthorDto findById(Long id);
 
-    Collection<AuthorDto> findAll() throws URISyntaxException;
+    Collection<AuthorDto> findAll();
 }

@@ -48,7 +48,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDto findById(Long id) throws URISyntaxException {
+    public EmployeeDto findById(Long id) {
         log.info("Sent a request to receive the employee in edo - repository");
         var builder = buildURI(EDO_REPOSITORY_NAME, EMPLOYEE_URL)
                 .setPath("/")

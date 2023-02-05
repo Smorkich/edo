@@ -14,41 +14,41 @@ public interface FilePoolService {
     /**
      * save - сохраняет новый файл в бд
      */
-    FilePoolDto save(FilePoolDto filePool) throws URISyntaxException;
+    FilePoolDto save(FilePoolDto filePool);
 
     /**
      * delete - удаляет файл из бд
      */
-    void delete(Long id) throws URISyntaxException;
+    void delete(Long id);
 
     /**
      * findById - находит файл по id
      */
-    String findById(Long id) throws URISyntaxException;
+    String findById(Long id);
 
     /**
      * findAll - возвращает все файлы
      */
-    String findAll() throws URISyntaxException;
+    String findAll();
 
     /**
      * findAllById - выводит список всех файлов по id
      */
-    Collection<FilePoolDto> findAllById(String ids) throws URISyntaxException;
+    Collection<FilePoolDto> findAllById(String ids);
 
     /**
      * moveToArchive - заполняет архивную дату
      */
-    void moveToArchive(Long id) throws URISyntaxException;
+    void moveToArchive(Long id);
 
     /**
      * findByIdNotArchived - находит файл без архивной даты по id
      */
-    FilePoolDto findByIdNotArchived(Long id) throws URISyntaxException;
+    FilePoolDto findByIdNotArchived(Long id);
 
     /**
      * findAllByIdNotArchived - находит все файлы без архивной даты по id
      */
-    Collection<FilePoolDto> findAllByIdNotArchived(String ids) throws URISyntaxException;
+    Collection<FilePoolDto> findAllByIdNotArchived(String ids);
 
 }

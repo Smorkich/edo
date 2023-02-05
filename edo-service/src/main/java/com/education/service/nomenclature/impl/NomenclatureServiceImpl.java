@@ -26,57 +26,57 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     private RestTemplate restTemplate;
 
     @Override
-    public void save(NomenclatureDto nomenclatureDto) throws URISyntaxException {
+    public void save(NomenclatureDto nomenclatureDto) {
         var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
                 .setPath("/add");
-        restTemplate.postForObject(builder.build(), nomenclatureDto, NomenclatureDto.class);
+        restTemplate.postForObject(builder.toString(), nomenclatureDto, NomenclatureDto.class);
     }
 
     @Override
-    public NomenclatureDto findById(Long id) throws URISyntaxException {
+    public NomenclatureDto findById(Long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
                 .setPath("/find/")
                 .setPath(String.valueOf(id));
-        return restTemplate.getForObject(builder.build(), NomenclatureDto.class);
+        return restTemplate.getForObject(builder.toString(), NomenclatureDto.class);
     }
 
     @Override
-    public List<NomenclatureDto> findAllById(String ids) throws URISyntaxException {
+    public List<NomenclatureDto> findAllById(String ids) {
         var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
                 .setPath("/allId?id=")
                 .setPath(String.valueOf(ids));
-        return restTemplate.getForObject(builder.build(), List.class);
+        return restTemplate.getForObject(builder.toString(), List.class);
     }
 
     @Override
-    public void deleteById(Long id) throws URISyntaxException {
+    public void deleteById(Long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
                 .setPath("/delete/")
                 .setPath(String.valueOf(id));
-        restTemplate.delete(builder.build());
+        restTemplate.delete(builder.toString());
     }
 
     @Override
-    public void moveToArchive(Long id) throws URISyntaxException {
+    public void moveToArchive(Long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
                 .setPath("/move/")
                 .setPath(String.valueOf(id));
-        restTemplate.postForObject(builder.build(),null, NomenclatureDto.class);
+        restTemplate.postForObject(builder.toString(),null, NomenclatureDto.class);
     }
 
     @Override
-    public NomenclatureDto findByIdNotArchived(Long id) throws URISyntaxException {
+    public NomenclatureDto findByIdNotArchived(Long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
                 .setPath("/find_not_archived/")
                 .setPath(String.valueOf(id));
-        return restTemplate.getForObject(builder.build(), NomenclatureDto.class);
+        return restTemplate.getForObject(builder.toString(), NomenclatureDto.class);
     }
 
     @Override
-    public List<NomenclatureDto> findAllByIdNotArchived(String ids) throws URISyntaxException {
+    public List<NomenclatureDto> findAllByIdNotArchived(String ids) {
         var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
                 .setPath("/find_not_archived_List?id=")
                 .setPath(String.valueOf(ids));
-        return restTemplate.getForObject(builder.build(), List.class);
+        return restTemplate.getForObject(builder.toString(), List.class);
     }
 }

@@ -12,31 +12,31 @@ public interface ResolutionService {
     /**
      * Сохраняет новую резолюцию
      */
-    public void save(ResolutionDto resolutionDto) throws URISyntaxException;
+    public void save(ResolutionDto resolutionDto);
 
     /**
      * Архивирует резолюцию
      */
-    public void moveToArchive(Long id) throws URISyntaxException;
+    public void moveToArchive(Long id);
 
     /**
      * Поиск резолюции по id
      */
-    public ResolutionDto findById(Long id) throws URISyntaxException;
+    public ResolutionDto findById(Long id);
 
     /**
      * Показать все резолюции
      */
-    public Collection<ResolutionDto> findAllById(Long id) throws URISyntaxException;
+    public Collection<ResolutionDto> findAllById(Long id);
 
     /**
      * Поиск исключительно не архивированной резолюции по id
      */
-    public ResolutionDto findByIdNotArchived(Long id) throws URISyntaxException;
+    public ResolutionDto findByIdNotArchived(Long id);
 
     /**
      * Показать все актуальные, не помещенные в архив резолюции
      */
-    public Collection<ResolutionDto> findAllByIdNotArchived(Long id) throws URISyntaxException;
+    public Collection<ResolutionDto> findAllByIdNotArchived(Long id);
 
 }

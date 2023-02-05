@@ -34,35 +34,35 @@ public class AddressServiceImpl implements AddressService {
     /**
      * Метод, который возвращает адрес по Id
      */
-    public String findById(long id) throws URISyntaxException {
+    public String findById(long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, ADDRESS_URL).setPath("/").setPath(String.valueOf(id));
-        return restTemplate.getForObject(builder.build(), String.class);
+        return restTemplate.getForObject(builder.toString(), String.class);
     }
 
     /**
      * Метод, который возвращает все адреса
      */
-    public String findAll() throws URISyntaxException {
+    public String findAll() {
         var builder = buildURI(EDO_REPOSITORY_NAME, ADDRESS_URL).setPath("/all");
-        return restTemplate.getForObject(builder.build(), String.class);
+        return restTemplate.getForObject(builder.toString(), String.class);
     }
 
     /**
      * Метод сохранения нового адреса в БД
      */
-    public void save(AddressDto addressDto) throws URISyntaxException {
+    public void save(AddressDto addressDto) {
         var builder = buildURI(EDO_REPOSITORY_NAME, ADDRESS_URL).setPath("/");
-        restTemplate.postForObject(builder.build(), addressDto, AddressDto.class);
+        restTemplate.postForObject(builder.toString(), addressDto, AddressDto.class);
     }
 
     /**
      * Метод удаления адреса из БД
      */
-    public void delete(long id) throws URISyntaxException {
+    public void delete(long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, ADDRESS_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
-        restTemplate.delete(builder.build());
+        restTemplate.delete(builder.toString());
     }
 
 }

@@ -31,7 +31,7 @@ public class NomenclatureController {
      */
     @ApiOperation("Method delete Nomenclature by Id")
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<NomenclatureDto> delete(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<NomenclatureDto> delete(@PathVariable Long id) {
         log.info("delete entity with id = {}", id);
         service.deleteById(id);
         log.info("Entity with id = {} was deleted", id);
@@ -43,7 +43,7 @@ public class NomenclatureController {
      */
     @ApiOperation("Method searches for an entity of Nomenclature by its ID")
     @GetMapping(value = "/find/{id}")
-    public ResponseEntity<NomenclatureDto> findById(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<NomenclatureDto> findById(@PathVariable Long id) {
         log.info("Serching entity with id = {}", id);
         NomenclatureDto nomenclatureDto = NOMENCLATURE_MAPPER.toDto(service.findById(id));
         log.info("Entity {} has been found",nomenclatureDto);
@@ -55,7 +55,7 @@ public class NomenclatureController {
      */
     @ApiOperation(value = "MOVE TO ARHCIVE (SET DATE)")
     @GetMapping("/move/{id}")
-    public ResponseEntity<NomenclatureDto> move(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<NomenclatureDto> move(@PathVariable Long id) {
         log.debug("Set field archived_date with actual datetime");
         service.moveToArchive(id);
         log.debug("Set field archived_date with actual datetime");
@@ -68,7 +68,7 @@ public class NomenclatureController {
      */
     @ApiOperation(value = "Method finds nomenclature if it has not been archived")
     @GetMapping("/notArch/{id}")
-    public ResponseEntity<NomenclatureDto> findByIdNotArchivedController(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<NomenclatureDto> findByIdNotArchivedController(@PathVariable Long id) {
         log.info("Searching entity with empty archived_date field");
         NomenclatureDto nomenclatureDto = NOMENCLATURE_MAPPER.toDto(service.findByIdNotArchived(id).get());
         log.info("Archived object has been identified: {}", nomenclatureDto);
@@ -80,7 +80,7 @@ public class NomenclatureController {
      */
     @ApiOperation(value = "find list of Nomenclature`s entities if they have not been archived")
     @GetMapping(value = "/notArchList", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<NomenclatureDto>> findAllByIdNotArchivedController(@RequestParam("id") Collection<Long> listId) throws URISyntaxException {
+    public ResponseEntity<Collection<NomenclatureDto>> findAllByIdNotArchivedController(@RequestParam("id") Collection<Long> listId) {
         log.info("Searching entities with empty archived_date fields");
         Collection<NomenclatureDto> nomenclatureDtoList = NOMENCLATURE_MAPPER.toDto(service.findAllByIdNotArchived(listId));
         log.info("Archived objects has been identified: {}", nomenclatureDtoList);
@@ -105,7 +105,7 @@ public class NomenclatureController {
      */
     @ApiOperation("save new entity of Nomenclature by request with json-body")
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NomenclatureDto> saveDefaultEntity(@RequestBody NomenclatureDto nomenclatureDto) throws URISyntaxException {
+    public ResponseEntity<NomenclatureDto> saveDefaultEntity(@RequestBody NomenclatureDto nomenclatureDto) {
         log.info(" DTO object of Nomenclature ({}) will be saved ", nomenclatureDto);
         Nomenclature save = service.save(NOMENCLATURE_MAPPER.toEntity(nomenclatureDto));
         log.info("DTO object: {} has been saved ", nomenclatureDto);

@@ -32,41 +32,42 @@ public class AuthorServiceImpl implements AuthorService {
      * Сохранение Author
      */
     @Override
-    public AuthorDto save(AuthorDto authorDto) throws URISyntaxException {
+    public AuthorDto save(AuthorDto authorDto)
+ {
         var builder = buildURI(EDO_REPOSITORY_NAME, AUTHOR_URL)
                 .setPath("/");
-        return restTemplate.postForObject(builder.build(), authorDto, AuthorDto.class);
+        return restTemplate.postForObject(builder.toString(), authorDto, AuthorDto.class);
     }
 
     /**
      * Удаление Author по id
      */
     @Override
-    public void delete(Long id) throws URISyntaxException {
+    public void delete(Long id)  {
         var builder = buildURI(EDO_REPOSITORY_NAME, AUTHOR_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
-        restTemplate.delete(builder.build());
+        restTemplate.delete(builder.toString());
     }
 
     /**
      * Поиск Author по id
      */
     @Override
-    public AuthorDto findById(Long id) throws URISyntaxException {
+    public AuthorDto findById(Long id)  {
         var builder = buildURI(EDO_REPOSITORY_NAME, AUTHOR_URL)
                 .setPath("/")
                 .setPath(String.valueOf(id));
-        return restTemplate.getForObject(builder.build(), AuthorDto.class);
+        return restTemplate.getForObject(builder.toString(), AuthorDto.class);
     }
 
     /**
      * Список Author`s
      */
     @Override
-    public List<AuthorDto> findAll() throws URISyntaxException {
+    public List<AuthorDto> findAll() {
         var builder = buildURI(EDO_REPOSITORY_NAME, AUTHOR_URL)
                 .setPath("/");
-        return restTemplate.getForObject(builder.build(), List.class);
+        return restTemplate.getForObject(builder.toString(), List.class);
     }
 }

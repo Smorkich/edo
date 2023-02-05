@@ -33,7 +33,7 @@ public class AddressController {
     //GET ONE /api/service/address/{id}
     @ApiOperation(value = "Возвращает адрес по id", notes = "Адрес должен существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> findById(@PathVariable("id") long id) throws URISyntaxException {
+    public ResponseEntity<String> findById(@PathVariable("id") long id) {
         log.info("Send a get-request to get Address with id = {} from edo-repository " +
                 "(RestTemplate on edo-service side)", id);
         var addressDto = addressService.findById(id);
@@ -44,7 +44,7 @@ public class AddressController {
     //GET ALL /api/service/address/getAllAdresseRestTemplate
     @ApiOperation(value = "Возвращает все адреса", notes = "Адреса должны существовать")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> findAll() throws URISyntaxException {
+    public ResponseEntity<String> findAll() {
         log.info("Send a get-request to get all Addresse from edo-repository" +
                 " (RestTemplate on edo-service side)");
         var addressDtos = addressService.findAll();
@@ -55,7 +55,7 @@ public class AddressController {
     //POST /api/service/address
     @ApiOperation(value = "Создает адрес в БД", notes = "Адрес должен существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AddressDto> save(@RequestBody AddressDto addressDto) throws URISyntaxException {
+    public ResponseEntity<AddressDto> save(@RequestBody AddressDto addressDto) {
         log.info("Send a post-request to edo-repository to post new Address to database" +
                 " (RestTemplate on edo-service side)");
         addressService.save(addressDto);
@@ -66,7 +66,7 @@ public class AddressController {
     //DELETE /api/service/address/{id}
     @ApiOperation(value = "Удаляет адрес из БД", notes = "Адрес должен существовать")
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> delete(@PathVariable("id") long id) throws URISyntaxException {
+    public ResponseEntity<Long> delete(@PathVariable("id") long id) {
         log.info("Send a delete-request to edo-repository to delete Address with id = {}" +
                 " from database (RestTemplate on edo-service side)", id);
         addressService.delete(id);

@@ -28,7 +28,6 @@ import static model.constant.Constant.*;
 public class MinioServiceImpl implements MinioService {
 
     private final RestTemplate restTemplate;
-    private final EurekaClient eurekaClient;
 
     @Override
     public void uploadOneFile(MultipartFile currentFile)  {

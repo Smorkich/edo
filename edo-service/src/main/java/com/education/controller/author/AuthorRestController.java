@@ -26,7 +26,7 @@ public class AuthorRestController {
 
     @ApiOperation(value = "Gets all authors", notes = "Author must exist")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<AuthorDto>> getAllAuthors() throws URISyntaxException {
+    public ResponseEntity<Collection<AuthorDto>> getAllAuthors() {
         log.info("Sent GET request to get all authors from the database");
         var authorDtoCollection = authorService.findAll();
         log.info("Response from database:{}", authorDtoCollection);
@@ -35,7 +35,7 @@ public class AuthorRestController {
 
     @ApiOperation(value = "Add author", notes = "Author not must exist")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthorDto> addAuthorAction(@RequestBody AuthorDto authorDto) throws URISyntaxException {
+    public ResponseEntity<AuthorDto> addAuthorAction(@RequestBody AuthorDto authorDto) {
         log.info("Send POST request to add author to databases: {}", authorDto);
         authorService.save(authorDto);
         log.info("Author added to database");
@@ -44,7 +44,7 @@ public class AuthorRestController {
 
     @ApiOperation(value = "Delete author", notes = "Author must exist")
     @DeleteMapping("/{id}")
-    public ResponseEntity<AuthorDto> deleteAuthor(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<AuthorDto> deleteAuthor(@PathVariable Long id) {
         log.info("Send DELETE request to delete author with id={} to databases", id);
         authorService.delete(id);
         log.info("Author was deleted from the database");
@@ -53,7 +53,7 @@ public class AuthorRestController {
 
     @ApiOperation(value = "Gets authors by id", notes = "Author must exist")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AuthorDto> getAuthorById(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<AuthorDto> getAuthorById(@PathVariable Long id) {
         log.info("Sent GET request to get author with id={} from the database", id);
         var authorDto = authorService.findById(id);
         log.info("Response from database:{}", authorDto);

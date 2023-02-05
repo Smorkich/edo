@@ -32,7 +32,7 @@ public class FilePoolController {
 
     @ApiOperation(value = "Создает файл", notes = "Файл должен существовать")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FilePoolDto> save(@RequestBody @Valid FilePoolDto filePoolDto) throws URISyntaxException {
+    public ResponseEntity<FilePoolDto> save(@RequestBody @Valid FilePoolDto filePoolDto) {
         log.info("Send a post-request to post new Address to database");
         FilePool save = filePoolService.save(FILE_POOL_MAPPER.toEntity(filePoolDto));
         log.info("Response: {} was added to database", filePoolDto);
@@ -41,7 +41,7 @@ public class FilePoolController {
 
     @ApiOperation(value = "Удаляет файл", notes = "Файл должен существовать")
     @DeleteMapping("/{id}")
-    public ResponseEntity<FilePoolDto> delete(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<FilePoolDto> delete(@PathVariable Long id) {
         log.info("DELETE: /api/repository/filePool/" + id);
         filePoolService.delete(id);
         log.info("DELETE request successful");
@@ -50,7 +50,7 @@ public class FilePoolController {
 
     @ApiOperation(value = "Gets authors by id", notes = "Author must exist")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FilePoolDto> findById(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<FilePoolDto> findById(@PathVariable Long id) {
         log.info("Sent GET request to get author with id={} from the database", id);
         var filePoolDto = FILE_POOL_MAPPER.toDto(filePoolService.findById(id));
         log.info("Response from database:{}", filePoolDto);
@@ -59,7 +59,7 @@ public class FilePoolController {
 
     @ApiOperation(value = "Возвращает все файлы", notes = "Файлы должны существовать")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<FilePoolDto>> findAll() throws URISyntaxException {
+    public ResponseEntity<Collection<FilePoolDto>> findAll() {
         log.info("Send a get-request to get all file from database");
         var filePoolDto = FILE_POOL_MAPPER.toDto(filePoolService.findAll());
         log.info("Response from database: {}", filePoolDto);
@@ -68,20 +68,20 @@ public class FilePoolController {
 
     @ApiOperation(value = "Добавляет в файл архивную дату", notes = "Файл должен существовать")
     @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    private ResponseEntity<String> moveToArchive(@PathVariable(name = "id") Long id) throws URISyntaxException {
+    private ResponseEntity<String> moveToArchive(@PathVariable(name = "id") Long id) {
         filePoolService.moveToArchive(id);
         return new ResponseEntity<>("The file is archived", HttpStatus.OK);
     }
 
     @ApiOperation(value = "Предоставление файла без архивации")
     @GetMapping("/noArchived/{id}")
-    private ResponseEntity<FilePoolDto> getFileNotArchived(@PathVariable Long id) throws URISyntaxException {
+    private ResponseEntity<FilePoolDto> getFileNotArchived(@PathVariable Long id) {
         return new ResponseEntity<>(FILE_POOL_MAPPER.toDto(filePoolService.findByIdAndArchivedDateNull(id)), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Предоставление файлов без архивации")
     @GetMapping("/noArchived/{ids}")
-    private  ResponseEntity<Collection<FilePoolDto>> getFilesNotArchived(@PathVariable List <Long> ids) throws URISyntaxException {
+    private  ResponseEntity<Collection<FilePoolDto>> getFilesNotArchived(@PathVariable List <Long> ids) {
         Collection<FilePoolDto> filePoolDto = FILE_POOL_MAPPER.toDto(filePoolService.findByIdInAndArchivedDateNull(ids));
         return  new ResponseEntity<>(filePoolDto,HttpStatus.OK);
     }

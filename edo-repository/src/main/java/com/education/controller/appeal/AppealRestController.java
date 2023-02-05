@@ -37,7 +37,7 @@ public class AppealRestController {
     @ApiOperation(value = "Находит все строки таблицы Appeal с полем acrhivedDate = null",
             notes = "Строка в Appeal должна существовать")
     @GetMapping(value = "/findAllNotArchived", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<AppealDto>> findAllNotArchived() throws URISyntaxException {
+    public ResponseEntity<Collection<AppealDto>> findAllNotArchived() {
         log.info("Getting from database all appeals with field acrhivedDate = null");
         var appealDtoCollection = APPEAL_MAPPER.toDto(appealService.findAllNotArchived());
         log.info("Appeals: {}", appealDtoCollection);
@@ -47,7 +47,7 @@ public class AppealRestController {
     @ApiOperation(value = "Находит строку таблицы Appeal c полем acrhivedDate = null, по заданному id",
             notes = "Строка в Appeal должна существовать")
     @GetMapping(value = "/findByIdNotArchived/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AppealDto> findByIdNotArchived(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<AppealDto> findByIdNotArchived(@PathVariable Long id) {
         log.info("Getting from database appeal with field acrhivedDate = null, with id: {}", id);
         var appeal = appealService.findByIdNotArchived(id);
         log.info("Appeal: {}", appeal);
@@ -57,7 +57,7 @@ public class AppealRestController {
     @ApiOperation(value = "Находит все строки таблицы Appeal",
             notes = "Строка в Appeal должна существовать")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<AppealDto>> getAllAppeal() throws URISyntaxException {
+    public ResponseEntity<Collection<AppealDto>> getAllAppeal() {
         log.info("Getting from database all appeals");
         var appealDtoCollection = APPEAL_MAPPER.toDto(appealService.findAll());
         log.info("Appeals: {}", appealDtoCollection);
@@ -67,7 +67,7 @@ public class AppealRestController {
     @ApiOperation(value = "Удаляет строку таблицы Appeal по id",
             notes = "Строка в Appeal должна существовать")
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> deleteAppeal(@PathVariable(value = "id") Long id) throws URISyntaxException {
+    public ResponseEntity<Long> deleteAppeal(@PathVariable(value = "id") Long id) {
         log.info("Deleting from database appeal with id: {}", id);
         appealService.delete(id);
         log.info("Deleting from database appeal with id: {}, success!", id);
@@ -76,7 +76,7 @@ public class AppealRestController {
 
     @ApiOperation(value = "Добавляет новую строку таблицы Appeal", notes = "Строка в Appeal должна существовать")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AppealDto> saveAppeal(@RequestBody AppealDto appealDto) throws URISyntaxException {
+    public ResponseEntity<AppealDto> saveAppeal(@RequestBody AppealDto appealDto) {
         log.info("Creating appeal");
         Appeal appeal = appealService.save(APPEAL_MAPPER.toEntity(appealDto));
         log.info("Creating appeal {}, success!", appeal);
@@ -86,7 +86,7 @@ public class AppealRestController {
     @ApiOperation(value = "Находит строку таблицы Appeal по id",
             notes = "Строка в Appeal должна существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AppealDto> getAppealById(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<AppealDto> getAppealById(@PathVariable Long id) {
         log.info("Getting from database appeal with id: {}", id);
         var appeal = appealService.findById(id);
         log.info("Appeal: {}", appeal);

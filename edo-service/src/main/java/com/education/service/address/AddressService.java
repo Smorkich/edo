@@ -12,21 +12,21 @@ public interface AddressService {
     /**
      * Метод, который возвращает адрес по Id
      */
-    String findById(long id) throws URISyntaxException;
+    String findById(long id);
 
     /**
      * Метод, который возвращает все адреса
      */
-    String findAll() throws URISyntaxException;
+    String findAll();
 
     /**
      * Метод сохранения нового адреса в БД
      */
-    void save(AddressDto addressDto) throws URISyntaxException;
+    void save(AddressDto addressDto);
 
     /**
      * Метод удаления адреса из БД
      */
-    void delete(long id) throws URISyntaxException;
+    void delete(long id);
 
 }

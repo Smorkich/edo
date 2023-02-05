@@ -36,7 +36,7 @@ public class EmployeeController {
 
     @ApiOperation(value = "Создает сотрудника")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EmployeeDto> save(@RequestBody EmployeeDto employeeDto) throws URISyntaxException {
+    public ResponseEntity<EmployeeDto> save(@RequestBody EmployeeDto employeeDto) {
         log.info("Starting the save operation");
         employeeService.save(employeeDto);
         log.info("Saving the employee");
@@ -45,7 +45,7 @@ public class EmployeeController {
 
     @ApiOperation(value = "Архивация сотрудника с занесением времени архивации")
     @PostMapping(value = "/{id}")
-    public ResponseEntity<Void> moveToArchived(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<Void> moveToArchived(@PathVariable Long id) {
         log.info("Starting the archiving operation");
         employeeService.moveToArchived(id);
         log.info("Archiving the employee");
@@ -54,7 +54,7 @@ public class EmployeeController {
 
     @ApiOperation(value = "Предоставление сотрудника по индентификатору")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<EmployeeDto> findById(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<EmployeeDto> findById(@PathVariable Long id) {
         log.info("Send a response with the employee of the assigned id");
         EmployeeDto employeeDto = employeeService.findById(id);
         log.info("The operation was successful, we got the employee by id ={}", id);
