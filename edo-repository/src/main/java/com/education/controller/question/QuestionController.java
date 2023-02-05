@@ -5,13 +5,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.QuestionDto;
-import org.bouncycastle.util.Iterable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URISyntaxException;
 import java.util.List;
 
 import static com.education.mapper.QuestionMapper.QUESTION_MAPPER;

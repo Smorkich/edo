@@ -2,7 +2,6 @@ package com.education.service.address;
 
 import model.dto.AddressDto;
 
-import java.net.URISyntaxException;
 
 /**
  * Service в "edo-service", служит для связи контроллера и RestTemplate

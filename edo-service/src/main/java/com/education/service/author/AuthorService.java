@@ -1,7 +1,6 @@
 package com.education.service.author;
 import model.dto.AuthorDto;
 
-import java.net.URISyntaxException;
 import java.util.Collection;
 
 public interface AuthorService {

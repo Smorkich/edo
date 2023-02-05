@@ -2,18 +2,13 @@ package com.education.service.nomenclature.impl;
 
 
 import com.education.service.nomenclature.NomenclatureService;
-import com.netflix.discovery.EurekaClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.NomenclatureDto;
-import org.apache.hc.core5.net.URIBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 
 import static com.education.util.URIBuilderUtil.buildURI;
 import static model.constant.Constant.*;

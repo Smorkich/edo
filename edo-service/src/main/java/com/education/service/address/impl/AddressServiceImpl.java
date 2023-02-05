@@ -1,16 +1,10 @@
 package com.education.service.address.impl;
 
 import com.education.service.address.AddressService;
-import com.netflix.discovery.EurekaClient;
 import lombok.AllArgsConstructor;
 import model.dto.AddressDto;
-import org.apache.hc.core5.net.URIBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Random;
 
 import static com.education.util.URIBuilderUtil.buildURI;
 import static model.constant.Constant.*;

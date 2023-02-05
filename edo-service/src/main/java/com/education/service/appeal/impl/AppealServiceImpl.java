@@ -4,28 +4,20 @@ import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
 import com.education.service.filePool.FilePoolService;
 import com.education.service.question.QuestionService;
-import com.education.util.URIBuilderUtil;
-import com.netflix.discovery.EurekaClient;
 import lombok.AllArgsConstructor;
-import model.constant.Constant;
 import model.dto.AppealDto;
 import model.dto.AuthorDto;
 import model.dto.FilePoolDto;
 import model.dto.QuestionDto;
-import org.apache.hc.core5.net.URIBuilder;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Collectors;
 
 import static com.education.util.URIBuilderUtil.buildURI;
@@ -44,7 +36,6 @@ public class AppealServiceImpl implements AppealService {
     private final AuthorService authorService;
     private final QuestionService questionService;
     private final FilePoolService filePoolService;
-    private final String URL = "http://edo-repository/api/repository/appeal";
 
 
     /**

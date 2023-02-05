@@ -1,20 +1,13 @@
 package com.education.service.question.impl;
 
 import com.education.service.question.QuestionService;
-import com.education.util.URIBuilderUtil;
-import com.netflix.discovery.EurekaClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import model.constant.Constant;
 import model.dto.QuestionDto;
-import org.apache.hc.core5.net.URIBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URISyntaxException;
 import java.util.Collection;
-import java.util.List;
-import java.util.Random;
 
 import static com.education.util.URIBuilderUtil.buildURI;
 import static model.constant.Constant.*;

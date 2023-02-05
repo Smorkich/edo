@@ -3,7 +3,6 @@ package com.education.service.department;
 
 import model.dto.DepartmentDto;
 
-import java.net.URISyntaxException;
 import java.util.Collection;
 
 

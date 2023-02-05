@@ -2,7 +2,6 @@ package com.education.service.theme;
 
 import model.dto.ThemeDto;
 
-import java.net.URISyntaxException;
 import java.util.Collection;
 
 /**

@@ -1,19 +1,13 @@
 package com.education.service.author.impl;
 
 import com.education.service.author.AuthorService;
-import com.education.util.URIBuilderUtil;
-import com.netflix.discovery.EurekaClient;
 import lombok.AllArgsConstructor;
-import model.constant.Constant;
 import model.dto.AuthorDto;
-import org.apache.hc.core5.net.URIBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.net.URISyntaxException;
-import java.util.Collection;
+
 import java.util.List;
-import java.util.Random;
 
 import static com.education.util.URIBuilderUtil.buildURI;
 import static model.constant.Constant.*;

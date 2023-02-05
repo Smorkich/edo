@@ -2,7 +2,6 @@ package com.education.service.appeal;
 
 import model.dto.AppealDto;
 
-import java.net.URISyntaxException;
 import java.util.Collection;
 
 /**

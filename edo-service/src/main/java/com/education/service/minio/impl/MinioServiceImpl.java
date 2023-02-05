@@ -1,11 +1,8 @@
 package com.education.service.minio.impl;
 
 import com.education.service.minio.MinioService;
-import com.education.util.URIBuilderUtil;
-import com.netflix.discovery.EurekaClient;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.hc.core5.net.URIBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -14,7 +11,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Random;
 
 import static com.education.util.URIBuilderUtil.buildURI;
 import static model.constant.Constant.*;

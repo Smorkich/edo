@@ -2,7 +2,6 @@ package com.education.service.resolution;
 
 import model.dto.ResolutionDto;
 
-import java.net.URISyntaxException;
 import java.util.Collection;
 
 /**

@@ -2,7 +2,6 @@ package com.education.service.question;
 
 import model.dto.QuestionDto;
 
-import java.net.URISyntaxException;
 import java.util.Collection;
 
 /**

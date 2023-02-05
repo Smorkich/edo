@@ -2,7 +2,6 @@ package com.education.service.emloyee;
 
 import model.dto.EmployeeDto;
 
-import java.net.URISyntaxException;
 import java.util.Collection;
 
 /**

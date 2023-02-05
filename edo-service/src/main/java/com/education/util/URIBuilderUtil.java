@@ -7,7 +7,6 @@ import org.apache.http.client.utils.URIBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.net.URISyntaxException;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 

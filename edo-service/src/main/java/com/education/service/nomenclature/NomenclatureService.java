@@ -3,10 +3,7 @@ package com.education.service.nomenclature;
 
 import model.dto.NomenclatureDto;
 
-import java.net.URISyntaxException;
-import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
 
 /**
 *  Interface for service from edo-service module, calling another service from edo-repository module.
