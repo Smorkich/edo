@@ -1,7 +1,6 @@
 package com.education.service.minio.impl;
 
 import com.education.service.minio.MinioService;
-import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpEntity;
@@ -12,7 +11,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-import static model.constant.Constant.EDO_FILE_STORAGE_NAME;
+
+import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.*;
 
 /**
  * @author Anna Artemyeva
@@ -33,11 +34,10 @@ public class MinioServiceImpl implements MinioService {
         body.add("file", currentFile.getResource());
 
         HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
+                .setPath("/api/file-storage/upload").toString();
 
-        String uri = URIBuilderUtil.buildURI(EDO_FILE_STORAGE_NAME, "/api/file-storage/upload")
-                .toString();
-
-        restTemplate.postForEntity(uri,
+        restTemplate.postForEntity(builder,
                 requestEntity,
                 String.class);
     }

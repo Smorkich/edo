@@ -11,7 +11,6 @@ public class NoFeignClient {
      * Realize noFeignClient
      */
     @Bean
-    @LoadBalanced
     RestTemplate restTemplate() {
         return new RestTemplate();
     }
