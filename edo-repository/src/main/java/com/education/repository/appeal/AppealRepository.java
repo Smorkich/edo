@@ -14,11 +14,9 @@ import java.util.Optional;
 public interface AppealRepository extends JpaRepository<Appeal, Long> {
 
     /**
-     * Метод ставит дату архивации
+     * Метод достает сообщение по id
      */
-    @Modifying
-    @Query(nativeQuery = true, value = "update appeal set archived_date = now where id =:id")
-    void moveToArchive(@Param("id") Long id);
+    Optional<Appeal> findByIdAndArchivedDateIsNull(Long id);
 
     /**
      * Метод достает Appeal, у которого поле archivedDate = null
