@@ -18,7 +18,6 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static model.constant.Constant.EDO_REPOSITORY_NAME;
 
@@ -38,11 +37,6 @@ public class ApprovalBlockServiceImpl implements ApprovalBlockService {
     @Override
     public ApprovalBlockDto save(ApprovalBlockDto approvalBlockDto) {
 
-        // Проверка на отсутствие индекса у блока согласования
-        if (approvalBlockDto.getId() != null) {
-            throw new IllegalArgumentException("The approval block must be without an id");
-        }
-
         // Валидация блока согласования
         validator.validateApprovalBlockDto(approvalBlockDto);
 
@@ -54,40 +48,36 @@ public class ApprovalBlockServiceImpl implements ApprovalBlockService {
             Collection<MemberDto> signatories = approvalBlockDto.getSignatories();
 
             // Сохранение блока согласования без участников
-            approvalBlockDto.setSignatories(null);
-            approvalBlockDto.setParticipants(null);
+            approvalBlockDto.setSignatories(new ArrayList<>());
+            approvalBlockDto.setParticipants(new ArrayList<>());
             String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approvalBlock").toString();
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             approvalBlockDto = restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(approvalBlockDto, headers), ApprovalBlockDto.class).getBody();
-            Long approvalBlockId = approvalBlockDto.getId();
+            ApprovalBlockDto savedApprovalBlockDto = approvalBlockDto;
+            Long approvalBlockId = savedApprovalBlockDto.getId();
 
             // Сохранение участников согласования
-            if (approvalBlockDto.getType().equals(ApprovalBlockType.PARTICIPANT_BLOCK)) {
-                approvalBlockDto.setParticipants(participants.stream()
-                        .map(memberDto -> {
-                            memberDto = memberService.save(memberDto, approvalBlockId);
-                            savedMembers.add(memberDto);
-
-                            return memberDto;
-                        })
-                        .collect(Collectors.toList()));
+            if (ApprovalBlockType.PARTICIPANT_BLOCK.equals(approvalBlockDto.getType())) {
+                participants.forEach(memberDto -> {
+                    memberDto = memberService.save(memberDto, approvalBlockId);
+                    savedMembers.add(memberDto);
+                    savedApprovalBlockDto.getParticipants().add(memberDto);
+                });
             } else {
-                approvalBlockDto.setSignatories(signatories.stream()
-                        .map(memberDto -> {
-                            memberDto = memberService.save(memberDto, approvalBlockId);
-                            savedMembers.add(memberDto);
-
-                            return memberDto;
-                        })
-                        .collect(Collectors.toList()));
+                signatories.forEach(memberDto -> {
+                    memberDto = memberService.save(memberDto, approvalBlockId);
+                    savedMembers.add(memberDto);
+                    savedApprovalBlockDto.getSignatories().add(memberDto);
+                });
             }
 
-            return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(approvalBlockDto, headers), ApprovalBlockDto.class).getBody();
+            return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(savedApprovalBlockDto, headers), ApprovalBlockDto.class).getBody();
         } catch (Exception e) {
 
             // Удаление сохранённых сущностей
             savedMembers.forEach(memberDto -> memberService.delete(memberDto.getId()));
+
             if (approvalBlockDto.getId() != null) {
                 delete(approvalBlockDto.getId());
             }
@@ -101,11 +91,6 @@ public class ApprovalBlockServiceImpl implements ApprovalBlockService {
      */
     @Override
     public ApprovalBlockDto save(ApprovalBlockDto approvalBlockDto, Long approvalId) {
-
-        // Проверка на отсутствие индекса у блока согласования
-        if (approvalBlockDto.getId() != null) {
-            throw new IllegalArgumentException("The approval block must be without an id");
-        }
 
         // Валидация блока согласования
         validator.validateApprovalBlockDto(approvalBlockDto);
@@ -124,27 +109,22 @@ public class ApprovalBlockServiceImpl implements ApprovalBlockService {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             approvalBlockDto = restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(approvalBlockDto, headers), ApprovalBlockDto.class).getBody();
+            ApprovalBlockDto savedApprovalBlockDto = approvalBlockDto;
             Long approvalBlockId = approvalBlockDto.getId();
 
             // Сохранение участников согласования
-            if (approvalBlockDto.getType().equals(ApprovalBlockType.PARTICIPANT_BLOCK)) {
-                approvalBlockDto.setParticipants(participants.stream()
-                        .map(memberDto -> {
-                            memberDto = memberService.save(memberDto, approvalBlockId);
-                            savedMembers.add(memberDto);
-
-                            return memberDto;
-                        })
-                        .collect(Collectors.toList()));
+            if (ApprovalBlockType.PARTICIPANT_BLOCK.equals(approvalBlockDto.getType())) {
+                participants.forEach(memberDto -> {
+                    memberDto = memberService.save(memberDto, approvalBlockId);
+                    savedMembers.add(memberDto);
+                    savedApprovalBlockDto.getParticipants().add(memberDto);
+                });
             } else {
-                approvalBlockDto.setSignatories(signatories.stream()
-                        .map(memberDto -> {
-                            memberDto = memberService.save(memberDto, approvalBlockId);
-                            savedMembers.add(memberDto);
-
-                            return memberDto;
-                        })
-                        .collect(Collectors.toList()));
+                signatories.forEach(memberDto -> {
+                    memberDto = memberService.save(memberDto, approvalBlockId);
+                    savedMembers.add(memberDto);
+                    savedApprovalBlockDto.getSignatories().add(memberDto);
+                });
             }
 
             return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(approvalBlockDto, headers), ApprovalBlockDto.class).getBody();

@@ -31,13 +31,10 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberDto save(MemberDto memberDto) {
 
-        // Проверка на отсутствие индекса у участника
-        if (memberDto.getId() != null) {
-            throw new IllegalArgumentException("The member must be without an id");
+        // Установка даты создания для нового участника
+        if (memberDto.getCreationDate() == null) {
+            memberDto.setCreationDate(ZonedDateTime.now());
         }
-
-        // Установка даты создания для участника
-        memberDto.setCreationDate(ZonedDateTime.now());
 
         String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/member").toString();
         HttpHeaders headers = new HttpHeaders();
@@ -52,9 +49,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberDto save(MemberDto memberDto, Long approvalBlockId) {
 
-        // Проверка на отсутствие индекса у участника
-        if (memberDto.getId() != null) {
-            throw new IllegalArgumentException("The member must be without an id");
+        // Установка даты создания для нового участника
+        if (memberDto.getCreationDate() == null) {
+            memberDto.setCreationDate(ZonedDateTime.now());
         }
 
         // Установка даты создания для участника
