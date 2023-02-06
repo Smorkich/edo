@@ -38,10 +38,10 @@ public class URIBuilderUtil {
         InstanceInfo instance = instances.get(randomInstance);
         log.info("Build uri to service");
         return new URIBuilder()
-                .setScheme(DEFAULT_SCHEME_NAME)
-                .setHost(instance.getHostName())
-                .setPort(instance.getPort())
-                .setPath(path);
+                    .setScheme(DEFAULT_SCHEME_NAME)
+                    .setHost(instance.getHostName())
+                    .setPort(instance.getPort())
+                    .setPath(path);
     }
 
     @Autowired
