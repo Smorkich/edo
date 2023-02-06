@@ -30,5 +30,10 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
     @Query("select u from Appeal u where u.archivedDate is null")
     Collection<Appeal> findAllNotArchived();
 
+    /**
+     * Метод достает Appeal по Questions id
+     */
+    Optional<Appeal> findAppealByQuestionsId (@Param("id") Long id);
 }
+
 

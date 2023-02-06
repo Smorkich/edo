@@ -77,23 +77,26 @@ public class ResolutionUtil {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Метод для конвертации Резолюции в обертку Dto
-     */
-    public static ResolutionDto toResolutionDto(Resolution resolution) {
-        return new ResolutionDto(
-                resolution.getId(),
-                resolution.getCreationDate(),
-                resolution.getArchivedDate(),
-                resolution.getLastActionDate(),
-                resolution.getType(),
-                toEmployeeDto(resolution.getCreator()),
-                toEmployeeDto(resolution.getSigner()),
-                toListEmployeeDto(resolution.getExecutor()),
-                toEmployeeDto(resolution.getCurator()),
-                resolution.getSerialNumber()
-        );
-    }
+//    /**
+//     * Метод для конвертации Резолюции в обертку Dto
+//     */
+//    public static ResolutionDto toResolutionDto(Resolution resolution) {
+//        return new ResolutionDto(
+//                resolution.getId(),
+//                resolution.getCreationDate(),
+//                resolution.getArchivedDate(),
+//                resolution.getLastActionDate(),
+//                resolution.getType(),
+//                toEmployeeDto(resolution.getCreator()),
+//                toEmployeeDto(resolution.getSigner()),
+//                toListEmployeeDto(resolution.getExecutor()),
+//                toEmployeeDto(resolution.getCurator()),
+//                resolution.getSerialNumber(),
+//                resolution.getIsDraft(),
+//                resolution.getTask(),
+//                tresolution.getQuestion(q)
+//        );
+//    }
 
     /**
      * Метод для конвертации Dto в Резолюцию
@@ -118,10 +121,10 @@ public class ResolutionUtil {
 //                .collect(Collectors.toList());
 //    }
 
-    public static List<ResolutionDto> toListResolutionsDto(Collection<Resolution> resolutions) {
-        return resolutions.stream()
-                .map(ResolutionUtil::toResolutionDto)
-                .collect(Collectors.toList());
-    }
+//    public static List<ResolutionDto> toListResolutionsDto(Collection<Resolution> resolutions) {
+//        return resolutions.stream()
+//                .map(ResolutionUtil::toResolutionDto)
+//                .collect(Collectors.toList());
+//    }
 
 }

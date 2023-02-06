@@ -49,4 +49,13 @@ public class ResolutionDto implements Serializable {
     @ApiModelProperty(value = "Серийный номер")
     private String serialNumber;
 
+    @ApiModelProperty(value = "Черновик")
+    private Boolean isDraft;
+
+    @ApiModelProperty(value = "Задача")
+    private String task;
+
+    @ApiModelProperty(value = "Вопрос от граждан")
+    private QuestionDto question;
+
 }

@@ -91,4 +91,14 @@ public class AppealRestController {
         log.info("Appeal: {}", appeal);
         return new ResponseEntity<>(APPEAL_MAPPER.toDto(appeal), HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Находит строку таблицы Appeal по Questions id",
+            notes = "Строка в Appeal должна существовать")
+    @GetMapping(value = "/findAppealByQuestionsId/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AppealDto> findAppealByQuestionsId(@PathVariable Long id) {
+        log.info("Getting from database appeal with questions id: {}", id);
+        var appeal = appealService.findAppealByQuestionsId(id);
+        log.info("Appeal: {}", appeal);
+        return new ResponseEntity<>(APPEAL_MAPPER.toDto(appeal), HttpStatus.OK);
+    }
 }

@@ -7,7 +7,8 @@ package model.enum_;
 public enum ResolutionType {
     RESOLUTION("Резолюция"),
     REFERRAL("Направление"),
-    REQUEST("Запрос");
+    REQUEST("Запрос"),
+    UNDER_CONSIDERATION("На рассмотрение");
 
     /**
      * Поле для хранения значения константы

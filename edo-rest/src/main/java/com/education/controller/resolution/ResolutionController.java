@@ -1,5 +1,7 @@
 package com.education.controller.resolution;
 
+import com.education.service.appeal.AppealService;
+import com.education.service.resolution.ResolutionService;
 import io.swagger.annotations.ApiOperation;
 import jakarta.ws.rs.core.MediaType;
 import lombok.AllArgsConstructor;
@@ -20,12 +22,8 @@ import java.util.Collection;
  * @author Aleksandr Kostenko
  * Контроллер в модуле edo-rest, работает с моделью ResolutionDto,
  * которая произошла из сущности Resolution выполняет несколько операций:
- * добавляет департамент
- * заносит дату архиваци в департамент, обозначая тем самым, архивацию
- * достает департамент по id
- * достает департаменты по нескольким id
- * достает департамент по id и если у него нет даты архивации
- * достает департаменты по id и если у них нет даты архивации
+ * добавляет резолюцию
+
  */
 /**
  * Служит для связи с сервисом ResolutionService
@@ -35,6 +33,8 @@ import java.util.Collection;
 @Log4j2
 @RequestMapping("api/rest/resolution")
 public class ResolutionController {
+
+    private final ResolutionService resolutionService;
 
     @ApiOperation(value = "Добавление резолюции")
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON)

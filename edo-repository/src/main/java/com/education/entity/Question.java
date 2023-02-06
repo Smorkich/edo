@@ -53,14 +53,5 @@ public class Question extends BaseEntity {
     @JoinColumn(name = "theme_id", referencedColumnName = "id")
     private Theme theme;
 
-    /**
-     * Несколько "resolution" - Один вопрос может иметь много резолюций
-     */
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "question_resolution",
-            joinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "resolution_id", referencedColumnName = "id"))
-    private Collection<Resolution> resolution = new HashSet<>();
 
 }
