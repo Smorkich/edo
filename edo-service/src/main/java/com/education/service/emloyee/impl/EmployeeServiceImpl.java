@@ -4,6 +4,7 @@ import com.education.service.emloyee.EmployeeService;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import model.constant.Constant;
 import model.dto.EmployeeDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -29,7 +30,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public void save(EmployeeDto employeeDto) {
-        restTemplate.postForObject(URL, employeeDto, EmployeeDto.class);
+        String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/employee").toString();
+        restTemplate.postForObject(uri, employeeDto, EmployeeDto.class);
         log.info("Sent a request to save the employee in edo - repository");
     }
 
@@ -41,8 +43,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDto findById(Long id) {
+        String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/employee/" + id).toString();
         log.info("Sent a request to receive the employee in edo - repository");
-        return restTemplate.getForObject(URL + "/" + id, EmployeeDto.class);
+        return restTemplate.getForObject(uri, EmployeeDto.class);
     }
 
     @Override

@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,24 +43,20 @@ public class MinIOController {
      * Request consist of object`s name.
      */
     @ApiOperation("send request to upload file to buckets from source")
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> uploadOneFile(@RequestParam("file") MultipartFile file) throws IOException {
-        if (!service.isAvailable(file)) {
-            return ResponseEntity.badRequest().body("Неверный формат файла");
-        }
-        log.info("Upload file named: {}", file.getOriginalFilename());
-        String fileName = file.getOriginalFilename();
-        String contentType = file.getContentType();
-        service.uploadOneFile(file);
-        log.info("Upload file named: {};  Type: {}.", fileName, contentType);
-        return ResponseEntity.ok().body("File is uploaded. \nName: " + fileName + " \ntype: " + contentType);
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = {MediaType.TEXT_PLAIN_VALUE, "application/json"})
+    public String uploadOneFile(@RequestParam(value = "file", required = false) MultipartFile file) throws IOException {
+            if (!service.isAvailable(file)) {
+                return "Неверный формат файла";
+            }
+            log.info("Upload file named: {}", file.getOriginalFilename());
+            return "File uploaded. \n" + service.uploadOneFile(file);
     }
 
     /**
      * Redirect request to download file from MINIO-server.
      * Request consist of object`s name.
      */
-    @ApiOperation("send request to download file from server`s bucjets to target folder")
+    @ApiOperation("send request to download file from server`s buckets to target folder")
     @GetMapping("/download/{name}")
     public ResponseEntity<InputStreamResource> downloadOneFile(@PathVariable("name") String name,
                                                                @RequestParam("type") String type) throws IOException {
