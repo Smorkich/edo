@@ -99,10 +99,12 @@ public class Resolution extends BaseEntity {
      * Один "question" - Много resolution может иметь один question
      */
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinTable(name = "resolution_question",
-            joinColumns = @JoinColumn(name = "resolution_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"))
+
+//    @JoinTable(name = "resolution_question",
+//            joinColumns = @JoinColumn(name = "resolution_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"))
+    @OneToOne(fetch = FetchType.LAZY)
+   @JoinColumn(name = "question_id", referencedColumnName = "id")
     private Question question;
 
 }

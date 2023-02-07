@@ -41,7 +41,7 @@ public class ResolutionServiceImpl implements ResolutionService {
     public void save(ResolutionDto resolutionDto) {
         HttpHeaders headers = new HttpHeaders();
         resolutionDto.setIsDraft(true);
-        resolutionDto.setCreationDate(ZonedDateTime.now());
+        resolutionDto.setCreationDate(ZonedDateTime.now());//Надо убрать, т.к. дата уже будет стоять!
         resolutionDto.setLastActionDate(ZonedDateTime.now());
 
         Long questionId = resolutionDto.getQuestion().getId();

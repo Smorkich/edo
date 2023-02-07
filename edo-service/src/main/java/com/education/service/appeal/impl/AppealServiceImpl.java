@@ -63,9 +63,10 @@ public class AppealServiceImpl implements AppealService {
     @Override
     public AppealDto save(AppealDto appealDto) {
         // Назначения статуса и времени создания
-        appealDto.setAppealsStatus(NEW_STATUS);
-        appealDto.setCreationDate(ZonedDateTime.now());
-
+        if(appealDto.getAppealsStatus()==null) {
+            appealDto.setAppealsStatus(NEW_STATUS);
+            appealDto.setCreationDate(ZonedDateTime.now());
+        }
         // Списки, которые хранят, новые сущности
         List<AuthorDto> savedAuthors = new ArrayList<>();
         List<QuestionDto> savedQuestions = new ArrayList<>();

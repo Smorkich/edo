@@ -21,6 +21,7 @@ import java.util.List;
 
 import static com.education.mapper.EmployeeMapper.EMPLOYEE_MAPPER;
 
+
 /**
  * @author George Kiladze
  * Rest-контроллер отправляет запрос от клиента в бд
@@ -39,7 +40,7 @@ public class EmployeeController {
      *
      * @param id
      */
-    @ApiOperation(value = "Предоставление сотрудника по индентификатору")
+    @ApiOperation(value = "Предоставление сотрудника по идентификатору")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeDto> findById(@PathVariable Long id) {
         log.info("Send a response with the employee of the assigned id");
@@ -55,7 +56,7 @@ public class EmployeeController {
     @GetMapping("/all")
     public ResponseEntity<Collection<EmployeeDto>> findAll() {
         log.info("Send a response with the employees");
-        Collection<EmployeeDto> employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findAll());
+        var employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findAll());
         log.info("The operation was successful, we got the all employees");
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
@@ -69,8 +70,8 @@ public class EmployeeController {
     @GetMapping("/all/{ids}")
     public ResponseEntity<Collection<EmployeeDto>> findAllById(@PathVariable List<Long> ids) {
         log.info("Send a response with the employee of the assigned IDs");
-        Collection<EmployeeDto> employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findAllById(ids));
-        log.info("The operation was successful, we got the employee by id ={} ", ids);
+        var employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findAllById(ids));
+        log.info("The operation was successful, we got the employee by id = {} ", ids);
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
 
@@ -79,13 +80,14 @@ public class EmployeeController {
      *
      * @param employeeDto
      */
+
     @ApiOperation(value = "Создает сотрудника")
-    @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+       @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeDto> save(@RequestBody EmployeeDto employeeDto) {
         log.info("Starting the save operation");
         employeeService.save(EMPLOYEE_MAPPER.toEntity(employeeDto));
         log.info("Saving the employee");
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(employeeDto, HttpStatus.CREATED);
     }
 
     /**
@@ -111,7 +113,7 @@ public class EmployeeController {
     @GetMapping(value = "/notArchived/{id}")
     public ResponseEntity<EmployeeDto> findByIdNotArchived(@PathVariable Long id) {
         log.info("Send a response with the employee not archived of the assigned ID");
-        EmployeeDto employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findByIdAndArchivedDateNull(id));
+        var employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findByIdAndArchivedDateNull(id));
         log.info("The operation was successful, they got the non-archived employee by id ={}", id);
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
@@ -125,10 +127,27 @@ public class EmployeeController {
     @GetMapping(value = "/notArchivedAll/{ids}")
     public ResponseEntity<Collection<EmployeeDto>> findByAllIdNotArchived(@PathVariable List<Long> ids) {
         log.info("Send a response with the employee not archived of the assigned IDs");
-        Collection<EmployeeDto> employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findByIdInAndArchivedDateNull(ids));
+        var employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findByIdInAndArchivedDateNull(ids));
         log.info("The operation was successful, they got the non-archived employee by id ={}", ids);
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
+
+    /**
+     * Сохраняет коллекцию сотрудников
+     *
+     * @param employeeDto - Коллекция сотрудников
+     */
+    @ApiOperation(value = "Сохраняет коллекцию сотрудников")
+    @PostMapping(value = "/collection")
+    public ResponseEntity<Collection<EmployeeDto>> saveCollection(@RequestBody Collection<EmployeeDto> employeeDto) {
+        log.info("Send a response with the collection employee");
+
+        var collection = EMPLOYEE_MAPPER.toDto(employeeService.saveCollection(EMPLOYEE_MAPPER.toEntity(employeeDto)));
+
+        log.info("The operation was successful, they saved the collection");
+        return new ResponseEntity<>(collection, HttpStatus.OK);
+    }
+
 
     /**
      * предоставляет сотрудников по ФИО

@@ -120,5 +120,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Collection<Employee> findAllByFullName(String fullName) {
         return employeeRepository.findAllByFullName(fullName);
     }
-
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<Employee> saveCollection(Collection<Employee> toEntity) {
+        return null;
+    }
 }

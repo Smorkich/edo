@@ -1,6 +1,7 @@
 package com.education.service.employee;
 
 import com.education.entity.Employee;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 
@@ -25,4 +26,7 @@ public interface EmployeeService {
     Collection<Employee> findByIdInAndArchivedDateNull(Iterable<Long> ids);
 
     Collection<Employee> findAllByFullName(String name);
+
+    @Transactional(readOnly = true)
+    Collection<Employee> saveCollection(Collection<Employee> toEntity);
 }
