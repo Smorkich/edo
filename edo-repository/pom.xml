@@ -11,6 +11,13 @@
     <artifactId>edo-repository</artifactId>
 
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.2</version>
+        </dependency>
+
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
@@ -36,6 +43,12 @@
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15on</artifactId>
             <version>1.69</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.education</groupId>
+            <artifactId>edo-common</artifactId>
+            <version>0.0.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

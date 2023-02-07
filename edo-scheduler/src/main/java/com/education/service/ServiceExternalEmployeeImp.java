@@ -3,6 +3,7 @@ package com.education.service;
 
 import com.education.job.JobScheduler;
 import com.education.mapper.ConvertEmployee;
+
 import com.education.util.URIBuilderUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,6 +38,8 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
     /**
      * Каждый час синхронизирует внешних пользователей
      */
+
+
     @Override
     @Scheduled(cron = "${cron.employee}")
     public void dataSyncEveryHour() {
