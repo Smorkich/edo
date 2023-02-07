@@ -26,7 +26,6 @@ import java.io.InputStream;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-import static model.constant.Constant.*;
 
 /**
  * @author Anna Artemyeva
@@ -51,7 +50,8 @@ public class MinioController {
     public String uploadOneFile(@RequestParam("file") MultipartFile file, @RequestParam("name") String fileName) throws IOException {
         log.info("Upload file named: {}", fileName);
         UUID UUIDKey = UUID.randomUUID();
-        String type = file.getContentType();
+        String type = String.valueOf(minioService.uploadOneFile(file, UUIDKey, fileName, file.getContentType())).split(",")[1];
+        System.out.println("type : " + type);
         FilePoolDto filePoolDto = FilePoolDto.builder()
                 .storageFileId(UUIDKey) //Ключ для получения файла из хранилища
                 .name(fileName) //Имя обращения
@@ -64,7 +64,6 @@ public class MinioController {
                 .build();
         log.info("Saving file info.");
         filePoolService.save(filePoolDto);
-        minioService.uploadOneFile(file, UUIDKey, fileName, type);
         log.info("Upload file named: {};  Type: {}; Key: {}.", fileName, type, UUIDKey);
         return filePoolDto.toString();
     }
@@ -75,33 +74,24 @@ public class MinioController {
      */
     @ApiOperation("send request to download file from server`s buckets to target folder")
     @GetMapping("/download/{name}")
-    public ResponseEntity<InputStreamResource> downloadOneFile(@PathVariable("name") String name,
-                                                               @RequestParam("type") String type) throws IOException {
+    public ResponseEntity<InputStreamResource> downloadOneFile(@PathVariable("name") String name) throws IOException {
         log.info("Download file named: {}", name);
-        Resource resource = minioService.downloadOneFile(name, type);
+        Resource resource = minioService.downloadOneFile(name);
         InputStream is = resource.getInputStream();
-        MediaType contentType = null;
-        switch (type) {
-            case PDF:
-                contentType = MediaType.APPLICATION_PDF;
-                break;
-            case PNG:
-                contentType = MediaType.IMAGE_PNG;
-                break;
-            case JPEG:
-                contentType = MediaType.IMAGE_JPEG;
-                break;
-            case DOC:
-                contentType = new MediaType("application", "msword");
-                break;
-            case DOCX:
-                contentType = new MediaType("application", "vnd.openxmlformats-officedocument.wordprocessingml.document");
-                break;
-        }
         log.info("Download file named: {}", name);
+
         return ResponseEntity.ok()
-                .contentType(contentType)
                 .body(new InputStreamResource(is));
+    }
+
+    @ApiOperation("get filePool by uuid")
+    @GetMapping("/info/{uuid}")
+    public ResponseEntity<FilePoolDto> getInfo(@PathVariable UUID uuid){
+        System.out.println(uuid);
+        log.info("getting a filePool by uuid");
+        FilePoolDto getFilePoolByUuid = filePoolService.findByUuid(uuid);
+        System.out.println(getFilePoolByUuid);
+        return ResponseEntity.ok().body(getFilePoolByUuid);
     }
 
 

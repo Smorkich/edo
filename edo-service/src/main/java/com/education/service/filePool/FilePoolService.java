@@ -1,8 +1,8 @@
 package com.education.service.filePool;
 import model.dto.FilePoolDto;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * @author Nadezhda Pupina
@@ -24,6 +24,12 @@ public interface FilePoolService {
      * findById - находит файл по id
      */
     String findById(Long id);
+
+    /**
+     * findById - находит файл по uuid
+     */
+    FilePoolDto findByUuid(UUID uuid);
+
 
     /**
      * findAll - возвращает все файлы

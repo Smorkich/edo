@@ -8,6 +8,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -16,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.UUID;
 
 import static model.constant.Constant.EDO_FILE_STORAGE_NAME;
-import static model.constant.Constant.PDF;
 
 /**
  * @author Anna Artemyeva
@@ -28,18 +28,17 @@ public class MinioServiceImpl implements MinioService {
 
     private final RestTemplate restTemplate;
     @Override
-    public void uploadOneFile(MultipartFile currentFile, UUID UUIDKey, String fileName, String contentType) {
-        String key = String.format("%s.%s", UUIDKey.toString(), PDF);
+    public ResponseEntity<String> uploadOneFile(MultipartFile currentFile, UUID UUIDKey, String fileName, String contentType) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", currentFile.getResource());
-        body.add("key", key);
+        body.add("key", UUIDKey);
         body.add("fileName", fileName);
         HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
-        restTemplate.postForEntity(getUri("/api/file-storage/upload"),
+        return restTemplate.postForEntity(getUri("/api/file-storage/upload"),
                 requestEntity,
                 String.class);
     }
@@ -50,8 +49,8 @@ public class MinioServiceImpl implements MinioService {
     }
 
     @Override
-    public Resource downloadOneFile(String objectName, String type) {
-        String uri = getUri("/api/file-storage/download/" + objectName) + "?" + "type=" + type;
+    public Resource downloadOneFile(String objectName) {
+        String uri = getUri("/api/file-storage/download/") + objectName;
         return restTemplate.getForObject(uri, Resource.class);
     }
 

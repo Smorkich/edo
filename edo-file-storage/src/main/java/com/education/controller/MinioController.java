@@ -20,15 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Set;
-import java.util.UUID;
 
-import static model.constant.Constant.DOC;
-import static model.constant.Constant.DOCX;
-import static model.constant.Constant.JPEG;
-import static model.constant.Constant.JPG;
-import static model.constant.Constant.PDF;
-import static model.constant.Constant.PNG;
 
 /**
  * RestController of edo-file-storage.
@@ -47,61 +39,37 @@ public class MinioController {
      */
     @ApiOperation("send request to upload file to buckets from source")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<String> uploadFileToMinIO(@RequestParam("file") MultipartFile file,
+    public String uploadFileToMinIO(@RequestParam("file") MultipartFile file,
                                                     @RequestParam("key") String key,
                                                     @RequestParam("fileName") String fileName) {
+
         String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
-        if (Set.of(JPEG, JPG, DOC, DOCX, PNG).contains(extension)) {
-            try (var inDoc = minioComponent.convertFileToPDF(file, extension)) {
-                String contentType = "application/pdf";
-                fileName = String.format("%s.%s", UUID.randomUUID(), PDF);
-                minioComponent.postObject(fileName, inDoc, contentType);
-                return ResponseEntity.ok().body(String.format("File is uploaded. Name: %s, type: %s", fileName, contentType));
-            } catch (IOException e) {
-                return ResponseEntity.badRequest().body("Something wrong.");
-            }
-        }
-        try (var in = file.getInputStream()) {
-            String contentType = file.getContentType();
-            minioComponent.postObject(key, in, contentType);
+
+        try (var convertedFile = minioComponent.convertFileToPDF(file, extension)) {
+            String contentType = minioComponent.getFileContentType(file, extension);
+            minioComponent.postObject(
+                    minioComponent.getFileName(key, extension),
+                    convertedFile,
+                    contentType);
             log.info("Upload file named: {};  Type: {}; Key: {}.", fileName, contentType, key);
-            return ResponseEntity.ok().body("File is uploaded. \nName: " + fileName + "; \ntype: " + contentType + "; \nkey: " + key);
+            return contentType;
         } catch (IOException e) {
-            return ResponseEntity.badRequest().body("Something wrong.");
+            log.error("bed request");
+            return "Something wrong.";
         }
+
     }
 
     /**
      * Request to download file from MINIO-server.
      * Request consist of object`s name.
      */
-
     @ApiOperation("send request to download file from server`s")
     @GetMapping(value = "/download/{id}")
-    public ResponseEntity<InputStreamResource> downloadFile(@PathVariable("id") String fileName,
-                                                            @RequestParam("type") String type) {
+    public ResponseEntity<InputStreamResource> downloadFile(@PathVariable("id") String fileName) {
         log.info("Download file :  {}", fileName);
         InputStream is = minioComponent.getObject(fileName);
-        MediaType contentType = null;
-        switch (type) {
-            case PDF:
-                contentType = MediaType.APPLICATION_PDF;
-                break;
-            case PNG:
-                contentType = MediaType.IMAGE_PNG;
-                break;
-            case JPEG:
-                contentType = MediaType.IMAGE_JPEG;
-                break;
-            case DOC:
-                contentType = new MediaType("application", "msword");
-                break;
-            case DOCX:
-                contentType = new MediaType("application", "vnd.openxmlformats-officedocument.wordprocessingml.document");
-                break;
-        }
         return ResponseEntity.ok()
-                .contentType(contentType)
                 .body(new InputStreamResource(is));
     }
 

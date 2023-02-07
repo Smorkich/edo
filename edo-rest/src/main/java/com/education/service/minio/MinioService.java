@@ -1,7 +1,10 @@
 package com.education.service.minio;
 
+import model.dto.FilePoolDto;
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.UUID;
 
 
 /**
@@ -21,14 +24,17 @@ public interface MinioService {
      * downloading from the bucket of minio server
      * to target folder.
      */
-    Resource downloadOneFile(String objectName, String type);
+    Resource downloadOneFile(String objectName);
+
+    /**
+     * Method of getting FilePool
+     */
+    FilePoolDto getFilePool(UUID uuid);
 
     /**
      * Method delete objects
      */
     void delete(String name);
 
-
-    boolean isAvailable(MultipartFile currentFile);
 
 }

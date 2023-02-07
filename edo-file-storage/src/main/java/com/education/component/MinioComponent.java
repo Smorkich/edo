@@ -39,12 +39,17 @@ import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
-import static model.constant.Constant.DOC;
-import static model.constant.Constant.DOCX;
-import static model.constant.Constant.JPEG;
-import static model.constant.Constant.JPG;
-import static model.constant.Constant.PNG;
+import static com.education.constant.Constant.DOC;
+import static com.education.constant.Constant.DOCX;
+import static com.education.constant.Constant.FILE_CONTENT_TYPE;
+import static com.education.constant.Constant.JPEG;
+import static com.education.constant.Constant.JPG;
+import static com.education.constant.Constant.PDF;
+import static com.education.constant.Constant.PNG;
+import static com.education.constant.Constant.objectSize;
+import static com.education.constant.Constant.partSize;
 
 @Slf4j
 @Log4j2
@@ -63,7 +68,7 @@ public class MinioComponent {
                     .bucket(bucketName)
                     .object(key)
                     .contentType(contentType)
-                    .stream(inputStream, -1, 104857600)
+                    .stream(inputStream, objectSize, partSize)
                     .build());
         } catch (Exception e) {
             log.error("Error while put object in MinIO {}", e.getMessage());
@@ -110,13 +115,30 @@ public class MinioComponent {
         }
     }
 
-    public ByteArrayInputStream convertFileToPDF(MultipartFile file, String extension) {
+    public String getFileContentType(MultipartFile file, String extension) {
+        if (Set.of(JPEG, JPG, DOC, DOCX, PNG).contains(extension)) {
+            return FILE_CONTENT_TYPE;
+        } else {
+            return file.getContentType();
+        }
+    }
+
+    public String getFileName(String key, String extension) {
+        if (Set.of(JPEG, JPG, DOC, DOCX, PNG).contains(extension)) {
+            return String.format("%s.%s", key, PDF);
+        } else {
+            return key;
+        }
+    }
+
+    public ByteArrayInputStream convertFileToPDF(MultipartFile file, String extension) throws IOException {
         if (isImageFile(file)) {
             return convertImageToPDF(file, extension);
         } else if (isWordFile(file)) {
             return convertWordFileToPDF(file, extension);
+        } else {
+            return new ByteArrayInputStream(file.getBytes());
         }
-        return new ByteArrayInputStream(new byte[0]);
     }
 
     public boolean isImageFile(MultipartFile file) {

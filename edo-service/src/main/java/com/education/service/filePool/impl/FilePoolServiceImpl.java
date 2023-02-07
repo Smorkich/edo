@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Nadezhda Pupina
@@ -38,6 +39,13 @@ public class FilePoolServiceImpl implements FilePoolService {
     public String findById(Long id) {
         return restTemplate.getForObject(URL + "/" + id, String.class);
     }
+
+    @Override
+    public FilePoolDto findByUuid(UUID uuid) {
+        String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/filePool/info/" + uuid).toString();
+        return restTemplate.getForObject(uri, FilePoolDto.class);
+    }
+
 
     public String findAll() {
         return restTemplate.getForObject(URL + "/all", String.class);

@@ -1,6 +1,7 @@
 package com.education.service.minio;
 
 import org.springframework.core.io.Resource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -12,7 +13,7 @@ public interface MinioService {
      * Method upload the file to server MinIo.
      * Variable "objectName" means name of object, uploadibg to the bucket of minio server.
      */
-    void uploadOneFile(MultipartFile objectName, UUID UUIDKey, String fileName, String contentType) throws IOException;
+    ResponseEntity<String> uploadOneFile(MultipartFile objectName, UUID UUIDKey, String fileName, String contentType) throws IOException;
 
     /**
      * Method download the file from server MinIo.
@@ -20,7 +21,7 @@ public interface MinioService {
      * downloading from the bucket of minio server
      * to target folder.
      */
-    Resource downloadOneFile(String objectName, String type);
+    Resource downloadOneFile(String objectName);
 
     /**
      * Method delete objects
