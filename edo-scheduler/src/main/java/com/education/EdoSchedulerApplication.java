@@ -3,13 +3,16 @@ package com.education;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-
-
+/**
+ * @author Usolkin Dmitry
+ * SchedulerApplication  создание bean ObjectMapper и его конфигурация
+ */
 @SpringBootApplication
-@EnableEurekaClient
-public class SchedulerApplication {
+@EnableScheduling
+public class EdoSchedulerApplication {
     public static void main(String[] args) {
-        SpringApplication.run(SchedulerApplication.class, args);
+
+        SpringApplication.run(EdoSchedulerApplication.class, args);
     }
+
 }

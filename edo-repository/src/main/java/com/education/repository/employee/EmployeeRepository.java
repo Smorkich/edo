@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * @author George Kiladze & Kryukov Andrey
+ * @author George Kiladze & Kryukov Andrey & Kostenko Aleksandr
  * Интерфейс который наследет JpaRepository
  * Имеет кастомные методы, используя синтаксис DATA JPA
  */
@@ -26,4 +26,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     @Query(nativeQuery = true, value = "select * from employee e where lower(e.fio_nominative) like lower(concat(:fullName, '%')) order by e.last_name limit 7")
     List<Employee> findAllByFullName(@Param(value = "fullName") String fullName);
+
+    /*Поиск пользователя по externalId*/
+    Employee findByExternalId(String externalId);
 }

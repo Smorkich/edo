@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
+import java.util.Collection;
 import java.util.List;
 
 
@@ -32,9 +33,15 @@ public class DepartmentServiceImp implements DepartmentService {
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void save(Department department) {
-        department.setCreationDate(ZonedDateTime.now());
+    public Long save(Department department) {
+        if(department.getDepartment()!= null && department.getDepartment().getCreationDate() == null) {
+            department.getDepartment().setCreationDate(ZonedDateTime.now());
+        }
+        if (department.getCreationDate() == null){
+            department.setCreationDate(ZonedDateTime.now());
+        }
         repository.save(department);
+        return department.getId();
     }
 
     /**
@@ -93,5 +100,27 @@ public class DepartmentServiceImp implements DepartmentService {
     @Transactional(readOnly = true)
     public List<Department> findByAllIdNotArchived(Iterable<Long> ids) {
         return repository.findByIdInAndArchivedDateNull(ids);
+    }
+
+    /**
+     * сохраняет коллекцию департметов
+     *
+     * @param departments
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void saveCollection(Collection<Department> departments) {
+        repository.saveAll(departments);
+    }
+
+    /**
+     * достает все департаменты
+     *
+     * @return
+     */
+    @Override
+    public Collection<Department> findAll() {
+        return repository.findAll();
     }
 }

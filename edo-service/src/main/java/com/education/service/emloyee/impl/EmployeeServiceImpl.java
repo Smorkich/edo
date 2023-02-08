@@ -12,7 +12,11 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.education.util.URIBuilderUtil.buildURI;
-import static model.constant.Constant.*;
+
+import static model.constant.Constant.EDO_REPOSITORY_NAME;
+import static model.constant.Constant.EMPLOYEE_FIO_SEARCH_PARAMETER;
+import static model.constant.Constant.EMPLOYEE_URL;
+
 
 /**
  * @author Kiladze George & Kryukov Andrey
@@ -23,6 +27,7 @@ import static model.constant.Constant.*;
 @Log4j2
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
+
 
     private final RestTemplate restTemplate;
 

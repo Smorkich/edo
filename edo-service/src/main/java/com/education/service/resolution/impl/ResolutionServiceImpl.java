@@ -1,11 +1,19 @@
 package com.education.service.resolution.impl;
 
+import com.education.service.appeal.AppealService;
+
 import com.education.service.resolution.ResolutionService;
 import lombok.AllArgsConstructor;
 import model.dto.ResolutionDto;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import model.dto.AppealDto;
 
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -13,12 +21,21 @@ import static com.education.util.URIBuilderUtil.buildURI;
 import static model.constant.Constant.*;
 
 
+import static model.enum_.Status.UNDER_CONSIDERATION;
+
+
+/**
+ * Сервис-слой для Resolution
+ */
+
 @AllArgsConstructor
 @Service
 public class ResolutionServiceImpl implements ResolutionService {
 
     private RestTemplate restTemplate;
 
+    private final AppealService appealService;
+    private final String URL = "http://edo-repository/api/repository/resolution";
 
     @Override
     public void save(ResolutionDto resolutionDto) {

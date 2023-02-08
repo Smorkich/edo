@@ -9,8 +9,8 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-@Builder
 @ApiModel(value = "Объект для передачи данных")
+@Builder
 public class AddressDto {
 
     @ApiModelProperty(value = "id")
@@ -45,4 +45,10 @@ public class AddressDto {
 
     @ApiModelProperty(value = "Квартира")
     private String flat;
+
+    @ApiModelProperty(value = "долгота")
+    private String longitude;
+
+    @ApiModelProperty(value = "широта")
+    private String latitude;
 }

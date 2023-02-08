@@ -34,4 +34,8 @@ public interface AddressService {
      */
     Collection<Address> findAll();
 
+    /**
+     * Метод, который сохраняет коллекцию адресов
+     */
+    void saveCollection(Collection<Address> addresses);
 }
