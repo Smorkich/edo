@@ -42,7 +42,8 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public FilePoolDto findByUuid(UUID uuid) {
-        String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/filePool/info/" + uuid).toString();
+        String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME,
+                "api/repository/filePool/info/" + uuid).toString();
         return restTemplate.getForObject(uri, FilePoolDto.class);
     }
 

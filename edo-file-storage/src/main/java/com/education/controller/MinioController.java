@@ -38,7 +38,8 @@ public class MinioController {
      * Request consist of object`s name.
      */
     @ApiOperation("send request to upload file to buckets from source")
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.TEXT_PLAIN_VALUE)
     public String uploadFileToMinIO(@RequestParam("file") MultipartFile file,
                                                     @RequestParam("key") String key,
                                                     @RequestParam("fileName") String fileName) {

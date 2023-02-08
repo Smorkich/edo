@@ -13,7 +13,8 @@ public interface MinioService {
      * Method upload the file to server MinIo.
      * Variable "objectName" means name of object, uploadibg to the bucket of minio server.
      */
-    ResponseEntity<String> uploadOneFile(MultipartFile objectName, UUID UUIDKey, String fileName, String contentType) throws IOException;
+    ResponseEntity<String> uploadOneFile(MultipartFile objectName, UUID UUIDKey,
+                                         String fileName, String contentType) throws IOException;
 
     /**
      * Method download the file from server MinIo.

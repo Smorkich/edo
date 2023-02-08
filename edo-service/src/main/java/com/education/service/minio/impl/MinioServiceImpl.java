@@ -28,15 +28,16 @@ public class MinioServiceImpl implements MinioService {
 
     private final RestTemplate restTemplate;
     @Override
-    public ResponseEntity<String> uploadOneFile(MultipartFile currentFile, UUID UUIDKey, String fileName, String contentType) {
+    public ResponseEntity<String> uploadOneFile(MultipartFile currentFile,
+                                                UUID UUIDKey, String fileName, String contentType) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
+        var body = new LinkedMultiValueMap<>();
         body.add("file", currentFile.getResource());
-        body.add("key", UUIDKey);
+        body.add("key", UUIDKey.toString());
         body.add("fileName", fileName);
-        HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
+        var requestEntity = new HttpEntity<>(body, headers);
 
         return restTemplate.postForEntity(getUri("/api/file-storage/upload"),
                 requestEntity,

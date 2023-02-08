@@ -46,26 +46,27 @@ public class MinioController {
     }
 
     @ApiOperation(value = "Uploading file to file storage")
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = {MediaType.TEXT_PLAIN_VALUE, "application/json"})
-    public String uploadOneFile(@RequestParam("file") MultipartFile file, @RequestParam("name") String fileName) throws IOException {
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = {MediaType.TEXT_PLAIN_VALUE, "application/json"})
+    public FilePoolDto uploadOneFile(@RequestParam("file") MultipartFile file,
+                                @RequestParam("name") String fileName) throws IOException {
         log.info("Upload file named: {}", fileName);
         UUID UUIDKey = UUID.randomUUID();
-        String type = String.valueOf(minioService.uploadOneFile(file, UUIDKey, fileName, file.getContentType())).split(",")[1];
-        System.out.println("type : " + type);
+        String type = String.valueOf(minioService.uploadOneFile(file, UUIDKey, fileName, file.getContentType()))
+                .split(",")[1];
         FilePoolDto filePoolDto = FilePoolDto.builder()
-                .storageFileId(UUIDKey) //Ключ для получения файла из хранилища
-                .name(fileName) //Имя обращения
-                .extension(type) //Формат файла
-                .size(file.getSize()) //Размер обращения
-                .pageCount(file.getSize()) //Количество страниц
-                .uploadDate(ZonedDateTime.now()) //Дата создания. Нужна реализация авторизации
-                .archivedDate(ZonedDateTime.now()) //Дата архивации. Нужна реализация авторизации
-                .creator(getEmp(3L)) //id создателя файла. Нужна реализация авторизации
+                .storageFileId(UUIDKey)                 //Ключ для получения файла из хранилища
+                .name(fileName)                         //Имя обращения
+                .extension(type)                        //Формат файла
+                .size(file.getSize())                   //Размер обращения
+                .pageCount(file.getSize())              //Количество страниц
+                .uploadDate(ZonedDateTime.now())        //Дата создания.
+                .creator(getEmp(3L))                //id создателя файла. Нужна реализация авторизации
                 .build();
         log.info("Saving file info.");
         filePoolService.save(filePoolDto);
         log.info("Upload file named: {};  Type: {}; Key: {}.", fileName, type, UUIDKey);
-        return filePoolDto.toString();
+        return filePoolDto;
     }
 
     /**
