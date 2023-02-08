@@ -2,13 +2,16 @@ package com.education.service.appeal;
 
 import model.dto.AppealDto;
 
-/**
- * Service в "edo-rest", служит для связи контроллера и RestTemplate
- */
 public interface AppealService {
+    AppealDto save(AppealDto appealDto);
 
     /**
-     * Метод сохранения нового обращения в БД
+     * Метод отправки сообщения в архив
      */
-    AppealDto save(AppealDto appealDto);
+    void moveToArchive(Long id);
+
+    /**
+     * Метод получения пользователя по id
+     */
+    AppealDto findById(Long id);
 }

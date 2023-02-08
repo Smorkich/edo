@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 
- /** Implementation of edo-service service */
+/** Implementation of edo-service service */
 @AllArgsConstructor
 @Service
 public class NomenclatureServiceImpl implements NomenclatureService {
@@ -33,7 +33,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
      */
     @Transactional(rollbackFor = Exception.class)
     public void moveToArchive(Long id) {
-        repository.moveToArchive(ZonedDateTime.now(), id);
+        repository.moveToArchive(id);
     }
 
     /**
@@ -49,7 +49,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     public List<Nomenclature> findAllById(Collection<Long> nomenclature) {
         return repository.findAllById(nomenclature);
     }
-    
+
     /**
      * Method searches for an entity of Nomenclature that archiveDate fild is null
      */

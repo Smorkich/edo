@@ -1,51 +1,86 @@
 package com.education.service.resolution.impl;
 
+import com.education.service.appeal.AppealService;
+
 import com.education.service.resolution.ResolutionService;
 import lombok.AllArgsConstructor;
 import model.dto.ResolutionDto;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import model.dto.AppealDto;
 
+import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
 
+import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.*;
+
+
+import static model.enum_.Status.UNDER_CONSIDERATION;
+
+
+/**
+ * Сервис-слой для Resolution
+ */
 
 @AllArgsConstructor
 @Service
 public class ResolutionServiceImpl implements ResolutionService {
 
     private RestTemplate restTemplate;
+
+    private final AppealService appealService;
     private final String URL = "http://edo-repository/api/repository/resolution";
 
     @Override
     public void save(ResolutionDto resolutionDto) {
-        restTemplate.postForObject(URL + "/add", resolutionDto, ResolutionDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, RESOLUTION_URL)
+                .setPath("/add");
+        restTemplate.postForObject(builder.toString(), resolutionDto, ResolutionDto.class);
     }
 
     @Override
     public void moveToArchive(Long id) {
-        restTemplate.postForObject(URL + "/move/" + id, null, ResolutionDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, RESOLUTION_URL)
+                .setPath("/move/")
+                .setPath(String.valueOf(id));
+        restTemplate.postForObject(builder.toString(), null, ResolutionDto.class);
     }
 
     @Override
     public ResolutionDto findById(Long id) {
-        return restTemplate.getForObject(URL + "/{id}", ResolutionDto.class);
-
+        var builder = buildURI(EDO_REPOSITORY_NAME, RESOLUTION_URL)
+                .setPath("/")
+                .setPath(String.valueOf(id));
+        return restTemplate.getForObject(builder.toString(), ResolutionDto.class);
     }
 
     @Override
     public Collection<ResolutionDto> findAllById(Long id) {
-        return restTemplate.getForObject(URL + "/all/" + id, List.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, RESOLUTION_URL)
+                .setPath("/all/")
+                .setPath(String.valueOf(id));
+        return restTemplate.getForObject(builder.toString(), List.class);
     }
 
     @Override
     public ResolutionDto findByIdNotArchived(Long id) {
-
-        return restTemplate.getForObject(URL + "/notArchived/" + id, ResolutionDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, RESOLUTION_URL)
+                .setPath("/notArchived/")
+                .setPath(String.valueOf(id));
+        return restTemplate.getForObject(builder.toString(), ResolutionDto.class);
     }
 
     @Override
     public Collection<ResolutionDto> findAllByIdNotArchived(Long id) {
-        return restTemplate.getForObject(URL + "/notArchived/all/" + id, Collection.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, RESOLUTION_URL)
+                .setPath("/notArchived/all/")
+                .setPath(String.valueOf(id));
+        return restTemplate.getForObject(builder.toString(), Collection.class);
     }
 }

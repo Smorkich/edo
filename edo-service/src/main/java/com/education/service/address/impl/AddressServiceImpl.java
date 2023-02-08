@@ -6,6 +6,9 @@ import model.dto.AddressDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.*;
+
 /**
  * Service в "edo-service", служит для связи контроллера и RestTemplate
  */
@@ -13,10 +16,7 @@ import org.springframework.web.client.RestTemplate;
 @AllArgsConstructor
 public class AddressServiceImpl implements AddressService {
 
-    /**
-     * Константа "URL" хранит URL по которому мы делаем запрос при помощи RestTemplate
-     */
-    private final String URL = "http://edo-repository/api/repository/address";
+
 
     /**
      * Поле "restTemplate" нужно для вызова RestTemplate,
@@ -24,32 +24,39 @@ public class AddressServiceImpl implements AddressService {
      */
     private final RestTemplate restTemplate;
 
+
     /**
      * Метод, который возвращает адрес по Id
      */
     public String findById(long id) {
-        return restTemplate.getForObject(URL + "/" + id, String.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, ADDRESS_URL).setPath("/").setPath(String.valueOf(id));
+        return restTemplate.getForObject(builder.toString(), String.class);
     }
 
     /**
      * Метод, который возвращает все адреса
      */
     public String findAll() {
-        return restTemplate.getForObject(URL + "/all", String.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, ADDRESS_URL).setPath("/all");
+        return restTemplate.getForObject(builder.toString(), String.class);
     }
 
     /**
      * Метод сохранения нового адреса в БД
      */
     public void save(AddressDto addressDto) {
-        restTemplate.postForObject(URL, addressDto, AddressDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, ADDRESS_URL).setPath("/");
+        restTemplate.postForObject(builder.toString(), addressDto, AddressDto.class);
     }
 
     /**
      * Метод удаления адреса из БД
      */
     public void delete(long id) {
-        restTemplate.delete(URL + "/" + id, AddressDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, ADDRESS_URL)
+                .setPath("/")
+                .setPath(String.valueOf(id));
+        restTemplate.delete(builder.toString());
     }
 
 }

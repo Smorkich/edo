@@ -2,12 +2,15 @@ package com.education.service.question.impl;
 
 import com.education.service.question.QuestionService;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import model.dto.QuestionDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collection;
-import java.util.List;
+
+import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.*;
 
 /**
  * @author Nadezhda Pupina
@@ -15,43 +18,63 @@ import java.util.List;
  */
 @Service
 @AllArgsConstructor
+@Log4j2
 public class QuestionServiceImpl implements QuestionService {
 
-    private final String URL = "http://edo-repository/api/repository/question";
     private final RestTemplate restTemplate;
 
     @Override
-    public void save(QuestionDto questionDto) {
-        restTemplate.postForObject(URL, questionDto, QuestionDto.class);
+    public QuestionDto save(QuestionDto questionDto) {
+        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
+                .setPath("/");
+        return restTemplate.postForObject(builder.toString(), questionDto, QuestionDto.class);
     }
 
     @Override
     public void delete(long id) {
-        restTemplate.delete(URL + "/" + id, QuestionDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
+                .setPath("/")
+                .setPath(String.valueOf(id));
+        restTemplate.delete(builder.toString());
     }
 
     @Override
     public String findById(long id) {
-        return restTemplate.getForObject(URL + "/" + id, String.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
+                .setPath("/")
+                .setPath(String.valueOf(id));
+        return restTemplate.getForObject(builder.toString(), String.class);
     }
 
     @Override
     public Collection<QuestionDto> findByAllId(String ids) {
-        return restTemplate.getForObject(URL + "/all/" + ids, List.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
+                .setPath("/all/")
+                .setPath(String.valueOf(ids));
+        return restTemplate.getForObject(builder.toString(), Collection.class);
     }
 
     @Override
     public void moveToArchived(Long id) {
-        restTemplate.postForObject(URL + "/" + id, null, String.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
+                .setPath("/")
+                .setPath(String.valueOf(id));
+        restTemplate.postForObject(builder.toString(), null, String.class);
     }
 
     @Override
     public QuestionDto findByIdNotArchived(Long id) {
-        return restTemplate.getForObject(URL + "/notArchived/" + id, QuestionDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
+                .setPath("/notArchived/")
+                .setPath(String.valueOf(id));
+        return restTemplate.getForObject(builder.toString(), QuestionDto.class);
     }
 
     @Override
     public Collection<QuestionDto> findByAllIdNotArchived(String ids) {
-        return restTemplate.getForObject(URL + "/notArchivedAll/" + ids, List.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
+                .setPath("/notArchivedAll/")
+                .setPath(String.valueOf(ids));
+        return restTemplate.getForObject(builder.toString(), Collection.class);
     }
 }

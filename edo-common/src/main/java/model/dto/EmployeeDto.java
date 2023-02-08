@@ -1,5 +1,6 @@
 package model.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -13,6 +14,7 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ApiModel(value = "объект для передачи данных")
+@ToString
 public class EmployeeDto {
     @ApiModelProperty(value = "id")
     private Long id;
@@ -27,7 +29,7 @@ public class EmployeeDto {
     private String middleName;
 
     @ApiModelProperty(value = "Адрес")
-    private String address;
+    private AddressDto address;
 
     @ApiModelProperty(value = "ФИО в дательном падеже")
     private String fioDative;
@@ -39,7 +41,7 @@ public class EmployeeDto {
     private String fioGenitive;
 
     @ApiModelProperty(value = "Внешний индификатор, который будем получать из чужого хранилища")
-    private Long externalId;
+    private String externalId;
 
     @ApiModelProperty(value = "Номер телефона сотовый")
     private String phone;
@@ -48,6 +50,7 @@ public class EmployeeDto {
     private String workPhone;
 
     @ApiModelProperty(value = "Дата рождения")
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate birthDate;
 
     @ApiModelProperty(value = "Имя пользователя")
@@ -58,6 +61,9 @@ public class EmployeeDto {
 
     @ApiModelProperty(value = "Дата архивации")
     private ZonedDateTime archivedDate;
+
+    @ApiModelProperty(value = "Департамент")
+    private DepartmentDto department;
 
     @ApiModelProperty(value = "Настройки оповещений")
     private NotificationDto notificationDto;

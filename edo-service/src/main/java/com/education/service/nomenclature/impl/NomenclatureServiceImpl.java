@@ -10,46 +10,68 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
+import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.*;
+
 @AllArgsConstructor
 @Service
 @Log4j2
 public class NomenclatureServiceImpl implements NomenclatureService {
 
-    private final String URL = "http://edo-repository/api/repository/nomenclature";
     private RestTemplate restTemplate;
 
     @Override
     public void save(NomenclatureDto nomenclatureDto) {
-        restTemplate.postForObject(URL + "/add", nomenclatureDto, NomenclatureDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
+                .setPath("/add");
+        restTemplate.postForObject(builder.toString(), nomenclatureDto, NomenclatureDto.class);
     }
 
     @Override
     public NomenclatureDto findById(Long id) {
-        return restTemplate.getForObject(URL + "/find/" + id, NomenclatureDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
+                .setPath("/find/")
+                .setPath(String.valueOf(id));
+        return restTemplate.getForObject(builder.toString(), NomenclatureDto.class);
     }
 
     @Override
     public List<NomenclatureDto> findAllById(String ids) {
-        return restTemplate.getForObject(URL+"/allId?id=" + ids, List.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
+                .setPath("/allId?id=")
+                .setPath(String.valueOf(ids));
+        return restTemplate.getForObject(builder.toString(), List.class);
     }
 
     @Override
     public void deleteById(Long id) {
-        restTemplate.delete(URL + "/delete/" + id);
+        var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
+                .setPath("/delete/")
+                .setPath(String.valueOf(id));
+        restTemplate.delete(builder.toString());
     }
 
     @Override
     public void moveToArchive(Long id) {
-        restTemplate.postForObject(URL + "/move/" + id, null, NomenclatureDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
+                .setPath("/move/")
+                .setPath(String.valueOf(id));
+        restTemplate.postForObject(builder.toString(),null, NomenclatureDto.class);
     }
 
     @Override
     public NomenclatureDto findByIdNotArchived(Long id) {
-        return restTemplate.getForObject(URL + "/find_not_archived/" + id, NomenclatureDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
+                .setPath("/find_not_archived/")
+                .setPath(String.valueOf(id));
+        return restTemplate.getForObject(builder.toString(), NomenclatureDto.class);
     }
 
     @Override
     public List<NomenclatureDto> findAllByIdNotArchived(String ids) {
-        return restTemplate.getForObject(URL + "/find_not_archived_List?id=" + ids,List.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
+                .setPath("/find_not_archived_List?id=")
+                .setPath(String.valueOf(ids));
+        return restTemplate.getForObject(builder.toString(), List.class);
     }
 }

@@ -32,7 +32,7 @@ public class EmployeeController {
         log.info("Starting the save operation");
         employeeService.save(employeeDto);
         log.info("Saving the employee");
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(employeeDto, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Архивация сотрудника с занесением времени архивации")
@@ -48,7 +48,7 @@ public class EmployeeController {
     @GetMapping(value = "/{id}")
     public ResponseEntity<EmployeeDto> findById(@PathVariable Long id) {
         log.info("Send a response with the employee of the assigned id");
-        EmployeeDto employeeDto = employeeService.findById(id);
+        var employeeDto = employeeService.findById(id);
         log.info("The operation was successful, we got the employee by id ={}", id);
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
@@ -57,7 +57,7 @@ public class EmployeeController {
     @GetMapping(value = "/all")
     public ResponseEntity<Collection<EmployeeDto>> findAll() {
         log.info("Send a response with the employees");
-        Collection<EmployeeDto> employeeDto = employeeService.findAll();
+        var employeeDto = employeeService.findAll();
         log.info("The operation was successful, we got the all employees");
         return new ResponseEntity<Collection<EmployeeDto>>(employeeDto, HttpStatus.OK);
     }
@@ -66,7 +66,7 @@ public class EmployeeController {
     @GetMapping(value = "/all/{ids}")
     public ResponseEntity<Collection<EmployeeDto>> findAllById(@PathVariable String ids) {
         log.info("Send a response with the employee of the assigned IDs");
-        Collection<EmployeeDto> employeeDto = employeeService.findAllById(ids);
+        var employeeDto = employeeService.findAllById(ids);
         log.info("The operation was successful, we got the employee by id = {} ", ids);
         return new ResponseEntity<Collection<EmployeeDto>>(employeeDto, HttpStatus.OK);
     }
@@ -75,7 +75,7 @@ public class EmployeeController {
     @GetMapping(value = "/NotArchived/{id}")
     public ResponseEntity<EmployeeDto> findByIdNotArchived(@PathVariable Long id) {
         log.info("Send a response with the employee not archived of the assigned ID");
-        EmployeeDto employeeDto = employeeService.findByIdAndArchivedDateNull(id);
+        var employeeDto = employeeService.findByIdAndArchivedDateNull(id);
         log.info("The operation was successful, they got the non-archived employee by id ={}", id);
         return new ResponseEntity<EmployeeDto>(employeeDto, HttpStatus.OK);
     }
@@ -84,9 +84,23 @@ public class EmployeeController {
     @GetMapping(value = "/NotArchivedAll/{ids}")
     public ResponseEntity<Collection<EmployeeDto>> findByAllIdNotArchived(@PathVariable String ids) {
         log.info("Send a response with the employee not archived of the assigned IDs");
-        Collection<EmployeeDto> employeeDto = employeeService.findByIdInAndArchivedDateNull(ids);
+        var employeeDto = employeeService.findByIdInAndArchivedDateNull(ids);
         log.info("The operation was successful, they got the non-archived employee by id ={}", ids);
         return new ResponseEntity<Collection<EmployeeDto>>(employeeDto, HttpStatus.OK);
+    }
+
+    /**
+     * Сохраняет коллекцию сотрудников
+     *
+     * @param employeeDto - Коллекция сотрудников
+     */
+    @ApiOperation(value = "Сохраняет коллекцию сотрудников")
+    @PostMapping(value = "/collection")
+    public ResponseEntity<Collection<EmployeeDto>> saveCollection(@RequestBody Collection<EmployeeDto> employeeDto) {
+        log.info("Send a response with the collection employee");
+        var collection = employeeService.saveCollection(employeeDto);
+        log.info("The operation was successful, they saved the collection");
+        return new ResponseEntity<>(collection, HttpStatus.OK);
     }
 
 }

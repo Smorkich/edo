@@ -1,6 +1,11 @@
 package com.education.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +14,8 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Table(name = "employee")
@@ -45,8 +52,9 @@ public class Employee extends BaseEntity {
     /**
      * address - Адрес
      */
-    @Column(name = "address")
-    private String address;
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "address")
+    private Address address;
 
     /**
      * fioDative - ФИО в дательном падеже
@@ -70,7 +78,7 @@ public class Employee extends BaseEntity {
      * externalId - Внешний индификатор, который будем получать из чужого хранилища
      */
     @Column(name = "external_id")
-    private long externalId;
+    private String externalId;
 
     /**
      * phone - Номер телефона сотовый
@@ -114,5 +122,12 @@ public class Employee extends BaseEntity {
      */
     @Column(name = "archived_date")
     private ZonedDateTime archivedDate;
+
+    /**
+     * department - Департамент
+     */
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "department")
+    private Department department;
 
 }

@@ -23,4 +23,9 @@ public interface EmployeeService {
     EmployeeDto findByIdAndArchivedDateNull(Long id);
 
     Collection<EmployeeDto> findByIdInAndArchivedDateNull(String ids);
+
+    Collection<EmployeeDto> findAllByFullName(String fullName);
+
+    Collection<EmployeeDto> saveCollection(Collection<EmployeeDto> employeeDto);
+
 }

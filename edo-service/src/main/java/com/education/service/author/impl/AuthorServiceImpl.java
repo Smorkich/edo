@@ -6,7 +6,11 @@ import model.dto.AuthorDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+
 import java.util.List;
+
+import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.*;
 
 /**
  * Сервис-класс с методами для реализации API
@@ -16,31 +20,39 @@ import java.util.List;
 @AllArgsConstructor
 public class AuthorServiceImpl implements AuthorService {
 
-    static final String URL = "http://edo-repository/api/repository/author";
     private final RestTemplate restTemplate;
 
     /**
      * Сохранение Author
      */
     @Override
-    public void save(AuthorDto authorDto) {
-        restTemplate.postForObject(URL, authorDto, AuthorDto.class);
+    public AuthorDto save(AuthorDto authorDto)
+ {
+        var builder = buildURI(EDO_REPOSITORY_NAME, AUTHOR_URL)
+                .setPath("/");
+        return restTemplate.postForObject(builder.toString(), authorDto, AuthorDto.class);
     }
 
     /**
      * Удаление Author по id
      */
     @Override
-    public void delete(Long id) {
-        restTemplate.delete(URL + "/" + id, AuthorDto.class);
+    public void delete(Long id)  {
+        var builder = buildURI(EDO_REPOSITORY_NAME, AUTHOR_URL)
+                .setPath("/")
+                .setPath(String.valueOf(id));
+        restTemplate.delete(builder.toString());
     }
 
     /**
      * Поиск Author по id
      */
     @Override
-    public AuthorDto findById(Long id) {
-        return restTemplate.getForObject(URL + "/" + id, AuthorDto.class);
+    public AuthorDto findById(Long id)  {
+        var builder = buildURI(EDO_REPOSITORY_NAME, AUTHOR_URL)
+                .setPath("/")
+                .setPath(String.valueOf(id));
+        return restTemplate.getForObject(builder.toString(), AuthorDto.class);
     }
 
     /**
@@ -48,6 +60,8 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     public List<AuthorDto> findAll() {
-        return restTemplate.getForObject(URL, List.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, AUTHOR_URL)
+                .setPath("/");
+        return restTemplate.getForObject(builder.toString(), List.class);
     }
 }
