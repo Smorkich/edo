@@ -25,4 +25,7 @@ public interface EmployeeService {
     Collection<EmployeeDto> findByIdInAndArchivedDateNull(String ids);
 
     Collection<EmployeeDto> findAllByFullName(String fullName);
+
+    Collection<EmployeeDto> saveCollection(Collection<EmployeeDto> employeeDto);
+
 }

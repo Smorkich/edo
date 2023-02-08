@@ -1,7 +1,5 @@
 package com.education.controller.address;
 
-import com.education.entity.Address;
-
 import com.education.service.address.AddressService;
 import io.swagger.annotations.ApiOperation;
 import jakarta.validation.Valid;
@@ -11,10 +9,17 @@ import model.dto.AddressDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
-import java.util.List;
+
+import static com.education.mapper.AddressMapper.ADDRESS_MAPPER;
 
 /**
  * Rest-контроллер в "edo-repository", служит для отправки запросов
@@ -38,7 +43,7 @@ public class AddressController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AddressDto> findById(@PathVariable("id") long id) {
         log.info("Send a get-request to get Address with id = {} from database", id);
-        var addressDto = toDto(addressService.findById(id));
+        var addressDto = ADDRESS_MAPPER.toDto(addressService.findById(id));
         log.info("Response from database: {}", addressDto);
         return new ResponseEntity<>(addressDto, HttpStatus.OK);
     }
@@ -47,9 +52,9 @@ public class AddressController {
     //GET ALL /api/repository/address/all
     @ApiOperation(value = "Возвращает все адреса", notes = "Адреса должны существовать")
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AddressDto>> findAll() {
+    public ResponseEntity<Collection<AddressDto>> findAll() {
         log.info("Send a get-request to get all Addresse from database");
-        var addressDtos = toDto(addressService.findAll());
+        var addressDtos = ADDRESS_MAPPER.toDto(addressService.findAll());
         log.info("Response from database: {}", addressDtos);
         return new ResponseEntity<>(addressDtos, HttpStatus.OK);
     }
@@ -59,7 +64,7 @@ public class AddressController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AddressDto> save(@RequestBody @Valid AddressDto addressDto) {
         log.info("Send a post-request to post new Address to database");
-        addressService.save(toEntity(addressDto));
+        addressService.save(ADDRESS_MAPPER.toEntity(addressDto));
         log.info("Response: {} was added to database", addressDto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
@@ -74,49 +79,4 @@ public class AddressController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
-    /**
-     * Маппинг сущности "Address" в DTO "AddressDto"
-     */
-    public AddressDto toDto(Address address) {
-        return new AddressDto(
-                address.getId(),
-                address.getFullAddress(),
-                address.getStreet(),
-                address.getHouse(),
-                address.getIndex(),
-                address.getHousing(),
-                address.getBuilding(),
-                address.getCity(),
-                address.getRegion(),
-                address.getCountry(),
-                address.getFlat()
-        );
-    }
-
-    /**
-     * Маппинг листа сущностей "Address" в лист DTO "AddressDto"
-     */
-    public List<AddressDto> toDto(Collection<Address> addresses) {
-        return addresses.stream()
-                .map(this::toDto)
-                .toList();
-    }
-
-    /**
-     * Маппинг DTO "AddressDto" в сущность "Address"
-     */
-    public Address toEntity(AddressDto addressDto) {
-        return new Address(
-                addressDto.getFullAddress(),
-                addressDto.getStreet(),
-                addressDto.getHouse(),
-                addressDto.getIndex(),
-                addressDto.getHousing(),
-                addressDto.getBuilding(),
-                addressDto.getCity(),
-                addressDto.getRegion(),
-                addressDto.getCountry(),
-                addressDto.getFlat()
-        );
-    }
 }

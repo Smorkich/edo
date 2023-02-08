@@ -42,7 +42,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok-mapstruct-binding</artifactId>
-            <version>0.1.0</version>
+            <version>0.2.0</version>
         </dependency>
 
         <dependency>
@@ -68,10 +68,11 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
+
         <dependency>
-            <groupId>com.education</groupId>
-            <artifactId>edo-common</artifactId>
-            <version>0.0.1</version>
+            <groupId>com.github.aleksandy</groupId>
+            <artifactId>petrovich</artifactId>
+            <version>1.2.1</version>
         </dependency>
     </dependencies>
 

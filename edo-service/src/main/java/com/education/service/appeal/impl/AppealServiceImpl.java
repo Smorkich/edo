@@ -4,16 +4,12 @@ import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
 import com.education.service.filePool.FilePoolService;
 import com.education.service.question.QuestionService;
-import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
-import model.constant.Constant;
 import model.dto.AppealDto;
 import model.dto.AuthorDto;
 import model.dto.FilePoolDto;
 import model.dto.QuestionDto;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -24,6 +20,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.*;
 import static model.enum_.Status.NEW_STATUS;
 
 /**
@@ -38,7 +36,6 @@ public class AppealServiceImpl implements AppealService {
     private final AuthorService authorService;
     private final QuestionService questionService;
     private final FilePoolService filePoolService;
-    private final String URL = "http://edo-repository/api/repository/appeal";
 
 
     /**
@@ -46,7 +43,10 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public AppealDto findById(Long id) {
-        return restTemplate.getForObject(URL + "/" + id, AppealDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
+                .setPath("/")
+                .setPath(String.valueOf(id));
+        return restTemplate.getForObject(builder.toString(), AppealDto.class);
     }
 
     /**
@@ -54,7 +54,8 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public Collection<AppealDto> findAll() {
-        return restTemplate.getForObject(URL, Collection.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL);
+        return restTemplate.getForObject(builder.toString(), Collection.class);
     }
 
     /**
@@ -109,15 +110,22 @@ public class AppealServiceImpl implements AppealService {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/appeal").toString();
+            var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
+                    .setPath("/");
 
-            return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(appealDto, headers), AppealDto.class).getBody();
+            return restTemplate.getForObject(builder.toString(), AppealDto.class);
         } catch (Exception e) {
 
             // Удаление сохранённых вложенных сущностей
-            savedAuthors.forEach(authorDto -> authorService.delete(authorDto.getId()));
-            savedFiles.forEach(filePoolDto -> filePoolService.delete(filePoolDto.getId()));
-            savedQuestions.forEach(questionDto -> questionService.delete(questionDto.getId()));
+            savedAuthors.forEach(authorDto -> {
+                authorService.delete(authorDto.getId());
+            });
+            savedFiles.forEach(filePoolDto -> {
+                filePoolService.delete(filePoolDto.getId());
+            });
+            savedQuestions.forEach(questionDto -> {
+                questionService.delete(questionDto.getId());
+            });
 
             throw e;
         }
@@ -128,7 +136,10 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public void delete(Long id) {
-        restTemplate.delete(URL + "/" + id, AppealDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
+                .setPath("/")
+                .setPath(String.valueOf(id));
+        restTemplate.delete(builder.toString());
     }
 
     /**
@@ -136,8 +147,12 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public void moveToArchive(Long id) {
-        var appealDto = findById(id);
-        restTemplate.put(URL + "/move/" + id, appealDto, AppealDto.class);
+        AppealDto appeal = findById(id);
+        appeal.setArchivedDate(ZonedDateTime.now());
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
+                .setPath("/move/")
+                .setPath(String.valueOf(id));
+        restTemplate.put(builder.toString(), appeal);
     }
 
     /**
@@ -145,7 +160,10 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public AppealDto findByIdNotArchived(Long id) {
-        return restTemplate.getForObject(URL + "/findByIdNotArchived/" + id, AppealDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
+                .setPath("/findByIdNotArchived/")
+                .setPath(String.valueOf(id));
+        return restTemplate.getForObject(builder.toString(), AppealDto.class);
     }
 
     /**
@@ -153,7 +171,9 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public Collection<AppealDto> findAllNotArchived() {
-        return restTemplate.getForObject(URL + "/findAllNotArchived", Collection.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
+                .setPath("/findByIdNotArchived");
+        return restTemplate.getForObject(builder.toString(), Collection.class);
     }
 
     /**
