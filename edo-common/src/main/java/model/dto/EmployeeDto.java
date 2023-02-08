@@ -58,4 +58,7 @@ public class EmployeeDto {
 
     @ApiModelProperty(value = "Дата архивации")
     private ZonedDateTime archivedDate;
+
+    @ApiModelProperty(value = "Настройки оповещений")
+    private NotificationDto notificationDto;
 }

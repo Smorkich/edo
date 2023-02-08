@@ -1,13 +1,12 @@
 package com.education.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import model.enum_.NotificationType;
 
 @Entity
 @Table
@@ -18,12 +17,9 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 
 public class Notification extends BaseEntity {
-    private Type type;
+    @Column(name = "natification_type")
+    @Enumerated(EnumType.STRING)
+    private NotificationType type;
     @OneToOne(mappedBy = "notification")
     private Employee employee ;
-    public enum Type {
-        EMAIL,
-        PHONE,
-        INTERNAL
-    }
 }

@@ -96,7 +96,10 @@ public class Employee extends BaseEntity {
     @Column(name = "username")
     private String username;
 
-    @JoinColumn(name = "notification")
+    /**
+    * notification - Настройки оповещения для пользователя
+    */
+    @JoinColumn(name = "notification_id")
     @OneToOne
     private Notification notification;
 
