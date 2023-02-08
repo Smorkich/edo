@@ -29,7 +29,6 @@ public class ResolutionRestController {
      * Служит для связи с сервисом ResolutionService
      */
     private ResolutionService resolutionService;
-    private ResolutionMapper resolutionMapper;
 
     @ApiOperation(value = "Добавление резолюции")
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON)
