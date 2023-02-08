@@ -17,65 +17,65 @@ public class ResolutionUtil {
     /**
      * Метод конвертации Employee в EmployeeDto
      */
-    private static EmployeeDto toEmployeeDto(Employee employee) {
-        return new EmployeeDto(
-                employee.getId(),
-                employee.getFirstName(),
-                employee.getLastName(),
-                employee.getMiddleName(),
-                employee.getAddress(),
-                employee.getFioDative(),
-                employee.getFioNominative(),
-                employee.getFioGenitive(),
-                employee.getExternalId(),
-                employee.getPhone(),
-                employee.getWorkPhone(),
-                employee.getBirthDate(),
-                employee.getUsername(),
-                employee.getCreationDate(),
-                employee.getArchivedDate()
-        );
-    }
+//    private static EmployeeDto toEmployeeDto(Employee employee) {
+//        return new EmployeeDto(
+//                employee.getId(),
+//                employee.getFirstName(),
+//                employee.getLastName(),
+//                employee.getMiddleName(),
+//                employee.getAddress(),
+//                employee.getFioDative(),
+//                employee.getFioNominative(),
+//                employee.getFioGenitive(),
+//                employee.getExternalId(),
+//                employee.getPhone(),
+//                employee.getWorkPhone(),
+//                employee.getBirthDate(),
+//                employee.getUsername(),
+//                employee.getCreationDate(),
+//                employee.getArchivedDate()
+//        );
+//    }
 
     /**
      * Конвертации Dto в Employee
      */
-    private static Employee toEmployee(EmployeeDto employeeDto) {
-        return new Employee(
-                employeeDto.getFirstName(),
-                employeeDto.getLastName(),
-                employeeDto.getMiddleName(),
-                employeeDto.getAddress(),
-                employeeDto.getFioDative(),
-                employeeDto.getFioNominative(),
-                employeeDto.getFioGenitive(),
-                employeeDto.getExternalId(),
-                employeeDto.getPhone(),
-                employeeDto.getWorkPhone(),
-                employeeDto.getBirthDate(),
-                employeeDto.getUsername(),
-                employeeDto.getCreationDate(),
-                employeeDto.getArchivedDate()
-        );
-    }
+//    private static Employee toEmployee(EmployeeDto employeeDto) {
+//        return new Employee(
+//                employeeDto.getFirstName(),
+//                employeeDto.getLastName(),
+//                employeeDto.getMiddleName(),
+//                employeeDto.getAddress(),
+//                employeeDto.getFioDative(),
+//                employeeDto.getFioNominative(),
+//                employeeDto.getFioGenitive(),
+//                employeeDto.getExternalId(),
+//                employeeDto.getPhone(),
+//                employeeDto.getWorkPhone(),
+//                employeeDto.getBirthDate(),
+//                employeeDto.getUsername(),
+//                employeeDto.getCreationDate(),
+//                employeeDto.getArchivedDate()
+//        );
+//    }
 
     /**
      * Метод конвертации коллекции сущностей в Dto
      */
-    private static List<EmployeeDto> toListEmployeeDto(List<Employee> employees) {
-        return employees.stream().
-                map(ResolutionUtil::toEmployeeDto)
-                .collect(Collectors.toList());
-    }
+//    private static List<EmployeeDto> toListEmployeeDto(List<Employee> employees) {
+//        return employees.stream().
+//                map(ResolutionUtil::toEmployeeDto)
+//                .collect(Collectors.toList());
+//    }
 
     /**
      * Метод конвертации коллекции из Dto в коллекцию сущностей
      */
-    private static List<Employee> toListEmployee(List<EmployeeDto> employees) {
-        return employees.stream()
-                .map(ResolutionUtil::toEmployee)
-                .collect(Collectors.toList());
-    }
+//    private static List<Employee> toListEmployee(List<EmployeeDto> employees) {
+//        return employees.stream()
+//                .map(ResolutionUtil::toEmployee)
+//                .collect(Collectors.toList());
+//    }
 
 //    /**
 //     * Метод для конвертации Резолюции в обертку Dto

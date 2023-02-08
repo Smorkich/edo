@@ -4,7 +4,9 @@ import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
 import com.education.service.filePool.FilePoolService;
 import com.education.service.question.QuestionService;
+import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
+import model.constant.Constant;
 import model.dto.AppealDto;
 import model.dto.AuthorDto;
 import model.dto.FilePoolDto;
@@ -21,7 +23,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.education.util.URIBuilderUtil.buildURI;
-import static model.constant.Constant.*;
+
+import static model.constant.Constant.APPEAL_URL;
+import static model.constant.Constant.EDO_REPOSITORY_NAME;
 import static model.enum_.Status.NEW_STATUS;
 
 /**

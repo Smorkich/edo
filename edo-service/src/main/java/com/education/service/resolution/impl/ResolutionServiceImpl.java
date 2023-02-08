@@ -31,8 +31,8 @@ import static model.enum_.Status.UNDER_CONSIDERATION;
 @Service
 public class ResolutionServiceImpl implements ResolutionService {
 
+    private final AppealService appealService;
     private RestTemplate restTemplate;
-    private final String URL = "http://edo-repository/api/repository/resolution";
 
     @Override
     public void save(ResolutionDto resolutionDto) {
