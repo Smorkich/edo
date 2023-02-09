@@ -11,6 +11,8 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.*;
 
 /**
  * @author Nadezhda Pupina
@@ -20,24 +22,30 @@ import java.util.UUID;
 @AllArgsConstructor
 public class FilePoolServiceImpl implements FilePoolService {
 
-    static final String URL = "http://edo-repository/api/repository/filePool";
     private final RestTemplate restTemplate;
 
     @Override
     public FilePoolDto save(FilePoolDto filePoolDto) {
         String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/filePool").toString();
-
+//        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
+//                .setPath("/");
         return restTemplate.postForObject(uri, filePoolDto, FilePoolDto.class);
     }
 
     @Override
     public void delete(Long id) {
-        restTemplate.delete(URL + "/" + id, FilePoolDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
+                .setPath("/")
+                .setPath(String.valueOf(id));
+        restTemplate.delete(builder.toString());
     }
 
     @Override
     public String findById(Long id) {
-        return restTemplate.getForObject(URL + "/" + id, String.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
+                .setPath("/")
+                .setPath(String.valueOf(id));
+        return restTemplate.getForObject(builder.toString(), String.class);
     }
 
     @Override
@@ -49,27 +57,41 @@ public class FilePoolServiceImpl implements FilePoolService {
 
 
     public String findAll() {
-        return restTemplate.getForObject(URL + "/all", String.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
+                .setPath("/all");
+        return restTemplate.getForObject(builder.toString(), String.class);
     }
 
     @Override
     public Collection<FilePoolDto> findAllById(String ids) {
-        return restTemplate.getForObject(URL + "/all/" + ids, List.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
+                .setPath("/")
+                .setPath(String.valueOf(ids));
+        return restTemplate.getForObject(builder.toString(), Collection.class);
     }
 
     @Override
     public void moveToArchive(Long id) {
-        restTemplate.postForObject(URL + "/" + id, null, FilePoolDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
+                .setPath("/")
+                .setPath(String.valueOf(id));
+        restTemplate.postForObject(builder.toString(), null, String.class);
     }
 
     @Override
     public FilePoolDto findByIdNotArchived(Long id) {
-        return restTemplate.getForObject(URL + "/notArchived/" + id, FilePoolDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
+                .setPath("/notArchived/")
+                .setPath(String.valueOf(id));
+        return restTemplate.getForObject(builder.toString(), FilePoolDto.class);
     }
 
     @Override
     public Collection<FilePoolDto> findAllByIdNotArchived(String ids) {
-        return restTemplate.getForObject(URL + "/notArchivedAll/" + ids, List.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
+                .setPath("/notArchivedAll/")
+                .setPath(String.valueOf(ids));
+        return restTemplate.getForObject(builder.toString(), Collection.class);
     }
 
 }

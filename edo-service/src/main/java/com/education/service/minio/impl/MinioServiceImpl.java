@@ -27,6 +27,7 @@ import static model.constant.Constant.EDO_FILE_STORAGE_NAME;
 public class MinioServiceImpl implements MinioService {
 
     private final RestTemplate restTemplate;
+
     @Override
     public ResponseEntity<String> uploadOneFile(MultipartFile currentFile,
                                                 UUID UUIDKey, String fileName, String contentType) {

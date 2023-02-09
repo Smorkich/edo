@@ -10,7 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.ZonedDateTime;
+
 import java.util.Collection;
 
 @RestController
@@ -22,11 +22,10 @@ public class AppealRestController {
     private AppealService appealService;
 
     @ApiOperation(value = "В строке таблицы Appeal заполняет поле archivedDate", notes = "Строка в Appeal должна существовать")
-    @PatchMapping(value = "/move/{id}")
+    @PutMapping(value = "/move/{id}")
     public ResponseEntity<AppealDto> moveToArchive(@PathVariable Long id) {
-        log.info("Adding archived date {} in Appeal with id: {}", ZonedDateTime.now(), id);
         appealService.moveToArchive(id);
-        log.info("Moving appeal with id: {} to archive is success!", id);
+        log.info("Moving appeal with id: {} to edo-repository is success!", id);
         return new ResponseEntity<>(appealService.findById(id), HttpStatus.OK);
     }
 
@@ -66,13 +65,13 @@ public class AppealRestController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Добавляет новую строку таблицы Appeal")
-    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AppealDto> saveAppeal(@RequestBody AppealDto appealDto) {
-        log.info("Creating appeal");
-        appealService.save(appealDto);
-        log.info("Creating appeal {}, success!", appealDto.getAnnotation());
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    @ApiOperation(value = "Принимает обращение, отправляет на edo-repository", notes = "Обращение должен существовать")
+    @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AppealDto> save(@RequestBody AppealDto appealDto) {
+        log.info("Send a post-request to edo-repository to post new Appeal to database");
+        var save = appealService.save(appealDto);
+        log.info("sending to edo-repository", save);
+        return new ResponseEntity<>(save, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Находит строку таблицы Appeal по id", notes = "Строка в Appeal должна существовать")

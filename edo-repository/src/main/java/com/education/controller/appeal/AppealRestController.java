@@ -24,10 +24,9 @@ public class AppealRestController {
 
     private AppealService appealService;
 
-    @ApiOperation(value = "В строке таблицы Appeal заполняет поле archivedDate",
-            notes = "Строка в Appeal должна существовать")
-    @PatchMapping(value = "/move/{id}")
-    public ResponseEntity<AppealDto> moveToArchive(@PathVariable Long id) {
+    @ApiOperation(value = "В строке таблицы Appeal заполняет поле archivedDate,изменяет поле status", notes = "Строка в Appeal должна существовать")
+    @PutMapping(value = "/move/{id}")
+    public ResponseEntity<Void> moveToArchive(@PathVariable Long id) {
         log.info("Adding archived date {} in Appeal with id: {}", ZonedDateTime.now(), id);
         appealService.moveToArchive(id);
         log.info("Moving appeal with id: {} to archive is success!", id);
@@ -74,13 +73,13 @@ public class AppealRestController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Добавляет новую строку таблицы Appeal")
+    @ApiOperation(value = "Добавляет новую строку таблицы Appeal", notes = "Строка в Appeal должна существовать")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> saveAppeal(@RequestBody AppealDto appealDto) {
         log.info("Creating appeal");
-        Appeal save = appealService.save(APPEAL_MAPPER.toEntity(appealDto));
-        log.info("Creating appeal {}, success!", save);
-        return new ResponseEntity<>(APPEAL_MAPPER.toDto(appealService.findById(save.getId())), HttpStatus.CREATED);
+        Appeal appeal = appealService.save(APPEAL_MAPPER.toEntity(appealDto));
+        log.info("Creating appeal {}, success!", appeal);
+        return new ResponseEntity<>(APPEAL_MAPPER.toDto(appealService.findById(appeal.getId())), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Находит строку таблицы Appeal по id",

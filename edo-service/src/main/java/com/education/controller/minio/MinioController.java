@@ -61,7 +61,7 @@ public class MinioController {
                 .size(file.getSize())                   //Размер обращения
                 .pageCount(file.getSize())              //Количество страниц
                 .uploadDate(ZonedDateTime.now())        //Дата создания.
-                .creator(getEmp(3L))                //id создателя файла. Нужна реализация авторизации
+                .creator(getEmp(4L))                //id создателя файла. Нужна реализация авторизации
                 .build();
         log.info("Saving file info.");
         filePoolService.save(filePoolDto);

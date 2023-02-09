@@ -3,10 +3,6 @@ package model.constant;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-/**
- * @author Kostenko Aleksandr
- * В этом обьекте лежит константы для ServiceExternalEmployeeImpl
- */
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Constant {
@@ -34,4 +30,5 @@ public class Constant {
     public static final String DOC = "doc";
     public static final String DOCX = "docx";
     public static final String PDF = "pdf";
+
 }
