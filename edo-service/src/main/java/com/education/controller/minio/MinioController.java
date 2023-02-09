@@ -48,7 +48,7 @@ public class MinioController {
     @ApiOperation(value = "Uploading file to file storage")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = {MediaType.TEXT_PLAIN_VALUE, "application/json"})
-    public FilePoolDto uploadOneFile(@RequestParam("file") MultipartFile file,
+    public String uploadOneFile(@RequestParam("file") MultipartFile file,
                                 @RequestParam("name") String fileName) throws IOException {
         log.info("Upload file named: {}", fileName);
         UUID UUIDKey = UUID.randomUUID();
@@ -66,7 +66,7 @@ public class MinioController {
         log.info("Saving file info.");
         filePoolService.save(filePoolDto);
         log.info("Upload file named: {};  Type: {}; Key: {}.", fileName, type, UUIDKey);
-        return filePoolDto;
+        return filePoolService.findByUuid(UUIDKey).toString();
     }
 
     /**

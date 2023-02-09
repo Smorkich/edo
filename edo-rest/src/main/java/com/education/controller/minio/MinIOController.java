@@ -42,7 +42,7 @@ public class MinIOController {
     @ApiOperation("send request to upload file to buckets from source")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = {MediaType.TEXT_PLAIN_VALUE, "application/json"})
-    public FilePoolDto uploadOneFile(@RequestParam(value = "file", required = false) MultipartFile file) {
+    public String uploadOneFile(@RequestParam(value = "file", required = false) MultipartFile file) {
             log.info("Upload file named: {}", file.getOriginalFilename());
             return service.uploadOneFile(file);
     }
@@ -57,7 +57,7 @@ public class MinIOController {
         log.info("Download file named: {}", name);
         Resource resource = service.downloadOneFile(name);
         InputStream is = resource.getInputStream();
-        UUID uuid = UUID.fromString(name.split("\"")[1]);
+        UUID uuid = UUID.fromString(name.split("\\.")[0]);
         FilePoolDto filePoolDto = service.getFilePool(uuid);
         String extension = filePoolDto.getExtension();
         MediaType contentType = new MediaType(extension.split("/")[0],extension.split("/")[1]);
