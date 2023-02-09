@@ -53,9 +53,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDto findById(Long id) {
         log.info("Sent a request to receive the employee in edo - repository");
         String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/employee/" + id).toString();
-//        var builder = buildURI(EDO_REPOSITORY_NAME, EMPLOYEE_URL)
-//                .setPath("/")
-//                .setPath(String.valueOf(id)).toString();
         return restTemplate.getForObject(uri, EmployeeDto.class);
     }
 

@@ -27,8 +27,6 @@ public class FilePoolServiceImpl implements FilePoolService {
     @Override
     public FilePoolDto save(FilePoolDto filePoolDto) {
         String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/filePool").toString();
-//        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
-//                .setPath("/");
         return restTemplate.postForObject(uri, filePoolDto, FilePoolDto.class);
     }
 
