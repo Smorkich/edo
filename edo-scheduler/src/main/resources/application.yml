@@ -13,7 +13,7 @@ eureka:
 
 integration:
   url:
-    employee: https://5b1fc2ba-e02c-4017-9744-6463c84600d3.mock.pstmn.io/employees
+    employee: https://mocki.io/v1/a05c60fa-6f91-46a6-813f-7aa703f56201
 cron:
   employee: 0 0 * * * *
 

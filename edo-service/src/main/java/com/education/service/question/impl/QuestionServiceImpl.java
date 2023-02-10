@@ -25,8 +25,7 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public QuestionDto save(QuestionDto questionDto) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
-                .setPath("/");
+        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL);
         return restTemplate.postForObject(builder.toString(), questionDto, QuestionDto.class);
     }
 

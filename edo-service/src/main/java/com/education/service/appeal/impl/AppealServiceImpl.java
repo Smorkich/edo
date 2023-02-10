@@ -11,7 +11,9 @@ import model.dto.AppealDto;
 import model.dto.AuthorDto;
 import model.dto.FilePoolDto;
 import model.dto.QuestionDto;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -111,13 +113,11 @@ public class AppealServiceImpl implements AppealService {
                     })
                     .collect(Collectors.toList()));
 
-
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
-                    .setPath("/");
+            String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/appeal").toString();
+            return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(appealDto, headers), AppealDto.class).getBody();
 
-            return restTemplate.getForObject(builder.toString(), AppealDto.class);
         } catch (Exception e) {
 
             // Удаление сохранённых вложенных сущностей
@@ -188,8 +188,6 @@ public class AppealServiceImpl implements AppealService {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-
-
         String URL = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/appeal/findAppealByQuestionsId/"+ id).toString();
         return restTemplate.getForObject(URL, AppealDto.class);
 

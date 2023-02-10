@@ -58,7 +58,7 @@ public class ResolutionRestController {
 
     @ApiOperation(value = "Поиск резолюции по id")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON)
-    public ResponseEntity<ResolutionDto> findById(@PathVariable Long id) {
+    public ResponseEntity<ResolutionDto> getResolutionById(@PathVariable Long id) {
         log.info("GET request to search for resolution with id = {} has been sent", id);
         var resolutionDto = RESOLUTION_MAPPER.toDto(resolutionService.findById(id));
         log.info("Resolution with id = {} was found", id);

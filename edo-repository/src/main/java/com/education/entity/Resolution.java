@@ -96,15 +96,10 @@ public class Resolution extends BaseEntity {
     private String task;
 
     /**
-     * Один "question" - Много resolution может иметь один question
+     * "Question" - Много resolution может иметь один question
      */
-
-
-//    @JoinTable(name = "resolution_question",
-//            joinColumns = @JoinColumn(name = "resolution_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"))
-    @OneToOne(fetch = FetchType.LAZY)
-   @JoinColumn(name = "question_id", referencedColumnName = "id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question")
     private Question question;
 
 }

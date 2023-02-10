@@ -77,7 +77,7 @@ public class AppealRestController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> saveAppeal(@RequestBody AppealDto appealDto) {
         log.info("Creating appeal");
-        Appeal appeal = appealService.save(APPEAL_MAPPER.toEntity(appealDto));
+        var appeal = appealService.save(APPEAL_MAPPER.toEntity(appealDto));
         log.info("Creating appeal {}, success!", appeal);
         return new ResponseEntity<>(APPEAL_MAPPER.toDto(appealService.findById(appeal.getId())), HttpStatus.CREATED);
     }

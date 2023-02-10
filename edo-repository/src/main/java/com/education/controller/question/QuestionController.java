@@ -31,7 +31,7 @@ public class QuestionController {
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<QuestionDto> findById(@PathVariable(name = "id") Long id) {
         log.info("Send a get-request to get Question with id = {} from database", id);
-        QuestionDto questionDto = QUESTION_MAPPER.toDto(questionService.findById(id));
+        var questionDto = QUESTION_MAPPER.toDto(questionService.findById(id));
         log.info("The operation was successful, we got the Question by id ={}", id);
         return new ResponseEntity<>(questionDto, HttpStatus.OK);
     }
@@ -41,7 +41,7 @@ public class QuestionController {
     @GetMapping("/all/{ids}")
     private ResponseEntity<List<QuestionDto>> findAll(@PathVariable(name = "ids") List<Long> ids) {
         log.info("Send a get-request to get all Question from database");
-        List<QuestionDto> questionDtos = (List<QuestionDto>) QUESTION_MAPPER.toDto(questionService.findAll());
+        var questionDtos = (List<QuestionDto>) QUESTION_MAPPER.toDto(questionService.findAll());
         log.info("The operation was successful, they got the non-archived Question by id ={}", ids);
         return new ResponseEntity<>(questionDtos, HttpStatus.OK);
     }
