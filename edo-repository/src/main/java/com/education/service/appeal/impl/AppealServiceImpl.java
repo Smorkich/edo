@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 /**
@@ -95,18 +96,8 @@ public class AppealServiceImpl implements AppealService {
     @Transactional(readOnly = true)
     public Appeal findAppealByQuestionsId(Long id) {
 
-        //return appealRepository.findAppealByQuestionsId(id).orElseThrow(() -> new NoSuchElementException("Ошибка при связывании объектов"));
-        return appealRepository.findAppealByQuestionsId(id).orElse(getRandomAppeal());
-    }
-    public Appeal getRandomAppeal() {
-      //  LOG.info("getRandomName() method - start");
+        return appealRepository.findAppealByQuestionsId(id).orElseThrow(() -> new NoSuchElementException("Ошибка при связывании объектов"));
 
-        Random random = new Random();
-        Long index = Long.valueOf(random.nextInt(5));
-        Appeal appeal= new Appeal();
-        appeal.setId(index);
-        appeal.setNumber(String.valueOf(index));
-       // LOG.info("getRandomName() method - end");
-        return appeal;
     }
+
 }
