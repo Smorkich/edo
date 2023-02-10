@@ -1,7 +1,7 @@
 package com.education.controller.approval;
 
 import com.education.entity.Approval;
-import com.education.service.approval.ApprovalService;
+import com.education.service.author.approval.ApprovalService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;

@@ -25,8 +25,7 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public FilePoolDto save(FilePoolDto filePoolDto) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
-                .setPath("/");
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL);
         return restTemplate.postForObject(builder.toString(), filePoolDto, FilePoolDto.class);
     }
 
