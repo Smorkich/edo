@@ -22,7 +22,6 @@ import static model.constant.Constant.*;
 @Log4j2
 @AllArgsConstructor
 public class MinioServiceImpl implements MinioService {
-
     private final RestTemplate restTemplate;
 
     @Override
@@ -41,5 +40,4 @@ public class MinioServiceImpl implements MinioService {
                 requestEntity,
                 String.class);
     }
-
 }

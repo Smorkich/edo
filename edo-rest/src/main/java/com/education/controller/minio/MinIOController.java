@@ -31,10 +31,6 @@ public class MinIOController {
     @ApiOperation("send request to upload file to buckets from source")
     @PostMapping("/upload")
     public ResponseEntity<HttpStatus> uploadOneFile(@RequestParam("file") MultipartFile file) throws IOException {
-        if (!service.isAvailable(file)) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-
         service.uploadOneFile(file);
         log.info("Upload file named: {}", file.getOriginalFilename());
         return new ResponseEntity<>(HttpStatus.OK);
