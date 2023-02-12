@@ -12,6 +12,10 @@ import lombok.NoArgsConstructor;
 public final class Constant {
     public static final String FILE_CONTENT_TYPE = "application/pdf";
 
+    // Size
+    public static final Long objectSize = -1L;
+    public static final Long partSize = 104857600L;
+
     // Extensions
     public static final String PNG = "png";
     public static final String JPEG = "jpeg";
