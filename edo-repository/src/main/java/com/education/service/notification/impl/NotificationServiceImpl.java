@@ -1,7 +1,5 @@
 package com.education.service.notification.impl;
 
-import com.education.entity.Employee;
-import com.education.entity.FilePool;
 import com.education.entity.Notification;
 import com.education.repository.notification.NotificationRepository;
 import com.education.service.notification.NotificationService;
