@@ -4,6 +4,7 @@ import com.education.service.emloyee.EmployeeService;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import model.constant.Constant;
 import model.dto.EmployeeDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -28,7 +29,7 @@ import static model.constant.Constant.EMPLOYEE_URL;
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
 
-
+    static final String URL = "http://edo-repository/api/repository/employee";
     private final RestTemplate restTemplate;
 
     @Override
@@ -51,10 +52,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public EmployeeDto findById(Long id) {
         log.info("Sent a request to receive the employee in edo - repository");
-        var builder = buildURI(EDO_REPOSITORY_NAME, EMPLOYEE_URL)
-                .setPath("/")
-                .setPath(String.valueOf(id)).toString();
-        return restTemplate.getForObject(builder, EmployeeDto.class);
+        String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/employee/" + id).toString();
+        return restTemplate.getForObject(uri, EmployeeDto.class);
     }
 
     @Override

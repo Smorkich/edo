@@ -48,6 +48,8 @@ import static com.education.constant.Constant.JPEG;
 import static com.education.constant.Constant.JPG;
 import static com.education.constant.Constant.PDF;
 import static com.education.constant.Constant.PNG;
+import static com.education.constant.Constant.objectSize;
+import static com.education.constant.Constant.partSize;
 
 @Slf4j
 @Log4j2
@@ -66,7 +68,7 @@ public class MinioComponent {
                     .bucket(bucketName)
                     .object(key)
                     .contentType(contentType)
-                    .stream(inputStream, -1, 104857600)
+                    .stream(inputStream, objectSize, partSize)
                     .build());
         } catch (Exception e) {
             log.error("Error while put object in MinIO {}", e.getMessage());

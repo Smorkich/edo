@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * @author Nadezhda Pupina
@@ -36,6 +37,12 @@ public class FilePoolServiceImpl implements FilePoolService {
     @Transactional(readOnly = true)
     public FilePool findById(Long id) {
         return filePoolRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public FilePool findByUuid(UUID uuid) {
+        return filePoolRepository.getFilePoolByStorageFileId(uuid);
     }
 
     @Override

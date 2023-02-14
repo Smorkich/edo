@@ -2,7 +2,6 @@ package com.education.repository.appeal;
 
 import com.education.entity.Appeal;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -24,7 +23,7 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
     /**
      * Метод для пагинации
      */
-    List<Appeal> findAllByOrderByIdAsc(Pageable pageable);
+    List<Appeal> findAllByIdOrderByIdAsc(Pageable pageable);
 
 
     /**

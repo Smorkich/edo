@@ -21,7 +21,7 @@ import static model.constant.Constant.EDO_REPOSITORY_NAME;
 public class AllAppealServiceImpl implements AllAppealService {
 
     private final RestTemplate restTemplate;
-    private static final String URL = "http://edo-repository/api/service/allAppeals";
+    private static final String URL = "/api/repository/allAppeals";
 
 
     /**
@@ -30,10 +30,9 @@ public class AllAppealServiceImpl implements AllAppealService {
 
     @Override
     public AllAppealDto getAllAppeals(int lastUser, int numberOfUsersToDisplay) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, URL).addParameter("lastUser", String.valueOf(lastUser)).addParameter("numberOfUsersToDisplay", String.valueOf(numberOfUsersToDisplay)).toString();
-        return restTemplate.getForObject(builder.toString(), AllAppealDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, URL)
+                .addParameter("lastUser", String.valueOf(lastUser))
+                .addParameter("numberOfUsersToDisplay", String.valueOf(numberOfUsersToDisplay)).toString();
+        return restTemplate.getForObject(builder, AllAppealDto.class);
     }
-
-
-
 }

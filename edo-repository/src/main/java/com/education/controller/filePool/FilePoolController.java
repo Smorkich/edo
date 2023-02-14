@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 import static com.education.mapper.FilePoolMapper.FILE_POOL_MAPPER;
 
@@ -55,6 +56,17 @@ public class FilePoolController {
         log.info("Response from database:{}", filePoolDto);
         return new ResponseEntity<>(filePoolDto, HttpStatus.OK);
     }
+
+
+    @ApiOperation(value = "Gets file by uuid", notes = "File must exist")
+    @GetMapping(value = "/info/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FilePoolDto> findByUuid(@PathVariable UUID uuid) {
+        log.info("Sent GET request to get file with uuid={} from the database", uuid);
+        var filePoolDto = FILE_POOL_MAPPER.toDto(filePoolService.findByUuid(uuid));
+        log.info("Response from database:{}", filePoolDto);
+        return new ResponseEntity<>(filePoolDto, HttpStatus.OK);
+    }
+
 
     @ApiOperation(value = "Возвращает все файлы", notes = "Файлы должны существовать")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)

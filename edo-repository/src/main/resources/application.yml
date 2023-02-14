@@ -6,6 +6,7 @@ spring:
     url: jdbc:postgresql://localhost:5432/edo_db?currentSchema=${spring.flyway.default-schema}
     default-schema: edo
     locations: db/migration
+    out-of-order: true
   jpa:
     properties:
       hibernate:
