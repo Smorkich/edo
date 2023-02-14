@@ -1,14 +1,16 @@
 package com.education.service.filePool.impl;
 
 import com.education.service.filePool.FilePoolService;
+import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
+import model.constant.Constant;
 import model.dto.FilePoolDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collection;
-
-
+import java.util.List;
+import java.util.UUID;
 import static com.education.util.URIBuilderUtil.buildURI;
 import static model.constant.Constant.*;
 
@@ -22,12 +24,10 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     private final RestTemplate restTemplate;
 
-
     @Override
     public FilePoolDto save(FilePoolDto filePoolDto) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
-                .setPath("/");
-        return restTemplate.postForObject(builder.toString(), filePoolDto, FilePoolDto.class);
+        String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/filePool").toString();
+        return restTemplate.postForObject(uri, filePoolDto, FilePoolDto.class);
     }
 
     @Override
@@ -45,6 +45,14 @@ public class FilePoolServiceImpl implements FilePoolService {
                 .setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.toString(), String.class);
     }
+
+    @Override
+    public FilePoolDto findByUuid(UUID uuid) {
+        String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME,
+                "api/repository/filePool/info/" + uuid).toString();
+        return restTemplate.getForObject(uri, FilePoolDto.class);
+    }
+
 
     public String findAll() {
         var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)

@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Nadezhda Pupina
@@ -35,5 +35,7 @@ public interface FilePoolRepository extends JpaRepository<FilePool, Long> {
     @Query(nativeQuery = true, value = "update file_pool set archived_date = now() where id =:id and archived_date is null")
     void moveToArchived(@Param(value = "id") Long id);
 
+
+    FilePool getFilePoolByStorageFileId(UUID uuid);
 }
 

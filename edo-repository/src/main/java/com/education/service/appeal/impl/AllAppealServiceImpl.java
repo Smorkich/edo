@@ -28,7 +28,7 @@ public class AllAppealServiceImpl implements AllAppealService {
     @Transactional(readOnly = true)
     public Collection<Appeal> findAllWithPagination(int lastUser, int numberOfUsersToDisplay) {
         Pageable pageable = (Pageable) PageRequest.of(lastUser, numberOfUsersToDisplay, Sort.by("id").ascending());
-        return appealRepository.findAllByOrderByIdAsc(pageable);
+        return appealRepository.findAllByIdOrderByIdAsc(pageable);
     }
 
 }
