@@ -16,7 +16,7 @@ public interface MinioService {
      * Method upload the file to server MinIo.
      * Variable "objectName" means name of object, uploadibg to the bucket of minio server.
      */
-    String uploadOneFile(MultipartFile objectName);
+    FilePoolDto uploadOneFile(MultipartFile objectName);
 
     /**
      * Method download the file from server MinIo.
