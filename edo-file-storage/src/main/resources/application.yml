@@ -1,6 +1,11 @@
 spring:
   application:
     name: edo-file-storage
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 128MB
+      max-request-size: 128MB
 server:
   port: 0
 eureka:
@@ -13,9 +18,7 @@ minio:
   endpoint: http://127.0.0.1:9000
   username: admin
   password: password
-  sourcefolder: C:\fileHolder\
-  targetfolder: C:\targetFolder\
-  bucketname: my-bucketname
+  bucket-name: my-bucketname
 
 management:
   endpoints:
