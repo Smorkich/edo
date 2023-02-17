@@ -14,7 +14,7 @@ spring:
   application:
     name: edo-repository
 server:
-  enableSelfPreservation: fasle
+#  enableSelfPreservation: fasle
   port: 0
 eureka:
   client:
@@ -23,6 +23,8 @@ eureka:
   instance:
     preferIpAddress: true
     instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${random.value}}
+  server:
+    enable-self-preservation: false
 management:
   endpoints:
     web:

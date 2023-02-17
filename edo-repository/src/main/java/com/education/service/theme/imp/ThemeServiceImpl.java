@@ -4,6 +4,7 @@ import com.education.entity.Theme;
 import com.education.repository.theme.ThemeRepository;
 import com.education.service.theme.ThemeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,6 +45,7 @@ public class ThemeServiceImpl implements ThemeService {
     }
 
     @Override
+    @Cacheable(cacheNames = {"themeCache"})
     @Transactional(readOnly = true)
     public Collection<Theme> findAll() {
         return themeRepository.findAll();
