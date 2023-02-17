@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -21,9 +21,10 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
 
 
     /**
-     * Метод для пагинации
+     * Метод достаёт Appeal по нужному creator_id вместе с пагинацией
      */
-    List<Appeal> findAllByIdOrderByIdAsc(Pageable pageable);
+    List<Appeal> findByCreatorId(Long creatorId, Pageable pageable);
+
 
 
     /**

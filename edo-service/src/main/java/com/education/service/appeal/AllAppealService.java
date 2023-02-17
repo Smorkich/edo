@@ -11,6 +11,6 @@ public interface AllAppealService {
     /**
      * Получение всех обращений
      */
-    AllAppealDto getAllAppeals(int lastUser, int numberOfUsersToDisplay);
+    AllAppealDto getAllAppeals(Long creatorId, int start, int end);
 
 }

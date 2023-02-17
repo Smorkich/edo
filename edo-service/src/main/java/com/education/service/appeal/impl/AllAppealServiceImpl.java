@@ -29,10 +29,11 @@ public class AllAppealServiceImpl implements AllAppealService {
      */
 
     @Override
-    public AllAppealDto getAllAppeals(int lastUser, int numberOfUsersToDisplay) {
+    public AllAppealDto getAllAppeals(Long creatorId, int start, int end) {
         var builder = buildURI(EDO_REPOSITORY_NAME, URL)
-                .addParameter("lastUser", String.valueOf(lastUser))
-                .addParameter("numberOfUsersToDisplay", String.valueOf(numberOfUsersToDisplay)).toString();
+                .addParameter("creatorId", String.valueOf(creatorId))
+                .addParameter("start", String.valueOf(start))
+                .addParameter("end", String.valueOf(end)).toString();
         return restTemplate.getForObject(builder, AllAppealDto.class);
     }
 }

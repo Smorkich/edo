@@ -23,10 +23,10 @@ public class AllAppealController {
 
     @ApiOperation(value = "Отправляет запрос на получение в edo-service", notes = "Обращение должен существовать")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllAppealDto> getAllAppeals(@RequestParam("lastUser") int lastUser, @RequestParam("numberOfUsersToDisplay") int numberOfUsersToDisplay) {
-        log.info("Отправить get-запрос в edo-service");
-        var getAll = allAppealService.getAllAppeals(lastUser, numberOfUsersToDisplay);
-        log.info(" get-запрос отправлен в edo-service");
+    public ResponseEntity<AllAppealDto> getAllAppeals(@RequestParam("creatorId") Long creatorId, @RequestParam("start") int start, @RequestParam("end") int end) {
+        log.info("Отправить get-запрос в service");
+        var getAll = allAppealService.getAllAppeals(creatorId, start, end);
+        log.info(" get-запрос отправлен в service");
         return new ResponseEntity<>(getAll, HttpStatus.CREATED);
     }
 

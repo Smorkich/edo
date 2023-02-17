@@ -23,10 +23,13 @@ public class AllAppealServiceImpl implements AllAppealService {
      */
 
     @Override
-    public AllAppealDto getAllAppeals(int lastUser, int numberOfUsersToDisplay) {
+    public AllAppealDto getAllAppeals(Long creatorId, int start, int end) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        String uri = URIBuilderUtil.buildURI(Constant.EDO_SERVICE_NAME, "api/service/allAppeals").addParameter("lastUser", String.valueOf(lastUser)).addParameter("numberOfUsersToDisplay", String.valueOf(numberOfUsersToDisplay)).toString();
+        String uri = URIBuilderUtil.buildURI(Constant.EDO_SERVICE_NAME, "api/service/allAppeals")
+                .addParameter("creatorId", String.valueOf(creatorId))
+                .addParameter("start", String.valueOf(start))
+                .addParameter("end", String.valueOf(end)).toString();
         return restTemplate.getForObject(uri, AllAppealDto.class);
     }
 }
