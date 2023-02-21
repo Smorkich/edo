@@ -82,9 +82,15 @@ public class MinioController {
     @DeleteMapping("/delete/{storageFileId}")
     public ResponseEntity delete(@PathVariable("storageFileId") String storageFileId) {
         log.info("Delete outdated objects in MINIO-server");
-        minioComponent.deleteObjects(storageFileId);
-        log.info("Delete outdated objects in MINIO-server successful");
-        return ResponseEntity.ok().body("File is deleted");
+        InputStream is = minioComponent.getObject(storageFileId);
+        if(is != null){
+            minioComponent.deleteObjects(storageFileId);
+            log.info("Delete outdated objects in MINIO-server successful");
+            return ResponseEntity.ok().body("File is deleted");
+        } else {
+            log.warn("Delete outdated objects in MINIO-server went wrong");
+            return ResponseEntity.badRequest().body("File with name " + storageFileId + " is not found");
+        }
     }
 
     /**
