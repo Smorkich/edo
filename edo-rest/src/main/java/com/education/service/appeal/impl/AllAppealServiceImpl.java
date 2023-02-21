@@ -10,6 +10,9 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collection;
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class AllAppealServiceImpl implements AllAppealService {
@@ -23,13 +26,13 @@ public class AllAppealServiceImpl implements AllAppealService {
      */
 
     @Override
-    public AllAppealDto getAllAppeals(Long creatorId, int start, int end) {
+    public Collection<AllAppealDto> getAllAppeals(Long creatorId, int start, int end) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         String uri = URIBuilderUtil.buildURI(Constant.EDO_SERVICE_NAME, "api/service/allAppeals")
                 .addParameter("creatorId", String.valueOf(creatorId))
                 .addParameter("start", String.valueOf(start))
                 .addParameter("end", String.valueOf(end)).toString();
-        return restTemplate.getForObject(uri, AllAppealDto.class);
+        return restTemplate.getForObject(uri, List.class);
     }
 }

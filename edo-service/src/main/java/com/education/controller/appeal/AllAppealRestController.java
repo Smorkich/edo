@@ -26,7 +26,7 @@ public class AllAppealRestController {
 
     @ApiOperation(value = "Получает все обращения", notes = "Строка в Appeal должна существовать")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllAppealDto> getAllAppeals(@RequestParam("creatorId") Long creatorId, @RequestParam("start") int start, @RequestParam("end") int end) {
+    public ResponseEntity<Collection<AllAppealDto>> getAllAppeals(@RequestParam("creatorId") Long creatorId, @RequestParam("start") int start, @RequestParam("end") int end) {
         log.info("Getting from database all appeals");
         var appealDtoCollection = allAppealService.getAllAppeals(creatorId, start, end);
         log.info("Appeals: {}", appealDtoCollection);

@@ -17,7 +17,7 @@ import model.enum_.NotificationType;
 @SuperBuilder
 
 public class Notification extends BaseEntity {
-    @Column(name = "natification_type")
+    @Column(name = "notification_type")
     @Enumerated(EnumType.STRING)
     private NotificationType type;
     @OneToOne(mappedBy = "notification")

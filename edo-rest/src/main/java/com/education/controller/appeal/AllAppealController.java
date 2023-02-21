@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+
 /**
  * Rest-контроллер в "edo-rest", служит для отправки обращения (Appeal) в БД используя RestTemplate
  */
@@ -23,7 +25,7 @@ public class AllAppealController {
 
     @ApiOperation(value = "Отправляет запрос на получение в edo-service", notes = "Обращение должен существовать")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AllAppealDto> getAllAppeals(@RequestParam("creatorId") Long creatorId, @RequestParam("start") int start, @RequestParam("end") int end) {
+    public ResponseEntity<Collection<AllAppealDto>> getAllAppeals(@RequestParam("creatorId") Long creatorId, @RequestParam("start") int start, @RequestParam("end") int end) {
         log.info("Отправить get-запрос в service");
         var getAll = allAppealService.getAllAppeals(creatorId, start, end);
         log.info(" get-запрос отправлен в service");

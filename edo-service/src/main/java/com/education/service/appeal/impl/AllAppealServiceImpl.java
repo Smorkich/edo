@@ -1,16 +1,15 @@
 package com.education.service.appeal.impl;
 
 import com.education.service.appeal.AllAppealService;
-import com.education.service.author.AuthorService;
-import com.education.service.filePool.FilePoolService;
-import com.education.service.question.QuestionService;
 import lombok.AllArgsConstructor;
 import model.dto.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collection;
+import java.util.List;
+
 import static com.education.util.URIBuilderUtil.buildURI;
-import static model.constant.Constant.APPEAL_URL;
 import static model.constant.Constant.EDO_REPOSITORY_NAME;
 
 /**
@@ -29,11 +28,11 @@ public class AllAppealServiceImpl implements AllAppealService {
      */
 
     @Override
-    public AllAppealDto getAllAppeals(Long creatorId, int start, int end) {
+    public Collection<AllAppealDto> getAllAppeals(Long creatorId, int start, int end) {
         var builder = buildURI(EDO_REPOSITORY_NAME, URL)
                 .addParameter("creatorId", String.valueOf(creatorId))
                 .addParameter("start", String.valueOf(start))
                 .addParameter("end", String.valueOf(end)).toString();
-        return restTemplate.getForObject(builder, AllAppealDto.class);
+        return restTemplate.getForObject(builder, List.class);
     }
 }
