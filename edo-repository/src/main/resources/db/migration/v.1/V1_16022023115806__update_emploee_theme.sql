@@ -1,11 +1,15 @@
-CREATE TABLE IF NOT EXISTS question_topics
-(
-    id 				BIGSERIAL NOT NULL PRIMARY KEY,
-    theme_name 		VARCHAR(300),
-    code 			VARCHAR(30)
-);
-
-COMMENT ON TABLE question_topics  IS 'Таблица тем';
-COMMENT ON COLUMN question_topics.id IS 'Идентификатор';
-COMMENT ON COLUMN question_topics.theme_name IS 'Название темы';
-COMMENT ON COLUMN question_topics.code IS 'Код темы';
+INSERT INTO edo.theme (name,creation_date, code)
+VALUES ('Вопросы по благоустройству', now() ,'1'),
+       ('Благустройство парков',now() , '1.1'),
+       ('Благоустройство улиц', now() ,'1.2'),
+       ('Пешеходная часть',now() , '1.2.1'),
+       ('Автомобильная часть',now() , '1.2.2'),
+       ('Благоустройство дворов',now() , '1.3'),
+       ('Вопросы по работе коммунальных служб',now() , '2'),
+       ('Обращение с тко',now() , '2.1'),
+       ('Содержание придомовых территорий',now() , '2.2'),
+       ('Содержание коммунальных сетей',now() , '2.3'),
+       ('Вопросы по социальным льготам',now() , '3'),
+       ('Социальные льготы для многодетных семей',now() , '3.1'),
+       ('Социальные льготы для ивалидов',now() , '3.2'),
+       ('Соцаильные льготы для пенсионеров',now() , '3.3');
