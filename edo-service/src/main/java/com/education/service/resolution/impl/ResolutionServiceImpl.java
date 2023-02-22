@@ -55,9 +55,7 @@ public class ResolutionServiceImpl implements ResolutionService {
         Long questionId = resolutionDto.getQuestion().getId();
         AppealDto appealDto = appealService.findAppealByQuestionsId(questionId);
 
-        // Назначения статуса и времени создания
         appealDto.setAppealsStatus(UNDER_CONSIDERATION);
-//        appealDto.setCreationDate(ZonedDateTime.now()); // тоже скорее надо будет убрать
 
         appealService.save(appealDto);
 
