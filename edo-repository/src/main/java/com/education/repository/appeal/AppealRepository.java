@@ -25,6 +25,10 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
      */
     List<Appeal> findByCreatorId(Long creatorId, Pageable pageable);
 
+    /**
+     * Метод достаёт все Appeal по нужному creator_id без пагинации
+     */
+    List<Appeal> findByCreatorId(Long creatorId);
 
 
     /**

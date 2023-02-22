@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import org.springframework.data.domain.Pageable;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * Сервис-слой для сущности Appeal
@@ -26,8 +27,18 @@ public class AllAppealServiceImpl implements AllAppealService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Collection<Appeal> findAllEmployeeByIdWithPagination(Long creatorId, int start, int end) {
-        return appealRepository.findByCreatorId(creatorId, PageRequest.of(start, end - start));
+    public Collection<Appeal> findAllEmployeeByIdWithPagination(Long creatorId, int first, int last) {
+        int start = first - 1;
+        int pageSize = last - start;
+        var size = appealRepository.findByCreatorId(creatorId).size();
+        Collection<Appeal> allAppeals = appealRepository.findByCreatorId(creatorId, PageRequest.of(0, pageSize)).stream()
+                .skip(start)
+                .limit(pageSize)
+                .collect(Collectors.toList());
+        if(allAppeals.isEmpty()) {
+            System.out.println("Нет такого количество обращений, введите меньшее количество. Всего обращений: " + size);
+        }
+        return allAppeals;
     }
 
 }
