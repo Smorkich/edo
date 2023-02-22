@@ -42,6 +42,6 @@ public class ResolutionController {
         log.info("POST request has been sent");
         resolutionService.save(resolutionDto);
         log.info("{} has has been added", resolutionDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(resolutionDto, HttpStatus.CREATED);
     }
 }
