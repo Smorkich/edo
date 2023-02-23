@@ -23,12 +23,10 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
     /**
      * Метод достаёт Appeal по нужному creator_id вместе с пагинацией
      */
-    List<Appeal> findByCreatorId(Long creatorId, Pageable pageable);
 
-    /**
-     * Метод достаёт все Appeal по нужному creator_id без пагинации
-     */
-    List<Appeal> findByCreatorId(Long creatorId);
+    @Query(nativeQuery = true, value = "SELECT * FROM Appeal WHERE creator_id = :creatorId LIMIT :limit OFFSET :offset")
+    List<Appeal> findByCreatorId(@Param("creatorId") Long creatorId, @Param("offset") int offset, @Param("limit") int limit);
+
 
 
     /**

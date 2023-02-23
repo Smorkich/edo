@@ -13,5 +13,5 @@ public interface AllAppealService {
     /**
      * Нахождение всех обращений c пагинцацией
      */
-    Collection<Appeal> findAllEmployeeByIdWithPagination(Long creatorId, int start, int end);
+    Collection<Appeal> findAllEmployeeByIdWithPagination(Long creatorId, int first, int last);
 }
