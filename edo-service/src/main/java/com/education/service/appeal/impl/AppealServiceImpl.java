@@ -185,9 +185,6 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public AppealDto findAppealByQuestionsId(Long id){
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
         String URL = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/appeal/findAppealByQuestionsId/"+ id).toString();
         return restTemplate.getForObject(URL, AppealDto.class);
 
