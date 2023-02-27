@@ -1,4 +1,4 @@
-INSERT INTO edo.theme (name,creation_date, code)
+INSERT INTO theme (name,creation_date, code)
 VALUES ('Вопросы по благоустройству', now() ,'1'),
        ('Благустройство парков',now() , '1.1'),
        ('Благоустройство улиц', now() ,'1.2'),
@@ -14,18 +14,18 @@ VALUES ('Вопросы по благоустройству', now() ,'1'),
        ('Социальные льготы для ивалидов',now() , '3.2'),
        ('Соцаильные льготы для пенсионеров',now() , '3.3');
 
-UPDATE edo_db.edo.theme
-SET parent_theme = (SELECT id FROM edo.theme WHERE code='1')
-WHERE (code='1.1' OR code = '1.2' OR code = '1.3');
+UPDATE theme
+SET parent_theme = (SELECT id FROM theme WHERE code='1')
+WHERE code IN ('1.1','1.2','1.3');
 
-UPDATE edo_db.edo.theme
-SET parent_theme = (SELECT id FROM edo.theme WHERE code='1.2')
-WHERE (code='1.2.1' OR code = '1.2.2');
+UPDATE theme
+SET parent_theme = (SELECT id FROM theme WHERE code='1.2')
+WHERE code IN ('1.2.1', '1.2.2');
 
-UPDATE edo_db.edo.theme
-SET parent_theme = (SELECT id FROM edo.theme WHERE code='2')
-WHERE (code='2.1' OR code = '2.2' OR code = '2.3');
+UPDATE theme
+SET parent_theme = (SELECT id FROM theme WHERE code='2')
+WHERE code IN ('2.1', '2.2', '2.3');
 
-UPDATE edo_db.edo.theme
-SET parent_theme = (SELECT id FROM edo.theme WHERE code='3')
-WHERE (code='3.1' OR code = '3.2' OR code = '3.3');
+UPDATE theme
+SET parent_theme = (SELECT id FROM theme WHERE code='3')
+WHERE code IN ('3.1','3.2','3.3');
