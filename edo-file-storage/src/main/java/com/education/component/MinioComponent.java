@@ -110,8 +110,10 @@ public class MinioComponent {
             log.info("Connection success, total buckets: " + blist.size());
         } catch (MinioException e) {
             log.error("Connection failed: {}", e.getMessage());
+            throw new MinIOPutException(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
+            throw new MinIOPutException(e.getMessage());
         }
     }
 
