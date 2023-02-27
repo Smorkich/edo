@@ -9,8 +9,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 /**
  * Сервис-слой для сущности Appeal
@@ -26,9 +27,8 @@ public class AllAppealServiceImpl implements AllAppealService {
      */
     @Override
     @Transactional(readOnly = true)
-    public Collection<Appeal> findAllWithPagination(int lastUser, int numberOfUsersToDisplay) {
-        Pageable pageable = (Pageable) PageRequest.of(lastUser, numberOfUsersToDisplay, Sort.by("id").ascending());
-        return appealRepository.findAllByIdOrderByIdAsc(pageable);
+    public Collection<Appeal> findAllEmployeeByIdWithPagination(Long creatorId, int first, int last) {
+        return appealRepository.findByCreatorId(creatorId, first, last);
     }
 
 }
