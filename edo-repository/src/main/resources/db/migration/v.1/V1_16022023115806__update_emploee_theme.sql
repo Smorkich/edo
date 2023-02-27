@@ -13,3 +13,19 @@ VALUES ('Вопросы по благоустройству', now() ,'1'),
        ('Социальные льготы для многодетных семей',now() , '3.1'),
        ('Социальные льготы для ивалидов',now() , '3.2'),
        ('Соцаильные льготы для пенсионеров',now() , '3.3');
+
+UPDATE edo_db.edo.theme
+SET parent_theme = (SELECT id FROM edo.theme WHERE code='1')
+WHERE (code='1.1' OR code = '1.2' OR code = '1.3');
+
+UPDATE edo_db.edo.theme
+SET parent_theme = (SELECT id FROM edo.theme WHERE code='1.2')
+WHERE (code='1.2.1' OR code = '1.2.2');
+
+UPDATE edo_db.edo.theme
+SET parent_theme = (SELECT id FROM edo.theme WHERE code='2')
+WHERE (code='2.1' OR code = '2.2' OR code = '2.3');
+
+UPDATE edo_db.edo.theme
+SET parent_theme = (SELECT id FROM edo.theme WHERE code='3')
+WHERE (code='3.1' OR code = '3.2' OR code = '3.3');
