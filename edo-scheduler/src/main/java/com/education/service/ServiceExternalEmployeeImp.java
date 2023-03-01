@@ -41,7 +41,7 @@ public class ServiceExternalEmployeeImp implements ServiceExternalEmployee {
 
 
     @Override
-    @Scheduled(fixedDelayString = "PT20M")
+    @Scheduled(fixedDelayString = "${interval}")
     public void dataSyncEveryHour() {
         log.info("The data synchronization method has started, it starts every hour");
         Collection<ExternalEmployeeDto> externalEmployeesDto;
