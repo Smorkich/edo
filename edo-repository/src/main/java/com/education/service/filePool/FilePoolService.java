@@ -3,6 +3,7 @@ package com.education.service.filePool;
 import com.education.entity.FilePool;
 
 import java.util.Collection;
+import java.util.UUID;
 
 /**
  * @author Nadezhda Pupina
@@ -24,6 +25,8 @@ public interface FilePoolService {
      * findById - находит файл по id
      */
     FilePool findById(Long id);
+
+    FilePool findByUuid(UUID uuid);
 
     /**
      * findAllById - выводит список всех файлов по id

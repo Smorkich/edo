@@ -20,9 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.UUID;
 
-import static model.constant.Constant.PDF;
 
 /**
  * RestController of edo-file-storage.
@@ -40,53 +38,39 @@ public class MinioController {
      * Request consist of object`s name.
      */
     @ApiOperation("send request to upload file to buckets from source")
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity uploadFileToMinIO(@RequestParam("file") MultipartFile file) {
+    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.TEXT_PLAIN_VALUE)
+    public String uploadFileToMinIO(@RequestParam("file") MultipartFile file,
+                                                    @RequestParam("key") String key,
+                                                    @RequestParam("fileName") String fileName) {
+
         String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
 
-        try (var inDoc = minioComponent.convertFileToPDF(file, extension)) {
-            String contentType = "application/pdf";
-            String fileName = String.format("%s.%s", UUID.randomUUID().toString(), PDF);
-            minioComponent.postObject(fileName, inDoc, contentType);
-            return ResponseEntity.ok().body(String.format("File is uploaded. Name: %s, type: %s", fileName, contentType));
+        try (var convertedFile = minioComponent.convertFileToPDF(file, extension)) {
+            String contentType = minioComponent.getFileContentType(file, extension);
+            minioComponent.postObject(
+                    minioComponent.getFileName(key, extension),
+                    convertedFile,
+                    contentType);
+            log.info("Upload file named: {};  Type: {}; Key: {}.", fileName, contentType, key);
+            return contentType;
         } catch (IOException e) {
-            return ResponseEntity.badRequest().body("Something wrong.");
+            log.error("bed request");
+            return "Something wrong.";
         }
+
     }
-
-
 
     /**
      * Request to download file from MINIO-server.
      * Request consist of object`s name.
      */
-
     @ApiOperation("send request to download file from server`s")
     @GetMapping(value = "/download/{id}")
-    public ResponseEntity<InputStreamResource> downloadFile(@PathVariable("id") String fileName,
-                                                            @RequestParam("type") String type) {
+    public ResponseEntity<InputStreamResource> downloadFile(@PathVariable("id") String fileName) {
         log.info("Download file :  {}", fileName);
         InputStream is = minioComponent.getObject(fileName);
-        MediaType contentType = null;
-        switch (type) {
-            case "pdf":
-                contentType = MediaType.APPLICATION_PDF;
-                break;
-            case "png":
-                contentType = MediaType.IMAGE_PNG;
-                break;
-            case "jpeg":
-                contentType = MediaType.IMAGE_JPEG;
-                break;
-            case "doc":
-                contentType = new MediaType("application", "msword");
-                break;
-            case "docx":
-                contentType = new MediaType("application", "vnd.openxmlformats-officedocument.wordprocessingml.document");
-                break;
-        }
         return ResponseEntity.ok()
-                .contentType(contentType)
                 .body(new InputStreamResource(is));
     }
 
@@ -94,13 +78,19 @@ public class MinioController {
     /**
      * Request to delete old file in the MINIO-server`s bucket
      */
-    @ApiOperation("send request to upload file to bucjets from source")
+    @ApiOperation("send request to upload file to buckets from source")
     @DeleteMapping("/delete/{storageFileId}")
     public ResponseEntity delete(@PathVariable("storageFileId") String storageFileId) {
         log.info("Delete outdated objects in MINIO-server");
-        minioComponent.deleteObjects(storageFileId);
-        log.info("Delete outdated objects in MINIO-server successful");
-        return ResponseEntity.ok().body("File is deleted");
+        InputStream is = minioComponent.getObject(storageFileId);
+        if(is != null){
+            minioComponent.deleteObjects(storageFileId);
+            log.info("Delete outdated objects in MINIO-server successful");
+            return ResponseEntity.ok().body("File is deleted");
+        } else {
+            log.warn("Delete outdated objects in MINIO-server went wrong");
+            return ResponseEntity.badRequest().body("File with name " + storageFileId + " is not found");
+        }
     }
 
     /**
