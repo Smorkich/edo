@@ -113,4 +113,13 @@ public class ApprovalRestController {
         log.info("List of approvals: {}", listApprovalDto);
         return new ResponseEntity<>(listApprovalDto, HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Направляет лист согласования")
+    @PostMapping(value = "/send/{id}")
+    public ResponseEntity<ApprovalDto> sendForApproval(@PathVariable Long id) {
+        log.info("Send a post-request to update approval with id: {} from database", id);
+        approvalService.sendForApproval(id);
+        log.info("Send approval with id: {} ", id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

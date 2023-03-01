@@ -20,6 +20,7 @@ import static model.constant.Constant.EDO_SERVICE_NAME;
 @AllArgsConstructor
 public class ApprovalServiceImpl implements ApprovalService {
     private final RestTemplate restTemplate;
+
     @Override
     public ApprovalDto save(ApprovalDto approvalDto) {
         String uri = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, "/api/service/approval").toString();
@@ -85,5 +86,14 @@ public class ApprovalServiceImpl implements ApprovalService {
         String uri = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, "/api/service/approval/archive/all/findByIdInAndArchivedDateNull/" + ids).toString();
 
         return restTemplate.getForObject(uri, List.class);
+    }
+
+    @Override
+    public void sendForApproval(Long id) {
+        String uri = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, "/api/service/approval/send/" + id).toString();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(headers), ApprovalDto.class).getBody();
     }
 }

@@ -49,4 +49,14 @@ public interface ApprovalService {
      * Поиск всех листов согласования не из архива по индексам
      */
     Collection<ApprovalDto> findByIdInAndArchivedDateNull(Iterable<Long> ids);
+
+    /**
+     * Обновление листа согласования
+     */
+    ApprovalDto update(ApprovalDto approvalDto);
+
+    /**
+     * Направление листа согласования
+     */
+    void sendForApproval(Long id);
 }

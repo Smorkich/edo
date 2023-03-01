@@ -49,4 +49,9 @@ public interface ApprovalService {
      * Поиск всех листов согласования не из архива по индексам
      */
     Collection<ApprovalDto> findByIdInAndArchivedDateNull(Iterable<Long> ids);
+
+    /**
+     * Направление листа согласования
+     */
+    void sendForApproval(Long id);
 }

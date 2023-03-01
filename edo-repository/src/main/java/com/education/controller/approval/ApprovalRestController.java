@@ -9,14 +9,7 @@ import model.dto.ApprovalDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;
@@ -115,5 +108,14 @@ public class ApprovalRestController {
         var listApprovalDto = APPROVAL_MAPPER.toDto(approvalService.findByIdInAndArchivedDateNull(ids));
         log.info("List of approvals: {}", listApprovalDto);
         return new ResponseEntity<>(listApprovalDto, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Обновляет запись в таблице Approval")
+    @PostMapping(value = "/update")
+    public ResponseEntity<ApprovalDto> update(@RequestBody ApprovalDto approvalDto) {
+        log.info("Send a post-request to update Approval from database");
+        approvalService.update(APPROVAL_MAPPER.toEntity(approvalDto));
+        log.info("Response: {} was updated to database", approvalDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
