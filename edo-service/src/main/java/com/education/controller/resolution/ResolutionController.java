@@ -30,9 +30,9 @@ public class ResolutionController {
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON)
     public ResponseEntity<ResolutionDto> saveResolution(@RequestBody ResolutionDto resolutionDto) {
         log.info("POST request has been sent");
-        resolutionService.save(resolutionDto);
+        var save = resolutionService.save(resolutionDto);
         log.info("{} has has been added", resolutionDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(save, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Перемещение в архив")

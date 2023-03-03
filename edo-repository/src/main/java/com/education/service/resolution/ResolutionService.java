@@ -1,11 +1,8 @@
 package com.education.service.resolution;
 
 import com.education.entity.Resolution;
-import org.apache.catalina.LifecycleState;
 
-import java.time.ZonedDateTime;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Интерфейс для работы с ResolutionServiceImpl содержащим реализацию, нужен для возможной подмены реализации не
@@ -15,7 +12,7 @@ public interface ResolutionService {
     /**
      * Сохраняет новую резолюцию
      */
-    public void save(Resolution resolution);
+    public Resolution save(Resolution resolution);
 
     /**
      * Архивирует резолюцию

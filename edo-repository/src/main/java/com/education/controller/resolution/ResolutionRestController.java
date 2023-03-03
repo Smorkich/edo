@@ -41,9 +41,9 @@ public class ResolutionRestController {
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON)
     public ResponseEntity<ResolutionDto> saveResolution(@RequestBody ResolutionDto resolutionDto) {
         log.info("POST request has been sent");
-        resolutionService.save(RESOLUTION_MAPPER.toEntity(resolutionDto));
+        var resolution = resolutionService.save(RESOLUTION_MAPPER.toEntity(resolutionDto));
         log.info("{} has has been added", resolutionDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(RESOLUTION_MAPPER.toDto(resolutionService.findById(resolution.getId())), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Перемещение в архив")

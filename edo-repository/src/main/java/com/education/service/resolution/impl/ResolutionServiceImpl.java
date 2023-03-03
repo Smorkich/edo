@@ -25,8 +25,8 @@ public class ResolutionServiceImpl implements ResolutionService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void save(Resolution resolution) {
-        resolutionRepository.saveAndFlush(resolution);
+    public Resolution save(Resolution resolution) {
+       return resolutionRepository.saveAndFlush(resolution);
     }
 
     @Transactional(rollbackFor = Exception.class)

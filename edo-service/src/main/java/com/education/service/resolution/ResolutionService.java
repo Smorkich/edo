@@ -11,7 +11,7 @@ public interface ResolutionService {
     /**
      * Сохраняет новую резолюцию
      */
-    public void save(ResolutionDto resolutionDto);
+    public ResolutionDto save(ResolutionDto resolutionDto);
 
     /**
      * Архивирует резолюцию

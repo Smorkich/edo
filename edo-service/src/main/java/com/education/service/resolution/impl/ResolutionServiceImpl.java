@@ -46,8 +46,10 @@ public class ResolutionServiceImpl implements ResolutionService {
     private RestTemplate restTemplate;
 
     @Override
-    public void save(ResolutionDto resolutionDto) {
-
+    public ResolutionDto save(ResolutionDto resolutionDto) {
+        if(resolutionDto.getCreationDate()==null) {
+            resolutionDto.setCreationDate(ZonedDateTime.now());
+        }
         resolutionDto.setIsDraft(true);
 
         resolutionDto.setLastActionDate(ZonedDateTime.now());
@@ -62,7 +64,7 @@ public class ResolutionServiceImpl implements ResolutionService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/resolution/add").toString();
-        restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(resolutionDto, headers), ResolutionDto.class).getBody();
+       return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(resolutionDto, headers), ResolutionDto.class).getBody();
     }
 
     @Override
