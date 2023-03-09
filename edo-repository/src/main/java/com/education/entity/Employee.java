@@ -130,4 +130,9 @@ public class Employee extends BaseEntity {
     @JoinColumn(name = "department")
     private Department department;
 
+    /**
+     * email - Почта
+     */
+    @Column(name = "email")
+    private String email;
 }

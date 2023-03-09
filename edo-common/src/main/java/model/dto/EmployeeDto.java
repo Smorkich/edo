@@ -67,4 +67,7 @@ public class EmployeeDto {
 
     @ApiModelProperty(value = "Настройки оповещений")
     private NotificationDto notificationDto;
+
+    @ApiModelProperty(value = "Почта сотрудника")
+    private String email;
 }
