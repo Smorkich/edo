@@ -69,9 +69,11 @@ public class AppealRestController {
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> save(@RequestBody AppealDto appealDto) {
         log.info("Send a post-request to edo-repository to post new Appeal to database");
-        var save = appealService.save(appealDto);
-        log.info("sending to edo-repository", save);
-        return new ResponseEntity<>(save, HttpStatus.CREATED);
+        appealDto = appealService.save(appealDto);
+        log.info("sending to edo-repository", appealDto);
+        log.info("Sending a message to employees");
+        appealService.sendMessage(appealDto);
+        return new ResponseEntity<>(appealDto, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Находит строку таблицы Appeal по id", notes = "Строка в Appeal должна существовать")

@@ -32,7 +32,6 @@ import static model.enum_.Status.NEW_STATUS;
 public class AppealServiceImpl implements AppealService {
 
     private final RestTemplate restTemplate;
-
     private final AuthorService authorService;
     private final QuestionService questionService;
     private final FilePoolService filePoolService;
@@ -109,10 +108,10 @@ public class AppealServiceImpl implements AppealService {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
-                    .setPath("/");
+            var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL);
 
-            return restTemplate.getForObject(builder.toString(), AppealDto.class);
+            return restTemplate.postForObject(builder.toString(), appealDto, AppealDto.class);
+//            return restTemplate.getForObject(builder.toString(), AppealDto.class);
         } catch (Exception e) {
 
             // Удаление сохранённых вложенных сущностей
@@ -173,5 +172,15 @@ public class AppealServiceImpl implements AppealService {
         var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
                 .setPath("/findByIdNotArchived");
         return restTemplate.getForObject(builder.toString(), Collection.class);
+    }
+
+    /**
+     * По принятому обращению берет addressee и signer и отправляет им
+     * сообщение с сылкой на обращение
+     */
+    @Override
+    public void sendMessage(AppealDto appealDto){
+        var builder = buildURI(EDO_INTEGRATION_NAME, MESSAGE_URL);
+        restTemplate.put(builder.toString(), appealDto);
     }
 }
