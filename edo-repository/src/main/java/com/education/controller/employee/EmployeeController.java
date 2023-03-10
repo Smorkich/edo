@@ -9,11 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
@@ -32,6 +32,7 @@ import static com.education.mapper.EmployeeMapper.EMPLOYEE_MAPPER;
 @RequestMapping("/api/repository/employee")
 @AllArgsConstructor
 public class EmployeeController {
+
     private final EmployeeServiceImpl employeeService;
 
     /**
@@ -44,7 +45,7 @@ public class EmployeeController {
     public ResponseEntity<EmployeeDto> findById(@PathVariable Long id) {
         log.info("Send a response with the employee of the assigned id");
         EmployeeDto employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findById(id));
-        log.info("The operation was successful, we got the employee by id ={}", id);
+        log.info("The operation was successful, we got the employee by id = {}", id);
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
 
@@ -145,6 +146,21 @@ public class EmployeeController {
 
         log.info("The operation was successful, they saved the collection");
         return new ResponseEntity<>(collection, HttpStatus.OK);
+    }
+
+
+    /**
+     * предоставляет сотрудников по ФИО
+     *
+     * @param fullName
+     */
+    @ApiOperation(value = "Предоставление сотрудников по ФИО")
+    @GetMapping(value = "/search")
+    public ResponseEntity<Collection<EmployeeDto>> findAllByFullName(@RequestParam("fullName") String fullName) {
+        log.info("Send a response with the requested full name");
+        Collection<EmployeeDto> employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findAllByFullName(fullName));
+        log.info("The operation was successful, they got employee with full name ={}", fullName);
+        return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
 
 }

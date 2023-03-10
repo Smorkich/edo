@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -22,9 +22,12 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
 
 
     /**
-     * Метод для пагинации
+     * Метод достаёт Appeal по нужному creator_id вместе с пагинацией
      */
-    List<Appeal> findAllByIdOrderByIdAsc(Pageable pageable);
+
+    @Query(nativeQuery = true, value = "SELECT * FROM Appeal WHERE creator_id = :creatorId LIMIT :limit OFFSET :offset")
+    List<Appeal> findByCreatorId(@Param("creatorId") Long creatorId, @Param("offset") int offset, @Param("limit") int limit);
+
 
 
     /**
@@ -39,6 +42,13 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
     @Query("select u from Appeal u where u.archivedDate is null")
     Collection<Appeal> findAllNotArchived();
 
+
+
+
+    /**
+     * Метод достает Appeal по Questions id
+     */
+    Optional<Appeal> findAppealByQuestionsId(@Param("id") Long id);
     /**
      * изменяет статус обращения на "на рассмотрении"
      */

@@ -23,9 +23,11 @@ public class AllAppealRestController {
     @ApiOperation(value = "Отображает все обращения",
             notes = "контроллер должен принимать в качестве параметров два параметра: последний взятый пользователь, количество пользователей для отображения")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<AllAppealDto>> getAllAppealWithPagination(@RequestParam("lastUser") int lastUser, @RequestParam("numberOfUsersToDisplay") int numberOfUsersToDisplay) {
+    public ResponseEntity<Collection<AllAppealDto>> getAllAppealWithPagination(@RequestParam("creatorId") Long creatorId,
+                                                                               @RequestParam("start") int start,
+                                                                               @RequestParam("end") int end) {
         log.info("Getting from database all appeals");
-        var appealDtoCollection = ALL_APPEAL_MAPPER.toDto(allAppealService.findAllWithPagination(lastUser, numberOfUsersToDisplay));
+        var appealDtoCollection = ALL_APPEAL_MAPPER.toDto(allAppealService.findAllEmployeeByIdWithPagination(creatorId, start, end));
         log.info("Appeals: {}", appealDtoCollection);
         return new ResponseEntity<>(appealDtoCollection, HttpStatus.OK);
     }

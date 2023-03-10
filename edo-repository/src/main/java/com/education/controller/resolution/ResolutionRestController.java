@@ -12,7 +12,14 @@ import lombok.extern.log4j.Log4j2;
 import model.dto.ResolutionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 
@@ -34,9 +41,9 @@ public class ResolutionRestController {
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON)
     public ResponseEntity<ResolutionDto> saveResolution(@RequestBody ResolutionDto resolutionDto) {
         log.info("POST request has been sent");
-        resolutionService.save(RESOLUTION_MAPPER.toEntity(resolutionDto));
+        var resolution = resolutionService.save(RESOLUTION_MAPPER.toEntity(resolutionDto));
         log.info("{} has has been added", resolutionDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return new ResponseEntity<>(RESOLUTION_MAPPER.toDto(resolutionService.findById(resolution.getId())), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Перемещение в архив")
@@ -51,7 +58,7 @@ public class ResolutionRestController {
 
     @ApiOperation(value = "Поиск резолюции по id")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON)
-    public ResponseEntity<ResolutionDto> findById(@PathVariable Long id) {
+    public ResponseEntity<ResolutionDto> getResolutionById(@PathVariable Long id) {
         log.info("GET request to search for resolution with id = {} has been sent", id);
         var resolutionDto = RESOLUTION_MAPPER.toDto(resolutionService.findById(id));
         log.info("Resolution with id = {} was found", id);

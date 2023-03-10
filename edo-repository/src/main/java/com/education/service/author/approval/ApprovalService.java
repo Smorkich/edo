@@ -1,4 +1,4 @@
-package com.education.service.approval;
+package com.education.service.author.approval;
 
 import com.education.entity.Approval;
 

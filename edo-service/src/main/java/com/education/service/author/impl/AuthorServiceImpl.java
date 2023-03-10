@@ -28,8 +28,8 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public AuthorDto save(AuthorDto authorDto)
  {
-        var builder = buildURI(EDO_REPOSITORY_NAME, AUTHOR_URL)
-                .setPath("/");
+        var builder = buildURI(EDO_REPOSITORY_NAME, AUTHOR_URL);
+
         return restTemplate.postForObject(builder.toString(), authorDto, AuthorDto.class);
     }
 
