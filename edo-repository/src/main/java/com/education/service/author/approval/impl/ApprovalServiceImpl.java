@@ -1,9 +1,9 @@
-package com.education.service.approval.impl;
+package com.education.service.author.approval.impl;
 
 import com.education.entity.Approval;
 import com.education.repository.approval.ApprovalRepository;
 import com.education.repository.member.MemberRepository;
-import com.education.service.approval.ApprovalService;
+import com.education.service.author.approval.ApprovalService;
 import com.education.service.approvalBlock.ApprovalBlockService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

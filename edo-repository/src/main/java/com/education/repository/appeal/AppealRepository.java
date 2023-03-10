@@ -44,5 +44,10 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
 
 
 
+    /**
+     * Метод достает Appeal по Questions id
+     */
+    Optional<Appeal> findAppealByQuestionsId(@Param("id") Long id);
 }
+
 

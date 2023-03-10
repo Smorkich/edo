@@ -6,6 +6,8 @@ import model.enum_.ResolutionType;
 import jakarta.persistence.*;
 
 import java.time.ZonedDateTime;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -81,6 +83,23 @@ public class Resolution extends BaseEntity {
     @Column(name = "serial_number")
     private String serialNumber;
 
+    /**
+     * Признак Резолюции - черновик
+     */
+    @Column(name = "is_draft")
+    private Boolean isDraft;
 
+    /**
+     * Описание что должен сделать Executor
+     */
+    @Column(name = "task")
+    private String task;
+
+    /**
+     * "Question" - Много resolution может иметь один question
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "question")
+    private Question question;
 
 }

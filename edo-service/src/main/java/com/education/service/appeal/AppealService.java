@@ -43,4 +43,6 @@ public interface AppealService {
      * Нахождение всех обращений не из архива
      */
     Collection<AppealDto> findAllNotArchived();
+
+    AppealDto findAppealByQuestionsId(Long id);
 }

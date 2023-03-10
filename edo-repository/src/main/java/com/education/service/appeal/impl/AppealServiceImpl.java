@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;
+import java.util.NoSuchElementException;
+import java.util.Random;
 
 /**
  * Сервис-слой для сущности Appeal
@@ -86,4 +88,16 @@ public class AppealServiceImpl implements AppealService {
     public Collection<Appeal> findAllNotArchived() {
         return appealRepository.findAllNotArchived();
     }
+
+    /**
+     * Нахождение обращения по Questions id
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public Appeal findAppealByQuestionsId(Long id) {
+
+        return appealRepository.findAppealByQuestionsId(id).orElseThrow(() -> new NoSuchElementException("Ошибка при связывании объектов"));
+
+    }
+
 }

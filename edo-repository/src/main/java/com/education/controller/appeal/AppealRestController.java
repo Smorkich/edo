@@ -77,7 +77,7 @@ public class AppealRestController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> saveAppeal(@RequestBody AppealDto appealDto) {
         log.info("Creating appeal");
-        Appeal appeal = appealService.save(APPEAL_MAPPER.toEntity(appealDto));
+        var appeal = appealService.save(APPEAL_MAPPER.toEntity(appealDto));
         log.info("Creating appeal {}, success!", appeal);
         return new ResponseEntity<>(APPEAL_MAPPER.toDto(appealService.findById(appeal.getId())), HttpStatus.CREATED);
     }
@@ -88,6 +88,16 @@ public class AppealRestController {
     public ResponseEntity<AppealDto> getAppealById(@PathVariable Long id) {
         log.info("Getting from database appeal with id: {}", id);
         var appeal = appealService.findById(id);
+        log.info("Appeal: {}", appeal);
+        return new ResponseEntity<>(APPEAL_MAPPER.toDto(appeal), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Находит строку таблицы Appeal по Questions id",
+            notes = "Строка в Appeal должна существовать")
+    @GetMapping(value = "/findAppealByQuestionsId/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<AppealDto> findAppealByQuestionsId(@PathVariable Long id) {
+        log.info("Getting from database appeal with questions id: {}", id);
+        var appeal = appealService.findAppealByQuestionsId(id);
         log.info("Appeal: {}", appeal);
         return new ResponseEntity<>(APPEAL_MAPPER.toDto(appeal), HttpStatus.OK);
     }

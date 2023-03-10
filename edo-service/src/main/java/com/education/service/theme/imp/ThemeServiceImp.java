@@ -3,7 +3,12 @@ package com.education.service.theme.imp;
 import com.education.service.theme.ThemeService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import model.dto.AppealDto;
 import model.dto.ThemeDto;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -28,8 +33,8 @@ public class ThemeServiceImp implements ThemeService {
     @Override
     public void save(ThemeDto themeDto) {
         log.info("sent a request to save the theme in edo - repository");
-        var builder = buildURI(EDO_REPOSITORY_NAME, THEME_URL)
-                .setPath("/");
+        var builder = buildURI(EDO_REPOSITORY_NAME, THEME_URL);
+
         restTemplate.postForObject(builder.toString(), themeDto, ThemeDto.class);
         log.info("sent a request to save the theme in edo - repository");
     }
