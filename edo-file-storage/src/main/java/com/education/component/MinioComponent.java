@@ -162,16 +162,16 @@ public class MinioComponent {
             BufferedImage awtImage = readImageFile(byteStream, extension);
             byteStream.reset();
 
-            PDImageXObject pdImage1 = JPEGFactory.createFromImage(doc,awtImage);
+            PDImageXObject pdImage = JPEGFactory.createFromImage(doc,awtImage);
 
-            int width = pdImage1.getWidth();
-            int height = pdImage1.getHeight();
+            int width = pdImage.getWidth();
+            int height = pdImage.getHeight();
 
             PDPage myPage = new PDPage(new PDRectangle(width, height));
             doc.addPage(myPage);
 
             try (PDPageContentStream cont = new PDPageContentStream(doc, myPage, PDPageContentStream.AppendMode.APPEND, true, true)) {
-                cont.drawImage(pdImage1, 0, 0);
+                cont.drawImage(pdImage, 0, 0);
             }
 
             doc.save(bos);
