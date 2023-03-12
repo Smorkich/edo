@@ -5,19 +5,16 @@ import com.education.service.author.AuthorService;
 import com.education.service.filePool.FilePoolService;
 import com.education.service.question.QuestionService;
 import lombok.AllArgsConstructor;
-import model.dto.AppealDto;
-import model.dto.AuthorDto;
-import model.dto.FilePoolDto;
-import model.dto.QuestionDto;
+import model.dto.*;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.education.util.URIBuilderUtil.buildURI;
@@ -175,12 +172,45 @@ public class AppealServiceImpl implements AppealService {
     }
 
     /**
-     * По принятому обращению берет addressee и signer и отправляет им
-     * сообщение с сылкой на обращение
+     * По принятому обращению берет почты addressee и signer и
+     * передает их дальше для отправки сообщения по email с сылкой на обращение (appeal)
      */
     @Override
-    public void sendMessage(AppealDto appealDto){
+    public void sendMessage(AppealDto appealDto) {
         var builder = buildURI(EDO_INTEGRATION_NAME, MESSAGE_URL);
-        restTemplate.put(builder.toString(), appealDto);
+        var map = new LinkedMultiValueMap<>();
+
+        Collection<EmployeeDto> collection = appealDto.getAddressee();
+        Set<String> emails = new HashSet<>();
+        EmployeeDto employeeDto;
+
+        if (collection != null) {
+            for (EmployeeDto emp : collection) {
+                var builderEmployee = buildURI(EDO_REPOSITORY_NAME, EMPLOYEE_URL + "/" + emp.getId());
+                employeeDto = restTemplate.getForObject(builderEmployee.toString(), EmployeeDto.class);
+                emails.add(employeeDto.getEmail());
+            }
+        }
+
+        collection = appealDto.getSigner();
+        if (collection != null) {
+            for (EmployeeDto emp : collection) {
+                var builderEmployee = buildURI(EDO_REPOSITORY_NAME, EMPLOYEE_URL + "/" + emp.getId());
+                employeeDto = restTemplate.getForObject(builderEmployee.toString(), EmployeeDto.class);
+                emails.add(employeeDto.getEmail());
+            }
+        }
+
+        var builderForAppealUrl = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL + "/" + appealDto.getId());
+        map.add("appealURL",builderForAppealUrl.toString());
+        map.addAll("emails", Arrays.asList(emails.toArray(new String[0])));
+        map.add("appealNumber", appealDto.getNumber());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        var requestEntity = new HttpEntity<>(map, headers);
+
+        restTemplate.postForEntity(builder.toString(),requestEntity, Object.class);
     }
 }

@@ -4,11 +4,14 @@ import com.education.service.email.EmailService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import model.dto.AppealDto;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -18,12 +21,15 @@ public class MessageRestController {
 
     private final EmailService emailService;
 
-    @ApiOperation(value = "Отправляет письмо по почте to, с текстом text и заголовком subject")
-    @PutMapping("")
-    public void createAndSendAppealMessage(@RequestBody AppealDto appealDto) {
+    @ApiOperation(value = "Отправляет письма по почтам emails, с текстом указанием на номер обращения и адресс")
+    @PostMapping("")
+    public ResponseEntity<Object> createAndSendAppealMessage(@RequestParam("emails") Set<String> emails,
+                                                             @RequestParam("appealURL") String appealURL,
+                                                             @RequestParam("appealNumber") String appealNumber) {
         log.info("Creating and sending a message");
-        emailService.createEmail(appealDto);
+        emailService.createEmail(emails, appealURL, appealNumber);
         log.info("Messages were send");
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

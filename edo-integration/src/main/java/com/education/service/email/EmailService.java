@@ -1,7 +1,7 @@
 package com.education.service.email;
 
-import model.dto.AppealDto;
+import java.util.Set;
 
 public interface EmailService {
-    void createEmail(AppealDto appealDto);
+    void createEmail(Set<String> emails, String appealURL, String appealNumber);
 }

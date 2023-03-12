@@ -70,7 +70,7 @@ public class AppealRestController {
     public ResponseEntity<AppealDto> save(@RequestBody AppealDto appealDto) {
         log.info("Send a post-request to edo-repository to post new Appeal to database");
         appealDto = appealService.save(appealDto);
-        log.info("sending to edo-repository", appealDto);
+        log.info("Sending to edo-repository", appealDto);
         log.info("Sending a message to employees");
         appealService.sendMessage(appealDto);
         return new ResponseEntity<>(appealDto, HttpStatus.CREATED);
