@@ -28,6 +28,7 @@ import java.util.List;
 @ApiOperation("Rest-контроллер для ApprovalDto, который отправляет запросы от клиентов к сервисам edo-repository")
 public class ApprovalRestController {
     private final ApprovalService approvalService;
+
     @ApiOperation(value = "Добавляет новую запись в таблицу Approval")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApprovalDto> save(@RequestBody ApprovalDto approvalDto) {
@@ -108,5 +109,14 @@ public class ApprovalRestController {
         var listApprovalDto = approvalService.findByIdInAndArchivedDateNull(ids);
         log.info("List of approvals: {}", listApprovalDto);
         return new ResponseEntity<>(listApprovalDto, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Направляет лист согласования")
+    @PostMapping(value = "/send/{id}")
+    public ResponseEntity<ApprovalDto> sendForApproval(@PathVariable Long id) {
+        log.info("Send a post-request to update approval with id: {} from database", id);
+        approvalService.sendForApproval(id);
+        log.info("Send approval with id: {} ", id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

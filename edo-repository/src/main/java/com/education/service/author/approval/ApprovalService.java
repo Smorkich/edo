@@ -50,4 +50,9 @@ public interface ApprovalService {
      * Поиск всех листов согласования не из архива по индексам
      */
     Collection<Approval> findByIdInAndArchivedDateNull(Iterable<Long> ids);
+
+    /**
+     * Обновление листа согласования
+     */
+    Approval update(Approval approval);
 }
