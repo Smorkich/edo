@@ -2,6 +2,7 @@ package com.education.controller;
 
 import com.education.component.MinioComponent;
 
+import com.education.exceptions.MinIOPutException;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -41,18 +42,17 @@ public class MinioController {
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.TEXT_PLAIN_VALUE)
     public String uploadFileToMinIO(@RequestParam("file") MultipartFile file,
-                                                    @RequestParam("key") String key,
-                                                    @RequestParam("fileName") String fileName) {
+                                                    @RequestParam("key") String key) {
 
         String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
 
         try (var convertedFile = minioComponent.convertFileToPDF(file, extension)) {
             String contentType = minioComponent.getFileContentType(file, extension);
+            log.info("Uploading file with key: {}; And type: {}", key, contentType);
             minioComponent.postObject(
                     minioComponent.getFileName(key, extension),
                     convertedFile,
                     contentType);
-            log.info("Upload file named: {};  Type: {}; Key: {}.", fileName, contentType, key);
             return contentType;
         } catch (IOException e) {
             log.error("bed request");
@@ -100,7 +100,12 @@ public class MinioController {
     @GetMapping("/checkConnection")
     public ResponseEntity checkConnection() {
         log.info("Checking connection");
-        minioComponent.checkConnection();
+        try {
+            minioComponent.checkConnection();
+        } catch (MinIOPutException e){
+            log.warn("Connection is not established");
+            return ResponseEntity.internalServerError().body("Connection is not established. Reason: " + e.getMessage());
+        }
         log.info("Connection checked");
         return ResponseEntity.ok().body("Connection checked");
     }

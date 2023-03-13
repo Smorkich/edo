@@ -10,13 +10,12 @@ import io.minio.messages.Bucket;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.filter.MissingImageReaderException;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.graphics.color.PDDeviceRGB;
+import org.apache.pdfbox.pdmodel.graphics.image.JPEGFactory;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.docx4j.Docx4J;
 import org.docx4j.convert.out.FOSettings;
@@ -110,8 +109,10 @@ public class MinioComponent {
             log.info("Connection success, total buckets: " + blist.size());
         } catch (MinioException e) {
             log.error("Connection failed: {}", e.getMessage());
+            throw new MinIOPutException(e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
+            throw new MinIOPutException(e.getMessage());
         }
     }
 
@@ -161,10 +162,7 @@ public class MinioComponent {
             BufferedImage awtImage = readImageFile(byteStream, extension);
             byteStream.reset();
 
-            PDImageXObject pdImage = new PDImageXObject(doc, byteStream,
-                    COSName.DCT_DECODE, awtImage.getWidth(), awtImage.getHeight(),
-                    awtImage.getColorModel().getComponentSize(0),
-                    PDDeviceRGB.INSTANCE);
+            PDImageXObject pdImage = JPEGFactory.createFromImage(doc,awtImage);
 
             int width = pdImage.getWidth();
             int height = pdImage.getHeight();
@@ -172,13 +170,12 @@ public class MinioComponent {
             PDPage myPage = new PDPage(new PDRectangle(width, height));
             doc.addPage(myPage);
 
-            float offset = 20f;
-
-            try (PDPageContentStream cont = new PDPageContentStream(doc, myPage)) {
-                cont.drawImage(pdImage, offset, offset, width, height);
+            try (PDPageContentStream cont = new PDPageContentStream(doc, myPage, PDPageContentStream.AppendMode.APPEND, true, true)) {
+                cont.drawImage(pdImage, 0, 0);
             }
 
             doc.save(bos);
+            doc.close();
             return new ByteArrayInputStream(bos.toByteArray());
         } catch (IOException e) {
             log.error("Convert image to PDF failed. File name: {}", file.getOriginalFilename());
