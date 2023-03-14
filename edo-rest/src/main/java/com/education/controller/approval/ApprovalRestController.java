@@ -1,5 +1,6 @@
 package com.education.controller.approval;
 
+import com.education.publisher.ApprovalPublisher;
 import com.education.service.approval.ApprovalService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -31,14 +32,13 @@ import java.util.List;
 @ApiOperation("Rest-контроллер для ApprovalDto, который отправляет запросы от клиентов к сервисам edo-service")
 public class ApprovalRestController {
     private final ApprovalService approvalService;
+    private final ApprovalPublisher approvalPublisher;
 
     @ApiOperation(value = "Добавляет новую запись в таблицу Approval")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApprovalDto> save(@RequestBody ApprovalDto approvalDto) {
+    public void save(@RequestBody ApprovalDto approvalDto) {
         log.info("Send a post-request to post new Approval to database");
-        ApprovalDto savedApproval = approvalService.save(approvalDto);
-        log.info("Response: {} was added to database", approvalDto);
-        return new ResponseEntity<>(savedApproval, HttpStatus.CREATED);
+        approvalPublisher.save(approvalDto);
     }
 
     @ApiOperation(value = "Возвращает лист согласования по id")
