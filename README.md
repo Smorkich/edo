@@ -18,6 +18,7 @@
     - [Spring Boot Dev Tools](#Spring-Boot-Dev-Tools)
     - [Настройка файлового хранилища](#настройка-файлового-хранилища)
     - [Flyway](#flyway)
+    - [RabbitMQ](#rabbitmq)
 
 [//]: # (    - [Аутентификация]&#40;#аутентификация&#41;)
 
@@ -458,3 +459,104 @@ https://hub.docker.com/r/minio/minio
 
 5. Если миграция некорректно накатилась, то необходимо руками удалить внесенные изменения и удалить запись в
    таблице <code>flyway_schema_history</code> после чего исправить скрипт
+
+### RabbitMQ
+
+RabbtiMQ - брокер сообщений, позволяющий создать асинхронный обмен сообщениями на основе очередей. Основные понятия:
+- Publisher — публикует сообщения в Rabbit;
+- Queue — очередь для хранения сообщений;
+- Listener — подписывается на очередь и получает от Rabbit сообщения.
+
+#### Установка RabbitMQ
+
+Для работы с RabbitMQ он должен быть установлен локально, либо в Docker. Рекомендуется использовать Docker, т.к. установка более простая и быстрая. Для этого в командной строке или терминале IDE достаточно выполнить команду:
+
+`docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.11-management`
+
+При успешной установке выведется "Server startup complete" и установленные плагины:
+
+>2023-03-14 19:19:58.678534+00:00 [info] <0.730.0> Server startup complete; 4 plugins started.\
+>2023-03-14 19:19:58.678534+00:00 [info] <0.730.0>  * rabbitmq_prometheus\
+>2023-03-14 19:19:58.678534+00:00 [info] <0.730.0>  * rabbitmq_management\
+>2023-03-14 19:19:58.678534+00:00 [info] <0.730.0>  * rabbitmq_web_dispatch\
+>2023-03-14 19:19:58.678534+00:00 [info] <0.730.0>  * rabbitmq_management_agent
+
+Management Plugin предоставляет UI в браузере.
+Открыть веб-интерфейс можно по ссылке <http://localhost:15672> по умолчанию логин и пароль guest
+
+Официальный гайд по установке: <https://www.rabbitmq.com/download.html>
+
+#### Интеграция RabbitMQ и Spring Boot
+1. Добавить зависимость в POM файл
+```xml
+<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+</dependency> 
+```
+2. Создать конфигурационный файл в пакете config
+```java
+@EnableRabbit
+@Configuration
+public class RabbitConfig {
+
+    @Bean
+    public SimpleRabbitListenerContainerFactory
+    rabbitListenerContainerFactory (ConnectionFactory connectionFactory) {
+        SimpleRabbitListenerContainerFactory factory = new
+                SimpleRabbitListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setMessageConverter(new Jackson2JsonMessageConverter());
+        return factory;
+    }
+
+    @Bean
+    public ConnectionFactory connectionFactory() {
+        return new CachingConnectionFactory("localhost");
+    }
+
+    @Bean
+    public AmqpAdmin amqpAdmin() {
+        return new RabbitAdmin(connectionFactory());
+    }
+
+    @Bean
+    public RabbitTemplate rabbitTemplate() {
+        return new RabbitTemplate(connectionFactory());
+    }
+
+    @Bean
+    public Queue queue() {
+        return new Queue("queue");
+    }
+}
+```
+3. Создать Publisher в пакете publisher
+```java
+@Component
+@AllArgsConstructor
+public class ApprovalPublisher {
+
+    private final RabbitTemplate rabbitTemplate;
+
+    public void save(ApprovalDto approvalDto) {
+        rabbitTemplate.convertAndSend("queue", approvalDto);
+    }
+}
+```
+4. Создать Listener в пакете listener
+```java
+@Component
+@AllArgsConstructor
+public class ApprovalListener {
+    
+    private final ApprovalService approvalService;
+
+    @RabbitListener(queues = "queue")
+    public void process(ApprovalDto approvalDto) {
+        approvalService.save(approvalDto);
+    }
+}
+```
+Название очереди ("queue") должно совпадать с названием очереди в методе convertAndSend() Publisher`a
+
