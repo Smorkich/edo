@@ -107,8 +107,8 @@ public class Employee extends BaseEntity {
     /**
     * notification - Настройки оповещения для пользователя
     */
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "notification_id")
-    @OneToOne
     private Notification notification;
 
     /**
