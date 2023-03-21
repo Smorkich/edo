@@ -22,6 +22,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 
 import static model.constant.Constant.EDO_REPOSITORY_NAME;
@@ -62,9 +63,8 @@ public class ApprovalServiceImpl implements ApprovalService {
             Collection<ApprovalBlockDto> signatoryApprovalBlocks = approvalDto.getSignatoryApprovalBlocks();
 
 
-
             // Сохранение инициатора
-            if (approvalDto.getInitiator()==null) {
+            if (approvalDto.getInitiator() == null) {
                 approvalDto.setInitiator(memberService.save(MemberDto.builder()
                         // Заменить на нормальный метод получения текущего пользователя, после написания security!!!
                         .employee(getCurrentUser())
@@ -195,5 +195,43 @@ public class ApprovalServiceImpl implements ApprovalService {
      */
     private EmployeeDto getCurrentUser() {
         return employeeService.findById(1L);
+    }
+
+    /**
+     * Отправляет post-запрос в edo-repository для обновления листа согласования
+     */
+    @Override
+    public ApprovalDto update(ApprovalDto approvalDto) {
+        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/update").toString();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(approvalDto, headers), ApprovalDto.class).getBody();
+    }
+
+    /**
+     * Направляет лист согласования
+     */
+    @Override
+    public void sendForApproval(Long id) {
+        ApprovalDto approval = findByIdNotArchived(id);
+
+        if (approval.getDateSentForApproval() == null) {
+            //Устанавливает дату направления
+            approval.setDateSentForApproval(ZonedDateTime.now());
+
+            //устанавливает первого учаcтника первого блока согласующих
+            ApprovalBlockDto firstParticipantBlock = approval.getParticipantApprovalBlocks()
+                    .stream()
+                    .min(Comparator.comparingInt(ApprovalBlockDto::getOrdinalNumber))
+                    .get();
+            MemberDto currentMember = firstParticipantBlock.getParticipants()
+                    .stream()
+                    .min(Comparator.comparingInt(MemberDto::getOrdinalNumber))
+                    .get();
+            approval.setCurrentMember(currentMember);
+
+            update(approval);
+        }
     }
 }

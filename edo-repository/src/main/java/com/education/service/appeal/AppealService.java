@@ -1,6 +1,7 @@
 package com.education.service.appeal;
 
 import com.education.entity.Appeal;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 
@@ -43,4 +44,9 @@ public interface AppealService {
      * Нахождение всех обращений не из архива
      */
     Collection<Appeal> findAllNotArchived();
+
+    /**
+     * Нахождение обращения по Questions id
+     */
+    Appeal findAppealByQuestionsId(Long id);
 }

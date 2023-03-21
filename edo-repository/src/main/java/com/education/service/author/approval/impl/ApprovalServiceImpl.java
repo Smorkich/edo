@@ -1,9 +1,10 @@
-package com.education.service.approval.impl;
+package com.education.service.author.approval.impl;
 
 import com.education.entity.Approval;
+import com.education.repository.appeal.AppealRepository;
 import com.education.repository.approval.ApprovalRepository;
 import com.education.repository.member.MemberRepository;
-import com.education.service.approval.ApprovalService;
+import com.education.service.author.approval.ApprovalService;
 import com.education.service.approvalBlock.ApprovalBlockService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class ApprovalServiceImpl implements ApprovalService {
     private final ApprovalRepository approvalRepository;
     private final ApprovalBlockService approvalBlockService;
     private final MemberRepository memberRepository;
+    private final AppealRepository appealRepository;
 
     /**
      * Метод принимает сущность Approval и сохраняет её в БД
@@ -112,5 +114,16 @@ public class ApprovalServiceImpl implements ApprovalService {
     @Override
     public Collection<Approval> findByIdInAndArchivedDateNull(Iterable<Long> ids) {
         return approvalRepository.findByIdInAndArchivedDateNull(ids);
+    }
+
+    /**
+     * Метод принимает сущность Approval и обновляет её в БД
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Approval update(Approval approval) {
+        //Устанавливает статус у обращения "На рассмотрении", если он в статусе "новое"
+        appealRepository.setStatusUnderConsideration(approval.getAppeal().getId());
+        return approvalRepository.save(approval);
     }
 }

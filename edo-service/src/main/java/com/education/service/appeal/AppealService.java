@@ -45,4 +45,6 @@ public interface AppealService {
     Collection<AppealDto> findAllNotArchived();
 
     public void sendMessage(AppealDto appealDto);
+
+    AppealDto findAppealByQuestionsId(Long id);
 }

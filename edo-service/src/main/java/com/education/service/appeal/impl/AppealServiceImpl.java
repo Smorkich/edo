@@ -4,10 +4,12 @@ import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
 import com.education.service.filePool.FilePoolService;
 import com.education.service.question.QuestionService;
+import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import model.dto.*;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -29,6 +31,7 @@ import static model.enum_.Status.NEW_STATUS;
 public class AppealServiceImpl implements AppealService {
 
     private final RestTemplate restTemplate;
+
     private final AuthorService authorService;
     private final QuestionService questionService;
     private final FilePoolService filePoolService;
@@ -60,9 +63,10 @@ public class AppealServiceImpl implements AppealService {
     @Override
     public AppealDto save(AppealDto appealDto) {
         // Назначения статуса и времени создания
-        appealDto.setAppealsStatus(NEW_STATUS);
-        appealDto.setCreationDate(ZonedDateTime.now());
-
+        if(appealDto.getAppealsStatus()==null) {
+            appealDto.setAppealsStatus(NEW_STATUS);
+            appealDto.setCreationDate(ZonedDateTime.now());
+        }
         // Списки, которые хранят, новые сущности
         List<AuthorDto> savedAuthors = new ArrayList<>();
         List<QuestionDto> savedQuestions = new ArrayList<>();
@@ -102,13 +106,11 @@ public class AppealServiceImpl implements AppealService {
                     })
                     .collect(Collectors.toList()));
 
-
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
             var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL);
 
             return restTemplate.postForObject(builder.toString(), appealDto, AppealDto.class);
-//            return restTemplate.getForObject(builder.toString(), AppealDto.class);
         } catch (Exception e) {
 
             // Удаление сохранённых вложенных сущностей
@@ -213,4 +215,15 @@ public class AppealServiceImpl implements AppealService {
 
         restTemplate.postForEntity(builder.toString(),requestEntity, Object.class);
     }
+
+    /**
+     * Метод достает Appeal по Questions id
+     */
+    @Override
+    public AppealDto findAppealByQuestionsId(Long id){
+        String URL = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "api/repository/appeal/findAppealByQuestionsId/"+ id).toString();
+        return restTemplate.getForObject(URL, AppealDto.class);
+
+    }
+
 }

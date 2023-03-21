@@ -2,6 +2,7 @@ package com.education.repository.appeal;
 
 import com.education.entity.Appeal;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -45,5 +46,15 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
     @Query(nativeQuery = true, value = "SELECT * FROM Appeal WHERE id = :aLong")
     Optional<Appeal> findById(Long aLong);
 
+    /**
+     * Метод достает Appeal по Questions id
+     */
+    Optional<Appeal> findAppealByQuestionsId(@Param("id") Long id);
+    /**
+     * изменяет статус обращения на "на рассмотрении"
+     */
+    @Modifying
+    @Query(nativeQuery = true, value = "update Appeal set appeals_status = 'UNDER_CONSIDERATION' where id =:id and appeals_status = 'NEW_STATUS'")
+    void setStatusUnderConsideration(@Param("id") Long id);
 }
 
