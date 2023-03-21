@@ -32,6 +32,5 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     Employee findByExternalId(String externalId);
 
     @Override
-    @Query(nativeQuery = true, value = "SELECT * FROM employee WHERE id = :aLong")
     Optional<Employee> findById(Long aLong);
 }

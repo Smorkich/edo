@@ -105,13 +105,6 @@ public class Employee extends BaseEntity {
     private String username;
 
     /**
-    * notification - Настройки оповещения для пользователя
-    */
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "notification_id")
-    private Notification notification;
-
-    /**
      * creationDate - Дата создания
      */
     @Column(name = "creation_date")

@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import model.dto.*;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -174,44 +173,28 @@ public class AppealServiceImpl implements AppealService {
     }
 
     /**
-     * По принятому обращению берет почты addressee и signer и
-     * передает их дальше для отправки сообщения по email с сылкой на обращение (appeal)
+     * По принятому обращению формирует valueMapForSendingObjects для отправки на
+     * EDO_INTEGRATION для последующей рассылки сообщений
      */
     @Override
     public void sendMessage(AppealDto appealDto) {
         var builder = buildURI(EDO_INTEGRATION_NAME, MESSAGE_URL);
-        var map = new LinkedMultiValueMap<>();
+        var valueMapForSendingObjects = new LinkedMultiValueMap<>();
 
-        Collection<EmployeeDto> collection = appealDto.getAddressee();
         Set<String> emails = new HashSet<>();
-        EmployeeDto employeeDto;
 
-        if (collection != null) {
-            for (EmployeeDto emp : collection) {
-                var builderEmployee = buildURI(EDO_REPOSITORY_NAME, EMPLOYEE_URL + "/" + emp.getId());
-                employeeDto = restTemplate.getForObject(builderEmployee.toString(), EmployeeDto.class);
-                emails.add(employeeDto.getEmail());
-            }
-        }
-
-        collection = appealDto.getSigner();
-        if (collection != null) {
-            for (EmployeeDto emp : collection) {
-                var builderEmployee = buildURI(EDO_REPOSITORY_NAME, EMPLOYEE_URL + "/" + emp.getId());
-                employeeDto = restTemplate.getForObject(builderEmployee.toString(), EmployeeDto.class);
-                emails.add(employeeDto.getEmail());
-            }
-        }
+        addEmployeesEmails(emails,appealDto.getAddressee());
+        addEmployeesEmails(emails,appealDto.getSigner());
 
         var builderForAppealUrl = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL + "/" + appealDto.getId());
-        map.add("appealURL",builderForAppealUrl.toString());
-        map.addAll("emails", Arrays.asList(emails.toArray(new String[0])));
-        map.add("appealNumber", appealDto.getNumber());
+        valueMapForSendingObjects.add("appealURL",builderForAppealUrl.toString());
+        valueMapForSendingObjects.addAll("emails", Arrays.asList(emails.toArray(new String[0])));
+        valueMapForSendingObjects.add("appealNumber", appealDto.getNumber());
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        var requestEntity = new HttpEntity<>(map, headers);
+        var requestEntity = new HttpEntity<>(valueMapForSendingObjects, headers);
 
         restTemplate.postForEntity(builder.toString(),requestEntity, Object.class);
     }
@@ -224,6 +207,20 @@ public class AppealServiceImpl implements AppealService {
         String URL = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "api/repository/appeal/findAppealByQuestionsId/"+ id).toString();
         return restTemplate.getForObject(URL, AppealDto.class);
 
+    }
+
+    /**
+     * Метод достает emails из коллекции EmployeeDto
+     */
+    private void addEmployeesEmails(Set<String> emails, Collection<EmployeeDto> employees){
+        EmployeeDto employeeDto;
+        if (employees != null) {
+            for (EmployeeDto emp : employees) {
+                var builderEmployee = buildURI(EDO_REPOSITORY_NAME, EMPLOYEE_URL + "/" + emp.getId());
+                employeeDto = restTemplate.getForObject(builderEmployee.toString(), EmployeeDto.class);
+                emails.add(employeeDto.getEmail());
+            }
+        }
     }
 
 }

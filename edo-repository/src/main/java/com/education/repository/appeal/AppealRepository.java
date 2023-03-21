@@ -43,7 +43,6 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
 
 
     @Override
-    @Query(nativeQuery = true, value = "SELECT * FROM Appeal WHERE id = :aLong")
     Optional<Appeal> findById(Long aLong);
 
     /**
