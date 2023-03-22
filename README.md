@@ -464,8 +464,9 @@ https://hub.docker.com/r/minio/minio
 
 RabbtiMQ - брокер сообщений, позволяющий создать асинхронный обмен сообщениями на основе очередей. Основные понятия:
 - Publisher — публикует сообщения в Rabbit;
-- Queue — очередь для хранения сообщений;
-- Listener — подписывается на очередь и получает от Rabbit сообщения.
+- Queue (очередь) — контейнер для хранения сообщений;
+- Listener — подписывается на очередь и получает от RabbitMQ сообщения;
+- Message (сообщение) -  инкапсулирует в себе передаваемые данные (например, JSON) и дополнительные свойства для RabbitMQ.
 
 #### Установка RabbitMQ
 
@@ -482,27 +483,37 @@ RabbtiMQ - брокер сообщений, позволяющий создат�
 >2023-03-14 19:19:58.678534+00:00 [info] <0.730.0>  * rabbitmq_management_agent
 
 Management Plugin предоставляет UI в браузере.
-Открыть веб-интерфейс можно по ссылке <http://localhost:15672> по умолчанию логин и пароль guest
+Открыть веб-интерфейс можно по ссылке <http://localhost:15672> по умолчанию логин и пароль guest/guest
 
 Официальный гайд по установке: <https://www.rabbitmq.com/download.html>
 
 #### Интеграция RabbitMQ и Spring Boot
-1. Добавить зависимость в POM файл
+1. Убедиться, что имеется зависимость в POM файле
 ```xml
 <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-amqp</artifactId>
 </dependency> 
 ```
-2. Создать конфигурационный файл в пакете config
+2. В классе Constant модуля edo-common создать константу с именем очереди
+```java
+public static final String REST_TO_SERVICE_APPROVAL_QUEUE = "RestToServiceApprovalQueue";
+```
+3. Создать в конфигурационном файле бин очереди, используя константу (через статический импорт)
 ```java
 @EnableRabbit
 @Configuration
 public class RabbitConfig {
 
+    @Value("${spring.rabbitmq.host}")
+    private String host;
+
+    @Value("${spring.rabbitmq.port}")
+    private Integer port;
+
     @Bean
     public SimpleRabbitListenerContainerFactory
-    rabbitListenerContainerFactory (ConnectionFactory connectionFactory) {
+    rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new
                 SimpleRabbitListenerContainerFactory();
         factory.setConnectionFactory(connectionFactory);
@@ -512,7 +523,7 @@ public class RabbitConfig {
 
     @Bean
     public ConnectionFactory connectionFactory() {
-        return new CachingConnectionFactory("localhost");
+        return new CachingConnectionFactory(host, port);
     }
 
     @Bean
@@ -527,11 +538,11 @@ public class RabbitConfig {
 
     @Bean
     public Queue queue() {
-        return new Queue("queue");
+        return new Queue(REST_TO_SERVICE_APPROVAL_QUEUE);
     }
 }
 ```
-3. Создать Publisher в пакете publisher
+4. Создать Publisher в пакете publisher (используем также константу с именем очереди)
 ```java
 @Component
 @AllArgsConstructor
@@ -539,12 +550,12 @@ public class ApprovalPublisher {
 
     private final RabbitTemplate rabbitTemplate;
 
-    public void save(ApprovalDto approvalDto) {
-        rabbitTemplate.convertAndSend("queue", approvalDto);
+    public void produce(ApprovalDto approvalDto) {
+       rabbitTemplate.convertAndSend(REST_TO_SERVICE_APPROVAL_QUEUE, approvalDto);
     }
 }
 ```
-4. Создать Listener в пакете listener
+5. Создать Listener в пакете listener (используем также константу с именем очереди)
 ```java
 @Component
 @AllArgsConstructor
@@ -552,11 +563,11 @@ public class ApprovalListener {
     
     private final ApprovalService approvalService;
 
-    @RabbitListener(queues = "queue")
-    public void process(ApprovalDto approvalDto) {
+    @RabbitListener(queues = REST_TO_SERVICE_APPROVAL_QUEUE)
+    public void receive(ApprovalDto approvalDto) {
         approvalService.save(approvalDto);
     }
 }
 ```
-Название очереди ("queue") должно совпадать с названием очереди в методе convertAndSend() Publisher`a
+
 

@@ -38,7 +38,7 @@ public class ApprovalRestController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public void save(@RequestBody ApprovalDto approvalDto) {
         log.info("Send a post-request to post new Approval to database");
-        approvalPublisher.save(approvalDto);
+        approvalPublisher.produce(approvalDto);
     }
 
     @ApiOperation(value = "Возвращает лист согласования по id")
