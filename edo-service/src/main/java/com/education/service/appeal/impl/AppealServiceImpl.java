@@ -41,9 +41,7 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public AppealDto findById(Long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
-                .setPath("/")
-                .setPath(String.valueOf(id));
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL + "/" + id);
         return restTemplate.getForObject(builder.toString(), AppealDto.class);
     }
 
@@ -62,7 +60,7 @@ public class AppealServiceImpl implements AppealService {
     @Override
     public AppealDto save(AppealDto appealDto) {
         // Назначения статуса и времени создания
-        if(appealDto.getAppealsStatus()==null) {
+        if (appealDto.getAppealsStatus() == null) {
             appealDto.setAppealsStatus(NEW_STATUS);
             appealDto.setCreationDate(ZonedDateTime.now());
         }
@@ -183,11 +181,11 @@ public class AppealServiceImpl implements AppealService {
 
         Set<String> emails = new HashSet<>();
 
-        addEmployeesEmails(emails,appealDto.getAddressee());
-        addEmployeesEmails(emails,appealDto.getSigner());
+        addEmployeesEmails(emails, appealDto.getAddressee());
+        addEmployeesEmails(emails, appealDto.getSigner());
 
         var builderForAppealUrl = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL + "/" + appealDto.getId());
-        valueMapForSendingObjects.add("appealURL",builderForAppealUrl.toString());
+        valueMapForSendingObjects.add("appealURL", builderForAppealUrl.toString());
         valueMapForSendingObjects.addAll("emails", Arrays.asList(emails.toArray(new String[0])));
         valueMapForSendingObjects.add("appealNumber", appealDto.getNumber());
 
@@ -196,15 +194,15 @@ public class AppealServiceImpl implements AppealService {
 
         var requestEntity = new HttpEntity<>(valueMapForSendingObjects, headers);
 
-        restTemplate.postForEntity(builder.toString(),requestEntity, Object.class);
+        restTemplate.postForEntity(builder.toString(), requestEntity, Object.class);
     }
 
     /**
      * Метод достает Appeal по Questions id
      */
     @Override
-    public AppealDto findAppealByQuestionsId(Long id){
-        String URL = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "api/repository/appeal/findAppealByQuestionsId/"+ id).toString();
+    public AppealDto findAppealByQuestionsId(Long id) {
+        String URL = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "api/repository/appeal/findAppealByQuestionsId/" + id).toString();
         return restTemplate.getForObject(URL, AppealDto.class);
 
     }
@@ -212,7 +210,7 @@ public class AppealServiceImpl implements AppealService {
     /**
      * Метод достает emails из коллекции EmployeeDto
      */
-    private void addEmployeesEmails(Set<String> emails, Collection<EmployeeDto> employees){
+    private void addEmployeesEmails(Set<String> emails, Collection<EmployeeDto> employees) {
         EmployeeDto employeeDto;
         if (employees != null) {
             for (EmployeeDto emp : employees) {
