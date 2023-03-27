@@ -18,6 +18,7 @@
     - [Spring Boot Dev Tools](#Spring-Boot-Dev-Tools)
     - [Настройка файлового хранилища](#настройка-файлового-хранилища)
     - [Flyway](#flyway)
+    - [RabbitMQ](#rabbitmq)
 
 [//]: # (    - [Аутентификация]&#40;#аутентификация&#41;)
 
@@ -458,3 +459,115 @@ https://hub.docker.com/r/minio/minio
 
 5. Если миграция некорректно накатилась, то необходимо руками удалить внесенные изменения и удалить запись в
    таблице <code>flyway_schema_history</code> после чего исправить скрипт
+
+### RabbitMQ
+
+RabbtiMQ - брокер сообщений, позволяющий создать асинхронный обмен сообщениями на основе очередей. Основные понятия:
+- Publisher — публикует сообщения в Rabbit;
+- Queue (очередь) — контейнер для хранения сообщений;
+- Listener — подписывается на очередь и получает от RabbitMQ сообщения;
+- Message (сообщение) -  инкапсулирует в себе передаваемые данные (например, JSON) и дополнительные свойства для RabbitMQ.
+
+#### Установка RabbitMQ
+
+Для работы с RabbitMQ он должен быть установлен локально, либо в Docker. Рекомендуется использовать Docker, т.к. установка более простая и быстрая. Для этого в командной строке или терминале IDE достаточно выполнить команду:
+
+`docker run -it --rm --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3.11-management`
+
+При успешной установке выведется "Server startup complete" и установленные плагины:
+
+>2023-03-14 19:19:58.678534+00:00 [info] <0.730.0> Server startup complete; 4 plugins started.\
+>2023-03-14 19:19:58.678534+00:00 [info] <0.730.0>  * rabbitmq_prometheus\
+>2023-03-14 19:19:58.678534+00:00 [info] <0.730.0>  * rabbitmq_management\
+>2023-03-14 19:19:58.678534+00:00 [info] <0.730.0>  * rabbitmq_web_dispatch\
+>2023-03-14 19:19:58.678534+00:00 [info] <0.730.0>  * rabbitmq_management_agent
+
+Management Plugin предоставляет UI в браузере.
+Открыть веб-интерфейс можно по ссылке <http://localhost:15672> по умолчанию логин и пароль guest/guest
+
+Официальный гайд по установке: <https://www.rabbitmq.com/download.html>
+
+#### Интеграция RabbitMQ и Spring Boot
+1. Убедиться, что имеется зависимость в POM файле
+```xml
+<dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-amqp</artifactId>
+</dependency> 
+```
+2. В классе Constant модуля edo-common создать константу с именем очереди
+```java
+public static final String REST_TO_SERVICE_APPROVAL_QUEUE = "RestToServiceApprovalQueue";
+```
+3. Создать в конфигурационном файле бин очереди, используя константу (через статический импорт)
+```java
+@EnableRabbit
+@Configuration
+public class RabbitConfig {
+
+    @Value("${spring.rabbitmq.host}")
+    private String host;
+
+    @Value("${spring.rabbitmq.port}")
+    private Integer port;
+
+    @Bean
+    public SimpleRabbitListenerContainerFactory
+    rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
+        SimpleRabbitListenerContainerFactory factory = new
+                SimpleRabbitListenerContainerFactory();
+        factory.setConnectionFactory(connectionFactory);
+        factory.setMessageConverter(new Jackson2JsonMessageConverter());
+        return factory;
+    }
+
+    @Bean
+    public ConnectionFactory connectionFactory() {
+        return new CachingConnectionFactory(host, port);
+    }
+
+    @Bean
+    public AmqpAdmin amqpAdmin() {
+        return new RabbitAdmin(connectionFactory());
+    }
+
+    @Bean
+    public RabbitTemplate rabbitTemplate() {
+        return new RabbitTemplate(connectionFactory());
+    }
+
+    @Bean
+    public Queue queue() {
+        return new Queue(REST_TO_SERVICE_APPROVAL_QUEUE);
+    }
+}
+```
+4. Создать Publisher в пакете publisher (используем также константу с именем очереди)
+```java
+@Component
+@AllArgsConstructor
+public class ApprovalPublisher {
+
+    private final RabbitTemplate rabbitTemplate;
+
+    public void produce(ApprovalDto approvalDto) {
+       rabbitTemplate.convertAndSend(REST_TO_SERVICE_APPROVAL_QUEUE, approvalDto);
+    }
+}
+```
+5. Создать Listener в пакете listener (используем также константу с именем очереди)
+```java
+@Component
+@AllArgsConstructor
+public class ApprovalListener {
+    
+    private final ApprovalService approvalService;
+
+    @RabbitListener(queues = REST_TO_SERVICE_APPROVAL_QUEUE)
+    public void receive(ApprovalDto approvalDto) {
+        approvalService.save(approvalDto);
+    }
+}
+```
+
+
