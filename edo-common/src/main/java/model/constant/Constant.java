@@ -23,4 +23,5 @@ public class Constant {
     public static final String EMPLOYEE_FIO_SEARCH_PARAMETER = "fullName";
     public static final String EDO_FILE_STORAGE_NAME = "edo-file-storage";
     public static final String NOTIFICATION_URL = "api/repository/notification";
+    public static final String REGION_URL = "api/repository/region";
 }

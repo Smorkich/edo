@@ -127,4 +127,10 @@ public class Appeal extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "filepool_id", referencedColumnName = "id"))
     private Collection<FilePool> file = new HashSet<>();
 
+    /**
+     * привязка обращения к определенному региону
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "region_id", referencedColumnName = "id")
+    private Region region;
 }
