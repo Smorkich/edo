@@ -1,6 +1,7 @@
 package com.education.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import model.enum_.Employment;
@@ -51,12 +52,16 @@ public class Author extends BaseEntity {
      * Поле "mobilePhone" - номер телефона автора (мобильный)
      */
     @Column(name = "mobile_phone")
+    //@Pattern(regexp = "/^(\\+?\\d{1,4}[\\s-])?(?!0+\\s+,?$)\\d{10}\\s*,?$")
     private String mobilePhone;
 
     /**
      * Поле "email" - адрес электронной почты автора
      */
     @Column(name = "email")
+    /*@Pattern(regexp = "[a-zA-Z0-9+._%-+]{1,256}" + "@"
+            + "[a-zA-Z0-9][a-zA-Z0-9-]{0,64}" + "(" + "."
+            + "[a-zA-Z0-9][a-zA-Z0-9-]{0,25}" + ")+")*/
     private String email;
 
     /**
