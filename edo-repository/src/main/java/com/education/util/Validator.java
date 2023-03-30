@@ -1,26 +1,23 @@
 package com.education.util;
 
 
-import com.education.entity.Appeal;
-import com.education.entity.Question;
+
 import model.dto.AppealDto;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 /**
  * Проверяет Appeal
  */
 public class Validator {
     // Проверка поля appeal на наличие question
-    public static boolean validateAppeal(AppealDto appeal) {
+    public static String getValidateAppeal(AppealDto appeal) {
         List<String> err = new ArrayList<>();
         if (appeal.getQuestions().size() > 0) {
-            /*appeal.getQuestions().stream()
-                    .filter(x -> x.getSummary() != null && x.getTheme() != null)
-                    .filter(x -> x.getSummary().length() <= 200)
-                    .collect(Collectors.toList());*/
             appeal.getQuestions().forEach(question -> {
                 if (question.getTheme() == null) {
                     err.add(String.format("Appeal with ID %s has question with ID %s where Theme is null",
@@ -56,15 +53,45 @@ public class Validator {
                     err.add(String.format("Appeal with ID %s has author with ID %s where lastName has length more then 60 symbols",
                             appeal.getId(), author.getId()));
                 }
+                if (author.getEmail() == null) {
+                    err.add(String.format("Appeal with ID %s has author with ID %s where email is null",
+                            appeal.getId(), author.getId()));
+                } else {
+                    String emailRegex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$"/*"[a-zA-Z0-9+._%-+]{1,256}" + "@"
+                            + "[a-zA-Z0-9][a-zA-Z0-9-]{0,64}" + "(" + "."
+                            + "[a-zA-Z0-9][a-zA-Z0-9-]{0,25}" + ")+"*/;
+
+                    Pattern emailPattern = Pattern.compile(emailRegex);
+
+                    Matcher emailMatcher = emailPattern.matcher(author.getEmail());
+
+                    if (!emailMatcher.matches()) {
+                        System.out.println("Email is not valid");
+                        err.add(String.format("Appeal with ID %s has author with ID %s with Email is not valid",
+                                appeal.getId(), author.getId()));
+                    }
+                }
                 if (author.getMobilePhone() == null) {
                     err.add(String.format("Appeal with ID %s has author with ID %s where mobilePhone is null",
                             appeal.getId(), author.getId()));
+                } else {
+                    String phoneRegex = "/^(\\+?\\d{1,4}[\\s-])?(?!0+\\s+,?$)\\d{10}\\s*,?$";
+
+                    Pattern phonePattern = Pattern.compile(phoneRegex);
+
+                    Matcher phoneMatcher = phonePattern.matcher(author.getMobilePhone());
+
+                    if (!phoneMatcher.matches()) {
+                        System.out.println("Email is not valid");
+                        err.add(String.format("Appeal with ID %s has author with ID %s with mobilePhone is not valid",
+                                appeal.getId(), author.getId()));
+                    }
                 }
             });
         }
         if (!err.isEmpty()) {
             System.out.println(err);
         }
-        return err.isEmpty();
+        return err.toString();
     }
 }

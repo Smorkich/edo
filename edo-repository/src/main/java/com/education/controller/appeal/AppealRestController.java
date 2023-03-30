@@ -1,11 +1,16 @@
 package com.education.controller.appeal;
 
 import com.education.entity.Appeal;
+import com.education.exception_handling.AppealCustomException;
+import com.education.exception_handling.AppealIncorrectData;
 import com.education.service.appeal.AppealService;
+import com.education.util.Validator;
 import io.swagger.annotations.ApiOperation;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.AppealDto;
+import org.hsqldb.lib.AppendableException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -76,10 +81,14 @@ public class AppealRestController {
     @ApiOperation(value = "Добавляет новую строку таблицы Appeal", notes = "Строка в Appeal должна существовать")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> saveAppeal(@RequestBody AppealDto appealDto) {
-        log.info("Creating appeal");
-        var appeal = appealService.save(APPEAL_MAPPER.toEntity(appealDto));
-        log.info("Creating appeal {}, success!", appeal);
-        return new ResponseEntity<>(APPEAL_MAPPER.toDto(appealService.findById(appeal.getId())), HttpStatus.CREATED);
+        if (Validator.getValidateAppeal(appealDto).equals("")) {
+            log.info("Creating appeal");
+            var appeal = appealService.save(APPEAL_MAPPER.toEntity(appealDto));
+            log.info("Creating appeal {}, success!", appeal);
+            return new ResponseEntity<>(APPEAL_MAPPER.toDto(appealService.findById(appeal.getId())), HttpStatus.CREATED);
+        } else {
+            throw new AppealCustomException(Validator.getValidateAppeal(appealDto));
+        }
     }
 
     @ApiOperation(value = "Находит строку таблицы Appeal по id",
@@ -100,5 +109,11 @@ public class AppealRestController {
         var appeal = appealService.findAppealByQuestionsId(id);
         log.info("Appeal: {}", appeal);
         return new ResponseEntity<>(APPEAL_MAPPER.toDto(appeal), HttpStatus.OK);
+    }
+    @ExceptionHandler
+    public ResponseEntity<AppealIncorrectData> handleException (AppealCustomException exception) {
+        AppealIncorrectData appealIncorrectData = new AppealIncorrectData();
+        appealIncorrectData.setInfo(exception.getMessage());
+        return new ResponseEntity<>(appealIncorrectData, HttpStatus.BAD_REQUEST);
     }
 }
