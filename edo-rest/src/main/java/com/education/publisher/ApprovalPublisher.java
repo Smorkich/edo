@@ -23,8 +23,8 @@ public class ApprovalPublisher {
      * @param approvalDto - объект ApprovalDto, который будет помещен в очередь
      */
     public void produce(ApprovalDto approvalDto) {
-        log.info("Publish to queue \"REST_TO_SERVICE_APPROVAL_QUEUE\" {}", approvalDto);
+        log.info("Publish to approvalQueue \"REST_TO_SERVICE_APPROVAL_QUEUE\" {}", approvalDto);
         rabbitTemplate.convertAndSend(REST_TO_SERVICE_APPROVAL_QUEUE, approvalDto);
-        log.info("Added to the queue \"REST_TO_SERVICE_APPROVAL_QUEUE\" {}", approvalDto);
+        log.info("Added to the approvalQueue \"REST_TO_SERVICE_APPROVAL_QUEUE\" {}", approvalDto);
     }
 }

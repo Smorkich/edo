@@ -1,5 +1,6 @@
 package com.education.config;
 
+import model.constant.Constant;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
@@ -41,7 +42,12 @@ public class RabbitConfig {
     }
 
     @Bean
-    public Queue queue() {
-        return new Queue("queue");
+    public Queue approvalQueue() {
+        return new Queue(Constant.REST_TO_SERVICE_APPROVAL_QUEUE);
     }
+    @Bean
+    public Queue recognitionQueue() {
+        return new Queue(Constant.FILE_RECOGNITION_START);
+    }
+
 }
