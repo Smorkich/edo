@@ -432,7 +432,7 @@ https://hub.docker.com/r/minio/minio
 >http://localhost:../api/rest/minio/download/(название файла в формате UUID)?type=docx
 3)	**delete** (удаление файла с корзины minIO)
 
-Выбираем метод **DELETE** и указываем следующую ссылку: 
+Выбираем метод **DELETE** и указываем следующую ссылку : 
 
 >http://localhost:.../api/rest/minio/delete/(**название файла в формате UUID**)
 
