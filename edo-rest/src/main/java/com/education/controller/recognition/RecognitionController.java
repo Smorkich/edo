@@ -30,7 +30,6 @@ public class RecognitionController {
 
         log.info("Send appeal to recognize");
         recognitionService.recognize(id);
-
         return ResponseEntity.status(HttpStatus.OK).body("File sent to recognize");
     }
 }
