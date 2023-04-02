@@ -8,6 +8,10 @@ import lombok.NoArgsConstructor;
 public class Constant {
 
     public static final String ADDRESS_URL = "api/repository/address";
+
+    public static final String GEOCODE_MAPS_YANDEX_URL = "https://geocode-maps.yandex.ru/" +
+            "1.x/?format=json&results=1&sco=longlat&apikey=" +
+            "9fdbb2aa-5f75-43e0-ae21-491b46864d11&geocode=";
     public static final String APPEAL_URL = "api/repository/appeal";
     public static final String AUTHOR_URL = "api/repository/author";
     public static final String DEPARTMENT_URL = "api/repository/department";
