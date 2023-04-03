@@ -1,7 +1,8 @@
 package com.education.service.address.impl;
 
-import com.education.mapper.GeocodeMapsYandexMapper;
+
 import com.education.service.address.AddressService;
+import com.education.util.GeocodeMapsYandexToAddressDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.AllArgsConstructor;
 import model.dto.AddressDto;
@@ -18,7 +19,6 @@ import static model.constant.Constant.GEOCODE_MAPS_YANDEX_URL;
 @Service
 @AllArgsConstructor
 public class AddressServiceImpl implements AddressService {
-
 
 
     /**
@@ -41,7 +41,7 @@ public class AddressServiceImpl implements AddressService {
      * с помощью geocode-maps.yandex
      */
     public AddressDto getAddressDtoByGeocodeMapsYandex(String address) throws JsonProcessingException {
-        return new GeocodeMapsYandexMapper().toAddressDto(restTemplate
+        return new GeocodeMapsYandexToAddressDto().toAddressDto(restTemplate
                 .getForObject(GEOCODE_MAPS_YANDEX_URL + address, String.class));
     }
 

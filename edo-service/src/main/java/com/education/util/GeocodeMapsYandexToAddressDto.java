@@ -1,4 +1,4 @@
-package com.education.mapper;
+package com.education.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -10,7 +10,7 @@ import model.dto.AddressDto;
  * Класс для маппинга json объекта от geocode-maps.yandex в объект AddressDto
  */
 
-public class GeocodeMapsYandexMapper {
+public class GeocodeMapsYandexToAddressDto {
 
     /**
      * Метод, который преобразует дерево объектов json, полученных от geocode-maps.yandex,
@@ -25,14 +25,19 @@ public class GeocodeMapsYandexMapper {
                 .path("featureMember")
                 .get(0)
                 .path("GeoObject");
-        var coordinates = geoObject.path("Point").path("pos").asText();
+        var coordinates = geoObject
+                .path("Point")
+                .path("pos").asText();
         addressDto.setLatitude(coordinates.substring(0, coordinates.indexOf(' ')));
         addressDto.setLongitude(coordinates.substring(coordinates.indexOf(' ') + 1, coordinates.length() - 1));
         var geocoderMetaData = geoObject
                 .path("metaDataProperty")
                 .path("GeocoderMetaData");
-        addressDto.setFullAddress(geocoderMetaData.path("text").asText());
-        var index = geocoderMetaData.path("Address").path("postal_code").asInt();
+        addressDto.setFullAddress(geocoderMetaData
+                .path("text").asText());
+        var index = geocoderMetaData
+                .path("Address")
+                .path("postal_code").asInt();
         if (index != 0) {
             addressDto.setIndex(index);
         }
@@ -62,6 +67,7 @@ public class GeocodeMapsYandexMapper {
                     if (value.contains("кв.")) {
                         addressDto.setFlat(value.substring(value.indexOf("кв.") + 4));
                     }
+                    break;
             }
         }
         return addressDto;
