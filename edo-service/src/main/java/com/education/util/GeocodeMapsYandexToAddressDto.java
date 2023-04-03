@@ -75,7 +75,7 @@ public class GeocodeMapsYandexToAddressDto {
 
     /**
      * Вспомогательный метод для выделения номера корпуса и строения из номера дома
-     * и установление этих значений полям объетка AddressDto
+     * и установление этих значений в поля housing и building объекта AddressDto
      */
     public void setHousingAndBuilding(AddressDto addressDto, String value) {
         var kIndex = value.indexOf('к'); // номер индекса символа "к", означающего корпус
