@@ -18,7 +18,7 @@ import static model.constant.Constant.EDO_SERVICE_NAME;
 @AllArgsConstructor
 public class AppealServiceImpl implements AppealService {
 
-    private static final String SERVICE_URL = "/api/service/appeal";
+    private static final String SERVICE_URL = "api/service/appeal";
 
     private final RestTemplate restTemplate;
 
@@ -29,8 +29,7 @@ public class AppealServiceImpl implements AppealService {
     public AppealDto save(AppealDto appealDto) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        String uri = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, "api/service/appeal").toString();
-
+        String uri = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, SERVICE_URL).toString();
         return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(appealDto, headers), AppealDto.class).getBody();
     }
 

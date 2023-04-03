@@ -85,10 +85,9 @@ public class MinioController {
     @GetMapping("/download/{name}")
     public ResponseEntity<InputStreamResource> downloadOneFile(@PathVariable("name") String name) throws IOException {
         log.info("Download file named: {}", name);
-        Resource resource = minioService.downloadOneFile(name.concat(".pdf"));
+        Resource resource = minioService.downloadOneFile(name);
         InputStream is = resource.getInputStream();
         log.info("Download file named: {}", name);
-
         return ResponseEntity.ok()
                 .body(new InputStreamResource(is));
     }
