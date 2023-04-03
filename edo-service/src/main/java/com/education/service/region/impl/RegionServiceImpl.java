@@ -18,13 +18,14 @@ public class RegionServiceImpl implements RegionService {
      * который нужен для совершения CRUD-операции по заданному URL
      */
     private final RestTemplate restTemplate;
+    private static final String REGION_URL = "api/repository/region/";
 
     /**
      * Метод сохранения нового региона в БД
      */
     @Override
     public RegionDto save(RegionDto regionDto) {
-        var builder = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "api/repository/region/")
+        var builder = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, REGION_URL)
                 .toString();
         return restTemplate.postForObject(builder, regionDto, RegionDto.class);
     }
@@ -34,7 +35,7 @@ public class RegionServiceImpl implements RegionService {
      */
     @Override
     public void delete(long id) {
-        var builder = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "api/repository/region/" + id)
+        var builder = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, REGION_URL + id)
                 .toString();
         restTemplate.delete(builder);
     }
@@ -44,7 +45,7 @@ public class RegionServiceImpl implements RegionService {
      */
     @Override
     public String findById(long id) {
-        var builder = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "api/repository/region/" + id)
+        var builder = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, REGION_URL + id)
                 .toString();
         return restTemplate.getForObject(builder, String.class);
     }
@@ -54,7 +55,7 @@ public class RegionServiceImpl implements RegionService {
      */
     @Override
     public String findAll() {
-        var builder = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "api/repository/region/" + "all")
+        var builder = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, REGION_URL + "all")
                 .toString();
         return restTemplate.getForObject(builder, String.class);
     }
@@ -64,7 +65,7 @@ public class RegionServiceImpl implements RegionService {
      */
     @Override
     public void moveToArchive(Long id) {
-        var builder = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "api/repository/region/" + id)
+        var builder = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, REGION_URL + id)
                 .toString();
         restTemplate.postForObject(builder, null, String.class);
     }
