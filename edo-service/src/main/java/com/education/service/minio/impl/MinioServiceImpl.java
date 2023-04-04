@@ -27,13 +27,14 @@ import static model.constant.Constant.EDO_FILE_STORAGE_NAME;
 public class MinioServiceImpl implements MinioService {
     private final RestTemplate restTemplate;
 
+
     @Override
     public ResponseEntity<String> uploadOneFile(MultipartFile currentFile,
                                                 UUID UUIDKey, String fileName, String contentType) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        var body = new LinkedMultiValueMap<>();
+        LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", currentFile.getResource());
         body.add("key", UUIDKey.toString());
         body.add("fileName", fileName);

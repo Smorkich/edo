@@ -25,4 +25,7 @@ public class Constant {
     public static final String NOTIFICATION_URL = "api/repository/notification";
 
     public static final String REST_TO_SERVICE_APPROVAL_QUEUE = "RestToServiceApprovalQueue";
+
+    public static final String FILE_RECOGNITION_START = "FileRecognitionStart";
+
 }

@@ -49,9 +49,7 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public AppealDto findById(Long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
-                .setPath("/")
-                .setPath(String.valueOf(id));
+        String builder = buildURI(EDO_REPOSITORY_NAME, "api/repository/appeal/" + id).toString();
         return restTemplate.getForObject(builder.toString(), AppealDto.class);
     }
 
