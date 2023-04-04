@@ -1,7 +1,7 @@
 create table if not exists address
 (
     id           bigserial not null primary key,
-    full_address varchar(60),
+    full_address varchar(100),
     street       varchar(30),
     house        varchar(10),
     index        int,
