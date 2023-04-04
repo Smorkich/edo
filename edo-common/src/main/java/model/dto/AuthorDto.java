@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import model.enum_.Employment;
+import model.enum_.ResponseType;
 
 import java.io.Serializable;
 
@@ -45,6 +46,9 @@ public class AuthorDto implements Serializable {
 
     @ApiModelProperty(value = "трудоустройство автора (Безработный, Работник, Учащийся)")
     private Employment employment;
+
+    @ApiModelProperty(value = "способ получения ответа автором (Почта России, СМС, Электронная почта)")
+    private ResponseType responseType;
 
     @ApiModelProperty(value = "ФИО автора в дательном падеже")
     private String fioDative;

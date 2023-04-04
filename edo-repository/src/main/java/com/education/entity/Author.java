@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import model.enum_.Employment;
+import model.enum_.ResponseType;
 
 /**
  * Класс (сущность) "Author", наследуется от класса "BaseEntity"
@@ -65,6 +66,14 @@ public class Author extends BaseEntity {
     @Column(name = "employment")
     @Enumerated(EnumType.STRING)
     private Employment employment;
+
+    /**
+     * Поле "responseType" - способ получения ответа автором (Почта России, СМС, Электронная почта)
+     */
+    @Column(name = "response_type")
+    @Enumerated(EnumType.STRING)
+    private ResponseType responseType;
+
 
     /**
      * Поле "fioDative" - ФИО автора в дательном падеже
