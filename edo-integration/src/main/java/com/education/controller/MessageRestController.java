@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Set;
 
 @RestController
@@ -32,4 +33,23 @@ public class MessageRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Отправляет письма по почтам emails куратору, подписантам и исполнителю, " +
+            "с текстом указанием на номер обращения и адрес")
+    @PostMapping("/resolution")
+    public ResponseEntity<Object> createAndSendResolutionMessage(@RequestParam("emailsExecutors") List<String> emailsExecutors,
+                                                                 @RequestParam("fioExecutors") List<String> fioExecutors,
+                                                                 @RequestParam("emailSigner") String emailSigner,
+                                                                 @RequestParam("fioSigner") String fioSigner,
+                                                                 @RequestParam("emailCurator") String emailCurator,
+                                                                 @RequestParam("fioCurator") String fioCurator,
+                                                             @RequestParam("appealURL") String appealURL,
+                                                             @RequestParam("appealNumber") String appealNumber) {
+        log.info("Creating and sending a message");
+        emailService.createMailWhenCreateResolution(emailsExecutors,fioExecutors,
+                emailSigner,fioSigner,
+                emailCurator, fioCurator,
+                appealURL, appealNumber);
+        log.info("Messages were send");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

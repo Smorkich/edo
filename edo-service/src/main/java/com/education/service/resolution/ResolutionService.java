@@ -1,5 +1,6 @@
 package com.education.service.resolution;
 
+import model.dto.AppealDto;
 import model.dto.ResolutionDto;
 
 import java.util.Collection;
@@ -37,5 +38,10 @@ public interface ResolutionService {
      * Показать все актуальные, не помещенные в архив резолюции
      */
     public Collection<ResolutionDto> findAllByIdNotArchived(Long id);
+
+    /**
+     * Отправка сообщений (при создании резолюции)
+     */
+    void sendMessage(ResolutionDto resolutionDto);
 
 }

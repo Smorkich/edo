@@ -9,6 +9,7 @@ import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import model.constant.Constant;
 
+import model.dto.EmployeeDto;
 import model.dto.ResolutionDto;
 
 import org.springframework.http.HttpEntity;
@@ -17,14 +18,14 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import model.dto.AppealDto;
 
 import static com.education.util.URIBuilderUtil.buildURI;
 
 import java.time.ZonedDateTime;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import static model.constant.Constant.*;
 
@@ -106,4 +107,68 @@ public class ResolutionServiceImpl implements ResolutionService {
                 .setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.toString(), Collection.class);
     }
+    /**
+     * По принятой резолюции формирует valueMapForSendingObjects для отправки на
+     * EDO_INTEGRATION для последующей рассылки сообщений
+     */
+    @Override
+    public void sendMessage(ResolutionDto resolutionDto) {
+        //TODO добавить адрес Rest в Integration
+        var builder = buildURI(EDO_INTEGRATION_NAME, MESSAGE_URL + "/resolution");
+        var valueMapForSendingObjects = new LinkedMultiValueMap<>();
+
+        List<String> emailsExecutors = new ArrayList<>();
+        List<String> fioExecutors = new ArrayList<>();
+
+        //получение Email и ФИО Executors
+        addEmployeesEmailsAndFIO(emailsExecutors, fioExecutors, resolutionDto.getExecutor());
+
+        //получение Appeal.number
+        var questionId = resolutionDto.getQuestion().getId();
+        var appealNumber = appealService.findAppealByQuestionsId(questionId).getNumber();
+
+        //получение AppealUrl
+        var builderForAppealUrl = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL + "/" + appealNumber);
+
+        valueMapForSendingObjects.add("appealURL", builderForAppealUrl.toString());
+        valueMapForSendingObjects.add("appealNumber", appealNumber);
+        valueMapForSendingObjects.addAll("emailsExecutors", emailsExecutors);
+        valueMapForSendingObjects.addAll("fioExecutors", fioExecutors);
+        valueMapForSendingObjects.add("emailSigner", resolutionDto.getSigner().getEmail());
+        valueMapForSendingObjects.add("fioSigner", resolutionDto.getSigner().getFioNominative());
+        valueMapForSendingObjects.add("emailCurator", resolutionDto.getCurator().getEmail());
+        valueMapForSendingObjects.add("fioCurator", resolutionDto.getCurator().getFioNominative());
+
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        var requestEntity = new HttpEntity<>(valueMapForSendingObjects, headers);
+
+        restTemplate.postForEntity(builder.toString(), requestEntity, Object.class);
+    }
+
+    //TODO может можно без этого метода?
+    /**
+     * Метод достает emails и ФИО в им.п. из коллекции EmployeeDto
+     */
+    private void addEmployeesEmailsAndFIO(List<String> emails, List<String> fio, Collection<EmployeeDto> employees) {
+        if (employees != null) {
+            for (EmployeeDto emp : employees) {
+                emails.add(emp.getEmail());
+                fio.add(emp.getFioNominative());
+            }
+        }
+    }
+    //TODO мб вариант ниже правильнее в 1000 раз
+//    private void addEmployeesFIO(Set<String> fio, Collection<EmployeeDto> employees) {
+//        EmployeeDto employeeDto;
+//        if (employees != null) {
+//            for (EmployeeDto emp : employees) {
+//                var builderEmployee = buildURI(EDO_REPOSITORY_NAME, EMPLOYEE_URL + "/" + emp.getId());
+//                employeeDto = restTemplate.getForObject(builderEmployee.toString(), EmployeeDto.class);
+//                emails.add(employeeDto.getEmail());
+//            }
+//        }
+//    }
 }
