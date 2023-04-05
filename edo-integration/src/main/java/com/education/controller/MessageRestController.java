@@ -33,7 +33,7 @@ public class MessageRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Отправляет письма по почтам emails куратору, подписантам и исполнителю, " +
+    @ApiOperation(value = "Отправляет письма по почтам emails куратору, подписанту и исполнителям, " +
             "с текстом указанием на номер обращения и адрес")
     @PostMapping("/resolution")
     public ResponseEntity<Object> createAndSendResolutionMessage(@RequestParam("emailsExecutors") List<String> emailsExecutors,
@@ -42,11 +42,11 @@ public class MessageRestController {
                                                                  @RequestParam("fioSigner") String fioSigner,
                                                                  @RequestParam("emailCurator") String emailCurator,
                                                                  @RequestParam("fioCurator") String fioCurator,
-                                                             @RequestParam("appealURL") String appealURL,
-                                                             @RequestParam("appealNumber") String appealNumber) {
+                                                                 @RequestParam("appealURL") String appealURL,
+                                                                 @RequestParam("appealNumber") String appealNumber) {
         log.info("Creating and sending a message");
-        emailService.createMailWhenCreateResolution(emailsExecutors,fioExecutors,
-                emailSigner,fioSigner,
+        emailService.createMailWhenCreateResolution(emailsExecutors, fioExecutors,
+                emailSigner, fioSigner,
                 emailCurator, fioCurator,
                 appealURL, appealNumber);
         log.info("Messages were send");

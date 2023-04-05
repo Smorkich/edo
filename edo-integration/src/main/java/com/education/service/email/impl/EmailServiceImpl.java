@@ -15,16 +15,20 @@ import java.util.Set;
 public class EmailServiceImpl implements EmailService {
 
     private final SendEmailService sendEmailService;
+
     @Override
     public void createEmail(Set<String> emails, String appealURL, String appealNumber) {
         String subject = "Новое обращение: " + appealNumber;
         StringBuilder message = new StringBuilder("Создано новое обращение с номером ");
         message.append(appealNumber).append(". Ссылка на обращение: ").append(appealURL);
         for (String email : emails) {
-                sendEmailService.sendEmail(email, subject, message.toString());
+            sendEmailService.sendEmail(email, subject, message.toString());
         }
     }
 
+    /**
+     * Создает текст письма при создании резолюции и отправляет в SendEmailService
+     */
     @Override
     public void createMailWhenCreateResolution(List<String> emailsExecutors, List<String> fioExecutors,
                                                String emailSigner, String fioSigner,
@@ -32,16 +36,16 @@ public class EmailServiceImpl implements EmailService {
                                                String appealURL, String appealNumber) {
 
         String subject = "Новая резолюция";
-        StringBuilder endMessage = new StringBuilder(" резолюции в обращении с номером ")
+        var endMessage = new StringBuilder(" резолюции в обращении с номером ")
                 .append(appealNumber)
                 .append(". Ссылка на обращение: ")
                 .append(appealURL);
 
         //для Executors
-        for(var i = 0;i<emailsExecutors.size();i++){
-        var messageExecutors = new StringBuilder("Добрый день, " + fioExecutors.get(i) + "!")
-                .append(" Вы являетесь исполнителем")
-                .append(endMessage);
+        for (var i = 0; i < emailsExecutors.size(); i++) {
+            var messageExecutors = new StringBuilder("Добрый день, " + fioExecutors.get(i) + "!")
+                    .append(" Вы являетесь исполнителем")
+                    .append(endMessage);
             sendEmailService.sendEmail(emailsExecutors.get(i), subject, messageExecutors.toString());
         }
         //для Signer

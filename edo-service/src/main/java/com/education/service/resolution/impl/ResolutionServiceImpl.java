@@ -43,12 +43,11 @@ public class ResolutionServiceImpl implements ResolutionService {
     private final AppealService appealService;
 
 
-
     private RestTemplate restTemplate;
 
     @Override
     public ResolutionDto save(ResolutionDto resolutionDto) {
-        if(resolutionDto.getCreationDate()==null) {
+        if (resolutionDto.getCreationDate() == null) {
             resolutionDto.setCreationDate(ZonedDateTime.now());
         }
         resolutionDto.setIsDraft(true);
@@ -65,55 +64,45 @@ public class ResolutionServiceImpl implements ResolutionService {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/resolution/add").toString();
-       return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(resolutionDto, headers), ResolutionDto.class).getBody();
+        return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(resolutionDto, headers), ResolutionDto.class).getBody();
     }
 
     @Override
     public void moveToArchive(Long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, RESOLUTION_URL)
-                .setPath("/move/")
-                .setPath(String.valueOf(id));
+        var builder = buildURI(EDO_REPOSITORY_NAME, RESOLUTION_URL).setPath("/move/").setPath(String.valueOf(id));
         restTemplate.postForObject(builder.toString(), null, ResolutionDto.class);
     }
 
     @Override
     public ResolutionDto findById(Long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, RESOLUTION_URL)
-                .setPath("/")
-                .setPath(String.valueOf(id));
+        var builder = buildURI(EDO_REPOSITORY_NAME, RESOLUTION_URL).setPath("/").setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.toString(), ResolutionDto.class);
     }
 
     @Override
     public Collection<ResolutionDto> findAllById(Long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, RESOLUTION_URL)
-                .setPath("/all/")
-                .setPath(String.valueOf(id));
+        var builder = buildURI(EDO_REPOSITORY_NAME, RESOLUTION_URL).setPath("/all/").setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.toString(), List.class);
     }
 
     @Override
     public ResolutionDto findByIdNotArchived(Long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, RESOLUTION_URL)
-                .setPath("/notArchived/")
-                .setPath(String.valueOf(id));
+        var builder = buildURI(EDO_REPOSITORY_NAME, RESOLUTION_URL).setPath("/notArchived/").setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.toString(), ResolutionDto.class);
     }
 
     @Override
     public Collection<ResolutionDto> findAllByIdNotArchived(Long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, RESOLUTION_URL)
-                .setPath("/notArchived/all/")
-                .setPath(String.valueOf(id));
+        var builder = buildURI(EDO_REPOSITORY_NAME, RESOLUTION_URL).setPath("/notArchived/all/").setPath(String.valueOf(id));
         return restTemplate.getForObject(builder.toString(), Collection.class);
     }
+
     /**
      * По принятой резолюции формирует valueMapForSendingObjects для отправки на
      * EDO_INTEGRATION для последующей рассылки сообщений
      */
     @Override
     public void sendMessage(ResolutionDto resolutionDto) {
-        //TODO добавить адрес Rest в Integration
         var builder = buildURI(EDO_INTEGRATION_NAME, MESSAGE_URL + "/resolution");
         var valueMapForSendingObjects = new LinkedMultiValueMap<>();
 
@@ -130,6 +119,7 @@ public class ResolutionServiceImpl implements ResolutionService {
         //получение AppealUrl
         var builderForAppealUrl = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL + "/" + appealNumber);
 
+        //заполнение мапы данными
         valueMapForSendingObjects.add("appealURL", builderForAppealUrl.toString());
         valueMapForSendingObjects.add("appealNumber", appealNumber);
         valueMapForSendingObjects.addAll("emailsExecutors", emailsExecutors);
@@ -139,20 +129,19 @@ public class ResolutionServiceImpl implements ResolutionService {
         valueMapForSendingObjects.add("emailCurator", resolutionDto.getCurator().getEmail());
         valueMapForSendingObjects.add("fioCurator", resolutionDto.getCurator().getFioNominative());
 
-
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         var requestEntity = new HttpEntity<>(valueMapForSendingObjects, headers);
 
+        //отправка мапы на edo-integration
         restTemplate.postForEntity(builder.toString(), requestEntity, Object.class);
     }
 
-    //TODO может можно без этого метода?
     /**
      * Метод достает emails и ФИО в им.п. из коллекции EmployeeDto
      */
-    private void addEmployeesEmailsAndFIO(List<String> emails, List<String> fio, Collection<EmployeeDto> employees) {
+    private void addEmployeesEmailsAndFIO(Collection<String> emails, Collection<String> fio, Collection<EmployeeDto> employees) {
         if (employees != null) {
             for (EmployeeDto emp : employees) {
                 emails.add(emp.getEmail());
@@ -160,15 +149,4 @@ public class ResolutionServiceImpl implements ResolutionService {
             }
         }
     }
-    //TODO мб вариант ниже правильнее в 1000 раз
-//    private void addEmployeesFIO(Set<String> fio, Collection<EmployeeDto> employees) {
-//        EmployeeDto employeeDto;
-//        if (employees != null) {
-//            for (EmployeeDto emp : employees) {
-//                var builderEmployee = buildURI(EDO_REPOSITORY_NAME, EMPLOYEE_URL + "/" + emp.getId());
-//                employeeDto = restTemplate.getForObject(builderEmployee.toString(), EmployeeDto.class);
-//                emails.add(employeeDto.getEmail());
-//            }
-//        }
-//    }
 }

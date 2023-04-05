@@ -32,7 +32,7 @@ public class ResolutionController {
         log.info("POST request has been sent");
         var save = resolutionService.save(resolutionDto);
         log.info("{} has has been added", resolutionDto);
-        //TODO добавить log
+        log.info("Sending a message to employees");
         resolutionService.sendMessage(resolutionDto);
         return new ResponseEntity<>(save, HttpStatus.CREATED);
     }
