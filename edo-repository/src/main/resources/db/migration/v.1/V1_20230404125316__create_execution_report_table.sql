@@ -3,8 +3,8 @@ CREATE TABLE IF NOT EXISTS execution_report(
     creation_date TIMESTAMP WITH TIME ZONE NOT NULL,
     execution_comment VARCHAR(200) NOT NULL,
     status VARCHAR NOT NULL,
-    executor_id BIGINT REFERENCES employee (id),
-    resolution_id BIGINT REFERENCES resolution (id)
+    executor_id BIGINT NOT NULL ,
+    resolution_id BIGINT NOT NULL
 
 );
 

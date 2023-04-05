@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import model.enum_.Status;
-import org.springframework.stereotype.Repository;
 
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,18 +19,19 @@ import java.time.ZonedDateTime;
 @ToString
 @ApiModel(value = "Объект для передачи данных")
 @Builder
-public class ExecutionReportDto {
+public class ExecutionReportDto implements Serializable {
 
+    @ApiModelProperty(value = "Идентификатор отчета")
+    private Long id;
     @ApiModelProperty(value = "Дата исполнения резолюции")
     private ZonedDateTime creationDate;
     @ApiModelProperty(value = "Коментарий по исполнению резолюции")
-    private String comment;
+    private String executionComment;
     @ApiModelProperty(value = "Статус исполнения резолюции")
     private Status status;
-    @ApiModelProperty(value = "Исполнитель резолюции")
-    private EmployeeDto executor;
+    @ApiModelProperty(value = "Идентификатор исполнителя")
+    private Long executorId;
     @ApiModelProperty(value = "Резолюция по которой подан отчет")
-    private ResolutionDto resolution;
-
+    private Long resolutionId;
 }
 
