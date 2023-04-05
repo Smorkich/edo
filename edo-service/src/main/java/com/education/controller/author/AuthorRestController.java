@@ -1,12 +1,9 @@
 package com.education.controller.author;
 
-import com.education.service.address.AddressService;
 import com.education.service.author.AuthorService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import model.dto.AddressDto;
 import model.dto.AuthorDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,8 +23,6 @@ import java.util.Collection;
 public class AuthorRestController {
     private final AuthorService authorService;
 
-    private final AddressService addressService;
-
     @ApiOperation(value = "Gets all authors", notes = "Author must exist")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AuthorDto>> getAllAuthors() {
@@ -45,19 +40,6 @@ public class AuthorRestController {
     @ApiOperation(value = "Add author", notes = "Author not must exist")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> addAuthorAction(@RequestBody AuthorDto authorDto) {
-        AddressDto addressDto = null;
-        try {
-            log.info("Send GET request to geocode-maps.yandex to get address details with: {}",
-                    authorDto.getAddress());
-            addressDto = addressService.getAddressDtoByGeocodeMapsYandex(authorDto.getAddress());
-        } catch (JsonProcessingException e) {
-            log.warn("Error processing JSON data");
-        }
-        if (addressDto != null) {
-            authorDto.setAddress(addressDto.getFullAddress());
-            log.info("Send POST request to add address to databases: {}", addressDto);
-            addressService.save(addressDto);
-        }
         log.info("Send POST request to add author to databases: {}", authorDto);
         authorService.save(authorDto);
         log.info("Author added to database");
