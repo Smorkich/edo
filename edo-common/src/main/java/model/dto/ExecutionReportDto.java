@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import model.enum_.Status;
+import org.springframework.stereotype.Repository;
 
 import java.time.ZonedDateTime;
 @NoArgsConstructor
@@ -26,5 +27,10 @@ public class ExecutionReportDto {
     private String comment;
     @ApiModelProperty(value = "Статус исполнения резолюции")
     private Status status;
+    @ApiModelProperty(value = "Исполнитель резолюции")
+    private EmployeeDto executor;
+    @ApiModelProperty(value = "Резолюция по которой подан отчет")
+    private ResolutionDto resolution;
+
 }
 
