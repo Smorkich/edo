@@ -2,6 +2,10 @@ package com.education.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +15,8 @@ import lombok.experimental.SuperBuilder;
 import model.enum_.Status;
 
 import java.time.ZonedDateTime;
+
+import static jakarta.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -43,4 +49,18 @@ public class ExecutionReport extends BaseEntity {
      */
     @Column(name = "status")
     private Status status;
+
+    /**
+     * Идентификатор исполнителя
+     */
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "executor_id")
+    private Employee executor;
+
+    /**
+     * Идентификтаор резолюции
+     */
+    @JoinColumn(name = "resolution_id")
+    @OneToOne(fetch = LAZY)
+    private Resolution resolution;
 }
