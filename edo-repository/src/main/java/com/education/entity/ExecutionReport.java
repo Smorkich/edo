@@ -23,11 +23,6 @@ import java.time.ZonedDateTime;
 @SuperBuilder
 @Table(name = "execution_report")
 public class ExecutionReport extends BaseEntity {
-    /**
-     * Идентификатор отчета
-     */
-    @Column(name = "id")
-    private Long id;
 
     /**
      * Дата создания отчета
