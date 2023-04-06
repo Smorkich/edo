@@ -10,5 +10,4 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AppealIncorrectData {
     public String info;
-
 }
