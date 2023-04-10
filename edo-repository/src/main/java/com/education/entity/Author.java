@@ -1,6 +1,7 @@
 package com.education.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import model.enum_.Employment;

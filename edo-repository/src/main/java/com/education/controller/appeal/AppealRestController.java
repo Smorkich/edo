@@ -1,6 +1,6 @@
 package com.education.controller.appeal;
 
-import com.education.entity.Appeal;
+
 import com.education.service.appeal.AppealService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -9,6 +9,7 @@ import model.dto.AppealDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
