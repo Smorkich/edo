@@ -57,19 +57,14 @@ public class KeySwitcherUtil {
      * @return String
      */
     public static String transliterate(String input) {
+
         StringBuilder result = new StringBuilder();
-        for (int i = 0; i < input.length(); i++) {
-            char ch = input.charAt(i);
-            if (translitMap.containsKey(Character.toLowerCase(ch))) {
-                char transChar = translitMap.get(Character.toLowerCase(ch));
-                if (Character.isUpperCase(ch)) {
-                    result.append(Character.toUpperCase(transChar));
-                } else {
-                    result.append(transChar);
-                }
-            } else {
-                result.append(ch);
-            }
+        char[] ch = input.toCharArray();
+        for (int i = 0; i < ch.length; i++) {
+            Character temp = translitMap.getOrDefault(Character.toLowerCase(ch[i]), null);
+            result = temp != null ?
+                    (Character.isUpperCase(ch[i]) ? result.append(Character.toUpperCase(temp)) : result.append(temp))
+                    : result.append(ch[i]);
         }
         return result.toString();
     }
