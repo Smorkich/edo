@@ -3,21 +3,20 @@ package com.education.util;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.AddressDto;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import static model.constant.Constant.GEOCODE_MAPS_YANDEX_URL;
-
 /**
  * @author Zoteev Dmitry
- * Класс для маппинга json объекта от geocode-maps.yandex в объект AddressDto
+ * Класс для маппинга json-объекта от geocode-maps.yandex в объект AddressDto
  */
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Log4j2
 public class GeocodeMapsYandexMapper {
 
@@ -25,8 +24,32 @@ public class GeocodeMapsYandexMapper {
 
     private final RestTemplate restTemplate;
 
+    @Value("${geocodeMapsYandex.url}")
+    private String GEOCODE_MAPS_YANDEX_URL;
+
     /**
-     * Метод, который преобразует дерево объектов json, полученных от geocode-maps.yandex,
+     * Static переменные для указания значения для ключа "kind" json-объектов,
+     * например, {"kind": "country", "name": "Россия"}
+     */
+    private static final String Country = "country";
+
+    private static final String Region = "province";
+
+    private static final String City = "locality";
+
+    private static final String Street = "street";
+
+    private static final String House = "house";
+
+    /**
+     * У json-объектов с парой "kind": "other" могут быть разные значения для ключа "name",
+     * например, "name": "этаж 3" или "name": "кв. 15"
+     */
+    private static final String FlatOrFloor = "other";
+
+
+    /**
+     * Метод, который преобразует дерево json-объектов, полученных от geocode-maps.yandex,
      * в объект AddressDto
      */
     public AddressDto toAddressDto(String fullAddress) {
@@ -41,9 +64,9 @@ public class GeocodeMapsYandexMapper {
                     .path("GeoObject");
             var coordinates = geoObject
                     .path("Point")
-                    .path("pos").asText();
-            addressDto.setLatitude(coordinates.substring(0, coordinates.indexOf(' ')));
-            addressDto.setLongitude(coordinates.substring(coordinates.indexOf(' ') + 1, coordinates.length() - 1));
+                    .path("pos").asText().split(" ");
+            addressDto.setLatitude(coordinates[0]);
+            addressDto.setLongitude(coordinates[1]);
             var geocoderMetaData = geoObject
                     .path("metaDataProperty")
                     .path("GeocoderMetaData");
@@ -62,24 +85,24 @@ public class GeocodeMapsYandexMapper {
             for (JsonNode component : addressComponents) {
                 var value = component.get("name").asText();
                 switch (component.get("kind").asText()) {
-                    case "country":
+                    case Country:
                         addressDto.setCountry(value);
                         break;
-                    case "province":
+                    case Region:
                         addressDto.setRegion(value);
                         break;
-                    case "locality":
+                    case City:
                         addressDto.setCity(value);
                         break;
-                    case "street":
+                    case Street:
                         addressDto.setStreet(value);
                         break;
-                    case "house":
+                    case House:
                         setHousingAndBuilding(addressDto, value);
                         break;
-                    case "other":
+                    case FlatOrFloor:
                         if (value.contains("кв.")) {
-                            addressDto.setFlat(value.substring(value.indexOf("кв.") + 4));
+                            addressDto.setFlat(value.split("кв. ")[1]);
                         }
                         break;
                 }

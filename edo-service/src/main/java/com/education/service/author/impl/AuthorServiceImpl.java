@@ -7,6 +7,7 @@ import model.dto.AuthorDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.sql.ResultSet;
 import java.util.List;
 
 import static com.education.util.URIBuilderUtil.buildURI;
@@ -31,9 +32,9 @@ public class AuthorServiceImpl implements AuthorService {
     public AuthorDto save(AuthorDto authorDto) {
         var addressDto = geocodeMapsYandexMapper.toAddressDto(authorDto.getAddress());
         if (addressDto != null) {
-            var authorFullAddressData = "full address: " + addressDto.getFullAddress()
-                    + (addressDto.getIndex() != null ? ", index: " + addressDto.getIndex() : "")
-                    + ", longitude: " + addressDto.getLongitude() + ", latitude: " + addressDto.getLatitude();
+            var authorFullAddressData = "Полный адрес: " + addressDto.getFullAddress()
+                    + (addressDto.getIndex() != null ? ", почтовый индекс: " + addressDto.getIndex() : "")
+                    + ", долгота: " + addressDto.getLongitude() + ", широта: " + addressDto.getLatitude();
             authorDto.setAddress(authorFullAddressData);
         }
         var builder = buildURI(EDO_REPOSITORY_NAME, AUTHOR_URL);
