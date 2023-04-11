@@ -1,10 +1,6 @@
 package com.education.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -46,12 +42,12 @@ public class ExecutionReport extends BaseEntity {
     /**
      * Идентификатор исполнителя который подал отчет
      */
-    @Column(name = "executor_id")
+    @JoinColumn(name = "executor_id")
     private Long executorId;
 
     /**
      * Идентификтаор резолюции
      */
-    @Column(name = "resolution_id")
+    @JoinColumn(name = "resolution_id")
     private Long resolutionId;
 }
