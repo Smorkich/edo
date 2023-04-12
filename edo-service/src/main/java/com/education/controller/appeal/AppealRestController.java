@@ -1,6 +1,9 @@
 package com.education.controller.appeal;
 
+import com.education.exception_handling.AppealCustomException;
+import com.education.exception_handling.AppealIncorrectData;
 import com.education.service.appeal.AppealService;
+import com.education.util.Validator;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -8,6 +11,7 @@ import model.dto.AppealDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -68,6 +72,7 @@ public class AppealRestController {
     @ApiOperation(value = "Принимает обращение, отправляет на edo-repository", notes = "Обращение должен существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> save(@RequestBody AppealDto appealDto) {
+        Validator.getValidateAppeal(appealDto);
         log.info("Send a post-request to edo-repository to post new Appeal to database");
         appealDto = appealService.save(appealDto);
         log.info("Sending to edo-repository", appealDto);
@@ -83,5 +88,16 @@ public class AppealRestController {
         var appealDto = appealService.findById(id);
         log.info("Response from database: {}", appealDto);
         return new ResponseEntity<>(appealDto, HttpStatus.OK);
+    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    private ResponseEntity<String> validUserException(MethodArgumentNotValidException ex) {
+        log.warn(ex.toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.toString());
+    }
+    @ExceptionHandler
+    public ResponseEntity<AppealIncorrectData> handleException (AppealCustomException exception) {
+        AppealIncorrectData appealIncorrectData = new AppealIncorrectData();
+        appealIncorrectData.setInfo(exception.getMessage());
+        return new ResponseEntity<>(appealIncorrectData, HttpStatus.BAD_REQUEST);
     }
 }

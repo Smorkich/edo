@@ -12,11 +12,13 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import static model.constant.Constant.EDO_SERVICE_NAME;
+
 @Service
 @AllArgsConstructor
 public class AppealServiceImpl implements AppealService {
 
-    private static final String URL = "http://edo-service/api/service/appeal";
+    private static final String SERVICE_URL = "api/service/appeal";
 
     private final RestTemplate restTemplate;
 
@@ -27,18 +29,23 @@ public class AppealServiceImpl implements AppealService {
     public AppealDto save(AppealDto appealDto) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        String uri = URIBuilderUtil.buildURI(Constant.EDO_SERVICE_NAME, "api/service/appeal").toString();
-
+        String uri = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, SERVICE_URL).toString();
         return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(appealDto, headers), AppealDto.class).getBody();
     }
 
     @Override
     public void moveToArchive(Long id) {
-        restTemplate.put(URL + "/move/" + id, AppealDto.class);
+        restTemplate.put(SERVICE_URL + "/move/" + id, AppealDto.class);
     }
 
     @Override
     public AppealDto findById(Long id) {
-        return restTemplate.getForObject(URL + "/" + id, AppealDto.class);
+        String uri = getUri("/api/service/appeal/") + id;
+        return restTemplate.getForObject(uri, AppealDto.class);
+    }
+
+    private static String getUri(String path) {
+        return URIBuilderUtil.buildURI(EDO_SERVICE_NAME, path)
+                .toString();
     }
 }

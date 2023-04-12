@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 
@@ -15,7 +16,7 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @ApiModel(value = "объект для передачи данных")
 @ToString
-public class EmployeeDto {
+public class EmployeeDto implements Serializable {
     @ApiModelProperty(value = "id")
     private Long id;
 
@@ -50,7 +51,7 @@ public class EmployeeDto {
     private String workPhone;
 
     @ApiModelProperty(value = "Дата рождения")
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate birthDate;
 
     @ApiModelProperty(value = "Имя пользователя")

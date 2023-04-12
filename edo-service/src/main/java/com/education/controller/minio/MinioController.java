@@ -88,7 +88,6 @@ public class MinioController {
         Resource resource = minioService.downloadOneFile(name);
         InputStream is = resource.getInputStream();
         log.info("Download file named: {}", name);
-
         return ResponseEntity.ok()
                 .body(new InputStreamResource(is));
     }
