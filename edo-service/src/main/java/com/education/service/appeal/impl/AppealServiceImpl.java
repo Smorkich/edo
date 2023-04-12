@@ -6,28 +6,21 @@ import com.education.service.filePool.FilePoolService;
 import com.education.service.question.QuestionService;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
-import model.constant.Constant;
-import model.dto.AppealDto;
-import model.dto.AuthorDto;
-import model.dto.FilePoolDto;
-import model.dto.QuestionDto;
+import model.dto.*;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.education.util.URIBuilderUtil.buildURI;
-
-import static model.constant.Constant.APPEAL_URL;
-import static model.constant.Constant.EDO_REPOSITORY_NAME;
+import static model.constant.Constant.*;
 import static model.enum_.Status.NEW_STATUS;
 
 /**
@@ -49,7 +42,7 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public AppealDto findById(Long id) {
-        String builder = buildURI(EDO_REPOSITORY_NAME, "api/repository/appeal/" + id).toString();
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL + "/" + id);
         return restTemplate.getForObject(builder.toString(), AppealDto.class);
     }
 
@@ -113,7 +106,7 @@ public class AppealServiceImpl implements AppealService {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
-            String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/appeal").toString();
+            String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "api/repository/appeal").toString();
             return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(appealDto, headers), AppealDto.class).getBody();
 
         } catch (Exception e) {
@@ -179,13 +172,54 @@ public class AppealServiceImpl implements AppealService {
     }
 
     /**
+     * По принятому обращению формирует valueMapForSendingObjects для отправки на
+     * EDO_INTEGRATION для последующей рассылки сообщений
+     */
+    @Override
+    public void sendMessage(AppealDto appealDto) {
+        var builder = buildURI(EDO_INTEGRATION_NAME, MESSAGE_URL);
+        var valueMapForSendingObjects = new LinkedMultiValueMap<>();
+
+        Set<String> emails = new HashSet<>();
+
+        addEmployeesEmails(emails, appealDto.getAddressee());
+        addEmployeesEmails(emails, appealDto.getSigner());
+
+        var builderForAppealUrl = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL + "/" + appealDto.getId());
+        valueMapForSendingObjects.add("appealURL", builderForAppealUrl.toString());
+        valueMapForSendingObjects.addAll("emails", Arrays.asList(emails.toArray(new String[0])));
+        valueMapForSendingObjects.add("appealNumber", appealDto.getNumber());
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        var requestEntity = new HttpEntity<>(valueMapForSendingObjects, headers);
+
+        restTemplate.postForEntity(builder.toString(), requestEntity, Object.class);
+    }
+
+    /**
      * Метод достает Appeal по Questions id
      */
     @Override
     public AppealDto findAppealByQuestionsId(Long id){
-        String URL = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/appeal/findAppealByQuestionsId/"+ id).toString();
+        String URL = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "api/repository/appeal/findAppealByQuestionsId/"+ id).toString();
         return restTemplate.getForObject(URL, AppealDto.class);
 
+    }
+
+    /**
+     * Метод достает emails из коллекции EmployeeDto
+     */
+    private void addEmployeesEmails(Set<String> emails, Collection<EmployeeDto> employees) {
+        EmployeeDto employeeDto;
+        if (employees != null) {
+            for (EmployeeDto emp : employees) {
+                var builderEmployee = buildURI(EDO_REPOSITORY_NAME, EMPLOYEE_URL + "/" + emp.getId());
+                employeeDto = restTemplate.getForObject(builderEmployee.toString(), EmployeeDto.class);
+                emails.add(employeeDto.getEmail());
+            }
+        }
     }
 
 }
