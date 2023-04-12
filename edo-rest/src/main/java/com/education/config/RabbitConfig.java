@@ -49,5 +49,8 @@ public class RabbitConfig {
     public Queue recognitionQueue() {
         return new Queue(Constant.FILE_RECOGNITION_START);
     }
-
+    @Bean
+    public Queue resolutionDeadlineQueue() {
+        return new Queue(Constant.DEADLINE_CHANGE_QUEUE);
+    }
 }
