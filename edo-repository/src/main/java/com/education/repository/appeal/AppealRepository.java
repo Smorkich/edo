@@ -30,15 +30,16 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
             "left join fetch a.file " +
             "left join fetch a.nomenclature " +
             "left join fetch a.region " +
-            " where a.id = :id")
+            " where a.id = :id " +
+            "order by a.id asc ")
     Optional<Appeal> findById(@Param("id") Long id);
 
     /**
      * Метод достаёт Appeal по нужному creator_id вместе с пагинацией
      */
 
-    @Query(nativeQuery = true, value = "SELECT * FROM Appeal WHERE creator_id = :creatorId LIMIT :limit OFFSET :offset")
-    List<Appeal> findByCreatorId(@Param("creatorId") Long creatorId, @Param("offset") int offset, @Param("limit") int limit);
+    @Query(nativeQuery = true, value = "SELECT * FROM Appeal a WHERE a.creator_id = :creatorId LIMIT :limit OFFSET :offset")
+    List<Appeal> findByCreatorId(@Param("creatorId") Long creatorId, @Param("offset") int off, @Param("limit") int lim);
 
 
 
@@ -54,7 +55,8 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
             "left join fetch a.file " +
             "left join fetch a.nomenclature " +
             "left join fetch a.region " +
-            "where a.id =:id and a.archivedDate is null ")
+            "where a.id =:id and a.archivedDate is null " +
+            "order by a.id asc ")
     Optional<Appeal> findByIdNotArchived(@Param("id") Long id);
 
     /**
@@ -69,7 +71,8 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
             "left join fetch a.file " +
             "left join fetch a.nomenclature " +
             "left join fetch a.region " +
-            "where a.archivedDate is null")
+            "where a.archivedDate is null " +
+            "order by a.id asc ")
     Collection<Appeal> findAllNotArchived();
 
 
@@ -87,7 +90,8 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
             "left join fetch a.authors " +
             "left join fetch a.region " +
             "left join fetch a.nomenclature q" +
-            " where q.id = :id")
+            " where q.id = :id " +
+            "order by a.id asc ")
     Optional<Appeal> findAppealByQuestionsId(@Param("id") Long id);
     /**
      * изменяет статус обращения на "на рассмотрении"
