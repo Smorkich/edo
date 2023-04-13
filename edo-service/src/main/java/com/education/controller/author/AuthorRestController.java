@@ -32,6 +32,11 @@ public class AuthorRestController {
         return new ResponseEntity<>(authorDtoCollection, HttpStatus.OK);
     }
 
+    /**
+     * Метод передает нового автора в edo-repository для сохранения в таблицу author,
+     * а также преобразует строку адреса автора в объект AddressDto с помощью geocode-maps.yandex
+     * и передает этот объект в edo-repository для сохранения в таблицу address
+     */
     @ApiOperation(value = "Add author", notes = "Author not must exist")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> addAuthorAction(@RequestBody AuthorDto authorDto) {
