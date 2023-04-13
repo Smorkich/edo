@@ -20,6 +20,18 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
      */
     Optional<Appeal> findByIdAndArchivedDateIsNull(Long id);
 
+    @Override
+    @Query("select a from Appeal a " +
+            "left join fetch a.signer " +
+            "left join fetch a.addressee " +
+            "left join fetch a.creator " +
+            "left join fetch a.authors " +
+            "left join fetch a.questions " +
+            "left join fetch a.file " +
+            "left join fetch a.nomenclature " +
+            "left join fetch a.region " +
+            " where a.id = :id")
+    Optional<Appeal> findById(@Param("id") Long id);
 
     /**
      * Метод достаёт Appeal по нужному creator_id вместе с пагинацией
@@ -33,13 +45,31 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
     /**
      * Метод достает Appeal, у которого поле archivedDate = null
      */
-    @Query("select u from Appeal u where u.id =:id and u.archivedDate is null ")
+    @Query("select a from Appeal a " +
+            "left join fetch a.signer " +
+            "left join fetch a.addressee " +
+            "left join fetch a.creator " +
+            "left join fetch a.authors " +
+            "left join fetch a.questions " +
+            "left join fetch a.file " +
+            "left join fetch a.nomenclature " +
+            "left join fetch a.region " +
+            "where a.id =:id and a.archivedDate is null ")
     Optional<Appeal> findByIdNotArchived(@Param("id") Long id);
 
     /**
      * Метод, который достает всех Appeal, у которых поле archivedDate = null
      */
-    @Query("select u from Appeal u where u.archivedDate is null")
+    @Query("select a from Appeal a " +
+            "left join fetch a.signer " +
+            "left join fetch a.addressee " +
+            "left join fetch a.creator " +
+            "left join fetch a.authors " +
+            "left join fetch a.questions " +
+            "left join fetch a.file " +
+            "left join fetch a.nomenclature " +
+            "left join fetch a.region " +
+            "where a.archivedDate is null")
     Collection<Appeal> findAllNotArchived();
 
 
@@ -48,6 +78,16 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
     /**
      * Метод достает Appeal по Questions id
      */
+    @Query("select a from Appeal a " +
+            "left join fetch a.creator " +
+            "left join fetch a.addressee " +
+            "left join fetch a.signer " +
+            "left join fetch a.questions " +
+            "left join fetch a.file " +
+            "left join fetch a.authors " +
+            "left join fetch a.region " +
+            "left join fetch a.nomenclature q" +
+            " where q.id = :id")
     Optional<Appeal> findAppealByQuestionsId(@Param("id") Long id);
     /**
      * изменяет статус обращения на "на рассмотрении"

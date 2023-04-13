@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.AppealDto;
+import model.dto.EmployeeDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -82,6 +83,7 @@ public class AppealRestController {
     @ApiOperation(value = "Находит строку таблицы Appeal по id", notes = "Строка в Appeal должна существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> getAppealById(@PathVariable Long id) {
+        var mockEmployee = getMockEmployee();
         log.info("Getting from database appeal with id: {}", id);
         var appealDto = appealService.findById(id);
         log.info("Response from database: {}", appealDto);
@@ -97,5 +99,8 @@ public class AppealRestController {
         AppealIncorrectData appealIncorrectData = new AppealIncorrectData();
         appealIncorrectData.setInfo(exception.getMessage());
         return new ResponseEntity<>(appealIncorrectData, HttpStatus.BAD_REQUEST);
+    }
+    private EmployeeDto getMockEmployee() {
+        return EmployeeDto.builder().id(1L).build();
     }
 }
