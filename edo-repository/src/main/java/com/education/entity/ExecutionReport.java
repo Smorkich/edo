@@ -43,11 +43,13 @@ public class ExecutionReport extends BaseEntity {
      * Идентификатор исполнителя который подал отчет
      */
     @JoinColumn(name = "executor_id")
-    private Long executorId;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Employee executor;
 
     /**
      * Идентификтаор резолюции
      */
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resolution_id")
-    private Long resolutionId;
+        private Resolution resolution;
 }

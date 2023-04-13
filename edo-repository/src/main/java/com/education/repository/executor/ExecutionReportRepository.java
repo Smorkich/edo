@@ -12,7 +12,7 @@ import java.util.Optional;
 @Repository
 public interface ExecutionReportRepository extends JpaRepository<ExecutionReport, Long> {
 
-    @Query("SELECT DISTINCT e FROM ExecutionReport e LEFT JOIN FETCH e.executorId LEFT JOIN FETCH e.resolutionId where e.id =:id")
+    @Query("SELECT DISTINCT e FROM ExecutionReport e LEFT JOIN FETCH e.executor LEFT JOIN FETCH e.resolution where e.id =:id")
     Optional<ExecutionReport> findById(@Param("id") Long id);
 
 
