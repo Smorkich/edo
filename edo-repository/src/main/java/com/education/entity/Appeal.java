@@ -7,8 +7,8 @@ import model.enum_.ReceiptMethod;
 import model.enum_.Status;
 
 import java.time.ZonedDateTime;
-import java.util.Collection;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Сущность, описывающая обращение гражданина
@@ -71,7 +71,7 @@ public class Appeal extends BaseEntity {
     @JoinTable(name = "appeal_signer",
             joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
-    private Collection<Employee> signer = new HashSet<>();
+    private Set<Employee> signer = new HashSet<>();
 
     /**
      * Создатель обращения (Не автор!)
@@ -85,11 +85,11 @@ public class Appeal extends BaseEntity {
      * Несколько Employee "в копию" рассылки обращения
      * они тоже посмотрят обращение, но подписи их нам не нужны
      */
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany
     @JoinTable(name = "appeal_addressee",
             joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
-    private Collection<Employee> addressee = new HashSet<>();
+    private Set<Employee> addressee = new HashSet<>();
 
     /**
      * Несколько "authors" - автор, соавторы обращения
@@ -98,7 +98,7 @@ public class Appeal extends BaseEntity {
     @JoinTable(name = "appeal_authors",
             joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "author_id", referencedColumnName = "id"))
-    private Collection<Author> authors = new HashSet<>();
+    private Set<Author> authors = new HashSet<>();
 
     /**
      * Несколько "questions" - несколько вопросов
@@ -108,7 +108,7 @@ public class Appeal extends BaseEntity {
     @JoinTable(name = "appeal_question",
             joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"))
-    private Collection<Question> questions = new HashSet<>();
+    private Set<Question> questions = new HashSet<>();
 
     /**
      * Номенклатура
@@ -125,7 +125,7 @@ public class Appeal extends BaseEntity {
     @JoinTable(name = "appeal_filepool",
             joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "filepool_id", referencedColumnName = "id"))
-    private Collection<FilePool> file = new HashSet<>();
+    private Set<FilePool> file = new HashSet<>();
 
     /**
      * привязка обращения к определенному региону
