@@ -85,7 +85,7 @@ public class Appeal extends BaseEntity {
      * Несколько Employee "в копию" рассылки обращения
      * они тоже посмотрят обращение, но подписи их нам не нужны
      */
-    @OneToMany
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "appeal_addressee",
             joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "id"))
