@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import org.springframework.data.domain.Pageable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -21,17 +20,16 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
     Optional<Appeal> findByIdAndArchivedDateIsNull(Long id);
 
     @Override
-    @Query("select a from Appeal a " +
-            "left join fetch a.signer " +
-            "left join fetch a.addressee " +
-            "left join fetch a.creator " +
-            "left join fetch a.authors " +
-            "left join fetch a.questions " +
-            "left join fetch a.file " +
-            "left join fetch a.nomenclature " +
-            "left join fetch a.region " +
-            " where a.id = :id " +
-            "order by a.id asc ")
+//    @Query("select distinct a from Appeal a " +
+//            "left join fetch a.signer " +
+//            "left join fetch a.addressee " +
+//            "left join fetch a.creator " +
+//            "left join fetch a.authors " +
+//            "left join fetch a.questions " +
+//            "left join fetch a.file " +
+//            "left join fetch a.nomenclature " +
+//            "left join fetch a.region " +
+//            " where a.id = :id")
     Optional<Appeal> findById(@Param("id") Long id);
 
     /**
@@ -47,14 +45,6 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
      * Метод достает Appeal, у которого поле archivedDate = null
      */
     @Query("select a from Appeal a " +
-            "left join fetch a.signer " +
-            "left join fetch a.addressee " +
-            "left join fetch a.creator " +
-            "left join fetch a.authors " +
-            "left join fetch a.questions " +
-            "left join fetch a.file " +
-            "left join fetch a.nomenclature " +
-            "left join fetch a.region " +
             "where a.id =:id and a.archivedDate is null " +
             "order by a.id asc ")
     Optional<Appeal> findByIdNotArchived(@Param("id") Long id);
@@ -63,14 +53,6 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
      * Метод, который достает всех Appeal, у которых поле archivedDate = null
      */
     @Query("select a from Appeal a " +
-            "left join fetch a.signer " +
-            "left join fetch a.addressee " +
-            "left join fetch a.creator " +
-            "left join fetch a.authors " +
-            "left join fetch a.questions " +
-            "left join fetch a.file " +
-            "left join fetch a.nomenclature " +
-            "left join fetch a.region " +
             "where a.archivedDate is null " +
             "order by a.id asc ")
     Collection<Appeal> findAllNotArchived();
@@ -82,15 +64,8 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
      * Метод достает Appeal по Questions id
      */
     @Query("select a from Appeal a " +
-            "left join fetch a.creator " +
-            "left join fetch a.addressee " +
-            "left join fetch a.signer " +
-            "left join fetch a.questions " +
-            "left join fetch a.file " +
-            "left join fetch a.authors " +
-            "left join fetch a.region " +
-            "left join fetch a.nomenclature q" +
-            " where q.id = :id " +
+            "left join fetch a.questions q " +
+            "where q.id = :id " +
             "order by a.id asc ")
     Optional<Appeal> findAppealByQuestionsId(@Param("id") Long id);
     /**

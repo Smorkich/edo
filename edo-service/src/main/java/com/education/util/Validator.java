@@ -1,17 +1,22 @@
 package com.education.util;
 
+import com.education.exception_handling.AppealAccessDeniedException;
 import com.education.exception_handling.AppealCustomException;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.AppealDto;
 import model.dto.ApprovalBlockDto;
 import model.dto.ApprovalDto;
+import model.dto.EmployeeDto;
 import model.dto.MemberDto;
 import model.enum_.ApprovalBlockType;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -171,4 +176,28 @@ public class Validator {
             throw new AppealCustomException(err.toString());
         }
     }
+
+    public static void validateAccess(EmployeeDto employeeDto, AppealDto appealDto) {
+        Set<EmployeeDto> signers = new HashSet<>(appealDto.getSigner());
+        Set<EmployeeDto> addressee = new HashSet<>(appealDto.getAddressee());
+        EmployeeDto creator = appealDto.getCreator();
+        boolean access = false;
+        for (EmployeeDto signer : signers) {
+            if (Objects.equals(signer.getId(), employeeDto.getId()))
+                access = true;
+        }
+        for (EmployeeDto address : addressee) {
+            if (Objects.equals(address.getId(), employeeDto.getId()))
+                access = true;
+        }
+        if (Objects.equals(creator.getId(), employeeDto.getId())){
+            access = true;
+        }
+
+        if (access == false) {
+            throw new AppealAccessDeniedException("Access denied");
+        }
+
+    }
+
 }
