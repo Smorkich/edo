@@ -112,6 +112,6 @@ public class AppealRestController {
         return new ResponseEntity<>(appealIncorrectData, HttpStatus.FORBIDDEN);
     }
     private EmployeeDto getMockEmployee() {
-        return EmployeeDto.builder().id(3L).build();
+        return EmployeeDto.builder().id(1L).build();
     }
 }
