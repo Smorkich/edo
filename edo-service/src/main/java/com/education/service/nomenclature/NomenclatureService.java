@@ -47,4 +47,5 @@ public interface NomenclatureService {
     List<NomenclatureDto> findAllByIdNotArchived(String ids);
 
 
+    NomenclatureDto findByIndex(String index);
 }
