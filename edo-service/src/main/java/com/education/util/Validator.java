@@ -20,6 +20,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Класс для валидации DTO
@@ -178,26 +179,12 @@ public class Validator {
     }
 
     public static void validateAccess(EmployeeDto employeeDto, AppealDto appealDto) {
-        Set<EmployeeDto> signers = new HashSet<>(appealDto.getSigner());
-        Set<EmployeeDto> addressee = new HashSet<>(appealDto.getAddressee());
-        EmployeeDto creator = appealDto.getCreator();
-        boolean access = false;
-        for (EmployeeDto signer : signers) {
-            if (Objects.equals(signer.getId(), employeeDto.getId()))
-                access = true;
-        }
-        for (EmployeeDto address : addressee) {
-            if (Objects.equals(address.getId(), employeeDto.getId()))
-                access = true;
-        }
-        if (Objects.equals(creator.getId(), employeeDto.getId())){
-            access = true;
-        }
+        Set<Long> employeeIds = Stream.concat(appealDto.getSigner().stream(), appealDto.getAddressee().stream())
+                .map(EmployeeDto::getId)
+                .collect(Collectors.toSet());
 
-        if (access == false) {
+        if (!employeeIds.contains(employeeDto.getId()) && !appealDto.getCreator().getId().equals(employeeDto.getId())) {
             throw new AppealAccessDeniedException("Access denied");
         }
-
     }
-
 }
