@@ -31,7 +31,6 @@ public class NomenclatureController {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
         var correctIndex = KeySwitcherUtil.transliterate(index).toLowerCase();
-        System.out.println(correctIndex);
 
         log.info("Отправляем запрос в edo-service");
         var foundNomenclature = service.findByIndex(correctIndex);
