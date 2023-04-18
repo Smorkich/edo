@@ -15,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 public class NomenclatureServiceImpl implements NomenclatureService {
 
     private final RestTemplate restTemplate;
-    private final String NOMENCLATURE_FIND_URI = "/api/service/nomenclature/find/";
     @Override
     public NomenclatureDto findByIndex(String index) {
 

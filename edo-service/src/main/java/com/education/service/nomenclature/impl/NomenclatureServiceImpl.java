@@ -74,4 +74,9 @@ public class NomenclatureServiceImpl implements NomenclatureService {
                 .setPath(String.valueOf(ids));
         return restTemplate.getForObject(builder.toString(), List.class);
     }
+
+    @Override
+    public NomenclatureDto findByIndex(String index) {
+        return null;
+    }
 }
