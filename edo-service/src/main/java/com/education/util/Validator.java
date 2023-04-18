@@ -1,20 +1,27 @@
 package com.education.util;
 
+import com.education.exception_handling.AppealAccessDeniedException;
 import com.education.exception_handling.AppealCustomException;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.AppealDto;
 import model.dto.ApprovalBlockDto;
 import model.dto.ApprovalDto;
+import model.dto.EmployeeDto;
 import model.dto.MemberDto;
 import model.enum_.ApprovalBlockType;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.Collections.singleton;
+
 
 /**
  * Класс для валидации DTO
@@ -170,5 +177,14 @@ public class Validator {
         if (!err.isEmpty()) {
             throw new AppealCustomException(err.toString());
         }
+    }
+
+    public static void validateAccess(EmployeeDto employeeDto, AppealDto appealDto) {
+
+        Stream.of(appealDto.getSigner(), appealDto.getAddressee(), singleton(appealDto.getCreator()))
+                .flatMap(Collection::stream)
+                .filter(e -> e.getId().equals(employeeDto.getId()))
+                .findAny()
+                .orElseThrow(() -> new AppealAccessDeniedException("Access denied"));
     }
 }

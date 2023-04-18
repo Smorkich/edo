@@ -37,4 +37,11 @@ public class AppealController {
         log.info("Moving appeal with id: {} to edo-service is success!", id);
         return new ResponseEntity<>(appealService.findById(id), HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Находит обращение по id")
+    @GetMapping("/{id}")
+    public ResponseEntity<AppealDto> getById (@PathVariable Long id) {
+        log.info("Получаем AppealDto по id");
+        return  new ResponseEntity<>(appealService.findById(id), HttpStatus.OK);
+    }
 }
