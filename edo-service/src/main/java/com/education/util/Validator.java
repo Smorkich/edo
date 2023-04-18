@@ -13,14 +13,15 @@ import model.enum_.ApprovalBlockType;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.Collections.singleton;
+
 
 /**
  * Класс для валидации DTO
@@ -179,12 +180,11 @@ public class Validator {
     }
 
     public static void validateAccess(EmployeeDto employeeDto, AppealDto appealDto) {
-        Set<Long> employeeIds = Stream.concat(appealDto.getSigner().stream(), appealDto.getAddressee().stream())
-                .map(EmployeeDto::getId)
-                .collect(Collectors.toSet());
 
-        if (!employeeIds.contains(employeeDto.getId()) && !appealDto.getCreator().getId().equals(employeeDto.getId())) {
-            throw new AppealAccessDeniedException("Access denied");
-        }
+        Stream.of(appealDto.getSigner(), appealDto.getAddressee(), singleton(appealDto.getCreator()))
+                .flatMap(Collection::stream)
+                .filter(e -> e.getId() == employeeDto.getId())
+                .findAny()
+                .orElseThrow(() -> new AppealAccessDeniedException("Access denied"));
     }
 }
