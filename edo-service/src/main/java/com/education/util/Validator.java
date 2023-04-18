@@ -183,7 +183,7 @@ public class Validator {
 
         Stream.of(appealDto.getSigner(), appealDto.getAddressee(), singleton(appealDto.getCreator()))
                 .flatMap(Collection::stream)
-                .filter(e -> e.getId() == employeeDto.getId())
+                .filter(e -> e.getId().equals(employeeDto.getId()))
                 .findAny()
                 .orElseThrow(() -> new AppealAccessDeniedException("Access denied"));
     }
