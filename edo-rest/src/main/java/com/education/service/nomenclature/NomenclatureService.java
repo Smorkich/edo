@@ -2,7 +2,11 @@ package com.education.service.nomenclature;
 
 import model.dto.NomenclatureDto;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.util.List;
+
 public interface NomenclatureService {
 
-    NomenclatureDto findByIndex(String index);
+    List<NomenclatureDto> findByIndex(String index) throws URISyntaxException, MalformedURLException;
 }

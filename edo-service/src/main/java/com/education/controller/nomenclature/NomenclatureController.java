@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 /**
@@ -47,11 +48,16 @@ public class NomenclatureController {
         return new ResponseEntity<>(nomenclatureDto, HttpStatus.OK);
     }
 
+    /**
+     * Ищет номенклатуру по индексу /find/согл
+     * @param index
+     * @return
+     */
     @ApiOperation("Method find Nomenclature by Id")
-    @GetMapping(value = "/find/{index}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NomenclatureDto> findByIndex(@PathVariable("index")  String index) {
+    @GetMapping(value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<NomenclatureDto>> findByIndex(@RequestParam("index") String index) throws UnsupportedEncodingException {
         log.info("Поиск NomenclatureDto по индексу: {}", index);
-        NomenclatureDto nomenclatureDto = service.findByIndex(index);
+        var nomenclatureDto = service.findByIndex(index);
         log.info("Entity {} has been found", nomenclatureDto);
         return new ResponseEntity<>(nomenclatureDto, HttpStatus.OK);
     }

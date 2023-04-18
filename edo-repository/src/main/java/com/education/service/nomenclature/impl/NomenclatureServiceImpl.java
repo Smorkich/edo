@@ -74,4 +74,9 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
+    @Override
+    public List<Nomenclature> findByIndex(String index) {
+        return repository.findByIndexStartsWithIgnoreCase(index);
+    }
 }
