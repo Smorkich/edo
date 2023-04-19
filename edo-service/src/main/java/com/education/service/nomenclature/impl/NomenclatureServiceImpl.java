@@ -83,7 +83,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     public List<NomenclatureDto> findByIndex(String index) {
         log.info("отправляем запрос с индексом {} в edo-repository", index);
         var builder = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, NOMEN_REPO_URL)
-                .addParameter("index", index)
+                .addParameter(NOMENCLATURE_PARAMETER, index)
                 .toString();
         log.info("URL в edo-repository " + builder);
         return restTemplate.getForObject(builder, List.class);

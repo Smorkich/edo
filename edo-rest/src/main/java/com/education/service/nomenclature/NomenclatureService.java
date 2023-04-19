@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface NomenclatureService {
 
-    List<NomenclatureDto> findByIndex(String index) throws URISyntaxException, MalformedURLException;
+    List<NomenclatureDto> findByIndex(String index);
 }

@@ -3,19 +3,23 @@ package com.education.controller.nomenclature;
 
 import com.education.service.nomenclature.NomenclatureService;
 import io.swagger.annotations.ApiOperation;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.NomenclatureDto;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 /**
-* RestController for call rest controller from another module (edo-repository) by service.
-*/
+ * RestController for call rest controller from another module (edo-repository) by service.
+ */
 @RestController
 @AllArgsConstructor
 @Log4j2
@@ -50,12 +54,13 @@ public class NomenclatureController {
 
     /**
      * Ищет номенклатуру по индексу /find/согл
+     *
      * @param index
      * @return
      */
     @ApiOperation("Method find Nomenclature by Id")
-    @GetMapping(value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<NomenclatureDto>> findByIndex(@RequestParam("index") String index) throws UnsupportedEncodingException {
+    @GetMapping(value = "/index", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<NomenclatureDto>> findByIndex(@RequestParam("index") String index) {
         log.info("Поиск NomenclatureDto по индексу: {}", index);
         var nomenclatureDto = service.findByIndex(index);
         log.info("Entity {} has been found", nomenclatureDto);

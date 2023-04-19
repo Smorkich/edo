@@ -27,17 +27,18 @@ public class NomenclatureController {
 
     /**
      * Ищет номенклатуру по индексу /find/согл
+     *
      * @param index
      * @return
      */
-    @GetMapping(value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<NomenclatureDto>> findByIndex(@RequestParam("index") String index) throws MalformedURLException, URISyntaxException {
+    @GetMapping(value = "/index", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<NomenclatureDto>> findByIndex(@RequestParam("index") String index) {
         if (index.length() < 3) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        var correctIndex = KeySwitcherUtil.transliterate(index);
-        log.info("Отправляем запрос {} в edo-service", correctIndex);
-        var foundNomenclature = service.findByIndex(correctIndex);
+
+        log.info("Отправляем запрос {} в edo-service", index);
+        var foundNomenclature = service.findByIndex(index);
         log.info("Получаем ответ из edo-service: {}", foundNomenclature);
 
         return new ResponseEntity<>(foundNomenclature, HttpStatus.OK);
