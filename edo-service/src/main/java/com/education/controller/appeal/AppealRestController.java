@@ -90,6 +90,7 @@ public class AppealRestController {
         log.info("Getting from database appeal with id: {}", id);
         var appealDto = appealService.findById(id);
         Validator.validateAccess(mockEmployee,appealDto);
+        appealDto.setLastEmployeeWhoReadThisAppeal(mockEmployee);
         log.info("Response from database: {}", appealDto);
         return new ResponseEntity<>(appealDto, HttpStatus.OK);
     }
