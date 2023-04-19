@@ -18,7 +18,7 @@ public class AppealPublisherImpl implements AppealPublisher {
     private final RabbitTemplate rabbitTemplate;
 
     /**
-     * Принимает сообщение о том, какой работник какое обращение прочитал впервые, и помещает сообщение в очередь REST_TO_SERVICE_APPEAL_QUEUE
+     * Принимает сообщение о том, какой работник какое обращение прочитал, и помещает сообщение в очередь REST_TO_SERVICE_APPEAL_QUEUE
      */
     @Override
     public void EmployeeReadAppealMessage(String message) {
