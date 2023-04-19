@@ -1,5 +1,6 @@
 package com.education.controller.appeal;
 
+import com.education.publisher.appeal.AppealPublisher;
 import com.education.service.appeal.AppealService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.*;
 public class AppealController {
     private final AppealService appealService;
 
+    private final AppealPublisher appealPublisher;
+
     @ApiOperation(value = "Принимает обращение, отправляет на edo-service", notes = "Обращение должен существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> save(@RequestBody AppealDto appealDto) {
@@ -40,8 +43,15 @@ public class AppealController {
 
     @ApiOperation(value = "Находит обращение по id")
     @GetMapping("/{id}")
-    public ResponseEntity<AppealDto> getById (@PathVariable Long id) {
+    public ResponseEntity<AppealDto> getById(@PathVariable Long id) {
         log.info("Получаем AppealDto по id");
-        return  new ResponseEntity<>(appealService.findById(id), HttpStatus.OK);
+        var appealDto = appealService.findById(id);
+        log.info("AppealDto успешно получен");
+        var LastEmployeeWhoReadThisAppeal = appealDto.getLastEmployeeWhoReadThisAppeal();
+        if (LastEmployeeWhoReadThisAppeal != null) {
+            appealPublisher.EmployeeReadAppealMessage(String.format("Employee with id: %d read the appeal with id: %d",
+                    LastEmployeeWhoReadThisAppeal.getId(), appealDto.getId()));
+        }
+        return new ResponseEntity<>(appealService.findById(id), HttpStatus.OK);
     }
 }
