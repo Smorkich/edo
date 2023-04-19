@@ -49,8 +49,12 @@ public class AppealDto implements Serializable {
 
     @ApiModelProperty(value = "Отправить им обращение тоже (в копию)")
     private Collection<EmployeeDto> addressee;
+
     @ApiModelProperty(value = "Автор, соавторы обращения")
     private Collection<AuthorDto> authors = new HashSet<>();
+
+    @ApiModelProperty(value = "Последний работник, который прочитал обращение")
+    private EmployeeDto LastEmployeeWhoReadThisAppeal;
 
     @ApiModelProperty(value = "Несколько вопросов")
     private Collection<QuestionDto> questions = new HashSet<>();
