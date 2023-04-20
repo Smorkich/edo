@@ -7,13 +7,10 @@ alter table if exists employee
     add fio_nominative varchar(30),
     add fio_genitive varchar(30),
     add external_id bigint not null,
---     add notification_id varchar(30),
     add phone varchar(30),
     add work_phone varchar(30),
     add birth_date date,
     add username varchar(30),
---     add department varchar(30),
-    add email varchar(60),
     add creation_date timestamptz,
     add archived_date timestamptz;
 
@@ -55,9 +52,6 @@ comment on column employee.birth_date
 
 comment on column employee.username
     is 'Имя пользователя';
-
-comment on column employee.email
-    is 'Почта пользователя';
 
 comment on column employee.creation_date
     is 'Дата создания';

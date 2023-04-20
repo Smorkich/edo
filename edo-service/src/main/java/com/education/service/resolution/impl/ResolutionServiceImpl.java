@@ -3,6 +3,7 @@ package com.education.service.resolution.impl;
 import com.education.service.appeal.AppealService;
 
 
+import com.education.service.emloyee.EmployeeService;
 import com.education.service.resolution.ResolutionService;
 
 import com.education.util.URIBuilderUtil;
@@ -41,8 +42,7 @@ import static model.enum_.Status.UNDER_CONSIDERATION;
 public class ResolutionServiceImpl implements ResolutionService {
 
     private final AppealService appealService;
-
-
+    private final EmployeeService employeeService;
     private RestTemplate restTemplate;
 
     @Override
@@ -106,32 +106,29 @@ public class ResolutionServiceImpl implements ResolutionService {
         var builder = buildURI(EDO_INTEGRATION_NAME, MESSAGE_URL + "/resolution");
         var valueMapForSendingObjects = new LinkedMultiValueMap<>();
 
-        List<String> emailsExecutors = new ArrayList<>();
-        List<String> fioExecutors = new ArrayList<>();
-
         //получение Email и ФИО Executors
-        addEmployeesEmailsAndFIO(emailsExecutors, fioExecutors, resolutionDto.getExecutor());
+        List<String> emailsExecutors = new ArrayList<>(getEmployeesEmails(resolutionDto.getExecutor()));
+        List<String> fioExecutors = new ArrayList<>(getEmployeesFIO(resolutionDto.getExecutor()));
 
-        //получение Appeal.number
+        //получение Appeal.number и Appeal.Id
         var questionId = resolutionDto.getQuestion().getId();
         var appealNumber = appealService.findAppealByQuestionsId(questionId).getNumber();
+        var appealId = appealService.findAppealByQuestionsId(questionId).getId();
 
         //получение AppealUrl
-        var builderForAppealUrl = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL + "/" + appealNumber);
+        var builderForAppealUrl = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL + "/" + appealId);
 
         //заполнение мапы данными
         valueMapForSendingObjects.add("appealURL", builderForAppealUrl.toString());
         valueMapForSendingObjects.add("appealNumber", appealNumber);
         valueMapForSendingObjects.addAll("emailsExecutors", emailsExecutors);
         valueMapForSendingObjects.addAll("fioExecutors", fioExecutors);
-        valueMapForSendingObjects.add("emailSigner", resolutionDto.getSigner().getEmail());
-        valueMapForSendingObjects.add("fioSigner", resolutionDto.getSigner().getFioNominative());
-        valueMapForSendingObjects.add("emailCurator", resolutionDto.getCurator().getEmail());
-        valueMapForSendingObjects.add("fioCurator", resolutionDto.getCurator().getFioNominative());
+        valueMapForSendingObjects.add("emailSigner", getEmployeeEmail(resolutionDto.getSigner()));
+        valueMapForSendingObjects.add("fioSigner", getEmployeeFIO(resolutionDto.getSigner()));
+        valueMapForSendingObjects.add("emailCurator", getEmployeeEmail(resolutionDto.getCurator()));
+        valueMapForSendingObjects.add("fioCurator", getEmployeeFIO(resolutionDto.getCurator()));
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.MULTIPART_FORM_DATA);
-
         var requestEntity = new HttpEntity<>(valueMapForSendingObjects, headers);
 
         //отправка мапы на edo-integration
@@ -139,14 +136,36 @@ public class ResolutionServiceImpl implements ResolutionService {
     }
 
     /**
-     * Метод достает emails и ФИО в им.п. из коллекции EmployeeDto
+     * Метод достает emails из коллекции EmployeeDto
      */
-    private void addEmployeesEmailsAndFIO(Collection<String> emails, Collection<String> fio, Collection<EmployeeDto> employees) {
+    private Collection<String> getEmployeesEmails(Collection<EmployeeDto> employees) {
+        List<String> result = new ArrayList<>();
         if (employees != null) {
             for (EmployeeDto emp : employees) {
-                emails.add(emp.getEmail());
-                fio.add(emp.getFioNominative());
+                result.add(getEmployeeEmail(emp));
             }
         }
+        return result;
+    }
+
+    /**
+     * Метод достает ФИО из коллекции EmployeeDto
+     */
+    private Collection<String> getEmployeesFIO(Collection<EmployeeDto> employees) {
+        List<String> result = new ArrayList<>();
+        if (employees != null) {
+            for (EmployeeDto emp : employees) {
+                result.add(getEmployeeFIO(emp));
+            }
+        }
+        return result;
+    }
+
+    private String getEmployeeEmail(EmployeeDto emp) {
+        return employeeService.findById(emp.getId()).getEmail();
+    }
+
+    private String getEmployeeFIO(EmployeeDto emp) {
+        return employeeService.findById(emp.getId()).getFioNominative();
     }
 }

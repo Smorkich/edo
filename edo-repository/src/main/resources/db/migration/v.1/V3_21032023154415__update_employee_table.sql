@@ -1,3 +1,5 @@
 ALTER TABLE if EXISTS employee
-    ALTER COLUMN external_id TYPE VARCHAR(30),
-    DROP COLUMN notification_id;
+    ADD COLUMN email varchar(60);
+
+comment on column employee.email
+    is 'Почта';

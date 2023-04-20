@@ -7,7 +7,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -17,7 +16,7 @@ public class EmailServiceImpl implements EmailService {
     private final SendEmailService sendEmailService;
 
     @Override
-    public void createEmail(Set<String> emails, String appealURL, String appealNumber) {
+    public void createEmail(List<String> emails, String appealURL, String appealNumber) {
         String subject = "Новое обращение: " + appealNumber;
         StringBuilder message = new StringBuilder("Создано новое обращение с номером ");
         message.append(appealNumber).append(". Ссылка на обращение: ").append(appealURL);
@@ -36,28 +35,35 @@ public class EmailServiceImpl implements EmailService {
                                                String appealURL, String appealNumber) {
 
         String subject = "Новая резолюция";
+        String signerPost = "подписантом";
+        String executorPost = "исполнителем";
+        String curatorPost = "куратором";
         var endMessage = new StringBuilder(" резолюции в обращении с номером ")
                 .append(appealNumber)
                 .append(". Ссылка на обращение: ")
                 .append(appealURL);
-
         //для Executors
         for (var i = 0; i < emailsExecutors.size(); i++) {
-            var messageExecutors = new StringBuilder("Добрый день, " + fioExecutors.get(i) + "!")
-                    .append(" Вы являетесь исполнителем")
-                    .append(endMessage);
-            sendEmailService.sendEmail(emailsExecutors.get(i), subject, messageExecutors.toString());
+            sendEmailService.sendEmail(emailsExecutors.get(i), subject,
+                    createMessageForMailWhenCreateResolution(fioExecutors.get(i), executorPost, endMessage));
         }
         //для Signer
-        var messageSigner = new StringBuilder("Добрый день, " + fioSigner + "!")
-                .append(" Вы являетесь подписантом")
-                .append(endMessage);
-        sendEmailService.sendEmail(emailSigner, subject, messageSigner.toString());
+        sendEmailService.sendEmail(emailSigner, subject,
+                createMessageForMailWhenCreateResolution(fioSigner, signerPost, endMessage));
 
         //для Curator
-        var messageCurator = new StringBuilder("Добрый день, " + fioCurator + "!")
-                .append(" Вы являетесь куратором")
+        sendEmailService.sendEmail(emailCurator, subject,
+                createMessageForMailWhenCreateResolution(fioCurator, curatorPost, endMessage));
+    }
+
+    /**
+     * Собирает текст письма для отправки в SendEmailService
+     */
+    private String createMessageForMailWhenCreateResolution(String fio, String post,
+                                                            StringBuilder endMessage) {
+        var message = new StringBuilder("Добрый день, " + fio + "!")
+                .append(" Вы являетесь " + post)
                 .append(endMessage);
-        sendEmailService.sendEmail(emailCurator, subject, messageCurator.toString());
+        return message.toString();
     }
 }

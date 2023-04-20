@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 @AllArgsConstructor
@@ -24,7 +23,7 @@ public class MessageRestController {
 
     @ApiOperation(value = "Отправляет письма по почтам emails, с текстом указанием на номер обращения и адресс")
     @PostMapping("")
-    public ResponseEntity<Object> createAndSendAppealMessage(@RequestParam("emails") Set<String> emails,
+    public ResponseEntity<Object> createAndSendAppealMessage(@RequestParam("emails") List<String> emails,
                                                              @RequestParam("appealURL") String appealURL,
                                                              @RequestParam("appealNumber") String appealNumber) {
         log.info("Creating and sending a message");
