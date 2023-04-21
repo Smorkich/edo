@@ -78,11 +78,11 @@ public class AppealRestController {
     public ResponseEntity<AppealDto> save(@RequestBody AppealDto appealDto) {
         Validator.getValidateAppeal(appealDto);
         log.info("Send a post-request to edo-repository to post new Appeal to database");
-        appealDto = appealService.save(appealDto);
-        log.info("Sending to edo-repository", appealDto);
+        var save = appealService.save(appealDto);
+        log.info("sending to edo-repository", save);
         log.info("Sending a message to employees");
-        appealService.sendMessage(appealDto);
-        return new ResponseEntity<>(appealDto, HttpStatus.CREATED);
+        appealService.sendMessage(save);
+        return new ResponseEntity<>(save, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Находит строку таблицы Appeal по id", notes = "Строка в Appeal должна существовать")
