@@ -2,6 +2,7 @@ package com.education.service.nomenclature.impl;
 
 
 import com.education.service.nomenclature.NomenclatureService;
+import com.education.util.KeySwitcherUtil;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -81,9 +82,10 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
     @Override
     public List<NomenclatureDto> findByIndex(String index) {
-        log.info("отправляем запрос с индексом {} в edo-repository", index);
+        var correctIndex = KeySwitcherUtil.transliterate(index);
+        log.info("отправляем запрос с индексом {} в edo-repository", correctIndex);
         var builder = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, NOMEN_REPO_URL)
-                .addParameter(NOMENCLATURE_PARAMETER, index)
+                .addParameter(NOMENCLATURE_PARAMETER, correctIndex)
                 .toString();
         log.info("URL в edo-repository " + builder);
         return restTemplate.getForObject(builder, List.class);

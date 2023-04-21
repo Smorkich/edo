@@ -1,7 +1,6 @@
 package com.education.controller.nomenclature;
 
 import com.education.service.nomenclature.NomenclatureService;
-import com.education.util.KeySwitcherUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.NomenclatureDto;
@@ -13,8 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController
@@ -36,7 +33,6 @@ public class NomenclatureController {
         if (index.length() < 3) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
         log.info("Отправляем запрос {} в edo-service", index);
         var foundNomenclature = service.findByIndex(index);
         log.info("Получаем ответ из edo-service: {}", foundNomenclature);
