@@ -6,16 +6,15 @@ import model.dto.AddressDto;
 import model.dto.DepartmentDto;
 import model.dto.EmployeeDto;
 import org.json.JSONArray;
-import org.junit.FixMethodOrder;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.annotation.Repeat;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -37,7 +36,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @Setter(onMethod_ = @Autowired)
 public class FindAllByFullNameTest {
 
@@ -45,10 +43,11 @@ public class FindAllByFullNameTest {
 
     private ObjectMapper objectMapper;
 
-    @Test
-    @DisplayName("Сохранение нового работника с русским ФИО")
-    public void TestA_SaveNewRussianEmployee() throws Exception {
-        EmployeeDto newEmployee = EmployeeDto.builder()
+    private static EmployeeDto newEmployeeOne, newEmployeeTwo;
+
+    @BeforeClass
+    public static void init() {
+        newEmployeeOne = EmployeeDto.builder()
                 .firstName("Антон")
                 .lastName("Иванов")
                 .middleName("Андреевич")
@@ -56,15 +55,7 @@ public class FindAllByFullNameTest {
                 .department(DepartmentDto.builder().id(1L).build())
                 .address(AddressDto.builder().id(1L).build())
                 .build();
-
-        postRequestToSaveEmployee(newEmployee);
-    }
-
-    @Test
-    @Repeat(2)
-    @DisplayName("Сохранение двух одинаковых работников с ФИО на английском")
-    public void TestB_SaveTwoIdenticalEnglishEmployee() throws Exception {
-        EmployeeDto newEmployee = EmployeeDto.builder()
+        newEmployeeTwo = EmployeeDto.builder()
                 .firstName("Ivan")
                 .lastName("Sidorov")
                 .middleName("Petrovich")
@@ -72,7 +63,21 @@ public class FindAllByFullNameTest {
                 .department(DepartmentDto.builder().id(1L).build())
                 .address(AddressDto.builder().id(1L).build())
                 .build();
-        postRequestToSaveEmployee(newEmployee);
+    }
+
+    @Before
+    @DisplayName("Сохранение одного работника с ФИО на русском " +
+            "и двух одинаковых работников с ФИО на английском")
+    public void saveNewEmployees() throws Exception {
+        if (newEmployeeOne != null) {
+            postRequestToSaveEmployee(newEmployeeOne);
+            newEmployeeOne = null;
+        }
+        if (newEmployeeTwo != null) {
+            postRequestToSaveEmployee(newEmployeeTwo);
+            postRequestToSaveEmployee(newEmployeeTwo);
+            newEmployeeTwo = null;
+        }
     }
 
     /**
@@ -89,7 +94,7 @@ public class FindAllByFullNameTest {
     @Test
     @DisplayName("Поиск работников в базе по ФИО на английском " +
             "и проверка, что найдено более одного работника с таким ФИО")
-    public void TestC_EnglishCharacterTest() throws Exception {
+    public void englishCharacterTest() throws Exception {
         MvcResult mvcResult = this.mockMvc.perform(get("/api/rest/employee/search")
                         .param("fullName", "Ivan Sidorov Petrovich"))
                 .andDo(print())
@@ -104,7 +109,7 @@ public class FindAllByFullNameTest {
 
     @Test
     @DisplayName("Поиск работников в базе по ФИО на русском")
-    public void TestD_RussianCharacterTest() throws Exception {
+    public void russianCharacterTest() throws Exception {
         this.mockMvc.perform(get("/api/rest/employee/search")
                         .param("fullName", "Антон Иванов Андреевич"))
                 .andDo(print())
@@ -115,7 +120,7 @@ public class FindAllByFullNameTest {
 
     @Test
     @DisplayName("Поиск работников в базе при вводе малого количества символов")
-    public void TestE_SmallNumberOfCharacterTest() throws Exception {
+    public void smallNumberOfCharacterTest() throws Exception {
         this.mockMvc.perform(get("/api/rest/employee/search")
                         .param("fullName", "Iv"))
                 .andDo(print())
@@ -127,7 +132,7 @@ public class FindAllByFullNameTest {
 
     @Test
     @DisplayName("Поиск работников в базе при вводе символов в разном регистре")
-    public void TestF_DifferentСharacterСaseTest() throws Exception {
+    public void differentСharacterСaseTest() throws Exception {
         this.mockMvc.perform(get("/api/rest/employee/search")
                         .param("fullName", "IvAN SiDoRov"))
                 .andDo(print())
