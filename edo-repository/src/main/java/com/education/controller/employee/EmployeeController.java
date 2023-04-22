@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.List;
 
@@ -82,7 +84,7 @@ public class EmployeeController {
      */
 
     @ApiOperation(value = "Создает сотрудника")
-       @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<EmployeeDto> save(@RequestBody EmployeeDto employeeDto) {
         log.info("Starting the save operation");
         employeeService.save(EMPLOYEE_MAPPER.toEntity(employeeDto));
@@ -157,6 +159,7 @@ public class EmployeeController {
     @ApiOperation(value = "Предоставление сотрудников по ФИО")
     @GetMapping(value = "/search")
     public ResponseEntity<Collection<EmployeeDto>> findAllByFullName(@RequestParam("fullName") String fullName) {
+        fullName = URLDecoder.decode(fullName, StandardCharsets.UTF_8);
         log.info("Send a response with the requested full name");
         Collection<EmployeeDto> employeeDto = EMPLOYEE_MAPPER.toDto(employeeService.findAllByFullName(fullName));
         log.info("The operation was successful, they got employee with full name ={}", fullName);

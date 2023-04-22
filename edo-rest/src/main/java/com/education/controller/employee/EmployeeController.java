@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 
 /**
  * @author Andrey Kryukov
  * Rest-контроллер отправляет запрос от клиента в сервисы
-*/
+ */
 @Log4j2
 @ApiOperation("Контроллер сотрудника")
 @RestController
@@ -42,6 +44,7 @@ public class EmployeeController {
     @ApiOperation(value = "Предоставление сотрудников по ФИО")
     @GetMapping(value = "/search")
     public ResponseEntity<Collection<EmployeeDto>> findAllByFullName(@RequestParam("fullName") String fullName) {
+        fullName = URLDecoder.decode(fullName, StandardCharsets.UTF_8);
         log.info("Send a response with the requested full name");
         Collection<EmployeeDto> employeeDto = employeeService.findAllByFullName(fullName);
         log.info("The operation was successful, they got employee with full name = {}", fullName);

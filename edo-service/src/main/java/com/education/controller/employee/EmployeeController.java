@@ -8,8 +8,16 @@ import model.dto.EmployeeDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 
 
@@ -106,10 +114,11 @@ public class EmployeeController {
     @ApiOperation(value = "Предоставление сотрудников по полному имени")
     @GetMapping(value = "/search")
     public ResponseEntity<Collection<EmployeeDto>> findAllByFullName(@RequestParam("fullName") String fullName) {
+        fullName = URLDecoder.decode(fullName, StandardCharsets.UTF_8);
         log.info("Send a response with the employee of the assigned fullName");
         var employeeDto = employeeService.findAllByFullName(fullName);
         log.info("The operation was successful, we got the employee by fullName = {} ", fullName);
-        return new ResponseEntity<Collection<EmployeeDto>>(employeeDto, HttpStatus.OK);
+        return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
 
 }
