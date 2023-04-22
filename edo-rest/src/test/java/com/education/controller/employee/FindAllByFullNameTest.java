@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @Setter(onMethod_ = @Autowired)
-public class FindAllByFullNameTest extends ParentTest {
+public class FindAllByFullNameTest {
 
     private MockMvc mockMvc;
 
