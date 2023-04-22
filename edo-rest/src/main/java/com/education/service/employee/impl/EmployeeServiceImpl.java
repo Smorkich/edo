@@ -5,6 +5,10 @@ import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.EmployeeDto;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -22,7 +26,19 @@ import static model.constant.Constant.EMPLOYEE_FIO_SEARCH_PARAMETER;
 @Log4j2
 @AllArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
+
     private final RestTemplate restTemplate;
+
+    /**
+     * Отправляет запрос в edo-service на сохранение EmployeeDto
+     */
+    @Override
+    public EmployeeDto save(EmployeeDto employeeDto) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        String uri = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, "/api/service/employee").toString();
+        return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(employeeDto, headers), EmployeeDto.class).getBody();
+    }
 
     @Override
     public Collection<EmployeeDto> findAllByFullName(String fullName) {

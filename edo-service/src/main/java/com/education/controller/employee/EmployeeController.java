@@ -103,4 +103,13 @@ public class EmployeeController {
         return new ResponseEntity<>(collection, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Предоставление сотрудников по полному имени")
+    @GetMapping(value = "/search")
+    public ResponseEntity<Collection<EmployeeDto>> findAllByFullName(@RequestParam("fullName") String fullName) {
+        log.info("Send a response with the employee of the assigned fullName");
+        var employeeDto = employeeService.findAllByFullName(fullName);
+        log.info("The operation was successful, we got the employee by fullName = {} ", fullName);
+        return new ResponseEntity<Collection<EmployeeDto>>(employeeDto, HttpStatus.OK);
+    }
+
 }

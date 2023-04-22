@@ -9,5 +9,7 @@ import java.util.Collection;
  * Интерфейс employee сервиса
  */
 public interface EmployeeService {
+    EmployeeDto save(EmployeeDto employeeDto);
+
     Collection<EmployeeDto> findAllByFullName(String fullName);
 }
