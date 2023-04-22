@@ -1,6 +1,8 @@
 package com.education.controller.employee;
 
+import com.education.ParentTest;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Setter;
 import model.dto.AddressDto;
 import model.dto.DepartmentDto;
 import model.dto.EmployeeDto;
@@ -37,12 +39,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class FindAllByFullName {
+@Setter(onMethod_ = @Autowired)
+public class FindAllByFullNameTest extends ParentTest {
 
-    @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
     private ObjectMapper objectMapper;
 
     @Test
