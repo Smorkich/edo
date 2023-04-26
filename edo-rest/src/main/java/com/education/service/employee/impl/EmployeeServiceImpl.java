@@ -8,6 +8,9 @@ import model.dto.EmployeeDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.Collection;
 
 import static model.constant.Constant.EDO_SERVICE_NAME;
@@ -26,10 +29,16 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Collection<EmployeeDto> findAllByFullName(String fullName) {
-        log.info("Build uri to service");
-        String uri = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, "/api/service/employee/search")
-                .addParameter(EMPLOYEE_FIO_SEARCH_PARAMETER, fullName).toString();
-        log.info("Sent a request to receive the employee collection with requested full name");
-        return restTemplate.getForObject(uri, Collection.class);
+        log.info("Build uri to service: {}", fullName);
+        URL uri = null;
+        try {
+            uri = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, "/api/service/employee/search")
+                    .addParameter(EMPLOYEE_FIO_SEARCH_PARAMETER, fullName).build().toURL();
+            log.info("Sent a request to receive the employee collection with requested full name");
+            return restTemplate.getForObject(uri.toURI(), Collection.class);
+        } catch (MalformedURLException | URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 }

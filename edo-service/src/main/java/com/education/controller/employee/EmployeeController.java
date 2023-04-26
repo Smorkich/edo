@@ -103,4 +103,11 @@ public class EmployeeController {
         return new ResponseEntity<>(collection, HttpStatus.OK);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Collection<EmployeeDto>> findByFullName(@RequestParam("fullName") String fullname) {
+        log.info("Принимает полное имя {} на стороне edo-service", fullname);
+        var emp =  employeeService.findAllByFullName(fullname);
+        return new ResponseEntity<>(emp, HttpStatus.OK);
+    }
+
 }

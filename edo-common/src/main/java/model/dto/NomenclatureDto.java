@@ -30,6 +30,6 @@ public class NomenclatureDto {
     private Long currentValue;
 
     @ApiModelProperty("Индекс элемента")
-    private int index;
+    private String index;
 
 }

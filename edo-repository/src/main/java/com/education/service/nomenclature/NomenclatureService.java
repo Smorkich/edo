@@ -46,4 +46,5 @@ public interface NomenclatureService {
      */
     void deleteById(Long id);
 
+    List<Nomenclature> findByIndex(String index);
 }
