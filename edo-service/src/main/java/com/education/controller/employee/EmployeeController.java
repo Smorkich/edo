@@ -111,14 +111,11 @@ public class EmployeeController {
         return new ResponseEntity<>(collection, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Предоставление сотрудников по полному имени")
-    @GetMapping(value = "/search")
-    public ResponseEntity<Collection<EmployeeDto>> findAllByFullName(@RequestParam("fullName") String fullName) {
-        fullName = URLDecoder.decode(fullName, StandardCharsets.UTF_8);
-        log.info("Send a response with the employee of the assigned fullName");
-        var employeeDto = employeeService.findAllByFullName(fullName);
-        log.info("The operation was successful, we got the employee by fullName = {} ", fullName);
-        return new ResponseEntity<>(employeeDto, HttpStatus.OK);
+    @GetMapping("/search")
+    public ResponseEntity<Collection<EmployeeDto>> findByFullName(@RequestParam("fullName") String fullname) {
+        log.info("Принимает полное имя {} на стороне edo-service", fullname);
+        var emp =  employeeService.findAllByFullName(fullname);
+        return new ResponseEntity<>(emp, HttpStatus.OK);
     }
 
 }

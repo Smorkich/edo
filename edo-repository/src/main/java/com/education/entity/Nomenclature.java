@@ -34,6 +34,6 @@ public class Nomenclature extends BaseEntity {
 
     /** Индекс записи */
     @Column(name = "index")
-    private int index;
+    private String index;
 
 }

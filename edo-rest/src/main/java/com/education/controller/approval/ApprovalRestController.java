@@ -1,6 +1,6 @@
 package com.education.controller.approval;
 
-import com.education.publisher.ApprovalPublisher;
+import com.education.publisher.approval.impl.ApprovalPublisher;
 import com.education.service.approval.ApprovalService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;

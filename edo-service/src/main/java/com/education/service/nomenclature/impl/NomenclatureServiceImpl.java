@@ -2,8 +2,11 @@ package com.education.service.nomenclature.impl;
 
 
 import com.education.service.nomenclature.NomenclatureService;
+import com.education.util.KeySwitcherUtil;
+import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import model.constant.Constant;
 import model.dto.NomenclatureDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -19,6 +22,8 @@ import static model.constant.Constant.*;
 public class NomenclatureServiceImpl implements NomenclatureService {
 
     private RestTemplate restTemplate;
+    private final String NOMEN_REPO_URL = "api/repository/nomenclature/find";
+
 
     @Override
     public void save(NomenclatureDto nomenclatureDto) {
@@ -73,5 +78,16 @@ public class NomenclatureServiceImpl implements NomenclatureService {
                 .setPath("/find_not_archived_List?id=")
                 .setPath(String.valueOf(ids));
         return restTemplate.getForObject(builder.toString(), List.class);
+    }
+
+    @Override
+    public List<NomenclatureDto> findByIndex(String index) {
+        var correctIndex = KeySwitcherUtil.transliterate(index);
+        log.info("отправляем запрос с индексом {} в edo-repository", correctIndex);
+        var builder = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, NOMEN_REPO_URL)
+                .addParameter(NOMENCLATURE_PARAMETER, correctIndex)
+                .toString();
+        log.info("URL в edo-repository " + builder);
+        return restTemplate.getForObject(builder, List.class);
     }
 }

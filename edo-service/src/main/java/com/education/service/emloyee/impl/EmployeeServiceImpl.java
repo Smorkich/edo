@@ -93,9 +93,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Collection<EmployeeDto> findAllByFullName(String fullName) {
-        log.info("Build uri to repository");
+        log.info("Build uri to repository {}", fullName);
         String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/employee/search")
                 .addParameter(EMPLOYEE_FIO_SEARCH_PARAMETER, fullName).toString();
+        log.info("FullName after Builder: {} ", uri);
         log.info("Sent a request to receive the employee collection with requested full name");
         return restTemplate.getForObject(uri, Collection.class);
     }
