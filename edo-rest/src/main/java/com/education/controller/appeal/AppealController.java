@@ -1,16 +1,20 @@
 package com.education.controller.appeal;
 
-import com.education.publisher.appeal.AppealPublisher;
 import com.education.service.appeal.AppealService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.AppealDto;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Rest-контроллер в "edo-rest", служит для отправки обращения (Appeal) в БД используя RestTemplate
@@ -21,8 +25,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/edo/appeal")
 public class AppealController {
     private final AppealService appealService;
-
-    private final AppealPublisher appealPublisher;
 
     @ApiOperation(value = "Принимает обращение, отправляет на edo-service", notes = "Обращение должен существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -47,11 +49,6 @@ public class AppealController {
         log.info("Получаем AppealDto по id");
         var appealDto = appealService.findById(id);
         log.info("AppealDto успешно получен");
-        var LastEmployeeWhoReadThisAppeal = appealDto.getLastEmployeeWhoReadThisAppeal();
-        if (LastEmployeeWhoReadThisAppeal != null) {
-            appealPublisher.EmployeeReadAppealMessage(String.format("Employee with id: %d read the appeal with id: %d",
-                    LastEmployeeWhoReadThisAppeal.getId(), appealDto.getId()));
-        }
         return new ResponseEntity<>(appealService.findById(id), HttpStatus.OK);
     }
 }

@@ -21,7 +21,7 @@ public class AppealPublisherImpl implements AppealPublisher {
      * Принимает сообщение о том, какой работник какое обращение прочитал, и помещает сообщение в очередь REST_TO_SERVICE_APPEAL_QUEUE
      */
     @Override
-    public void EmployeeReadAppealMessage(String message) {
+    public void employeeReadAppealMessage(String message) {
         log.info("Publish to appealQueue \"REST_TO_SERVICE_APPEAL_QUEUE\" {}", message);
         rabbitTemplate.convertAndSend(REST_TO_SERVICE_APPEAL_QUEUE, message);
         log.info("Added to appealQueue \"REST_TO_SERVICE_APPEAL_QUEUE\" {}", message);

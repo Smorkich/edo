@@ -3,6 +3,7 @@ package com.education.controller.appeal;
 import com.education.exception_handling.AppealAccessDeniedException;
 import com.education.exception_handling.AppealCustomException;
 import com.education.exception_handling.AppealIncorrectData;
+import com.education.publisher.appeal.AppealPublisher;
 import com.education.service.appeal.AppealService;
 import com.education.util.Validator;
 import io.swagger.annotations.ApiOperation;
@@ -14,8 +15,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collection;
 
@@ -26,6 +34,8 @@ import java.util.Collection;
 public class AppealRestController {
 
     private AppealService appealService;
+
+    private AppealPublisher appealPublisher;
 
     @ApiOperation(value = "В строке таблицы Appeal заполняет поле archivedDate", notes = "Строка в Appeal должна существовать")
     @PutMapping(value = "/move/{id}")
@@ -50,7 +60,7 @@ public class AppealRestController {
         log.info("Getting from database appeal with field acrhivedDate = null, with id: {}", id);
         var mockEmployee = getMockEmployee();
         var appealDto = appealService.findByIdNotArchived(id);
-        Validator.validateAccess(mockEmployee,appealDto);
+        Validator.validateAccess(mockEmployee, appealDto);
         log.info("Response from database: {}", appealDto);
         return new ResponseEntity<>(appealDto, HttpStatus.OK);
     }
@@ -89,30 +99,35 @@ public class AppealRestController {
         var mockEmployee = getMockEmployee();
         log.info("Getting from database appeal with id: {}", id);
         var appealDto = appealService.findById(id);
-        Validator.validateAccess(mockEmployee,appealDto);
-        appealDto.setLastEmployeeWhoReadThisAppeal(mockEmployee);
+        Validator.validateAccess(mockEmployee, appealDto);
+        appealPublisher.employeeReadAppealMessage("Employee with id: ${mockEmployee.getId()} read the appeal with id: ${id}");
+        appealPublisher.employeeReadAppealMessage(String.format("Employee with id: %d read the appeal with id: %d",
+                mockEmployee.getId(), id));
         log.info("Response from database: {}", appealDto);
         return new ResponseEntity<>(appealDto, HttpStatus.OK);
     }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     private ResponseEntity<String> validUserException(MethodArgumentNotValidException ex) {
         log.warn(ex.toString());
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.toString());
     }
+
     @ExceptionHandler
-    public ResponseEntity<AppealIncorrectData> handleException (AppealCustomException exception) {
+    public ResponseEntity<AppealIncorrectData> handleException(AppealCustomException exception) {
         AppealIncorrectData appealIncorrectData = new AppealIncorrectData();
         appealIncorrectData.setInfo(exception.getMessage());
         return new ResponseEntity<>(appealIncorrectData, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler
-    public ResponseEntity<AppealIncorrectData> handleException (AppealAccessDeniedException exception) {
+    public ResponseEntity<AppealIncorrectData> handleException(AppealAccessDeniedException exception) {
         AppealIncorrectData appealIncorrectData = new AppealIncorrectData();
         appealIncorrectData.setInfo(exception.getMessage());
         return new ResponseEntity<>(appealIncorrectData, HttpStatus.FORBIDDEN);
     }
+
     private EmployeeDto getMockEmployee() {
-        return EmployeeDto.builder().id(2L).build();
+        return EmployeeDto.builder().id(4L).build();
     }
 }
