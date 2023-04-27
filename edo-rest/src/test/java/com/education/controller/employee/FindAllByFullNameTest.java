@@ -45,21 +45,35 @@ public class FindAllByFullNameTest {
 
     private static EmployeeDto newEmployeeOne, newEmployeeTwo;
 
+    private static String setValueFirstName = "$[0].firstName",
+            setValueLastName = "$[0].lastName";
+
+    private static String employeeOneFirstName = "Антон",
+            employeeOneLastName = "Иванов",
+            employeeOneMiddleName = "Андреевич";
+
+    private static String employeeTwoFirstName = "Ivan",
+            employeeTwoLastName = "Sidorov",
+            employeeTwoMiddleName = "Petrovich";
+
+
     @BeforeClass
     public static void init() {
         newEmployeeOne = EmployeeDto.builder()
-                .firstName("Антон")
-                .lastName("Иванов")
-                .middleName("Андреевич")
-                .fioNominative("Антон Иванов Андреевич")
+                .firstName(employeeOneFirstName)
+                .lastName(employeeOneLastName)
+                .middleName(employeeOneMiddleName)
+                .fioNominative(String.format("%s %s %s",
+                        employeeOneFirstName, employeeOneLastName, employeeOneMiddleName))
                 .department(DepartmentDto.builder().id(1L).build())
                 .address(AddressDto.builder().id(1L).build())
                 .build();
         newEmployeeTwo = EmployeeDto.builder()
-                .firstName("Ivan")
-                .lastName("Sidorov")
-                .middleName("Petrovich")
-                .fioNominative("Ivan Sidorov Petrovich")
+                .firstName(employeeTwoFirstName)
+                .lastName(employeeTwoLastName)
+                .middleName(employeeTwoMiddleName)
+                .fioNominative(String.format("%s %s %s",
+                        employeeTwoFirstName, employeeTwoLastName, employeeTwoMiddleName))
                 .department(DepartmentDto.builder().id(1L).build())
                 .address(AddressDto.builder().id(1L).build())
                 .build();
@@ -99,8 +113,8 @@ public class FindAllByFullNameTest {
                         .param("fullName", "Ivan Sidorov Petrovich"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].firstName", is("Ivan")))
-                .andExpect(jsonPath("$[0].lastName", is("Sidorov")))
+                .andExpect(jsonPath(setValueFirstName, is(employeeTwoFirstName)))
+                .andExpect(jsonPath(setValueLastName, is(employeeTwoLastName)))
                 .andReturn();
 
         JSONArray jsonArray = new JSONArray(mvcResult.getResponse().getContentAsString());
@@ -114,8 +128,8 @@ public class FindAllByFullNameTest {
                         .param("fullName", "Антон Иванов Андреевич"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].firstName", equalTo("Антон")))
-                .andExpect(jsonPath("$[0].lastName", equalTo("Иванов")));
+                .andExpect(jsonPath(setValueFirstName, equalTo(employeeOneFirstName)))
+                .andExpect(jsonPath(setValueLastName, equalTo(employeeOneLastName)));
     }
 
     @Test
@@ -125,8 +139,8 @@ public class FindAllByFullNameTest {
                         .param("fullName", "Iv"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].firstName", is("Ivan")))
-                .andExpect(jsonPath("$[0].lastName", is("Sidorov")));
+                .andExpect(jsonPath(setValueFirstName, is(employeeTwoFirstName)))
+                .andExpect(jsonPath(setValueLastName, is(employeeTwoLastName)));
     }
 
 
@@ -137,7 +151,7 @@ public class FindAllByFullNameTest {
                         .param("fullName", "IvAN SiDoRov"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].firstName", is("Ivan")))
-                .andExpect(jsonPath("$[0].lastName", is("Sidorov")));
+                .andExpect(jsonPath(setValueFirstName, is(employeeTwoFirstName)))
+                .andExpect(jsonPath(setValueLastName, is(employeeTwoLastName)));
     }
 }
