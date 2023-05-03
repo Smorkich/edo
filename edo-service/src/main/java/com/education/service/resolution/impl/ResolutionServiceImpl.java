@@ -140,11 +140,9 @@ public class ResolutionServiceImpl implements ResolutionService {
      */
     private Collection<String> getEmployeesEmails(Collection<EmployeeDto> employees) {
         List<String> result = new ArrayList<>();
-        if (employees != null) {
-            for (EmployeeDto emp : employees) {
-                result.add(getEmployeeEmail(emp));
-            }
-        }
+        employees.stream()
+                .filter(Objects::nonNull)
+                .forEach(x -> result.add(getEmployeeEmail(x)));
         return result;
     }
 
@@ -153,11 +151,9 @@ public class ResolutionServiceImpl implements ResolutionService {
      */
     private Collection<String> getEmployeesFIO(Collection<EmployeeDto> employees) {
         List<String> result = new ArrayList<>();
-        if (employees != null) {
-            for (EmployeeDto emp : employees) {
-                result.add(getEmployeeFIO(emp));
-            }
-        }
+        employees.stream()
+                .filter(Objects::nonNull)
+                .forEach(x -> result.add(getEmployeeFIO(x)));
         return result;
     }
 

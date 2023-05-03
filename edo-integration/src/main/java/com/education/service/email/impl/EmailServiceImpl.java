@@ -18,10 +18,11 @@ public class EmailServiceImpl implements EmailService {
     @Override
     public void createEmail(List<String> emails, String appealURL, String appealNumber) {
         String subject = "Новое обращение: " + appealNumber;
-        StringBuilder message = new StringBuilder("Создано новое обращение с номером ");
-        message.append(appealNumber).append(". Ссылка на обращение: ").append(appealURL);
+        String message = "Создано новое обращение с номером " +
+                appealNumber + ". Ссылка на обращение: " +
+                appealURL;
         for (String email : emails) {
-            sendEmailService.sendEmail(email, subject, message.toString());
+            sendEmailService.sendEmail(email, subject, message);
         }
     }
 
@@ -38,10 +39,9 @@ public class EmailServiceImpl implements EmailService {
         String signerPost = "подписантом";
         String executorPost = "исполнителем";
         String curatorPost = "куратором";
-        var endMessage = new StringBuilder(" резолюции в обращении с номером ")
-                .append(appealNumber)
-                .append(". Ссылка на обращение: ")
-                .append(appealURL);
+        String endMessage = " резолюции в обращении с номером " +
+                appealNumber + ". Ссылка на обращение: " +
+                appealURL;
         //для Executors
         for (var i = 0; i < emailsExecutors.size(); i++) {
             sendEmailService.sendEmail(emailsExecutors.get(i), subject,
@@ -60,10 +60,9 @@ public class EmailServiceImpl implements EmailService {
      * Собирает текст письма для отправки в SendEmailService
      */
     private String createMessageForMailWhenCreateResolution(String fio, String post,
-                                                            StringBuilder endMessage) {
-        var message = new StringBuilder("Добрый день, " + fio + "!")
-                .append(" Вы являетесь " + post)
-                .append(endMessage);
-        return message.toString();
+                                                            String endMessage) {
+        return "Добрый день, " + fio + "!" +
+                " Вы являетесь " + post +
+                endMessage;
     }
 }

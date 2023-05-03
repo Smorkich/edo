@@ -182,8 +182,8 @@ public class AppealServiceImpl implements AppealService {
 
         //Сбор всех emails для отправки
         List<String> emails = new ArrayList<>();
-        emails.addAll(addEmployeesEmails(appealDto.getAddressee()));
-        emails.addAll(addEmployeesEmails(appealDto.getSigner()));
+        emails.addAll(getEmployeesEmails(appealDto.getAddressee()));
+        emails.addAll(getEmployeesEmails(appealDto.getSigner()));
 
         //Получение URL
         var builderForAppealUrl = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL + "/" + appealDto.getId());
@@ -212,7 +212,7 @@ public class AppealServiceImpl implements AppealService {
     /**
      * Метод достает emails из коллекции EmployeeDto
      */
-    private Collection<String> addEmployeesEmails(Collection<EmployeeDto> employees) {
+    private Collection<String> getEmployeesEmails(Collection<EmployeeDto> employees) {
         EmployeeDto employeeDto;
         List<String> result = new ArrayList<>();
         if (employees != null) {
