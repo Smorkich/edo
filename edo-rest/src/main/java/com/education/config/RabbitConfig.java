@@ -45,10 +45,17 @@ public class RabbitConfig {
     public Queue approvalQueue() {
         return new Queue(Constant.REST_TO_SERVICE_APPROVAL_QUEUE);
     }
+
+    @Bean
+    public Queue appealQueue() {
+        return new Queue(Constant.REST_TO_SERVICE_APPEAL_QUEUE);
+    }
+
     @Bean
     public Queue recognitionQueue() {
         return new Queue(Constant.FILE_RECOGNITION_START);
     }
+
     @Bean
     public Queue resolutionDeadlineQueue() {
         return new Queue(Constant.DEADLINE_CHANGE_QUEUE);
