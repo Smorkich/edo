@@ -213,16 +213,13 @@ public class AppealServiceImpl implements AppealService {
      * Метод достает emails из коллекции EmployeeDto
      */
     private Collection<String> getEmployeesEmails(Collection<EmployeeDto> employees) {
-        EmployeeDto employeeDto;
-        List<String> result = new ArrayList<>();
-        if (employees != null) {
-            for (EmployeeDto emp : employees) {
-                var builderEmployee = buildURI(EDO_REPOSITORY_NAME, EMPLOYEE_URL + "/" + emp.getId());
-                employeeDto = restTemplate.getForObject(builderEmployee.toString(), EmployeeDto.class);
-                result.add(employeeDto.getEmail());
-            }
-        }
-        return result;
-    }
 
+        return employees.stream().filter(Objects::nonNull)
+                .map(emp -> {
+                    var builderEmployee = buildURI(EDO_REPOSITORY_NAME, EMPLOYEE_URL + "/" + emp.getId());
+                    var employeeDto = restTemplate.getForObject(builderEmployee.toString(), EmployeeDto.class);
+                    return employeeDto.getEmail();
+                })
+                .collect(Collectors.toList());
+    }
 }
