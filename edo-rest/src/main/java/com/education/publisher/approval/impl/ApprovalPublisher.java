@@ -1,4 +1,4 @@
-package com.education.publisher;
+package com.education.publisher.approval.impl;
 
 import lombok.extern.log4j.Log4j2;
 import model.dto.ApprovalDto;

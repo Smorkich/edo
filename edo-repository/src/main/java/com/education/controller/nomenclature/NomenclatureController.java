@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriUtils;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Collection;
 
 import static com.education.mapper.NomenclatureMapper.NOMENCLATURE_MAPPER;
@@ -47,6 +49,17 @@ public class NomenclatureController {
         NomenclatureDto nomenclatureDto = NOMENCLATURE_MAPPER.toDto(service.findById(id));
         log.info("Entity {} has been found",nomenclatureDto);
         return new ResponseEntity<>(nomenclatureDto, HttpStatus.OK);
+    }
+
+    @ApiOperation("Method find Nomenclature by Id")
+    @GetMapping(value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<NomenclatureDto>> findByIndex(@RequestParam("index")  String index) throws UnsupportedEncodingException {
+        log.info("Поиск NomenclatureDto по индексу: {}", index);
+        var decodeParam  = UriUtils.decode(index, "UTF-8");
+        log.info("index after decode {}", decodeParam);
+        Collection<NomenclatureDto> nomenclatureDtos = NOMENCLATURE_MAPPER.toDto(service.findByIndex(decodeParam));
+        log.info("Entity {} has been found", nomenclatureDtos);
+        return new ResponseEntity<>(nomenclatureDtos, HttpStatus.OK);
     }
 
     /**

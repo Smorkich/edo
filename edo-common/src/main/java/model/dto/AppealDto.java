@@ -2,7 +2,12 @@ package model.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 import model.enum_.ReceiptMethod;
 import model.enum_.Status;
 
@@ -49,6 +54,7 @@ public class AppealDto implements Serializable {
 
     @ApiModelProperty(value = "Отправить им обращение тоже (в копию)")
     private Collection<EmployeeDto> addressee;
+
     @ApiModelProperty(value = "Автор, соавторы обращения")
     private Collection<AuthorDto> authors = new HashSet<>();
 

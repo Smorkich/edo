@@ -39,6 +39,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     /**
      * Method searches for an entity of Nomenclature
      */
+    @Transactional(readOnly = true)
     public Nomenclature findById(Long id) {
         return repository.findById(id).orElse(null);
     }
@@ -46,6 +47,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     /**
      * Method searches for set of entities of Nomenclature by their ids: "?id = 1,2,3,4,5,6... "
      */
+    @Transactional(readOnly = true)
     public List<Nomenclature> findAllById(Collection<Long> nomenclature) {
         return repository.findAllById(nomenclature);
     }
@@ -54,6 +56,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
      * Method searches for an entity of Nomenclature that archiveDate fild is null
      */
     @Override
+    @Transactional(readOnly = true)
     public Optional<Nomenclature> findByIdNotArchived(Long id) {
         return repository.findByIdNotArchived(id);
     }
@@ -62,6 +65,7 @@ public class NomenclatureServiceImpl implements NomenclatureService {
      * Method searches for set of entities of Nomenclature that archiveDate filds are null
      */
     @Override
+    @Transactional(readOnly = true)
     public List<Nomenclature> findAllByIdNotArchived(Collection<Long> idList) {
         return repository.findAllByIdNotArchived(idList);
     }
@@ -73,5 +77,11 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     @Override
     public void deleteById(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Nomenclature> findByIndex(String index) {
+        return repository.findByIndexStartsWithIgnoreCase(index);
     }
 }

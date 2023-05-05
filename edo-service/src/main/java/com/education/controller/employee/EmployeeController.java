@@ -8,8 +8,16 @@ import model.dto.EmployeeDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 
 
@@ -101,6 +109,13 @@ public class EmployeeController {
         var collection = employeeService.saveCollection(employeeDto);
         log.info("The operation was successful, they saved the collection");
         return new ResponseEntity<>(collection, HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Collection<EmployeeDto>> findByFullName(@RequestParam("fullName") String fullname) {
+        log.info("Принимает полное имя {} на стороне edo-service", fullname);
+        var emp =  employeeService.findAllByFullName(fullname);
+        return new ResponseEntity<>(emp, HttpStatus.OK);
     }
 
 }

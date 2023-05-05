@@ -21,12 +21,16 @@ public class Constant {
 
     public static final String EDO_REPOSITORY_NAME = "edo-repository";
     public static final String EDO_SERVICE_NAME = "edo-service";
+
+    public static final String NOMENCLATURE_PARAMETER = "index";
     public static final String EMPLOYEE_FIO_SEARCH_PARAMETER = "fullName";
     public static final String EDO_FILE_STORAGE_NAME = "edo-file-storage";
     public static final String NOTIFICATION_URL = "api/repository/notification";
     public static final String EDO_INTEGRATION_NAME = "edo-integration";
     public static final String MESSAGE_URL = "api/integration/message";
     public static final String REST_TO_SERVICE_APPROVAL_QUEUE = "RestToServiceApprovalQueue";
+
+    public static final String REST_TO_SERVICE_APPEAL_QUEUE = "RestToServiceAppealQueue";
     public static final String FILE_RECOGNITION_START = "FileRecognitionStart";
     public static final String DEADLINE_CHANGE_QUEUE = "DeadlineChange";
 }

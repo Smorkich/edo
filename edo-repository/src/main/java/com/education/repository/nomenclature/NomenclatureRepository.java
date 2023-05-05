@@ -29,4 +29,7 @@ public interface NomenclatureRepository extends JpaRepository<Nomenclature,Long>
     @Query("select u from Nomenclature u where u.archivedDate is null and u.id in :idList")
     List<Nomenclature> findAllByIdNotArchived(@Param("idList") Collection<Long> idList);
 
+     @Query("select n from Nomenclature n where upper(n.index) like upper(concat(?1, '%'))")
+     List<Nomenclature> findByIndexStartsWithIgnoreCase(String index);
+
 }

@@ -1,0 +1,2 @@
+ALTER TABLE IF EXISTS nomenclature
+    ALTER COLUMN index TYPE VARCHAR (255);
