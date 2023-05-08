@@ -1,6 +1,7 @@
 package com.education.controller.appeal;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.ServletException;
 import lombok.Setter;
 import model.dto.*;
 import model.enum_.Employment;
@@ -13,19 +14,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * Тест, который сохраняет в базу данных объекты Appeal, поля которых заполнены по-разному или не заполнены (null).
+ * Для корректного запуска теста нужны запущенные модули:
+ * edo-cloud-server, edo-rest, edo-service, edo-repository, edo-file-storage
+ */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -37,27 +43,6 @@ public class SaveNewAppealTest {
     private ObjectMapper objectMapper;
 
     private static AppealDto newAppealDto;
-
-    /**
-     *      тест на сохранение одного обращения
-     *      с корректно заполненными полями для валидации
-     *      с автором
-     *      с одним вопросом
-     *      без FilePool
-     * <p>
-     *      тест на сохранения двух обращений сразу
-     * <p>
-     *      тест на сохранение обращения без авторов
-     * <p>
-     *      с несколькими авторами
-     * <p>
-     *      с несколькими вопросами
-     * <p>
-     * с FilePool
-     * <p>
-     * с некорректно заполненными данными для валидации
-     */
-
 
     /**
      * Инициализация объекта AppealDto перед каждым тестом
@@ -128,6 +113,7 @@ public class SaveNewAppealTest {
     public void saveAppealWithoutAuthorsTest() throws Exception {
         newAppealDto.setAuthors(new HashSet<>());
         postRequestToSaveAppeal(newAppealDto);
+        //TODO без проблем сохраняет
     }
 
     @Test
@@ -158,23 +144,38 @@ public class SaveNewAppealTest {
     }
 
     @Test
-    @DisplayName("Сохранение стандартной Appeal c двумя вопросами")
+    @DisplayName("Сохранение стандартной Appeal с FilePool")
     public void saveAppealWithFilePoolTest() throws Exception {
-        //отправка файла
-
-        var file = new MockMultipartFile(
-                "file",
-                "FileForSaveNewAppealTest.doc",
-                MediaType.MULTIPART_FORM_DATA_VALUE,
-                "Hello".getBytes()
-        );
-        this.mockMvc.perform(multipart("/api/rest/minio/upload").file(file))
-                .andExpect(status().isOk());
-
 
         Collection<FilePoolDto> newSet = new HashSet<>();
-        newSet.add(FilePoolDto.builder().id(1L).build());
+        newSet.add(FilePoolDto.builder()
+                .id(3L)
+                .build());
         newAppealDto.setFile(newSet);
         postRequestToSaveAppeal(newAppealDto);
+    }
+
+    @Test
+    @DisplayName("Сохранение некорректно заполненной Appeal, ожидает исключение")
+    public void saveAppealForValidationTest(){
+        newAppealDto.setQuestions(newAppealDto.getQuestions().stream()
+                .peek(x -> {
+                    x.setTheme(null);
+                    x.setSummary(null);
+                })
+                .collect(Collectors.toSet()));
+        newAppealDto.setAuthors(newAppealDto.getAuthors().stream()
+                .peek(x -> {
+                    x.setFirstName(null);
+                    x.setLastName(null);
+                    x.setEmail(null);
+                    x.setMobilePhone("Телефон");
+                })
+                .collect(Collectors.toSet()));
+        newAppealDto.setSendingMethod(null);
+        assertThatThrownBy(() -> postRequestToSaveAppeal(newAppealDto))
+                .isInstanceOf(ServletException.class);
+        //TODO доделать
+
     }
 }
