@@ -6,6 +6,7 @@ import lombok.Setter;
 import model.dto.*;
 import model.enum_.Employment;
 import model.enum_.ReceiptMethod;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -109,11 +109,11 @@ public class SaveNewAppealTest {
     }
 
     @Test
-    @DisplayName("Сохранение стандартной Appeal без авторов")
-    public void saveAppealWithoutAuthorsTest() throws Exception {
-        newAppealDto.setAuthors(new HashSet<>());
-        postRequestToSaveAppeal(newAppealDto);
-        //TODO без проблем сохраняет
+    @DisplayName("Сохранение стандартной Appeal без авторов, ожидает исключение")
+    public void saveAppealWithoutAuthorsTest(){
+        newAppealDto.setAuthors(null);
+        assertThatThrownBy(() -> postRequestToSaveAppeal(newAppealDto))
+                .isInstanceOf(ServletException.class);
     }
 
     @Test
@@ -146,7 +146,6 @@ public class SaveNewAppealTest {
     @Test
     @DisplayName("Сохранение стандартной Appeal с FilePool")
     public void saveAppealWithFilePoolTest() throws Exception {
-
         Collection<FilePoolDto> newSet = new HashSet<>();
         newSet.add(FilePoolDto.builder()
                 .id(3L)
@@ -157,25 +156,24 @@ public class SaveNewAppealTest {
 
     @Test
     @DisplayName("Сохранение некорректно заполненной Appeal, ожидает исключение")
-    public void saveAppealForValidationTest(){
-        newAppealDto.setQuestions(newAppealDto.getQuestions().stream()
-                .peek(x -> {
-                    x.setTheme(null);
-                    x.setSummary(null);
-                })
-                .collect(Collectors.toSet()));
-        newAppealDto.setAuthors(newAppealDto.getAuthors().stream()
-                .peek(x -> {
-                    x.setFirstName(null);
-                    x.setLastName(null);
-                    x.setEmail(null);
-                    x.setMobilePhone("Телефон");
-                })
-                .collect(Collectors.toSet()));
-        newAppealDto.setSendingMethod(null);
-        assertThatThrownBy(() -> postRequestToSaveAppeal(newAppealDto))
-                .isInstanceOf(ServletException.class);
-        //TODO доделать
+    public void saveAppealForValidationTest() {
+        Collection<AuthorDto> setAuthors = newAppealDto.getAuthors();
+        setAuthors.add(AuthorDto.builder()
+                .mobilePhone("телефон")
+                .build());
+        newAppealDto.setAuthors(setAuthors);
 
+        Collection<QuestionDto> setQuestions = newAppealDto.getQuestions();
+        setQuestions.add(QuestionDto.builder().build());
+        newAppealDto.setQuestions(setQuestions);
+
+        newAppealDto.setSendingMethod(null);
+
+        ServletException thrown = Assertions.assertThrows(ServletException.class, () ->
+                postRequestToSaveAppeal(newAppealDto), "ServletException was expected");
+
+        Assertions.assertNotNull(thrown.getMessage());
+
+        System.out.println("Сообщение исключения ServletException: " + thrown.getMessage());
     }
 }
