@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Тест, который сохраняет в базу данных объекты Appeal, поля которых заполнены по-разному или не заполнены (null).
  * Для корректного запуска теста нужны запущенные модули:
- * edo-cloud-server, edo-rest, edo-service, edo-repository, edo-file-storage
+ * edo-cloud-server, edo-rest, edo-service, edo-repository, edo-file-storage, edo-integration
  */
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -59,7 +59,7 @@ public class SaveNewAppealTest {
         setAuthors.add(AuthorDto.builder()
                 .firstName("Имя")
                 .lastName("Фамилия")
-                .email("mail@mail.ru")
+                .email("noreply.edo.test@yandex.ru")
                 .mobilePhone("89971234567")
                 .employment(Employment.UNEMPLOYED)
                 .build());
@@ -123,7 +123,7 @@ public class SaveNewAppealTest {
         newSet.add(AuthorDto.builder()
                 .firstName("Имя")
                 .lastName("Фамилия")
-                .email("mail@mail.ru")
+                .email("noreply.edo.test@yandex.ru")
                 .mobilePhone("89971234567")
                 .employment(Employment.UNEMPLOYED)
                 .build());
