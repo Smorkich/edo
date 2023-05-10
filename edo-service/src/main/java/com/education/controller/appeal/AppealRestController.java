@@ -90,6 +90,8 @@ public class AppealRestController {
         log.info("Send a post-request to edo-repository to post new Appeal to database");
         var save = appealService.save(appealDto);
         log.info("sending to edo-repository", save);
+        log.info("Sending a message to employees");
+        appealService.sendMessage(save);
         return new ResponseEntity<>(save, HttpStatus.CREATED);
     }
 

@@ -73,9 +73,6 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
             "order by a.id asc ")
     Collection<Appeal> findAllNotArchived();
 
-
-
-
     /**
      * Метод достает Appeal по Questions id
      */

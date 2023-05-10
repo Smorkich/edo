@@ -66,6 +66,6 @@ public class EmployeeDto implements Serializable {
     @ApiModelProperty(value = "Департамент")
     private DepartmentDto department;
 
-    @ApiModelProperty(value = "Настройки оповещений")
-    private NotificationDto notificationDto;
+    @ApiModelProperty(value = "Почта сотрудника")
+    private String email;
 }

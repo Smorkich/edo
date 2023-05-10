@@ -105,13 +105,6 @@ public class Employee extends BaseEntity {
     private String username;
 
     /**
-    * notification - Настройки оповещения для пользователя
-    */
-    @JoinColumn(name = "notification_id")
-    @OneToOne
-    private Notification notification;
-
-    /**
      * creationDate - Дата создания
      */
     @Column(name = "creation_date")
@@ -130,4 +123,9 @@ public class Employee extends BaseEntity {
     @JoinColumn(name = "department")
     private Department department;
 
+    /**
+     * email - Почта
+     */
+    @Column(name = "email")
+    private String email;
 }
