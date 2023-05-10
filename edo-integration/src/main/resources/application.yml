@@ -2,10 +2,11 @@ spring:
   application:
     name: edo-integration
   mail:
-    host: smtp.gmail.com
-    port: 587
-    password: euygbysjvnxrnvjf
-    username: noreply.ros.edo@gmail.com
+    protocol: smtps
+    host: smtp.yandex.ru
+    port: 465
+    username: noreply.edo.test@yandex.ru
+    password: nsouxadxzcnnivem
     test-connection: true # Проверка подключения при старте приложения
     properties:
       mail:

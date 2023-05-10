@@ -20,6 +20,6 @@ public class Notification extends BaseEntity {
     @Column(name = "notification_type")
     @Enumerated(EnumType.STRING)
     private NotificationType type;
-    @OneToOne(mappedBy = "notification")
-    private Employee employee ;
+    @ManyToOne
+    private Employee employee;
 }

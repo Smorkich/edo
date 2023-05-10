@@ -26,6 +26,8 @@ public class Constant {
     public static final String EMPLOYEE_FIO_SEARCH_PARAMETER = "fullName";
     public static final String EDO_FILE_STORAGE_NAME = "edo-file-storage";
     public static final String NOTIFICATION_URL = "api/repository/notification";
+    public static final String EDO_INTEGRATION_NAME = "edo-integration";
+    public static final String MESSAGE_URL = "api/integration/message";
     public static final String REST_TO_SERVICE_APPROVAL_QUEUE = "RestToServiceApprovalQueue";
 
     public static final String REST_TO_SERVICE_APPEAL_QUEUE = "RestToServiceAppealQueue";

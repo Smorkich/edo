@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author George Kiladze & Kryukov Andrey & Kostenko Aleksandr
@@ -29,4 +30,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     /*Поиск пользователя по externalId*/
     Employee findByExternalId(String externalId);
+
+    @Override
+    Optional<Employee> findById(Long aLong);
 }
