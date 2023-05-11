@@ -148,7 +148,7 @@ public class SaveNewAppealTest {
     public void saveAppealWithFilePoolTest() throws Exception {
         Collection<FilePoolDto> newSet = new HashSet<>();
         newSet.add(FilePoolDto.builder()
-                .id(3L)
+                .id(1L)
                 .build());
         newAppealDto.setFile(newSet);
         postRequestToSaveAppeal(newAppealDto);
