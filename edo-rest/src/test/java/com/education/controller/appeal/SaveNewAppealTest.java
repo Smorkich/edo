@@ -3,6 +3,7 @@ package com.education.controller.appeal;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.ServletException;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j2;
 import model.dto.*;
 import model.enum_.Employment;
 import model.enum_.ReceiptMethod;
@@ -18,7 +19,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Для корректного запуска теста нужны запущенные модули:
  * edo-cloud-server, edo-rest, edo-service, edo-repository, edo-file-storage, edo-integration
  */
+@Log4j2
 @ExtendWith(SpringExtension.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
@@ -51,24 +52,21 @@ public class SaveNewAppealTest {
      */
     @BeforeEach
     public void init() {
-        Set<EmployeeDto> setSigner = new HashSet<>();
-        setSigner.add(EmployeeDto.builder().id(1L).build());
-        Set<EmployeeDto> setAddressee = new HashSet<>();
-        setAddressee.add(EmployeeDto.builder().id(4L).build());
-        Set<AuthorDto> setAuthors = new HashSet<>();
-        setAuthors.add(AuthorDto.builder()
+        var signers = Set.of(EmployeeDto.builder().id(1L).build());
+        var addresses = Set.of(EmployeeDto.builder().id(4L).build());
+        var authors = Set.of(AuthorDto.builder()
                 .firstName("Имя")
                 .lastName("Фамилия")
                 .email("noreply.edo.test@yandex.ru")
                 .mobilePhone("89971234567")
                 .employment(Employment.UNEMPLOYED)
                 .build());
-        Set<QuestionDto> setQuestions = new HashSet<>();
-        setQuestions.add(QuestionDto.builder()
+        var questions = Set.of(QuestionDto.builder()
                 .theme(ThemeDto.builder().id(1L).build())
                 .summary("Краткое содержание")
                 .build());
-        Set<FilePoolDto> setFilePool = new HashSet<>();
+
+        Set<FilePoolDto> filePolls = new HashSet<>();
 
         newAppealDto = AppealDto.builder()
                 .annotation("Заголовок")
@@ -76,11 +74,11 @@ public class SaveNewAppealTest {
                 .sendingMethod(ReceiptMethod.VIA_EMAIL)
                 .nomenclature(NomenclatureDto.builder().id(1L).build())
                 .region(RegionDto.builder().id(1L).build())
-                .signer(setSigner)
-                .addressee(setAddressee)
-                .authors(setAuthors)
-                .questions(setQuestions)
-                .file(setFilePool)
+                .signer(signers)
+                .addressee(addresses)
+                .authors(authors)
+                .questions(questions)
+                .file(filePolls)
                 .build();
     }
 
@@ -110,7 +108,7 @@ public class SaveNewAppealTest {
 
     @Test
     @DisplayName("Сохранение стандартной Appeal без авторов, ожидает исключение")
-    public void saveAppealWithoutAuthorsTest(){
+    public void saveAppealWithoutAuthorsTest() {
         newAppealDto.setAuthors(null);
         assertThatThrownBy(() -> postRequestToSaveAppeal(newAppealDto))
                 .isInstanceOf(ServletException.class);
@@ -119,61 +117,58 @@ public class SaveNewAppealTest {
     @Test
     @DisplayName("Сохранение стандартной Appeal c двумя авторами")
     public void saveAppealWithTwoAuthorsTest() throws Exception {
-        Collection<AuthorDto> newSet = newAppealDto.getAuthors();
-        newSet.add(AuthorDto.builder()
-                .firstName("Имя")
-                .lastName("Фамилия")
-                .email("noreply.edo.test@yandex.ru")
-                .mobilePhone("89971234567")
-                .employment(Employment.UNEMPLOYED)
-                .build());
-        newAppealDto.setAuthors(newSet);
+        var authors = Set.of(newAppealDto.getAuthors().iterator().next(),
+                AuthorDto.builder()
+                        .firstName("Имя")
+                        .lastName("Фамилия")
+                        .email("noreply.edo.test@yandex.ru")
+                        .mobilePhone("89971234567")
+                        .employment(Employment.UNEMPLOYED)
+                        .build());
+        newAppealDto.setAuthors(authors);
         postRequestToSaveAppeal(newAppealDto);
     }
 
     @Test
     @DisplayName("Сохранение стандартной Appeal c двумя вопросами")
     public void saveAppealWithTwoQuestionsTest() throws Exception {
-        Collection<QuestionDto> newSet = newAppealDto.getQuestions();
-        newSet.add(QuestionDto.builder()
-                .theme(ThemeDto.builder().id(1L).build())
-                .summary("Краткое содержание")
-                .build());
-        newAppealDto.setQuestions(newSet);
+        var questions = Set.of(newAppealDto.getQuestions().iterator().next(),
+                QuestionDto.builder()
+                        .theme(ThemeDto.builder().id(1L).build())
+                        .summary("Краткое содержание")
+                        .build());
+        newAppealDto.setQuestions(questions);
         postRequestToSaveAppeal(newAppealDto);
     }
 
     @Test
     @DisplayName("Сохранение стандартной Appeal с FilePool")
     public void saveAppealWithFilePoolTest() throws Exception {
-        Collection<FilePoolDto> newSet = new HashSet<>();
-        newSet.add(FilePoolDto.builder()
+        var filePolls = Set.of(FilePoolDto.builder()
                 .id(1L)
                 .build());
-        newAppealDto.setFile(newSet);
+        newAppealDto.setFile(filePolls);
         postRequestToSaveAppeal(newAppealDto);
     }
 
     @Test
     @DisplayName("Сохранение некорректно заполненной Appeal, ожидает исключение")
     public void saveAppealForValidationTest() {
-        Collection<AuthorDto> setAuthors = newAppealDto.getAuthors();
-        setAuthors.add(AuthorDto.builder()
+        var authors = Set.of(AuthorDto.builder()
                 .mobilePhone("телефон")
                 .build());
-        newAppealDto.setAuthors(setAuthors);
+        newAppealDto.setAuthors(authors);
 
-        Collection<QuestionDto> setQuestions = newAppealDto.getQuestions();
-        setQuestions.add(QuestionDto.builder().build());
-        newAppealDto.setQuestions(setQuestions);
+        var questions = Set.of(QuestionDto.builder().build());
+        newAppealDto.setQuestions(questions);
 
         newAppealDto.setSendingMethod(null);
 
-        ServletException thrown = Assertions.assertThrows(ServletException.class, () ->
+        var thrown = Assertions.assertThrows(ServletException.class, () ->
                 postRequestToSaveAppeal(newAppealDto), "ServletException was expected");
 
         Assertions.assertNotNull(thrown.getMessage());
 
-        System.out.println("Сообщение исключения ServletException: " + thrown.getMessage());
+        log.info("Сообщение исключения ServletException: " + thrown.getMessage());
     }
 }
