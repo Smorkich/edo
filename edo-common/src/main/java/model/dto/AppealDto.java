@@ -2,12 +2,7 @@ package model.dto;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import model.enum_.ReceiptMethod;
 import model.enum_.Status;
 
@@ -66,5 +61,8 @@ public class AppealDto implements Serializable {
 
     @ApiModelProperty(value = "Несколько файлов")
     private Collection<FilePoolDto> file = new HashSet<>();
+
+    @ApiModelProperty(value = "Регион")
+    private RegionDto region;
 
 }

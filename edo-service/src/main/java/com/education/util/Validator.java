@@ -4,11 +4,7 @@ import com.education.exception_handling.AppealAccessDeniedException;
 import com.education.exception_handling.AppealCustomException;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import model.dto.AppealDto;
-import model.dto.ApprovalBlockDto;
-import model.dto.ApprovalDto;
-import model.dto.EmployeeDto;
-import model.dto.MemberDto;
+import model.dto.*;
 import model.enum_.ApprovalBlockType;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +27,7 @@ import static java.util.Collections.singleton;
 @Log4j2
 public class Validator {
     private static String emailReg = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
-    private static String phoneReg = "/^(\\+?\\d{1,4}[\\s-])?(?!0+\\s+,?$)\\d{10}\\s*,?$";
+    private static String phoneReg = "^((8|\\+7)[\\- ]?)?(\\(?\\d{3}\\)?[\\- ]?)?[\\d\\- ]{7,10}$";
 
     /**
      * Проверяет ApprovalBlockDto
