@@ -1,5 +1,6 @@
 package com.education.controller.appeal;
 
+import com.education.publisher.nomenclature.impl.NomenclaturePublisher;
 import com.education.service.appeal.AppealService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -8,13 +9,7 @@ import model.dto.AppealDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Rest-контроллер в "edo-rest", служит для отправки обращения (Appeal) в БД используя RestTemplate
@@ -26,11 +21,14 @@ import org.springframework.web.bind.annotation.RestController;
 public class AppealController {
     private final AppealService appealService;
 
+    private final NomenclaturePublisher nomenclaturePublisher;
+
     @ApiOperation(value = "Принимает обращение, отправляет на edo-service", notes = "Обращение должен существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> save(@RequestBody AppealDto appealDto) {
         log.info("Отправить пост-запрос в edo-service");
         var save = appealService.save(appealDto);
+        nomenclaturePublisher.produce(appealDto.getNomenclature());
         log.info(" пост-запрос отправлен в edo-service");
         return new ResponseEntity<>(save, HttpStatus.CREATED);
     }

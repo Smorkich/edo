@@ -3,6 +3,7 @@ package com.education.service.appeal.impl;
 import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
 import com.education.service.filePool.FilePoolService;
+import com.education.service.nomenclature.NomenclatureService;
 import com.education.service.question.QuestionService;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
@@ -35,6 +36,8 @@ public class AppealServiceImpl implements AppealService {
     private final AuthorService authorService;
     private final QuestionService questionService;
     private final FilePoolService filePoolService;
+
+    private final NomenclatureService nomenclatureService;
 
 
     /**
@@ -70,6 +73,17 @@ public class AppealServiceImpl implements AppealService {
         List<QuestionDto> savedQuestions = new ArrayList<>();
         List<FilePoolDto> savedFiles = new ArrayList<>();
 
+        try {
+            NomenclatureDto nomenclatureDto = appealDto.getNomenclature();
+            var index = nomenclatureDto.getIndex();
+            Calendar calendar = Calendar.getInstance();
+            var year = calendar.get(Calendar.YEAR) % 100;
+            var number = nomenclatureDto.getCurrentValue();
+            appealDto.setNumber(index + "-" + year + "/2" + "-" + number);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         try {
             // Сохранение новых авторов
             appealDto.setAuthors(appealDto.getAuthors().stream()
