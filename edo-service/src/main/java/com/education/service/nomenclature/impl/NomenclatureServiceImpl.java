@@ -28,7 +28,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     @Override
     public void save(NomenclatureDto nomenclatureDto) {
         var builder = buildURI(EDO_REPOSITORY_NAME, "api/repository/nomenclature/add");
-        System.out.println(builder);
         restTemplate.postForObject(builder.toString(), nomenclatureDto, NomenclatureDto.class);
     }
 
