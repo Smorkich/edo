@@ -63,7 +63,7 @@ public class AppealController {
 
         log.info("'AppealController' - Прикрепляем файл к appeal");
         appealDto.getFile().add(filePoolDto);
-        appealService.save(appealDto);
-        return new ResponseEntity<>(appealService.findById(id), HttpStatus.OK);
+        var save = appealService.save(appealDto);
+        return new ResponseEntity<>(save, HttpStatus.OK);
     }
 }
