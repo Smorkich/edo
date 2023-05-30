@@ -19,6 +19,7 @@
     - [Настройка файлового хранилища](#настройка-файлового-хранилища)
     - [Flyway](#flyway)
     - [RabbitMQ](#rabbitmq)
+    - [Запуск модуля с помощью Dockerfile](#запуск-модуля-с-помощью-dockerfile)
 
 [//]: # (    - [Аутентификация]&#40;#аутентификация&#41;)
 
@@ -582,5 +583,35 @@ public class ApprovalListener {
     }
 }
 ```
+
+### Запуск модуля с помощью Dockerfile
+Для запуска модуля необходим сам Dockerfile и упакованный jar для конкретного модуля.
+Например, Dockerfile для edo-cloud-server:
+
+<li>FROM openjdk:17</li>
+<li>COPY target/edo-cloud-server-0.0.1.jar edo-cloud-server-0.0.1.jar</li>
+<li>ENTRYPOINT ["java","-jar", "edo-cloud-server-0.0.1.jar"]]</li>
+
+Так же необходим сам модуль, упакованный в jar (упаковать можно с помощью maven):
+
+Maven - edo - edo-cloud-server - Lifecycle и выбираем clean, package, скипаем тесты, затем Run Maven Build.
+
+![img_1.png](img_1.png)
+
+Если package выполнился успешно, то в edo-cloud-server\target будет лежать edo-cloud-server-0.0.1.jar. Переходим к созданию image.
+
+Команда для билда image:
+
+<code>docker build <DOCKERFILE_PATH --tag <IMAGE_NAME></code>
+
+<DOCKERFILE_PATH> - путь к файлу Dockerfile
+
+<IMAGE_NAME> - имя, под которым образ будет создан
+
+![img.png](img.png)
+
+Команда для запуска контейнера:
+
+<code>docker run -p 8761:8761 edo-cloud-server</code>
 
 
