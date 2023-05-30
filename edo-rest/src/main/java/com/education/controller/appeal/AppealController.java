@@ -55,15 +55,12 @@ public class AppealController {
     @ApiOperation(value = "Добавляет файл к выбранному обращению ")
     @PostMapping("/upload")
     public ResponseEntity<AppealDto> uploadFile(@RequestParam(value = "id", required = true) Long id , @RequestParam(value = "file", required = true) MultipartFile file) {
-        log.info("'AppealController' - Получаем AppealDto по id");
-        AppealDto appealDto = appealService.findById(id);
-
-        log.info("'AppealController' - Загружаем файл в MINIO и получаем FilePoolDto");
+        log.info("Получаем объект FilePoolDto");
         FilePoolDto filePoolDto = minioService.uploadOneFile(file);
-
-        log.info("'AppealController' - Прикрепляем файл к appeal");
-        appealDto.getFile().add(filePoolDto);
-        var save = appealService.save(appealDto);
+       log.info("Файл получен - "+ filePoolDto.getName());
+       log.info("Прикрепление файла к обращению");
+        var save = appealService.upload(id,filePoolDto);
+        log.info("Файл прикреплён ");
         return new ResponseEntity<>(save, HttpStatus.OK);
     }
 }

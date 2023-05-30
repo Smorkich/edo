@@ -3,6 +3,7 @@ package com.education.service.appeal.impl;
 import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
 import com.education.service.filePool.FilePoolService;
+import com.education.service.minio.MinioService;
 import com.education.service.question.QuestionService;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -35,6 +37,7 @@ public class AppealServiceImpl implements AppealService {
     private final AuthorService authorService;
     private final QuestionService questionService;
     private final FilePoolService filePoolService;
+    private final MinioService minioService;
 
 
     /**
@@ -208,6 +211,22 @@ public class AppealServiceImpl implements AppealService {
         return restTemplate.getForObject(URL, AppealDto.class);
 
     }
+
+    @Override
+    public AppealDto upload(Long id, FilePoolDto file) {
+        return null;
+    }
+    /**
+     * Метод закрепляет файл за обращением
+     */
+//    @Override
+//    public AppealDto upload(Long id, FilePoolDto file) {
+//        AppealDto appealDto = findById(id);
+//        FilePoolDto filePoolDto = minioService.uploadOneFile(file);
+//        appealDto.getFile().add(filePoolDto);
+//        var save = save(appealDto);
+//        return save;
+//    }
 
     /**
      * Метод достает emails из коллекции EmployeeDto

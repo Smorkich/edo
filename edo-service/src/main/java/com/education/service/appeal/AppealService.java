@@ -1,6 +1,7 @@
 package com.education.service.appeal;
 
 import model.dto.AppealDto;
+import model.dto.FilePoolDto;
 
 import java.util.Collection;
 
@@ -47,4 +48,6 @@ public interface AppealService {
     public void sendMessage(AppealDto appealDto);
 
     AppealDto findAppealByQuestionsId(Long id);
+
+    AppealDto upload(Long id, FilePoolDto file);
 }

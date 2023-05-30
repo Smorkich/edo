@@ -11,19 +11,12 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.AppealDto;
 import model.dto.EmployeeDto;
+import model.dto.FilePoolDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
@@ -107,6 +100,15 @@ public class AppealRestController {
                 mockEmployee.getId(), id));
         log.info("Response from database: {}", appealDto);
         return new ResponseEntity<>(appealDto, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Добавляет файл к выбранному обращению ")
+    @PostMapping("/upload")
+    public ResponseEntity<AppealDto> uploadFile(@RequestParam(value = "id", required = true) Long id , @RequestParam(value = "file", required = true) FilePoolDto file) {
+        log.info("'Appeal/Upload' - сохранение/прикрепление файла за обращением");
+        var saveFile =appealService.upload(id,file);
+        log.info("'Appeal/Upload' - файл "+ saveFile.getId()+" прикреплён к обращению " + id);
+        return new ResponseEntity<>(saveFile, HttpStatus.OK);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
