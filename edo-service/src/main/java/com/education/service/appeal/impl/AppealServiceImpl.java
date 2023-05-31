@@ -212,21 +212,17 @@ public class AppealServiceImpl implements AppealService {
 
     }
 
-    @Override
-    public AppealDto upload(Long id, FilePoolDto file) {
-        return null;
-    }
     /**
      * Метод закрепляет файл за обращением
      */
-//    @Override
-//    public AppealDto upload(Long id, FilePoolDto file) {
-//        AppealDto appealDto = findById(id);
-//        FilePoolDto filePoolDto = minioService.uploadOneFile(file);
-//        appealDto.getFile().add(filePoolDto);
-//        var save = save(appealDto);
-//        return save;
-//    }
+
+    @Override
+    public AppealDto upload(Long id, FilePoolDto file) {
+        AppealDto appealDto = findById(id);
+        appealDto.getFile().add(file);
+        var save = save(appealDto);
+        return save;
+    }
 
     /**
      * Метод достает emails из коллекции EmployeeDto
