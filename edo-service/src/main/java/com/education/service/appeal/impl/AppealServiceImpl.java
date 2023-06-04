@@ -75,7 +75,6 @@ public class AppealServiceImpl implements AppealService {
 
         try {
             NomenclatureDto nomenclatureDto = appealDto.getNomenclature();
-            nomenclatureDto.getTemplate();
             Calendar calendar = Calendar.getInstance();
             var year = calendar.get(Calendar.YEAR) % 100;
             var number = nomenclatureDto.getTemplate()
