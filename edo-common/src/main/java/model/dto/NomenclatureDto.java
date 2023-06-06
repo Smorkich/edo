@@ -4,6 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.ZonedDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
@@ -12,7 +13,7 @@ import java.time.ZonedDateTime;
 @Builder
 @ToString
 @ApiModel("Объект хранения элементов")
-public class NomenclatureDto {
+public class NomenclatureDto implements Serializable {
 
     @ApiModelProperty("ID записи")
     private Long id;

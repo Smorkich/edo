@@ -3,6 +3,7 @@ package com.education.service.appeal.impl;
 import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
 import com.education.service.filePool.FilePoolService;
+import com.education.service.nomenclature.NomenclatureService;
 import com.education.service.minio.MinioService;
 import com.education.service.question.QuestionService;
 import com.education.util.URIBuilderUtil;
@@ -39,6 +40,8 @@ public class AppealServiceImpl implements AppealService {
     private final FilePoolService filePoolService;
     private final MinioService minioService;
 
+    private final NomenclatureService nomenclatureService;
+
 
     /**
      * Нахождение обращения по id
@@ -73,6 +76,19 @@ public class AppealServiceImpl implements AppealService {
         List<QuestionDto> savedQuestions = new ArrayList<>();
         List<FilePoolDto> savedFiles = new ArrayList<>();
 
+        try {
+            NomenclatureDto nomenclatureDto = appealDto.getNomenclature();
+            Calendar calendar = Calendar.getInstance();
+            var year = calendar.get(Calendar.YEAR) % 100;
+            var number = nomenclatureDto.getTemplate()
+                    .replace("%ИНДЕКС", nomenclatureDto.getIndex())
+                    .replace("%ГОД", Integer.toString(year))
+                    .replace("%НОМЕР", Long.toString(nomenclatureDto.getCurrentValue()));
+            appealDto.setNumber(number);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         try {
             // Сохранение новых авторов
             appealDto.setAuthors(appealDto.getAuthors().stream()

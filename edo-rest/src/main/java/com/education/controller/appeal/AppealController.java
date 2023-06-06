@@ -1,5 +1,6 @@
 package com.education.controller.appeal;
 
+import com.education.publisher.nomenclature.impl.NomenclaturePublisher;
 import com.education.service.appeal.AppealService;
 import com.education.service.minio.MinioService;
 import io.swagger.annotations.ApiOperation;
@@ -26,12 +27,14 @@ public class AppealController {
     private final AppealService appealService;
 
     private final MinioService minioService;
+    private final NomenclaturePublisher nomenclaturePublisher;
 
     @ApiOperation(value = "Принимает обращение, отправляет на edo-service", notes = "Обращение должен существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> save(@RequestBody AppealDto appealDto) {
         log.info("Отправить пост-запрос в edo-service");
         var save = appealService.save(appealDto);
+        nomenclaturePublisher.produce(appealDto.getNomenclature());
         log.info(" пост-запрос отправлен в edo-service");
         return new ResponseEntity<>(save, HttpStatus.CREATED);
     }
@@ -52,14 +55,15 @@ public class AppealController {
         log.info("AppealDto успешно получен");
         return new ResponseEntity<>(appealService.findById(id), HttpStatus.OK);
     }
+
     @ApiOperation(value = "Добавляет файл к выбранному обращению ")
     @PostMapping("/upload")
-    public ResponseEntity<AppealDto> uploadFile(@RequestParam(value = "id", required = true) Long id , @RequestParam(value = "file", required = true) MultipartFile file) {
+    public ResponseEntity<AppealDto> uploadFile(@RequestParam(value = "id", required = true) Long id, @RequestParam(value = "file", required = true) MultipartFile file) {
         log.info("Получаем объект FilePoolDto");
         FilePoolDto filePoolDto = minioService.uploadOneFile(file);
-       log.info("Файл получен - "+ filePoolDto.getName());
-       log.info("Прикрепление файла к обращению");
-        var save = appealService.upload(id,filePoolDto);
+        log.info("Файл получен - " + filePoolDto.getName());
+        log.info("Прикрепление файла к обращению");
+        var save = appealService.upload(id, filePoolDto);
         log.info("Файл прикреплён ");
         return new ResponseEntity<>(save, HttpStatus.OK);
     }
