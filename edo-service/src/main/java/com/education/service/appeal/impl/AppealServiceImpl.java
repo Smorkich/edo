@@ -4,6 +4,7 @@ import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
 import com.education.service.filePool.FilePoolService;
 import com.education.service.nomenclature.NomenclatureService;
+import com.education.service.minio.MinioService;
 import com.education.service.question.QuestionService;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.ZonedDateTime;
 import java.util.*;
@@ -36,6 +38,7 @@ public class AppealServiceImpl implements AppealService {
     private final AuthorService authorService;
     private final QuestionService questionService;
     private final FilePoolService filePoolService;
+    private final MinioService minioService;
 
     private final NomenclatureService nomenclatureService;
 
@@ -223,6 +226,18 @@ public class AppealServiceImpl implements AppealService {
         String URL = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "api/repository/appeal/findAppealByQuestionsId/" + id).toString();
         return restTemplate.getForObject(URL, AppealDto.class);
 
+    }
+
+    /**
+     * Метод закрепляет файл за обращением
+     */
+
+    @Override
+    public AppealDto upload(Long id, FilePoolDto file) {
+        AppealDto appealDto = findById(id);
+        appealDto.getFile().add(file);
+        var save = save(appealDto);
+        return save;
     }
 
     /**

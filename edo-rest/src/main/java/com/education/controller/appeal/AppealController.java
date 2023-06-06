@@ -2,14 +2,19 @@ package com.education.controller.appeal;
 
 import com.education.publisher.nomenclature.impl.NomenclaturePublisher;
 import com.education.service.appeal.AppealService;
+import com.education.service.minio.MinioService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.AppealDto;
+import model.dto.FilePoolDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Collection;
 
 /**
  * Rest-контроллер в "edo-rest", служит для отправки обращения (Appeal) в БД используя RestTemplate
@@ -21,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 public class AppealController {
     private final AppealService appealService;
 
+    private final MinioService minioService;
     private final NomenclaturePublisher nomenclaturePublisher;
 
     @ApiOperation(value = "Принимает обращение, отправляет на edo-service", notes = "Обращение должен существовать")
@@ -48,5 +54,17 @@ public class AppealController {
         var appealDto = appealService.findById(id);
         log.info("AppealDto успешно получен");
         return new ResponseEntity<>(appealService.findById(id), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Добавляет файл к выбранному обращению ")
+    @PostMapping("/upload")
+    public ResponseEntity<AppealDto> uploadFile(@RequestParam(value = "id", required = true) Long id, @RequestParam(value = "file", required = true) MultipartFile file) {
+        log.info("Получаем объект FilePoolDto");
+        FilePoolDto filePoolDto = minioService.uploadOneFile(file);
+        log.info("Файл получен - " + filePoolDto.getName());
+        log.info("Прикрепление файла к обращению");
+        var save = appealService.upload(id, filePoolDto);
+        log.info("Файл прикреплён ");
+        return new ResponseEntity<>(save, HttpStatus.OK);
     }
 }
