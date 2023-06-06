@@ -1,7 +1,8 @@
 package com.education.config;
 
 import model.constant.Constant;
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -60,4 +61,7 @@ public class RabbitConfig {
     public Queue resolutionDeadlineQueue() {
         return new Queue(Constant.DEADLINE_CHANGE_QUEUE);
     }
+
+    @Bean
+    public Queue nomenclatureQueue() { return new Queue(Constant.REST_TO_SERVICE_NOMENCLATURE_QUEUE); }
 }
