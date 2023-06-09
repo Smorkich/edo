@@ -11,7 +11,7 @@ public enum ReceiptMethod {
     BY_PHONE("По телефону");
 
     /**
-     * "receiptMethod" - поле, созданное для того, чтобы можно было перопределить toString()
+     * "receiptMethod" - поле, созданное для того, чтобы можно было переопределить toString()
      */
     private final String receiptMethod;
 

@@ -23,7 +23,7 @@ public class RecognitionServiceImpl implements RecognitionService {
     private final MinioService minioService;
     @Override
     public void recognize(Long id) {
-        log.info("Отправялем запрос на получение appealDto");
+        log.info("Отправляем запрос на получение appealDto");
         AppealDto appealDto = appealService.findById(id);
         log.info("appealDto получен");
         var filesUuid = appealDto.getFile()

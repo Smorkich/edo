@@ -45,7 +45,7 @@ public class NomenclatureController {
     @ApiOperation("Method searches for an entity of Nomenclature by its ID")
     @GetMapping(value = "/find/{id}")
     public ResponseEntity<NomenclatureDto> findById(@PathVariable Long id) {
-        log.info("Serching entity with id = {}", id);
+        log.info("Searching entity with id = {}", id);
         NomenclatureDto nomenclatureDto = NOMENCLATURE_MAPPER.toDto(service.findById(id));
         log.info("Entity {} has been found",nomenclatureDto);
         return new ResponseEntity<>(nomenclatureDto, HttpStatus.OK);
@@ -65,7 +65,7 @@ public class NomenclatureController {
     /**
      * the Method fills in the field with the value and set date
      */
-    @ApiOperation(value = "MOVE TO ARHCIVE (SET DATE)")
+    @ApiOperation(value = "MOVE TO ARCHIVE (SET DATE)")
     @GetMapping("/move/{id}")
     public ResponseEntity<NomenclatureDto> move(@PathVariable Long id) {
         log.debug("Set field archived_date with actual datetime");
@@ -76,7 +76,7 @@ public class NomenclatureController {
     }
 
     /**
-     * Method searches for an entity of Nomenclature that archiveDate fild is null
+     * Method searches for an entity of Nomenclature that archiveDate filed is null
      */
     @ApiOperation(value = "Method finds nomenclature if it has not been archived")
     @GetMapping("/notArch/{id}")
@@ -88,7 +88,7 @@ public class NomenclatureController {
     }
 
     /**
-     * Method searches for set of entities of Nomenclature that archiveDate filds are null
+     * Method searches for set of entities of Nomenclature that archiveDate fields are null
      */
     @ApiOperation(value = "find list of Nomenclature`s entities if they have not been archived")
     @GetMapping(value = "/notArchList", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -102,7 +102,7 @@ public class NomenclatureController {
     /**
      * Method searches for set of entities of Nomenclature by their ids in Collection
      */
-    @ApiOperation("find all entites of nomenclature which are in Collectionn<Long> of id")
+    @ApiOperation("find all entities of nomenclature which are in Collection<Long> of id")
     @GetMapping(value = "/all")
     public ResponseEntity<Collection<NomenclatureDto>> findAllByIdController(@RequestParam("id") Collection<Long> listId) {
         log.info("Searching entity with id list = {}", listId);

@@ -82,7 +82,7 @@ public class ApprovalRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Находит строку таблицы Approval c полем acrhivedDate = null, по заданному id")
+    @ApiOperation(value = "Находит строку таблицы Approval c полем archivedDate = null, по заданному id")
     @GetMapping(value = "/findByIdNotArchived/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ApprovalDto> findByIdNotArchived(@PathVariable Long id) {
         log.info("Getting from database approval with field archived_date = null, with id: {}", id);
@@ -91,7 +91,7 @@ public class ApprovalRestController {
         return new ResponseEntity<>(APPROVAL_MAPPER.toDto(approval), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Находит все листы согласования с полем acrhivedDate = null")
+    @ApiOperation(value = "Находит все листы согласования с полем archivedDate = null")
     @GetMapping(value = "/findAllNotArchived", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<ApprovalDto>> findAllNotArchived() {
         log.info("Getting from database all approvals with field archived_date = null");

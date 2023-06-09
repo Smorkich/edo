@@ -21,7 +21,7 @@ public class MessageRestController {
 
     private final EmailService emailService;
 
-    @ApiOperation(value = "Отправляет письма по почтам emails, с текстом указанием на номер обращения и адресс")
+    @ApiOperation(value = "Отправляет письма по почтам emails, с текстом указанием на номер обращения и адрес")
     @PostMapping("")
     public ResponseEntity<Object> createAndSendAppealMessage(@RequestParam("emails") List<String> emails,
                                                              @RequestParam("appealURL") String appealURL,

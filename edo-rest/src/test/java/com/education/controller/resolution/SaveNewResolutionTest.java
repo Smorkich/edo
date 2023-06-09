@@ -80,14 +80,14 @@ public class SaveNewResolutionTest {
     }
 
     @Test
-    @DisplayName("Сохранение Resolution без заполенного поля creator")
+    @DisplayName("Сохранение Resolution без заполненного поля creator")
     public void saveResolutionWithoutCreatorTest() throws Exception {
         newResolutionDto.setCreator(null);
         postRequestToSaveResolution(newResolutionDto);
     }
 
     @Test
-    @DisplayName("Сохранение Resolution без заполенного поля executor")
+    @DisplayName("Сохранение Resolution без заполненного поля executor")
     public void saveResolutionWithoutExecutorTest() throws Exception {
         newResolutionDto.setExecutor(null);
         postRequestToSaveResolution(newResolutionDto);

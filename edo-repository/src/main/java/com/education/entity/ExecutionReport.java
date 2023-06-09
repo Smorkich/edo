@@ -27,7 +27,7 @@ public class ExecutionReport extends BaseEntity {
     private ZonedDateTime creationDate;
 
     /**
-     * Коментарий к отчету
+     * Комментарий к отчету
      */
     @Column(name = "execution_comment")
     private String executionComment;
@@ -47,7 +47,7 @@ public class ExecutionReport extends BaseEntity {
     private Employee executor;
 
     /**
-     * Идентификтаор резолюции
+     * Идентификатор резолюции
      */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "resolution_id")
