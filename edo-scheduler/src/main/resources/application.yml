@@ -13,7 +13,7 @@ eureka:
 
 integration:
   url:
-    employee: http://xn--d1ab2a.space/mock/employees
+    employee:  http://xn--d1ab2a.space/mock/employees
 
 interval: PT30M
 
