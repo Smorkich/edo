@@ -29,9 +29,12 @@ public class URIBuilderUtil {
      * @param path    - uri path
      * @return URIBuilder instance
      */
+
+
     public static URIBuilder buildURI(String service, String path) {
         log.info("Get all instances of required service");
         List<InstanceInfo> instances = eurekaClient.getApplication(service).getInstances();
+        System.out.println(instances);
         log.info("Define random instance");
         int randomInstance = ThreadLocalRandom.current().nextInt(instances.size());
         log.info("Get certain instance of service");

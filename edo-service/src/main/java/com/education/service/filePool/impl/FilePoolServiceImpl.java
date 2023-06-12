@@ -32,17 +32,13 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public void delete(Long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
-                .setPath("/")
-                .setPath(String.valueOf(id));
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL + "/" + id);
         restTemplate.delete(builder.toString());
     }
 
     @Override
     public String findById(Long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL)
-                .setPath("/")
-                .setPath(String.valueOf(id));
+        var builder = buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL + "/" + id);
         return restTemplate.getForObject(builder.toString(), String.class);
     }
 
