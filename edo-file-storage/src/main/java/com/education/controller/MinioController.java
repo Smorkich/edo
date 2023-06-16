@@ -2,10 +2,13 @@ package com.education.controller;
 
 import com.education.component.MinioComponent;
 
+import com.education.exceptions.ExtensionException;
 import com.education.exceptions.MinIOPutException;
+import com.education.exceptions.SizeException;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import model.dto.EnumFileType;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 
 
 /**
@@ -42,25 +48,47 @@ public class MinioController {
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.TEXT_PLAIN_VALUE)
     public String uploadFileToMinIO(@RequestParam("file") MultipartFile file,
-                                                    @RequestParam("key") String key) {
+                                                    @RequestParam("key") String key,
+                                    @RequestParam("fileType") String fileType) {
 
         String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
 
-        try (var convertedFile = minioComponent.convertFileToPDF(file, extension)) {
+
+        if (!((Objects.requireNonNull(extension).equals("jpg")) || (extension.equals("jpeg")) || (extension.equals("png")))) {
+            throw new ExtensionException("Неверное расширение файла!");
+        }
+
+        Image image = new ImageIcon((Image) file).getImage();
+        if (image.getHeight(null) > 100 || image.getWidth(null) > 100) {
+            throw new SizeException("Превышен допустимый размер файла");
+        }
+
+
+        if (EnumFileType.MAIN.toString().equals(fileType)) {
+
+            try (var convertedFile = minioComponent.convertFileToPDF(file, extension)) {
+                String contentType = minioComponent.getFileContentType(file, extension);
+                log.info("Uploading file with key: {}; And type: {}", key, contentType);
+                minioComponent.postObject(
+                        minioComponent.getFileName(key, extension),
+                        convertedFile,
+                        contentType);
+                return contentType;
+            } catch (IOException e) {
+                log.error("bed request");
+                return "Something wrong.";
+            }
+
+        } else {
             String contentType = minioComponent.getFileContentType(file, extension);
             log.info("Uploading file with key: {}; And type: {}", key, contentType);
             minioComponent.postObject(
                     minioComponent.getFileName(key, extension),
-                    convertedFile,
+                    null,
                     contentType);
             return contentType;
-        } catch (IOException e) {
-            log.error("bed request");
-            return "Something wrong.";
         }
-
     }
-
     /**
      * Request to download file from MINIO-server.
      * Request consist of object`s name.
