@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.UUID;
 
 public interface MinioService {
@@ -27,4 +28,8 @@ public interface MinioService {
      * Method delete objects
      */
     void delete(String name);
+
+    long countPages(UUID UUIDKey, String originalExtension, String ConvertedContentType);
+
+    String getConvertedFilename(String key, String extension, String contentType);
 }

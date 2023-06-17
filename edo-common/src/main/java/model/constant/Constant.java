@@ -34,4 +34,7 @@ public class Constant {
     public static final String FILE_RECOGNITION_START = "FileRecognitionStart";
     public static final String DEADLINE_CHANGE_QUEUE = "DeadlineChange";
     public static final String REST_TO_SERVICE_NOMENCLATURE_QUEUE = "RestToServiceNomenclatureQueue";
+
+    public static final String PDF_CONTENT_TYPE = "application/pdf";
+    public static final String PDF = "pdf";
 }
