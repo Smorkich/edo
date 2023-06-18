@@ -25,7 +25,7 @@ public class ExecutionReportDto implements Serializable {
     private Long id;
     @ApiModelProperty(value = "Дата исполнения резолюции")
     private ZonedDateTime creationDate;
-    @ApiModelProperty(value = "Коментарий по исполнению резолюции")
+    @ApiModelProperty(value = "Комментарий по исполнению резолюции")
     private String executionComment;
     @ApiModelProperty(value = "Статус исполнения резолюции")
     private Status status;

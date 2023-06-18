@@ -31,7 +31,7 @@ public class ExternalEmployeeDto {
         private Location location;
         @ApiModelProperty(value = "Почта")
         private String email;
-        @ApiModelProperty(value = "Поле с классом для аутенитфикации и авторизации")
+        @ApiModelProperty(value = "Поле с классом для аутентификации и авторизации")
         private Login login;
         @ApiModelProperty(value = "Возраст и год рождения")
         private Date dob;
@@ -75,7 +75,7 @@ public class ExternalEmployeeDto {
                 private CustTimeZone timeZone;
                 @Getter
                 @Setter
-                @ApiModel(value = "Класс для поля coordinates , в котором присутсвуют широта и долгота ")
+                @ApiModel(value = "Класс для поля coordinates , в котором присутствуют широта и долгота ")
                 @ToString
                 public static  class Coordinates {
                         private String latitude;
@@ -84,7 +84,7 @@ public class ExternalEmployeeDto {
                 }
                 @Getter
                 @Setter
-                @ApiModel(value = "Класс для поля street, в котором присутсвуют поля номера улицы и имени")
+                @ApiModel(value = "Класс для поля street, в котором присутствуют поля номера улицы и имени")
                 public class  Street {
                         private Long number;
                         private String name;
@@ -130,7 +130,7 @@ public class ExternalEmployeeDto {
         }
         @Getter
         @Setter
-        @ApiModel(value = "Индетификатор")
+        @ApiModel(value = "Идентификатор")
         public static class Id {
                 private String name;
                 private String value;

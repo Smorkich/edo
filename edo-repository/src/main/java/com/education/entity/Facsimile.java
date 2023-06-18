@@ -25,7 +25,7 @@ public class Facsimile extends BaseEntity {
     private Boolean IsArchived;
 
     /**
-     * Cвязь с пользователем
+     * Связь с пользователем
      */
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -33,7 +33,7 @@ public class Facsimile extends BaseEntity {
     private Employee employee;
 
     /**
-     * Cвязь с департаментом
+     * Связь с департаментом
      */
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -41,7 +41,7 @@ public class Facsimile extends BaseEntity {
     private Department department;
 
     /**
-     * Cвязь с файлом
+     * Связь с файлом
      */
 
     @OneToOne(fetch = FetchType.LAZY)

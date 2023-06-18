@@ -18,7 +18,7 @@ import java.time.ZonedDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@ApiModel(value = "Обьект для передачи данных")
+@ApiModel(value = "Объект для передачи данных")
 public class DepartmentDto {
 
     @ApiModelProperty(value = "id")
@@ -36,7 +36,7 @@ public class DepartmentDto {
     @ApiModelProperty(value = "номер телефона")
     private String phone;
 
-    @ApiModelProperty(value = "внешний индификатор, который будем получать из чужого хранилища")
+    @ApiModelProperty(value = "внешний идентификатор, который будем получать из чужого хранилища")
     private String externalId;
 
     @ApiModelProperty(value = "вышестоящий департамент")

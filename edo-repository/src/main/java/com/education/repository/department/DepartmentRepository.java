@@ -12,7 +12,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
- * Интерфейс который наследет JpaRepository
+ * Интерфейс, который наследует JpaRepository.
  * Имеет кастомные методы, используя синтаксис DATA JPA
  */
 @Repository
