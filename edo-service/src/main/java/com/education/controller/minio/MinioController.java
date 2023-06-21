@@ -60,14 +60,16 @@ public class MinioController {
                                      @RequestParam("name") String fileName) throws IOException {
         log.info("Upload file named: {}", fileName);
         var UUIDKey = UUID.randomUUID();
-        minioService.uploadOneFile(file, UUIDKey, fileName, file.getContentType());
+        var convertedContentType = minioService.uploadOneFile(file, UUIDKey, fileName, file.getContentType()).getBody();
         var extension = StringUtils.getFilenameExtension(fileName);
+        var numberOfPages = minioService.countPages(UUIDKey, extension, convertedContentType);
+
         var filePoolDto = FilePoolDto.builder()
                 .storageFileId(UUIDKey)                                                 //Ключ для получения файла из хранилища
                 .name(fileName)                                                         //Имя обращения
-                .extension(extension)                  //Формат файла
+                .extension(extension)                                                   //Формат файла
                 .size(file.getSize())                                                   //Размер обращения
-                .pageCount(file.getSize())                                              //Количество страниц
+                .pageCount(numberOfPages)                                               //Количество страниц
                 .uploadDate(ZonedDateTime.now())                                        //Дата создания.
                 .creator(getEmp())                                                      //id создателя файла. Нужна реализация авторизации
                 .build();

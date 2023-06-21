@@ -22,6 +22,7 @@ import org.docx4j.convert.out.FOSettings;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -128,7 +129,7 @@ public class MinioComponent {
         if (Set.of(JPEG, JPG, DOC, DOCX, PNG).contains(extension)) {
             return String.format("%s.%s", key, PDF);
         } else {
-            return key;
+            return String.format("%s.%s", key, extension);
         }
     }
 
