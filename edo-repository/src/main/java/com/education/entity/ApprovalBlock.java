@@ -11,7 +11,7 @@ import model.enum_.ApprovalBlockType;
 import java.util.Collection;
 
 /**
- * Сущность представляющая собой блок c участниками или подписантами согласования
+ * Сущность представляющая собой блок с участниками или подписантами согласования
  */
 @Entity
 @NoArgsConstructor

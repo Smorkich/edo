@@ -16,9 +16,9 @@ import static com.education.mapper.DepartmentMapper.DEPARTMENT_MAPPER;
 
 /**
  * @author Usolkin Dmitry
- * Контроллер в модуле edo-repository,работате с моделью DepartmentDto,
+ * Контроллер в модуле edo-repository работает с моделью DepartmentDto,
  * которая произошла из сущности Department выполняет несколько операций:
- * добавляет департамент
+ * добавляет департамент,
  * заносит дату архиваци в департамент, обозначая тем самым, архивацию
  * достает департамент по id
  * достает департаменты по нескольким id
@@ -70,7 +70,7 @@ public class DepartmentController {
      * @param ids
      * @return
      */
-    @ApiOperation(value = "Предоставление дапартаментов без архивации по назначеным идентификаторам")
+    @ApiOperation(value = "Предоставление департаментов без архивации по назначенным идентификаторам")
     @GetMapping("/notArchivedAll/{ids}")
     private ResponseEntity<List<DepartmentDto>> getDepartmentsNotArchived(@PathVariable(name = "ids") List<Long> ids) {
         log.info("send a response with the departments not archived of the assigned IDs");
@@ -85,7 +85,7 @@ public class DepartmentController {
      * @param ids
      * @return
      */
-    @ApiOperation(value = "Предоставление дапартаментов  по назначеным идентификаторам")
+    @ApiOperation(value = "Предоставление департаментов  по назначенным идентификаторам")
     @GetMapping("/all/{ids}")
     private ResponseEntity<List<DepartmentDto>> getDepartments(@PathVariable(name = "ids") List<Long> ids) {
         log.info("send a response with the departments of the assigned IDs");
@@ -100,7 +100,7 @@ public class DepartmentController {
      * @param departmentDto
      * @return
      */
-    @ApiOperation(value = "Добавленение департамента")
+    @ApiOperation(value = "Добавление департамента")
     @PostMapping
     private ResponseEntity<Long> saveDepartment(@RequestBody DepartmentDto departmentDto) {
         log.info("Starting the save operation");
@@ -110,7 +110,7 @@ public class DepartmentController {
     }
 
     /**
-     * заносит дату архиваци в департамент, обозначая тем самым, архивацию
+     * заносит дату архивации в департамент, обозначая тем самым, архивацию
      *
      * @param id
      * @return

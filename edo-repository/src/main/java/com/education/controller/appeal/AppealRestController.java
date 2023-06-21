@@ -34,21 +34,21 @@ public class AppealRestController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Находит все строки таблицы Appeal с полем acrhivedDate = null",
+    @ApiOperation(value = "Находит все строки таблицы Appeal с полем archivedDate = null",
             notes = "Строка в Appeal должна существовать")
     @GetMapping(value = "/findAllNotArchived", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AppealDto>> findAllNotArchived() {
-        log.info("Getting from database all appeals with field acrhivedDate = null");
+        log.info("Getting from database all appeals with field archivedDate = null");
         var appealDtoCollection = APPEAL_MAPPER.toDto(appealService.findAllNotArchived());
         log.info("Appeals: {}", appealDtoCollection);
         return new ResponseEntity<>(appealDtoCollection, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Находит строку таблицы Appeal c полем acrhivedDate = null, по заданному id",
+    @ApiOperation(value = "Находит строку таблицы Appeal c полем archivedDate = null, по заданному id",
             notes = "Строка в Appeal должна существовать")
     @GetMapping(value = "/findByIdNotArchived/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> findByIdNotArchived(@PathVariable Long id) {
-        log.info("Getting from database appeal with field acrhivedDate = null, with id: {}", id);
+        log.info("Getting from database appeal with field archivedDate = null, with id: {}", id);
         var appeal = appealService.findByIdNotArchived(id);
         log.info("Appeal: {}", appeal);
         return new ResponseEntity<>(APPEAL_MAPPER.toDto(appeal), HttpStatus.OK);
