@@ -10,6 +10,8 @@ public class Constant {
     public static final String ADDRESS_URL = "api/repository/address";
     public static final String APPEAL_URL = "api/repository/appeal";
     public static final String AUTHOR_URL = "api/repository/author";
+    public static final String APPEAL_REST_URL = "/api/edo/appeal";
+    public static final String SERVICE_APPEAL_URL = "/api/service/appeal";
     public static final String EXECUTION_REPORT_URL = "api/repository/report";
     public static final String DEPARTMENT_URL = "api/repository/department";
     public static final String EMPLOYEE_URL = "api/repository/employee";
@@ -20,7 +22,9 @@ public class Constant {
     public static final String THEME_URL = "api/repository/theme";
 
     public static final String EDO_REPOSITORY_NAME = "edo-repository";
+
     public static final String EDO_SERVICE_NAME = "edo-service";
+    public static final String EDO_REST_NAME = "edo-rest";
 
     public static final String NOMENCLATURE_PARAMETER = "index";
     public static final String EMPLOYEE_FIO_SEARCH_PARAMETER = "fullName";

@@ -34,7 +34,6 @@ import static model.enum_.Status.NEW_STATUS;
 public class AppealServiceImpl implements AppealService {
 
     private final RestTemplate restTemplate;
-
     private final AuthorService authorService;
     private final QuestionService questionService;
     private final FilePoolService filePoolService;
@@ -205,9 +204,9 @@ public class AppealServiceImpl implements AppealService {
         emails.addAll(getEmployeesEmails(appealDto.getSigner()));
 
         //Получение URL
-        var builderForAppealUrl = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL + "/" + appealDto.getId());
+        var builderForAppealUrl = buildURI(EDO_REST_NAME, APPEAL_REST_URL + "/" + appealDto.getId());
 
-        //заполнение мапы данными
+        //Заполнение мапы данными
         valueMapForSendingObjects.add("appealURL", builderForAppealUrl.toString());
         valueMapForSendingObjects.addAll("emails", emails);
         valueMapForSendingObjects.add("appealNumber", appealDto.getNumber());

@@ -75,7 +75,7 @@ public class Employee extends BaseEntity {
     private String fioGenitive;
 
     /**
-     * externalId - Внешний индификатор, который будем получать из чужого хранилища
+     * externalId - Внешний идентификатор, который будем получать из чужого хранилища
      */
     @Column(name = "external_id")
     private String externalId;

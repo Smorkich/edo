@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @author Kryukov Andrey
- * Здест храняться переменные из application
+ * Здесь храняться переменные из application
  */
 @Component
 @Getter

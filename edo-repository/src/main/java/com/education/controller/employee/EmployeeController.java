@@ -55,7 +55,7 @@ public class EmployeeController {
     /**
      * предоставляет всех сотрудников
      */
-    @ApiOperation(value = "Предоставление сотрудников по назначеным идентификаторам")
+    @ApiOperation(value = "Предоставление сотрудников по назначенным идентификаторам")
     @GetMapping("/all")
     public ResponseEntity<Collection<EmployeeDto>> findAll() {
         log.info("Send a response with the employees");
@@ -69,7 +69,7 @@ public class EmployeeController {
      *
      * @param ids
      */
-    @ApiOperation(value = "Предоставление сотрудников по назначеным идентификаторам")
+    @ApiOperation(value = "Предоставление сотрудников по назначенным идентификаторам")
     @GetMapping("/all/{ids}")
     public ResponseEntity<Collection<EmployeeDto>> findAllById(@PathVariable List<Long> ids) {
         log.info("Send a response with the employee of the assigned IDs");
@@ -108,7 +108,7 @@ public class EmployeeController {
     }
 
     /**
-     * предоставляет заархивированного сторудника по id
+     * предоставляет заархивированного сотрудника по id
      *
      * @param id
      */
@@ -122,7 +122,7 @@ public class EmployeeController {
     }
 
     /**
-     * предоставляет заархивированных сторудников по нескольким id
+     * предоставляет заархивированных сотрудников по нескольким id
      *
      * @param ids
      */

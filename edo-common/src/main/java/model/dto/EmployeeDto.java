@@ -41,7 +41,7 @@ public class EmployeeDto implements Serializable {
     @ApiModelProperty(value = "ФИО в родительном падеже")
     private String fioGenitive;
 
-    @ApiModelProperty(value = "Внешний индификатор, который будем получать из чужого хранилища")
+    @ApiModelProperty(value = "Внешний идентификатор, который будем получать из чужого хранилища")
     private String externalId;
 
     @ApiModelProperty(value = "Номер телефона сотовый")

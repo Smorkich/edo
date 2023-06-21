@@ -53,7 +53,7 @@ public class AddressController {
     @ApiOperation(value = "Возвращает все адреса", notes = "Адреса должны существовать")
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AddressDto>> findAll() {
-        log.info("Send a get-request to get all Addresse from database");
+        log.info("Send a get-request to get all Addresses from database");
         var addressDtos = ADDRESS_MAPPER.toDto(addressService.findAll());
         log.info("Response from database: {}", addressDtos);
         return new ResponseEntity<>(addressDtos, HttpStatus.OK);

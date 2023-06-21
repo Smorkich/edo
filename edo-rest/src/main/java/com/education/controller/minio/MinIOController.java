@@ -72,7 +72,7 @@ public class MinIOController {
     /**
      * Request to delete old file in the MINIO-server`s bucket
      */
-    @ApiOperation("send request to upload file to bucjets from source")
+    @ApiOperation("send request to upload file to buckets from source")
     @DeleteMapping("/delete/{fileName}")
     public ResponseEntity delete(@PathVariable("fileName") String fileName) {
         log.info("delete file: {}", fileName);
