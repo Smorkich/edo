@@ -86,7 +86,7 @@ public class MinioServiceImpl implements MinioService {
 
     @Override
     public String getConvertedFilename(String key, String extension, String contentType) {
-        if (contentType.equals(PDF_CONTENT_TYPE)) {
+        if (PDF_CONTENT_TYPE.equals(contentType)) {
             return String.format("%s.%s", key, PDF);
         } else {
             return String.format("%s.%s", key, extension);
