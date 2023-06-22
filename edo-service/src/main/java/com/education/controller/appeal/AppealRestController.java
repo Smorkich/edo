@@ -27,7 +27,6 @@ import java.util.Collection;
 public class AppealRestController {
 
     private AppealService appealService;
-
     private AppealPublisher appealPublisher;
 
     @ApiOperation(value = "В строке таблицы Appeal заполняет поле archivedDate", notes = "Строка в Appeal должна существовать")
@@ -76,21 +75,22 @@ public class AppealRestController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Принимает обращение, отправляет на edo-repository", notes = "Обращение должен существовать")
+    @ApiOperation(value = "Принимает обращение, отправляет на edo-repository", notes = "Обращение должно существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> save(@RequestBody AppealDto appealDto) {
-        Validator.getValidateAppeal(appealDto);
+//        Validator.getValidateAppeal(appealDto);
         log.info("Send a post-request to edo-repository to post new Appeal to database");
         var save = appealService.save(appealDto);
-        log.info("sending to edo-repository", save);
+        log.info("sending to edo-repository dto - {}", save);
         log.info("Sending a message to employees");
-        appealService.sendMessage(save);
+//        appealService.sendMessage(save);
         return new ResponseEntity<>(save, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Находит строку таблицы Appeal по id", notes = "Строка в Appeal должна существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> getAppealById(@PathVariable Long id) {
+        log.info("Getting from database employee mock field with id: 1");
         var mockEmployee = getMockEmployee();
         log.info("Getting from database appeal with id: {}", id);
         var appealDto = appealService.findById(id);
@@ -102,13 +102,30 @@ public class AppealRestController {
         return new ResponseEntity<>(appealDto, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Добавляет файл к выбранному обращению ")
+    @ApiOperation(value = "Добавляет файл к выбранному обращению")
     @PostMapping("/upload")
-    public ResponseEntity<AppealDto> uploadFile(@RequestParam(value = "id", required = true) Long id , @RequestParam(value = "file", required = true) FilePoolDto file) {
+    public ResponseEntity<AppealDto> uploadFile(@RequestParam(value = "id") Long id, @RequestParam(value = "file") FilePoolDto file) {
         log.info("'Appeal/Upload' - сохранение/прикрепление файла за обращением");
-        var saveFile =appealService.upload(id,file);
-        log.info("'Appeal/Upload' - файл "+ saveFile.getId()+" прикреплён к обращению " + id);
+        var saveFile = appealService.upload(id, file);
+        log.info("'Appeal/Upload' - файл " + saveFile.getId() + " прикреплён к обращению " + id);
         return new ResponseEntity<>(saveFile, HttpStatus.OK);
+    }
+
+    /**
+     * Принимает запрос на регистрацию Appeal по id, который передаётся в параметре запроса и
+     * вызывает метод register() из AppealService микросервиса edo-service
+     *
+     * @param id идентификатор регистрируемого Appeal
+     * @return ResponseEntity<AppealDto> - ResponseEntity DTO сущности Appeal (обращение)
+     * @apiNote HTTP Method - POST
+     */
+    @ApiOperation(value = "Регистрирует выбранное обращение", notes = "Обращение должно существовать")
+    @PostMapping("/register")
+    public ResponseEntity<AppealDto> registerAppeal(@RequestParam(value = "id") Long id) {
+        log.info("Registration request received on edo-service of appeal № " + id);
+        var registerAppeal = appealService.register(id);
+        log.info("'Appeal with id " + id + " has been registered on edo-service");
+        return new ResponseEntity<>(registerAppeal, HttpStatus.OK);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -131,7 +148,13 @@ public class AppealRestController {
         return new ResponseEntity<>(appealIncorrectData, HttpStatus.FORBIDDEN);
     }
 
+    /**
+     * Получаем тестовый Employee - по умолчанию строку из таблицы employee с id 1
+     *
+     * @return EmployeeDto
+     */
     private EmployeeDto getMockEmployee() {
-        return EmployeeDto.builder().id(4L).build();
+        return EmployeeDto.builder().id(1L).build();
     }
+
 }

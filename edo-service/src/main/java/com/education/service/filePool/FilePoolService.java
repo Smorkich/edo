@@ -1,4 +1,5 @@
 package com.education.service.filePool;
+
 import model.dto.FilePoolDto;
 
 import java.util.Collection;
@@ -14,6 +15,14 @@ public interface FilePoolService {
      * save - сохраняет новый файл в бд
      */
     FilePoolDto save(FilePoolDto filePool);
+
+    /**
+     * Интерфейс для метода, который сохраняет коллекцию сущностей FilePoolDto
+     *
+     * @param filePoolDtos - коллекция сохраняемых dto
+     * @return Collection<FilePoolDto> - коллекция сохранённых dto
+     */
+    Collection<FilePoolDto> saveAll(Collection<FilePoolDto> filePoolDtos);
 
     /**
      * delete - удаляет файл из бд

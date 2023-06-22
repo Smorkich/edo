@@ -46,6 +46,23 @@ public class AuthorRestController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
+    /**
+     * Принимает запрос на создание Author'ов, которые передаются в теле HTTP запроса
+     * <p>Вызывает метод saveAll() из интерфейса AuthorService, микросервиса edo-service
+     *
+     * @param authorDtos добавляемые AuthorDto
+     * @return ResponseEntity<Collection < AuthorDto> - ResponseEntity коллекции DTO сущности AuthorDto (авторы обращения)
+     * @apiNote HTTP Method - POST
+     */
+    @ApiOperation(value = "Создает авторов в БД")
+    @PostMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<AuthorDto>> saveAll(@RequestBody Collection<AuthorDto> authorDtos) {
+        log.info("Send a post-request to edo-repository to post new Authors to database");
+        authorService.saveAll(authorDtos);
+        log.info("Response: {} was added to database", authorDtos);
+        return new ResponseEntity<>(authorDtos, HttpStatus.CREATED);
+    }
+
     @ApiOperation(value = "Delete author", notes = "Author must exist")
     @DeleteMapping("/{id}")
     public ResponseEntity<AuthorDto> deleteAuthor(@PathVariable Long id) {

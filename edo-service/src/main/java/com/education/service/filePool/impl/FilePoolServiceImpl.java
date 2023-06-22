@@ -5,12 +5,17 @@ import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import model.constant.Constant;
 import model.dto.FilePoolDto;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
+
 import static com.education.util.URIBuilderUtil.buildURI;
 import static model.constant.Constant.*;
 
@@ -28,6 +33,24 @@ public class FilePoolServiceImpl implements FilePoolService {
     public FilePoolDto save(FilePoolDto filePoolDto) {
         String uri = URIBuilderUtil.buildURI(Constant.EDO_REPOSITORY_NAME, "api/repository/filePool").toString();
         return restTemplate.postForObject(uri, filePoolDto, FilePoolDto.class);
+    }
+
+    /**
+     * Сохраняет коллекцию FilePoolDto, которая передаётся в параметр - отправляет запрос в контроллер edo-repository
+     *
+     * @param filePoolDtos коллекция добавляемых FilePoolDto
+     * @return Collection<FilePoolDto> - коллекция DTO сущности FilePool (информация о файлах)
+     */
+    @Override
+    public Collection<FilePoolDto> saveAll(Collection<FilePoolDto> filePoolDtos) {
+        var dtos = Stream.ofNullable(filePoolDtos)
+                .flatMap(Collection::stream)
+                .map(this::save).toList();
+        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL + "/all");
+        HttpEntity<Collection<FilePoolDto>> httpEntity = new HttpEntity<>(dtos);
+        ParameterizedTypeReference<Collection<FilePoolDto>> responseType = new ParameterizedTypeReference<>() {
+        };
+        return restTemplate.exchange(uri.toString(), HttpMethod.POST, httpEntity, responseType).getBody();
     }
 
     @Override

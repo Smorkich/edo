@@ -43,9 +43,9 @@ public class FacsimileSaveTest {
     @BeforeClass
     public static void init() {
         facsimileDto = FacsimileDto.builder()
-                .department(DepartmentDto.builder().id(1l).build())
-                .employee(EmployeeDto.builder().id(1l).build())
-                .filePool_id(FilePoolDto.builder().id(1l).build())
+                .department(DepartmentDto.builder().id(1L).build())
+                .employee(EmployeeDto.builder().id(1L).build())
+                .filePool_id(FilePoolDto.builder().id(1L).build())
                 .IsArchived(false).build();
     }
 

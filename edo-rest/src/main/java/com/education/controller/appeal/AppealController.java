@@ -29,7 +29,7 @@ public class AppealController {
     private final MinioService minioService;
     private final NomenclaturePublisher nomenclaturePublisher;
 
-    @ApiOperation(value = "Принимает обращение, отправляет на edo-service", notes = "Обращение должен существовать")
+    @ApiOperation(value = "Принимает обращение, отправляет на edo-service", notes = "Обращение должно существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> save(@RequestBody AppealDto appealDto) {
         log.info("Отправить пост-запрос в edo-service");
@@ -53,12 +53,12 @@ public class AppealController {
         log.info("Получаем AppealDto по id");
         var appealDto = appealService.findById(id);
         log.info("AppealDto успешно получен");
-        return new ResponseEntity<>(appealService.findById(id), HttpStatus.OK);
+        return new ResponseEntity<>(appealDto, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Добавляет файл к выбранному обращению ")
+    @ApiOperation(value = "Добавляет файл к выбранному обращению")
     @PostMapping("/upload")
-    public ResponseEntity<AppealDto> uploadFile(@RequestParam(value = "id", required = true) Long id, @RequestParam(value = "file", required = true) MultipartFile file) {
+    public ResponseEntity<AppealDto> uploadFile(@RequestParam(value = "id") Long id, @RequestParam(value = "file") MultipartFile file) {
         log.info("Получаем объект FilePoolDto");
         FilePoolDto filePoolDto = minioService.uploadOneFile(file);
         log.info("Файл получен - " + filePoolDto.getName());
@@ -67,4 +67,22 @@ public class AppealController {
         log.info("Файл прикреплён ");
         return new ResponseEntity<>(save, HttpStatus.OK);
     }
+
+    /**
+     * Принимает запрос на регистрацию Appeal по id, который передаётся в параметре запроса и
+     * вызывает метод register() из AppealService микросервиса edo-rest
+     *
+     * @apiNote HTTP Method - POST
+     * @param id идентификатор регистрируемого Appeal
+     * @return ResponseEntity<AppealDto> - ResponseEntity DTO сущности Appeal (обращение)
+     */
+    @ApiOperation(value = "Регистрирует обращение, отправляет на edo-service", notes = "Обращение должно существовать")
+    @PostMapping("/register")
+    public ResponseEntity<AppealDto> registerAppeal(@RequestParam(value = "id") Long id) {
+        log.info("Registration request received on edo-rest of appeal №" + id);
+        var register = appealService.register(id);
+        log.info("Appeal with id " + id + " has been registered on edo-rest");
+        return new ResponseEntity<>(register, HttpStatus.OK);
+    }
+
 }

@@ -34,9 +34,26 @@ public class FilePoolController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<FilePoolDto> save(@RequestBody @Valid FilePoolDto filePoolDto) {
         log.info("Send a post-request to post new Address to database");
-        FilePool save = filePoolService.save(FILE_POOL_MAPPER.toEntity(filePoolDto));
+        var saved = filePoolService.save(FILE_POOL_MAPPER.toEntity(filePoolDto));
         log.info("Response: {} was added to database", filePoolDto);
-        return new ResponseEntity<>(FILE_POOL_MAPPER.toDto(save), HttpStatus.CREATED);
+        return new ResponseEntity<>(FILE_POOL_MAPPER.toDto(saved), HttpStatus.CREATED);
+    }
+
+    /**
+     * Принимает запрос на создание информации о файлах в БД, которые передаются в теле HTTP запроса
+     * <p>Вызывает метод saveAll() из интерфейса FilePoolService, микросервиса edo-repository
+     *
+     * @param filePoolDtos добавляемые FilePoolDto
+     * @return ResponseEntity<Collection < FilePoolDto> - ResponseEntity коллекции DTO сущности FilePool (файлы обращения)
+     * @apiNote HTTP Method - POST
+     */
+    @ApiOperation(value = "Создает информацию о файлах в БД")
+    @PostMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<FilePoolDto>> saveAll(@RequestBody Collection<FilePoolDto> filePoolDtos) {
+        log.info("Send a query to repository to post new FilePools to database");
+        var savedAll = filePoolService.saveAll(FILE_POOL_MAPPER.toEntity(filePoolDtos));
+        log.info("Response: {} was added to database", filePoolDtos);
+        return new ResponseEntity<>(FILE_POOL_MAPPER.toDto(savedAll), HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Удаляет файл", notes = "Файл должен существовать")
@@ -92,9 +109,9 @@ public class FilePoolController {
 
     @ApiOperation(value = "Предоставление файлов без архивации")
     @GetMapping("/noArchived/{ids}")
-    private  ResponseEntity<Collection<FilePoolDto>> getFilesNotArchived(@PathVariable List <Long> ids) {
+    private ResponseEntity<Collection<FilePoolDto>> getFilesNotArchived(@PathVariable List<Long> ids) {
         Collection<FilePoolDto> filePoolDto = FILE_POOL_MAPPER.toDto(filePoolService.findByIdInAndArchivedDateNull(ids));
-        return  new ResponseEntity<>(filePoolDto,HttpStatus.OK);
+        return new ResponseEntity<>(filePoolDto, HttpStatus.OK);
     }
 
 }

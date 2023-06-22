@@ -33,10 +33,9 @@ public class NomenclatureServiceImpl implements NomenclatureService {
 
     @Override
     public NomenclatureDto findById(Long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL)
-                .setPath("/find/")
-                .setPath(String.valueOf(id));
-        return restTemplate.getForObject(builder.toString(), NomenclatureDto.class);
+        var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL) + "/find/" + id;
+        System.out.println(builder);
+        return restTemplate.getForObject(builder, NomenclatureDto.class);
     }
 
     @Override

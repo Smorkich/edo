@@ -16,6 +16,7 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @ApiModel(value = "объект для передачи данных")
 @ToString
+@EqualsAndHashCode
 public class EmployeeDto implements Serializable {
     @ApiModelProperty(value = "id")
     private Long id;

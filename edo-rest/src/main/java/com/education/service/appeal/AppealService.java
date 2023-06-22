@@ -18,7 +18,15 @@ public interface AppealService {
     AppealDto findById(Long id);
 
     /**
-     * Метод прикрепляет файл к обращению
+     * Метод добавления файла к обращению
      */
     AppealDto upload(Long id, FilePoolDto file);
+
+    /**
+     * Интерфейс метода для отправки запроса в edo-service на регистрацию Appeal по id
+     * @param id идентификатор регистрируемого Appeal
+     * @return AppealDto - DTO сущности Appeal (обращение)
+     */
+    AppealDto register(Long id);
+
 }

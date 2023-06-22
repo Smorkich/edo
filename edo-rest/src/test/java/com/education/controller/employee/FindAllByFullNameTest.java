@@ -40,11 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class FindAllByFullNameTest {
 
     private MockMvc mockMvc;
-
     private ObjectMapper objectMapper;
-
     private static EmployeeDto newEmployeeOne, newEmployeeTwo;
-
     private static String setValueFirstName = "$[0].firstName",
             setValueLastName = "$[0].lastName";
 
@@ -146,7 +143,7 @@ public class FindAllByFullNameTest {
 
     @Test
     @DisplayName("Поиск работников в базе при вводе символов в разном регистре")
-    public void differentСharacterСaseTest() throws Exception {
+    public void differentCharacterCaseTest() throws Exception {
         this.mockMvc.perform(get("/api/rest/employee/search")
                         .param("fullName", "IvAN SiDoRov"))
                 .andDo(print())

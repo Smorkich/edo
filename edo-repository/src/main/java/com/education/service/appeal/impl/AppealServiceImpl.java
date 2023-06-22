@@ -68,7 +68,6 @@ public class AppealServiceImpl implements AppealService {
             entity.setAppealsStatus(Status.ARCHIVE);
             entity.setArchivedDate(ZonedDateTime.now());
         });
-
     }
 
     /**
@@ -95,9 +94,21 @@ public class AppealServiceImpl implements AppealService {
     @Override
     @Transactional(readOnly = true)
     public Appeal findAppealByQuestionsId(Long id) {
-
         return appealRepository.findAppealByQuestionsId(id).orElseThrow(() -> new NoSuchElementException("Ошибка при связывании объектов"));
+    }
 
+    /**
+     * Изменяет статус строки Appeal в базе данных на REGISTERED по id обращения, переданному в параметре
+     *
+     * @param id идентификатор регистрируемого Appeal
+     * @return AppealDto - DTO сущности Appeal (обращение)
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Appeal register(Long id) {
+        Appeal appeal = appealRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Registration error"));
+        appeal.setAppealsStatus(Status.REGISTERED);
+        return appeal;
     }
 
 }

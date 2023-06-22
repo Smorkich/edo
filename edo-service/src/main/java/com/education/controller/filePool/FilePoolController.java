@@ -5,8 +5,11 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.FilePoolDto;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Collection;
 
 @Log4j2
@@ -24,6 +27,23 @@ public class FilePoolController {
         filePoolService.save(filePoolDto);
         log.info("file added to database");
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    /**
+     * Принимает запрос на создание FilePool'ов, которые передаются в теле HTTP запроса
+     * <p>Вызывает метод saveAll() из интерфейса FilePoolService, микросервиса edo-service
+     *
+     * @param filePoolDtos добавляемые FilePoolDto
+     * @return ResponseEntity<Collection < FilePoolDto> - ResponseEntity коллекции DTO сущности FilePool (файлпулы обращения)
+     * @apiNote HTTP Method - POST
+     */
+    @ApiOperation(value = "Создает информацию о файле в БД")
+    @PostMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<FilePoolDto>> saveAll(@RequestBody Collection<FilePoolDto> filePoolDtos) {
+        log.info("Send a post-request to edo-repository to post new FilePools to database");
+        filePoolService.saveAll(filePoolDtos);
+        log.info("Response: {} was added to database", filePoolDtos);
+        return new ResponseEntity<>(filePoolDtos, HttpStatus.CREATED);
     }
 
     @ApiOperation(value = "Delete file", notes = "file must exist")

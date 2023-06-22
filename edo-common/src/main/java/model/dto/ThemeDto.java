@@ -14,6 +14,8 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 @Builder
+@ToString
+@EqualsAndHashCode
 @ApiModel(value = "Тема обращения")
 public class ThemeDto {
 
@@ -34,4 +36,5 @@ public class ThemeDto {
 
     @ApiModelProperty(value = "родительская тема")
     private ThemeDto parentTheme;
+
 }

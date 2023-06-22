@@ -3,6 +3,7 @@ package model.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import model.enum_.Status;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -13,6 +14,7 @@ import java.time.ZonedDateTime;
 @Setter
 @Builder
 @ToString
+@EqualsAndHashCode
 @ApiModel(value = "Класс-обертка для взаимодействия с иными модулями и внешними системами")
 public class QuestionDto implements Serializable {
 
@@ -31,5 +33,8 @@ public class QuestionDto implements Serializable {
 
     @ApiModelProperty(value = "Тема")
     private ThemeDto theme;
+
+    @ApiModelProperty(value = "Статус вопроса", name = "status", dataType = "Status", example = "REGISTERED")
+    private Status status;
 
 }

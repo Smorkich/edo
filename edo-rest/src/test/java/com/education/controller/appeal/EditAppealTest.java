@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import model.dto.*;
 import model.enum_.Employment;
 import model.enum_.ReceiptMethod;
+import model.enum_.Status;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -44,9 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Setter(onMethod_ = @Autowired)
 public class EditAppealTest {
     private MockMvc mockMvc;
-
     private ObjectMapper objectMapper;
-
     private static AppealDto newAppealDto;
 
     /**
@@ -68,6 +67,7 @@ public class EditAppealTest {
         var questions = Set.of(QuestionDto.builder()
                 .theme(ThemeDto.builder().id(1L).build())
                 .summary("Краткое содержание")
+                .status(Status.NEW_STATUS)
                 .build());
 
         Set<FilePoolDto> filePolls = new HashSet<>();

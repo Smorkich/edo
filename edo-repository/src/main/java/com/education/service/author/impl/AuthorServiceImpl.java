@@ -29,6 +29,17 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     /**
+     * Сохраняет коллекцию Author в БД через repository
+     *
+     * @param authors коллекция добавляемых Author
+     * @return Collection<Author> - коллекция сущности Author (авторы)
+     */
+    @Override
+    public Collection<Author> saveAll(Collection<Author> authors) {
+        return authorRepository.saveAll(authors);
+    }
+
+    /**
      * Удаление Author по id
      */
     @Override
