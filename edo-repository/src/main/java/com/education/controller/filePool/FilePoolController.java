@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.education.mapper.FilePoolMapper.FILE_POOL_MAPPER;
+import static model.constant.Constant.FILEPOOL_URL;
 
 /**
  * @author Nadezhda Pupina
@@ -25,7 +26,7 @@ import static com.education.mapper.FilePoolMapper.FILE_POOL_MAPPER;
 @Log4j2
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/repository/filePool")
+@RequestMapping(FILEPOOL_URL)
 public class FilePoolController {
 
     private final FilePoolService filePoolService;
@@ -92,9 +93,9 @@ public class FilePoolController {
 
     @ApiOperation(value = "Предоставление файлов без архивации")
     @GetMapping("/noArchived/{ids}")
-    private  ResponseEntity<Collection<FilePoolDto>> getFilesNotArchived(@PathVariable List <Long> ids) {
+    private ResponseEntity<Collection<FilePoolDto>> getFilesNotArchived(@PathVariable List<Long> ids) {
         Collection<FilePoolDto> filePoolDto = FILE_POOL_MAPPER.toDto(filePoolService.findByIdInAndArchivedDateNull(ids));
-        return  new ResponseEntity<>(filePoolDto,HttpStatus.OK);
+        return new ResponseEntity<>(filePoolDto, HttpStatus.OK);
     }
 
 }

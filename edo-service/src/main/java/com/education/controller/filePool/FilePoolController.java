@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import model.dto.FilePoolDto;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.Collection;
 
 @Log4j2
@@ -37,27 +38,18 @@ public class FilePoolController {
 
     @ApiOperation(value = "Gets files by id", notes = "file must exist")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> findById(@PathVariable("id") long id) {
+    public ResponseEntity<FilePoolDto> findById(@PathVariable("id") long id) {
         log.info("Send a get-request to get file with id = {} from edo-repository ", id);
         var filePoolDto = filePoolService.findById(id);
-        log.info("Response from edo-repository: {}", filePoolDto);
+        log.info("Response from edo-repository: {}", filePoolDto.getName());
         return new ResponseEntity<>(filePoolDto, HttpStatus.OK);
     }
 
     @ApiOperation(value = "Gets all files", notes = "file must exist")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> findAll() {
+    public ResponseEntity<Collection<FilePoolDto>> findAll() {
         log.info("Sent GET request to get all file from the database");
         var fileDto = filePoolService.findAll();
-        log.info("Response from database:{}", fileDto);
-        return new ResponseEntity<>(fileDto, HttpStatus.OK);
-    }
-
-    @ApiOperation(value = "Providing files by assigned IDs")
-    @GetMapping("/all/{ids}")
-    private ResponseEntity<Collection<FilePoolDto>> findAllById(@PathVariable(name = "ids") String ids) {
-        log.info("Send a response with the files of the assigned IDs");
-        var fileDto = filePoolService.findAllById(ids);
         log.info("Response from database:{}", fileDto);
         return new ResponseEntity<>(fileDto, HttpStatus.OK);
     }
