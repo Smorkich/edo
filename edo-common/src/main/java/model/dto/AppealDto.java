@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 
 @Setter
 @Getter
@@ -17,7 +18,6 @@ import java.util.HashSet;
 @AllArgsConstructor
 @Builder
 @ToString
-@EqualsAndHashCode
 @ApiModel(value = "Обращение граждан")
 public class AppealDto implements Serializable {
 
@@ -66,4 +66,16 @@ public class AppealDto implements Serializable {
     @ApiModelProperty(value = "Регион")
     private RegionDto region;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AppealDto that = (AppealDto) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

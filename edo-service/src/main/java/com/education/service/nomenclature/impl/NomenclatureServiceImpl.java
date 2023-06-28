@@ -7,10 +7,12 @@ import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.constant.Constant;
+import model.dto.AppealDto;
 import model.dto.NomenclatureDto;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Calendar;
 import java.util.List;
 
 import static com.education.util.URIBuilderUtil.buildURI;
@@ -34,7 +36,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
     @Override
     public NomenclatureDto findById(Long id) {
         var builder = buildURI(EDO_REPOSITORY_NAME, NOMENCLATURE_URL) + "/find/" + id;
-        System.out.println(builder);
         return restTemplate.getForObject(builder, NomenclatureDto.class);
     }
 
@@ -87,5 +88,28 @@ public class NomenclatureServiceImpl implements NomenclatureService {
                 .toString();
         log.info("URL в edo-repository " + builder);
         return restTemplate.getForObject(builder, List.class);
+    }
+
+    /**
+     * Метод, который генерирует number с использованием индекса, года и номера и назначает его Appeal'у
+     * <p>Вспомогательный метод к методу "save"
+     *
+     * @param appealDto обращение к которому мы хотим прикрепить генерируемый номер в поле number
+     */
+    @Override
+    public void generateAppealNumber(AppealDto appealDto) {
+        try {
+            Long nomenclatureId = appealDto.getNomenclature().getId();
+            NomenclatureDto nomenclatureDto = findById(nomenclatureId);
+            Calendar calendar = Calendar.getInstance();
+            int year = calendar.get(Calendar.YEAR) % 100;
+            String number = nomenclatureDto.getTemplate()
+                    .replace("%ИНДЕКС", nomenclatureDto.getIndex())
+                    .replace("%ГОД", String.valueOf(year))
+                    .replace("%НОМЕР", String.valueOf(nomenclatureDto.getCurrentValue()));
+            appealDto.setNumber(number);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

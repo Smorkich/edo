@@ -94,7 +94,7 @@ public class AppealServiceImpl implements AppealService {
     @Override
     @Transactional(readOnly = true)
     public Appeal findAppealByQuestionsId(Long id) {
-        return appealRepository.findAppealByQuestionsId(id).orElseThrow(() -> new NoSuchElementException("Ошибка при связывании объектов"));
+        return appealRepository.findAppealByQuestionsId(id).orElseThrow(() -> new NoSuchElementException("Вопросы обращения с id " + id + " не найдены"));
     }
 
     /**
@@ -106,7 +106,7 @@ public class AppealServiceImpl implements AppealService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Appeal register(Long id) {
-        Appeal appeal = appealRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Registration error"));
+        Appeal appeal = appealRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Обращение с id + " + id + " не найдено"));
         appeal.setAppealsStatus(Status.REGISTERED);
         return appeal;
     }

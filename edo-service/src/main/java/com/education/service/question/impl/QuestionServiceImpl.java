@@ -30,7 +30,8 @@ import static model.constant.Constant.QUESTION_URL;
 public class QuestionServiceImpl implements QuestionService {
 
     private final RestTemplate restTemplate;
-    private final ParameterizedTypeReference<Collection<QuestionDto>> responseType = new ParameterizedTypeReference<>() {};
+    private final ParameterizedTypeReference<Collection<QuestionDto>> responseType = new ParameterizedTypeReference<>() {
+    };
 
     @Override
     public QuestionDto save(QuestionDto questionDto) {
@@ -92,11 +93,9 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public Collection<QuestionDto> registerAllQuestions(Iterable<Long> questionsIds) {
-        String questionsIdsPath = questionsIds.toString().replaceAll("\\[|\\]|\\s", "");
-        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/question/registerAll/" + questionsIdsPath);
-        ResponseEntity<Collection<QuestionDto>> response = restTemplate
-                .exchange(uri.toString(), HttpMethod.POST, new HttpEntity<>(new HttpHeaders()), responseType);
-        return response.getBody();
+        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/question/registerAll");
+        HttpEntity<Iterable<Long>> httpEntity = new HttpEntity<>(questionsIds, new HttpHeaders());
+        return restTemplate.exchange(uri.toString(), HttpMethod.POST, httpEntity, responseType).getBody();
     }
 
     /**
@@ -123,12 +122,9 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public Collection<QuestionDto> setStatusUpdatedAll(Iterable<Long> questionsIds) {
-        String questionsIdsPath = questionsIds.toString().replaceAll("\\[|\\]|\\s", "");
-        var uri = URIBuilderUtil
-                .buildURI(EDO_REPOSITORY_NAME, "/api/repository/question/setStatusUpdatedAll/" + questionsIdsPath);
-        ResponseEntity<Collection<QuestionDto>> response = restTemplate
-                .exchange(uri.toString(), HttpMethod.POST, new HttpEntity<>(new HttpHeaders()), responseType);
-        return response.getBody();
+        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/question/setStatusUpdatedAll");
+        HttpEntity<Iterable<Long>> httpEntity = new HttpEntity<>(questionsIds, new HttpHeaders());
+        return restTemplate.exchange(uri.toString(), HttpMethod.POST, httpEntity, responseType).getBody();
     }
 
     @Override

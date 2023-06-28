@@ -57,11 +57,8 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Collection<Question> registerAllQuestions(Iterable<Long> questionsIds) {
-        Collection<Question> questions = questionRepository.findAllById(questionsIds);
-        for (Question question : questions) {
-            questionRepository.updateQuestionStatus(question.getId(), Status.REGISTERED);
-        }
-        return questions;
+        questionRepository.updateAllQuestionStatus(questionsIds,Status.REGISTERED);
+        return questionRepository.findAllById(questionsIds);
     }
 
     /**
@@ -102,11 +99,8 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Collection<Question> setStatusUpdatedAll(Iterable<Long> questionsIds) {
-        Collection<Question> questions = questionRepository.findAllById(questionsIds);
-        for (Question question : questions) {
-            questionRepository.updateQuestionStatus(question.getId(),Status.UPDATED);
-        }
-        return questions;
+        questionRepository.updateAllQuestionStatus(questionsIds,Status.UPDATED);
+        return questionRepository.findAllById(questionsIds);
     }
 
     @Override
@@ -154,7 +148,6 @@ public class QuestionServiceImpl implements QuestionService {
     @Override
     @Transactional(readOnly = true)
     public Collection<Question> findByAppealId(Long id) {
-        System.err.println(questionRepository.findByAppealId(id));
         return questionRepository.findByAppealId(id);
     }
 

@@ -71,13 +71,18 @@ public class AppealServiceImpl implements AppealService {
         // Назначение статуса и времени создания
         setNewAppealStatusAndCreationDate(appealDto);
         // Генерация и назначения number Appeal'у
-        generateAppealNumber(appealDto);
+        nomenclatureService.generateAppealNumber(appealDto);
         // Сохранение или редактирование новых сущностей Appeal'a
         try {
-            if (appealDto.getAuthors() == null) appealDto.setAuthors(authorService.saveAll(appealDto.getAuthors()));
-            if (appealDto.getQuestions() == null)
+            if (appealDto.getAuthors() == null) {
+                appealDto.setAuthors(authorService.saveAll(appealDto.getAuthors()));
+            }
+            if (appealDto.getQuestions() == null) {
                 appealDto.setQuestions(questionService.saveAll(appealDto.getQuestions()));
-            if (appealDto.getFile() == null) appealDto.setFile(filePoolService.saveAll(appealDto.getFile()));
+            }
+            if (appealDto.getFile() == null) {
+                appealDto.setFile(filePoolService.saveAll(appealDto.getFile()));
+            }
             // Отправление пост запроса в репозиторий
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
@@ -85,9 +90,9 @@ public class AppealServiceImpl implements AppealService {
             return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(appealDto, headers), AppealDto.class).getBody();
         } catch (Exception e) {
             // Удаление сохранённых вложенных сущностей если возникла ошибка
-            appealDto.getAuthors().forEach(authorDto -> authorService.delete(authorDto.getId()));
-            appealDto.getQuestions().forEach(filePoolDto -> filePoolService.delete(filePoolDto.getId()));
-            appealDto.getFile().forEach(questionDto -> questionService.delete(questionDto.getId()));
+            appealDto.getAuthors().stream().filter(authorDto -> authorDto.getId() != null).forEach(authorDto -> authorService.delete(authorDto.getId()));
+            appealDto.getQuestions().stream().filter(questionDto -> questionDto.getId() != null).forEach(filePoolDto -> filePoolService.delete(filePoolDto.getId()));
+            appealDto.getFile().stream().filter(filePoolDto -> filePoolDto.getId() != null).forEach(questionDto -> questionService.delete(questionDto.getId()));
             throw e;
         }
     }
@@ -186,22 +191,18 @@ public class AppealServiceImpl implements AppealService {
     /**
      * Добавляет статус REGISTERED (зарегистрировано) обращению с id, который передаётся в параметре, а так-же
      * вопросам этого обращения.
-     * <p>Логика работы:
-     * <p>1) Ищем обращение по id.
-     * <p>2) Добавляем ему статус "Registered".
-     * <p>3) Создаём коллекцию appealQuestions и ищем туда все вопросы относящиеся к данному обращению (по id).
-     * <p>4) Мапим каждый элемент этой коллекции в Map, достаём id по ключу и сохраняем коллекцию в questionsIds
-     * <p>5) Вызываем registerAllQuestions() - отправляет коллекцию id вопросов на регистрацию в edo-repository
+     * <p> Логика работы:
+     * <p> Создаём коллекцию appealQuestions и ищем туда все вопросы относящиеся к данному обращению (по id).
+     * <p> Достаём id каждого вопроса из коллекции и складываем в questionsIds
+     * <p> Вызываем registerAllQuestions() - отправляет коллекцию id вопросов на регистрацию в edo-repository
      * через QuestionService edo-service
-     * <p>6) Отправляет запрос в edo-repository на регистрацию Appeal по id, который передаётся в параметре
+     * <p> Отправляем запрос в edo-repository на регистрацию Appeal по id, который передаётся в параметре
      *
      * @param id идентификатор регистрируемого Appeal
      * @return AppealDto - DTO сущности Appeal (обращение)
      */
     @Override
     public AppealDto register(Long id) {
-        var appealDto = findById(id);
-        appealDto.setAppealsStatus(REGISTERED);
         var appealQuestions = questionService.findByAppealId(id);
         var questionsIds = appealQuestions.stream()
                 .map(QuestionDto::getId)
@@ -238,28 +239,6 @@ public class AppealServiceImpl implements AppealService {
     }
 
     /**
-     * Метод, который генерирует number с использованием индекса, года и номера и назначает его Appeal'у
-     * <p>Вспомогательный метод к методу "save"
-     *
-     * @param appealDto обращение к которому мы хотим прикрепить генерируемый номер в поле number
-     */
-    private void generateAppealNumber(AppealDto appealDto) {
-        try {
-            Long nomenclatureId = appealDto.getNomenclature().getId(); //?
-            NomenclatureDto nomenclatureDto = nomenclatureService.findById(nomenclatureId); //?
-            Calendar calendar = Calendar.getInstance();
-            int year = calendar.get(Calendar.YEAR) % 100;
-            String number = nomenclatureDto.getTemplate()
-                    .replace("%ИНДЕКС", nomenclatureDto.getIndex())
-                    .replace("%ГОД", String.valueOf(year))
-                    .replace("%НОМЕР", String.valueOf(nomenclatureDto.getCurrentValue()));
-            appealDto.setNumber(number);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Метод, который устанавливает Appeal'у дату его создания на "now"(сейчас) и добавляет статус - "NEW_STATUS"
      * <p>Вспомогательный метод к методу "save"
      *
@@ -270,7 +249,7 @@ public class AppealServiceImpl implements AppealService {
         if (appealDto.getAppealsStatus() == null) {
             appealDto.setAppealsStatus(NEW_STATUS);
             appealDto.setCreationDate(ZonedDateTime.now());
-        } else if (appealFromDb != appealDto && appealDto.getAppealsStatus() == REGISTERED) {
+        } else if (!appealFromDb.equals(appealDto) && appealDto.getAppealsStatus().equals(REGISTERED)) {
             setUpdatedStatusQuestionsForAppeal(appealDto);
             appealDto.setAppealsStatus(UPDATED);
         }

@@ -110,8 +110,8 @@ public class QuestionController {
      * @apiNote HTTP Method - POST
      */
     @ApiOperation(value = "Изменяет статус вопросов на 'REGISTERED' по id", notes = "Вопросы должны существовать")
-    @PostMapping(value = "/registerAll/{ids}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<QuestionDto>> registerAllById(@PathVariable(name = "ids") List<Long> ids) {
+    @PostMapping(value = "/registerAll", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<QuestionDto>> registerAllById(@RequestBody Iterable<Long> ids) {
         log.info("Send a post-request to change list of Question status on 'REGISTERED' from edo-repository");
         var questionDtos = questionService.registerAllQuestions(ids);
         log.info("The operation was successful,status of the Questions has been changed to 'REGISTERED'");
@@ -144,8 +144,8 @@ public class QuestionController {
      * @apiNote HTTP Method - POST
      */
     @ApiOperation(value = "Изменяет статус вопросов на 'UPDATED' по id", notes = "Вопросы должны существовать")
-    @PostMapping(value = "/setStatusUpdatedAll/{ids}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<QuestionDto>> setStatusUpdatedAllById(@PathVariable(name = "ids") List<Long> ids) {
+    @PostMapping(value = "/setStatusUpdatedAll", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<QuestionDto>> setStatusUpdatedAllById(@RequestBody Iterable<Long> ids) {
         log.info("Send a post-request to change list of Question status on 'UPDATED' from edo-repository");
         var questionDtos = questionService.setStatusUpdatedAll(ids);
         log.info("The operation was successful,status of the Questions has been changed to 'UPDATED'");

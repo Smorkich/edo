@@ -58,8 +58,8 @@ public class AuthorRestController {
     @PostMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AuthorDto>> saveAll(@RequestBody Collection<AuthorDto> authorDtos) {
         log.info("Send a post-request to edo-repository to post new Authors to database");
-        authorService.saveAll(authorDtos);
-        log.info("Response: {} was added to database", authorDtos);
+        var saved = authorService.saveAll(authorDtos);
+        log.info("Response: {} was added to database", saved);
         return new ResponseEntity<>(authorDtos, HttpStatus.CREATED);
     }
 

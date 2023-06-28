@@ -8,6 +8,7 @@ import lombok.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -16,7 +17,6 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @ApiModel(value = "объект для передачи данных")
 @ToString
-@EqualsAndHashCode
 public class EmployeeDto implements Serializable {
     @ApiModelProperty(value = "id")
     private Long id;
@@ -69,4 +69,17 @@ public class EmployeeDto implements Serializable {
 
     @ApiModelProperty(value = "Почта сотрудника")
     private String email;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EmployeeDto that = (EmployeeDto) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

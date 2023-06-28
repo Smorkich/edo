@@ -7,6 +7,7 @@ import model.enum_.Status;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,7 +15,6 @@ import java.time.ZonedDateTime;
 @Setter
 @Builder
 @ToString
-@EqualsAndHashCode
 @ApiModel(value = "Класс-обертка для взаимодействия с иными модулями и внешними системами")
 public class QuestionDto implements Serializable {
 
@@ -37,4 +37,16 @@ public class QuestionDto implements Serializable {
     @ApiModelProperty(value = "Статус вопроса", name = "status", dataType = "Status", example = "REGISTERED")
     private Status status;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QuestionDto that = (QuestionDto) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

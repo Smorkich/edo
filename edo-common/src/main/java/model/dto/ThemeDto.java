@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.time.ZonedDateTime;
+import java.util.Objects;
 
 /**
  * @author AlexeySpiridonov
@@ -15,7 +16,6 @@ import java.time.ZonedDateTime;
 @Setter
 @Builder
 @ToString
-@EqualsAndHashCode
 @ApiModel(value = "Тема обращения")
 public class ThemeDto {
 
@@ -37,4 +37,16 @@ public class ThemeDto {
     @ApiModelProperty(value = "родительская тема")
     private ThemeDto parentTheme;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ThemeDto themeDto = (ThemeDto) o;
+        return Objects.equals(id, themeDto.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

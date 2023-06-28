@@ -66,9 +66,7 @@ public class Question extends BaseEntity {
      * Связующее поле с таблицей Appeal (с обращением)
      */
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinTable(name = "appeal_question",
-            joinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"))
+    @JoinColumn(name = "appeal_id")
     private Appeal appeal;
 
 }

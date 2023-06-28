@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -40,7 +41,7 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
      * @param id - id Appeal'a, вопросы которого хотим получить
      * @return Collection<Question> - коллекция из вопросов Appeal'a
      */
-    @Query("select u from Question u join u.appeal a where a.id in :id")
+    @Query("select u from Question u join fetch u.appeal a where a.id in :id")
     Set<Question> findByAppealId(@Param("id") Long id);
 
     /**
@@ -52,5 +53,15 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Modifying
     @Query("update Question q set q.status = :newStatus where q.id = :questionId")
     void updateQuestionStatus(@Param("questionId") Long questionId, @Param("newStatus") Status status);
+
+    /**
+     * Запрос на изменение статуса всем вопросам в полях question_status
+     *
+     * @param questionIds - id вопросов, статус которых хотим изменить
+     * @param status     - статус на который хотим изменить поля question_status (статусы находятся в edo-common, в enum_)
+     */
+    @Modifying
+    @Query("update Question q set q.status = :newStatus where q.id in :questionIds")
+    void updateAllQuestionStatus(@Param("questionIds") Iterable<Long> questionIds, @Param("newStatus") Status status);
 
 }
