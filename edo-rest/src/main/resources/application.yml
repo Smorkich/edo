@@ -6,6 +6,21 @@ spring:
       enabled: true
       max-file-size: 128MB
       max-request-size: 128MB
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: ${KEYCLOAK_URI:http://localhost:8484/auth/realms/edo}
+            user-name-attribute: preferred_username
+        registration:
+          keycloak:
+            client-id: edo-rest
+            authorization-grant-type: authorization_code
+            scope: openid
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_URI:http://localhost:8484/auth/realms/edo}
   rabbitmq:
     host: localhost
     port: 5672
