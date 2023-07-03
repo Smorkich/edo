@@ -3,7 +3,7 @@ package com.education.feign;
 import jakarta.validation.Valid;
 import model.dto.FilePoolDto;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -16,26 +16,26 @@ import static model.constant.Constant.FILEPOOL_URL;
 public interface FilePoolFeignClient {
 
     @PostMapping(FILEPOOL_URL)
-    ResponseEntity<FilePoolDto> save(@RequestBody @Valid FilePoolDto filePoolDto);
+    FilePoolDto save(@RequestBody @Valid FilePoolDto filePoolDto);
 
     @GetMapping(FILEPOOL_URL + "/{id}")
-    ResponseEntity<FilePoolDto> findById(@PathVariable Long id);
+    FilePoolDto findById(@PathVariable Long id);
 
     @DeleteMapping(FILEPOOL_URL + "/{id}")
-    ResponseEntity<FilePoolDto> delete(@PathVariable Long id);
+    HttpStatus delete(@PathVariable Long id);
 
     @GetMapping(FILEPOOL_URL + "/info/{uuid}")
-    ResponseEntity<FilePoolDto> findByUuid(@PathVariable UUID uuid);
+    FilePoolDto findByUuid(@PathVariable UUID uuid);
 
     @GetMapping(FILEPOOL_URL)
-    ResponseEntity<Collection<FilePoolDto>> findAll();
+    Collection<FilePoolDto> findAll();
 
     @PostMapping(FILEPOOL_URL + "/{id}")
-    ResponseEntity<String> moveToArchive(@PathVariable(name = "id") Long id);
+    String moveToArchive(@PathVariable(name = "id") Long id);
 
     @GetMapping(FILEPOOL_URL + "/noArchived/{id}")
-    ResponseEntity<FilePoolDto> getFileNotArchived(@PathVariable Long id);
+    FilePoolDto getFileNotArchived(@PathVariable Long id);
 
     @GetMapping(FILEPOOL_URL + "/noArchived/{ids}")
-    ResponseEntity<Collection<FilePoolDto>> getFilesNotArchived(@PathVariable String ids);
+    Collection<FilePoolDto> getFilesNotArchived(@PathVariable String ids);
 }

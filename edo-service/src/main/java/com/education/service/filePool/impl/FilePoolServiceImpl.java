@@ -21,7 +21,7 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public FilePoolDto save(FilePoolDto filePoolDto) {
-        return filePoolFeignClient.save(filePoolDto).getBody();
+        return filePoolFeignClient.save(filePoolDto);
     }
 
     @Override
@@ -31,17 +31,17 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public FilePoolDto findById(Long id) {
-        return filePoolFeignClient.findById(id).getBody();
+        return filePoolFeignClient.findById(id);
     }
 
     @Override
     public FilePoolDto findByUuid(UUID uuid) {
-        return filePoolFeignClient.findByUuid(uuid).getBody();
+        return filePoolFeignClient.findByUuid(uuid);
     }
 
     @Override
     public Collection<FilePoolDto> findAll() {
-        return filePoolFeignClient.findAll().getBody();
+        return filePoolFeignClient.findAll();
     }
 
 
@@ -52,12 +52,12 @@ public class FilePoolServiceImpl implements FilePoolService {
 
     @Override
     public FilePoolDto findByIdNotArchived(Long id) {
-        return filePoolFeignClient.getFileNotArchived(id).getBody();
+        return filePoolFeignClient.getFileNotArchived(id);
     }
 
     @Override
     public Collection<FilePoolDto> findAllByIdNotArchived(String ids) {
-        return filePoolFeignClient.getFilesNotArchived(ids).getBody();
+        return filePoolFeignClient.getFilesNotArchived(ids);
     }
 
 }
