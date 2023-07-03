@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Collection;
 
 import static com.education.mapper.AddressMapper.ADDRESS_MAPPER;
+import static model.constant.Constant.ADDRESS_URL;
 
 /**
  * Rest-контроллер в "edo-repository", служит для отправки запросов
@@ -29,7 +30,7 @@ import static com.education.mapper.AddressMapper.ADDRESS_MAPPER;
 @RestController
 @Log4j2
 @AllArgsConstructor
-@RequestMapping("/api/repository/address")
+@RequestMapping(ADDRESS_URL)
 public class AddressController {
 
     /**
