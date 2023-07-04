@@ -20,7 +20,7 @@
     - [Flyway](#flyway)
     - [RabbitMQ](#rabbitmq)
     - [Запуск модуля с помощью Dockerfile](#запуск-модуля-с-помощью-dockerfile)
-    - [Авторизация/Keycloak](#отключение-авторизации-в-edo-rest)
+    - [Авторизация/Keycloak](#Keycloak)
 
 [//]: # (    - [Аутентификация]&#40;#аутентификация&#41;)
 
@@ -616,16 +616,14 @@ Maven - edo - edo-cloud-server - Lifecycle и выбираем clean, package, �
 <code>docker run -p 8761:8761 edo-cloud-server</code>
 
 
+### Keycloak
 ### Отключение авторизации в edo-rest
 
-Нужно раскомментировать WebSecurityCustomizer в edo-rest/src/main/java/com/education/config/SecurityConfig
+Нужно прописать профайл NoAuth(раскомментировать) в edo-rest/src/main/resources/application.yml
 
-```java
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring()
-                .requestMatchers("/**");
-    }
+```YAML
+   #  profiles: 
+   #    active: NoAuth 
 ```
 
 ### Инструкция по подключению Keycloak:
