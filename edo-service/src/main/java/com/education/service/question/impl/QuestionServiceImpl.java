@@ -1,9 +1,12 @@
 package com.education.service.question.impl;
 
+import com.education.feign.QuestionFeignClient;
 import com.education.service.question.QuestionService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.QuestionDto;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,55 +24,46 @@ import static model.constant.Constant.*;
 @Log4j2
 public class QuestionServiceImpl implements QuestionService {
 
-    private final RestTemplate restTemplate;
+    private final QuestionFeignClient questionFeignClient;
 
     @Override
     public QuestionDto save(QuestionDto questionDto) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL);
-        return restTemplate.postForObject(builder.toString(), questionDto, QuestionDto.class);
+        return questionFeignClient.save(questionDto);
     }
 
     @Override
     public void delete(long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL + "/" + id);
-        restTemplate.delete(builder.toString());
+        questionFeignClient.delete(id);
     }
 
     @Override
-    public String findById(long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL + "/" + id);
-        return restTemplate.getForObject(builder.toString(), String.class);
+    public QuestionDto findById(long id) {
+        return questionFeignClient.findById(id);
     }
 
     @Override
-    public Collection<QuestionDto> findByAllId(String ids) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
-                .setPath("/all/")
-                .setPath(String.valueOf(ids));
-        return restTemplate.getForObject(builder.toString(), Collection.class);
+    public Collection<QuestionDto> findAll() {
+        return questionFeignClient.findAll();
+
+    }
+
+    @Override
+    public Collection<QuestionDto> findAllById(Iterable<Long> ids) {
+        return questionFeignClient.findAllById(ids);
     }
 
     @Override
     public void moveToArchived(Long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
-                .setPath("/")
-                .setPath(String.valueOf(id));
-        restTemplate.postForObject(builder.toString(), null, String.class);
+        questionFeignClient.moveToArchived(id);
     }
 
     @Override
     public QuestionDto findByIdNotArchived(Long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
-                .setPath("/notArchived/")
-                .setPath(String.valueOf(id));
-        return restTemplate.getForObject(builder.toString(), QuestionDto.class);
+        return questionFeignClient.getFileNotArchived(id);
     }
 
     @Override
     public Collection<QuestionDto> findByAllIdNotArchived(String ids) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
-                .setPath("/notArchivedAll/")
-                .setPath(String.valueOf(ids));
-        return restTemplate.getForObject(builder.toString(), Collection.class);
+        return questionFeignClient.getFilesNotArchived(ids);
     }
 }

@@ -6,7 +6,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 /**
- * Интерфейс для реализации конвертации департамента в ДТО и обратно
+ * Интерфейс для реализации конвертации вопроса в ДТО и обратно
  */
 
 @Mapper
