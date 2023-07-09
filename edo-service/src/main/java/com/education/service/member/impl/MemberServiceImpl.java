@@ -1,21 +1,13 @@
 package com.education.service.member.impl;
 
+import com.education.feign.MemberFeignClient;
 import com.education.service.member.MemberService;
-import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import model.dto.MemberDto;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;
-import java.util.List;
-
-import static model.constant.Constant.EDO_REPOSITORY_NAME;
 
 /**
  * Сервис слой для взаимодействия с MemberDto
@@ -23,7 +15,7 @@ import static model.constant.Constant.EDO_REPOSITORY_NAME;
 @Service
 @AllArgsConstructor
 public class MemberServiceImpl implements MemberService {
-    private final RestTemplate restTemplate;
+    private final MemberFeignClient memberFeignClient;
 
     /**
      * Отправляет post-запрос в edo-repository для сохранения участника
@@ -36,11 +28,7 @@ public class MemberServiceImpl implements MemberService {
             memberDto.setCreationDate(ZonedDateTime.now());
         }
 
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/member").toString();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(memberDto, headers), MemberDto.class).getBody();
+        return  memberFeignClient.save(memberDto).getBody();
     }
 
     /**
@@ -57,11 +45,7 @@ public class MemberServiceImpl implements MemberService {
         // Установка даты создания для участника
         memberDto.setCreationDate(ZonedDateTime.now());
 
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/member/saveWithLinkToApprovalBlock/" + approvalBlockId).toString();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(memberDto, headers), MemberDto.class).getBody();
+        return memberFeignClient.save(memberDto).getBody();
     }
 
     /**
@@ -69,9 +53,8 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public MemberDto findById(Long id) {
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/member/" + id).toString();
 
-        return restTemplate.getForObject(uri, MemberDto.class);
+        return memberFeignClient.findById(id).getBody();
     }
 
     /**
@@ -79,9 +62,8 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public Collection<MemberDto> findAll() {
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/member/all").toString();
 
-        return restTemplate.getForObject(uri, List.class);
+        return memberFeignClient.findAll().getBody();
     }
 
     /**
@@ -89,9 +71,8 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public Collection<MemberDto> findAllById(Iterable<Long> ids) {
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/member/all/" + ids).toString();
 
-        return restTemplate.getForObject(uri, List.class);
+        return memberFeignClient.findAllById(ids);
     }
 
     /**
@@ -99,8 +80,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Override
     public void delete(Long id) {
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/member/" + id).toString();
 
-        restTemplate.delete(uri);
+        memberFeignClient.delete(id).getBody();
     }
 }
