@@ -2,7 +2,8 @@ package com.education.controller.filePool;
 
 import com.education.entity.FilePool;
 import com.education.service.filePool.FilePoolService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -25,12 +26,13 @@ import static model.constant.Constant.FILEPOOL_URL;
 @Log4j2
 @RestController
 @AllArgsConstructor
+@Tag(name = "Rest- контроллер для работы с файлами")
 @RequestMapping(FILEPOOL_URL)
 public class FilePoolController {
 
     private final FilePoolService filePoolService;
 
-    @ApiOperation(value = "Создает файл", notes = "Файл должен существовать")
+    @Operation(summary = "Добавление файла", description = "Файл не должен существовать")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public FilePoolDto save(@RequestBody @Valid FilePoolDto filePoolDto) {
         log.info("Send a post-request to post new Address to database");
@@ -39,7 +41,7 @@ public class FilePoolController {
         return FILE_POOL_MAPPER.toDto(save);
     }
 
-    @ApiOperation(value = "Удаляет файл", notes = "Файл должен существовать")
+    @Operation(summary = "Удаление файла", description = "Файл должен существовать")
     @DeleteMapping("/{id}")
     public HttpStatus delete(@PathVariable Long id) {
         log.info("DELETE: /api/repository/filePool/" + id);
@@ -48,7 +50,7 @@ public class FilePoolController {
         return HttpStatus.ACCEPTED;
     }
 
-    @ApiOperation(value = "Gets authors by id", notes = "Author must exist")
+    @Operation(summary = "Получает авторов по id", description = "Автор должен существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public FilePoolDto findById(@PathVariable Long id) {
         log.info("Sent GET request to get author with id={} from the database", id);
@@ -57,8 +59,7 @@ public class FilePoolController {
         return filePoolDto;
     }
 
-
-    @ApiOperation(value = "Gets file by uuid", notes = "File must exist")
+    @Operation(summary = "Получение файла по uuid", description = "Файл должен существовать")
     @GetMapping(value = "/info/{uuid}", produces = MediaType.APPLICATION_JSON_VALUE)
     public FilePoolDto findByUuid(@PathVariable UUID uuid) {
         log.info("Sent GET request to get file with uuid={} from the database", uuid);
@@ -68,7 +69,7 @@ public class FilePoolController {
     }
 
 
-    @ApiOperation(value = "Возвращает все файлы", notes = "Файлы должны существовать")
+    @Operation(summary = "Получение всех файлов", description = "Файл должен существовать")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public Collection<FilePoolDto> findAll() {
         log.info("Send a get-request to get all file from database");
@@ -77,20 +78,20 @@ public class FilePoolController {
         return filePoolDto;
     }
 
-    @ApiOperation(value = "Добавляет в файл архивную дату", notes = "Файл должен существовать")
+    @Operation(summary = "Добавление в файл архивную дату", description = "Файл должен существовать")
     @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     private String moveToArchive(@PathVariable(name = "id") Long id) {
         filePoolService.moveToArchive(id);
         return "The file is archived";
     }
 
-    @ApiOperation(value = "Предоставление файла без архивации")
+    @Operation(summary = "Получение файла без архивации по id")
     @GetMapping("/noArchived/{id}")
     private FilePoolDto getFileNotArchived(@PathVariable Long id) {
         return FILE_POOL_MAPPER.toDto(filePoolService.findByIdAndArchivedDateNull(id));
     }
 
-    @ApiOperation(value = "Предоставление файлов без архивации")
+    @Operation(summary = "Получение файлов без архивирования по присовенным ids")
     @GetMapping("/noArchived/{ids}")
     private Collection<FilePoolDto> getFilesNotArchived(@PathVariable List<Long> ids) {
         return FILE_POOL_MAPPER.toDto(filePoolService.findByIdInAndArchivedDateNull(ids));

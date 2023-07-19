@@ -1,8 +1,8 @@
 package com.education.controller.department;
 
-import com.education.entity.Department;
 import com.education.service.department.DepartmentService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.DepartmentDto;
@@ -27,7 +27,7 @@ import static com.education.mapper.DepartmentMapper.DEPARTMENT_MAPPER;
  */
 
 @RestController
-@ApiOperation(value = "Контроллер департамента")
+@Tag(name = "Rest- контроллер для работы с департаментами")
 @AllArgsConstructor
 @Log4j2
 @RequestMapping("api/repository/department")
@@ -40,7 +40,7 @@ public class DepartmentController {
      * @param id
      * @return
      */
-    @ApiOperation(value = "Предоставление департамента по идентификатору")
+    @Operation(summary = "Предоставление департамента по индентификатору")
     @GetMapping("/{id}")
     private ResponseEntity<DepartmentDto> getDepartment(@PathVariable(name = "id") Long id) {
         log.info("send a response with the department of the assigned id");
@@ -55,7 +55,7 @@ public class DepartmentController {
      * @param id
      * @return
      */
-    @ApiOperation(value = "Предоставление департамента без архивации по идентификатору")
+    @Operation(summary = "Предоставление департамента без архивации по идентификатору")
     @GetMapping("/notArchived/{id}")
     private ResponseEntity<DepartmentDto> getDepartmentNotArchived(@PathVariable(name = "id") Long id) {
         log.info("send a response with the department not archived of the assigned ID");
@@ -70,7 +70,7 @@ public class DepartmentController {
      * @param ids
      * @return
      */
-    @ApiOperation(value = "Предоставление департаментов без архивации по назначенным идентификаторам")
+    @Operation(summary = "Предоставление дапартаментов без архивации по назначеным идентификаторам")
     @GetMapping("/notArchivedAll/{ids}")
     private ResponseEntity<List<DepartmentDto>> getDepartmentsNotArchived(@PathVariable(name = "ids") List<Long> ids) {
         log.info("send a response with the departments not archived of the assigned IDs");
@@ -85,7 +85,7 @@ public class DepartmentController {
      * @param ids
      * @return
      */
-    @ApiOperation(value = "Предоставление департаментов  по назначенным идентификаторам")
+    @Operation(summary = "Предоставление дапартаментов  по назначеным идентификаторам")
     @GetMapping("/all/{ids}")
     private ResponseEntity<List<DepartmentDto>> getDepartments(@PathVariable(name = "ids") List<Long> ids) {
         log.info("send a response with the departments of the assigned IDs");
@@ -100,7 +100,7 @@ public class DepartmentController {
      * @param departmentDto
      * @return
      */
-    @ApiOperation(value = "Добавление департамента")
+    @Operation(summary = "Добавлнение нового департамента")
     @PostMapping
     private ResponseEntity<Long> saveDepartment(@RequestBody DepartmentDto departmentDto) {
         log.info("Starting the save operation");
@@ -115,7 +115,7 @@ public class DepartmentController {
      * @param id
      * @return
      */
-    @ApiOperation(value = "Архивация департамента с занесением времени архивации")
+    @Operation(summary = "Архивация департамента с занесением времени архивации")
     @PostMapping("/{id}")
     private ResponseEntity<String> deleteUser(@PathVariable(name = "id") Long id) {
         log.info("Starting the archiving operation");
