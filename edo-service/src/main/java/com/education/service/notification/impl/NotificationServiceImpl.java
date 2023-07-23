@@ -1,5 +1,6 @@
 package com.education.service.notification.impl;
 
+import com.education.feign.NotificationFeignClient;
 import com.education.service.notification.NotificationService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -20,48 +21,30 @@ import static model.constant.Constant.NOTIFICATION_URL;
 @Log4j2
 @AllArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
-    private final RestTemplate restTemplate;
+    private final NotificationFeignClient notificationFeignClient;
 
     @Override
     public NotificationDto findById(Long id) {
-        log.info("Sent a request to receive the notification in edo - repository");
-        var builder = buildURI(EDO_REPOSITORY_NAME, NOTIFICATION_URL)
-                .setPath("/")
-                .setPath(String.valueOf(id)).toString();
-        return restTemplate.getForObject(builder, NotificationDto.class);
+        return notificationFeignClient.findByID(id);
     }
 
     @Override
     public Collection<NotificationDto> findAll() {
-        log.info("Sent a request to receive all notifications in edo - repository");
-        var builder = buildURI(EDO_REPOSITORY_NAME, NOTIFICATION_URL)
-                .setPath("/all").toString();
-        return restTemplate.getForObject(builder, Collection.class);
+        return notificationFeignClient.findAll();
     }
 
     @Override
     public Collection<NotificationDto> findAllById(List<Long> ids) {
-        log.info("Sent a request to receive notifications by ids in edo - repository");
-        var builder = buildURI(EDO_REPOSITORY_NAME, NOTIFICATION_URL)
-                .setPath("/all/")
-                .setPath(ids.toString()).toString();
-        return restTemplate.getForObject(builder, Collection.class);
+        return notificationFeignClient.findAllById(ids);
     }
     @Override
     public NotificationDto save(NotificationDto notification) {
-        log.info("Sent a request to save the notification in edo - repository");
-        var builder = buildURI(EDO_REPOSITORY_NAME, NOTIFICATION_URL)
-                .setPath("/save").toString();
-        return restTemplate.postForObject(builder, notification, NotificationDto.class);
+        return notificationFeignClient.save(notification);
     }
 
     @Override
     public void delete(Long id) {
-        log.info("Sent a request to delete the notification in edo - repository");
-        var builder = buildURI(EDO_REPOSITORY_NAME, NOTIFICATION_URL)
-                .setPath("/")
-                .setPath(String.valueOf(id)).toString();
-        restTemplate.delete(builder);
+        notificationFeignClient.delete(id);
     }
 
 }
