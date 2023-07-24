@@ -2,7 +2,8 @@ package com.education.controller.nomenclature;
 
 import com.education.entity.Nomenclature;
 import com.education.service.nomenclature.NomenclatureService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.NomenclatureDto;
@@ -23,6 +24,7 @@ import static com.education.mapper.NomenclatureMapper.NOMENCLATURE_MAPPER;
 @AllArgsConstructor
 @RestController
 @Log4j2
+@Tag(name = "Rest- контроллер для работы с номенклатурой")
 @RequestMapping("/api/repository/nomenclature")
 public class NomenclatureController {
     private NomenclatureService service;
@@ -30,7 +32,7 @@ public class NomenclatureController {
     /**
      * Delete entity of Nomenclature by its id
      */
-    @ApiOperation("Method delete Nomenclature by Id")
+    @Operation(summary = "Удаляет номенклатуру по id")
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity<NomenclatureDto> delete(@PathVariable Long id) {
         log.info("delete entity with id = {}", id);
@@ -42,7 +44,7 @@ public class NomenclatureController {
     /**
      * Method searches for an entity of Nomenclature
      */
-    @ApiOperation("Method searches for an entity of Nomenclature by its ID")
+    @Operation(summary = "Ищет номенклатуру по id")
     @GetMapping(value = "/find/{id}")
     public ResponseEntity<NomenclatureDto> findById(@PathVariable Long id) {
         log.info("Searching entity with id = {}", id);
@@ -51,7 +53,7 @@ public class NomenclatureController {
         return new ResponseEntity<>(nomenclatureDto, HttpStatus.OK);
     }
 
-    @ApiOperation("Method find Nomenclature by Id")
+    @Operation(summary = "Ищет номенклатуру по index")
     @GetMapping(value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<NomenclatureDto>> findByIndex(@RequestParam("index")  String index) throws UnsupportedEncodingException {
         log.info("Поиск NomenclatureDto по индексу: {}", index);
@@ -65,7 +67,7 @@ public class NomenclatureController {
     /**
      * the Method fills in the field with the value and set date
      */
-    @ApiOperation(value = "MOVE TO ARCHIVE (SET DATE)")
+    @Operation(summary = "Перемещает номенклатуру в архив(Установить дату)")
     @GetMapping("/move/{id}")
     public ResponseEntity<NomenclatureDto> move(@PathVariable Long id) {
         log.debug("Set field archived_date with actual datetime");
@@ -78,7 +80,7 @@ public class NomenclatureController {
     /**
      * Method searches for an entity of Nomenclature that archiveDate filed is null
      */
-    @ApiOperation(value = "Method finds nomenclature if it has not been archived")
+    @Operation(summary = "Метод ищет номенклатуру, если она не была заархивирована")
     @GetMapping("/notArch/{id}")
     public ResponseEntity<NomenclatureDto> findByIdNotArchivedController(@PathVariable Long id) {
         log.info("Searching entity with empty archived_date field");
@@ -90,7 +92,7 @@ public class NomenclatureController {
     /**
      * Method searches for set of entities of Nomenclature that archiveDate fields are null
      */
-    @ApiOperation(value = "find list of Nomenclature`s entities if they have not been archived")
+    @Operation(summary = "Ищет список объектов номенклатуру, если они не были заархивированы")
     @GetMapping(value = "/notArchList", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<NomenclatureDto>> findAllByIdNotArchivedController(@RequestParam("id") Collection<Long> listId) {
         log.info("Searching entities with empty archived_date fields");
@@ -102,7 +104,7 @@ public class NomenclatureController {
     /**
      * Method searches for set of entities of Nomenclature by their ids in Collection
      */
-    @ApiOperation("find all entities of nomenclature which are in Collection<Long> of id")
+    @Operation(summary = "Ищет все объекты номенклатуры по id, которые находятся в Collection<Long>")
     @GetMapping(value = "/all")
     public ResponseEntity<Collection<NomenclatureDto>> findAllByIdController(@RequestParam("id") Collection<Long> listId) {
         log.info("Searching entity with id list = {}", listId);
@@ -115,7 +117,7 @@ public class NomenclatureController {
     /**
      * Method saves new entity in DB by accepting jsom-body object
      */
-    @ApiOperation("save new entity of Nomenclature by request with json-body")
+    @Operation(summary = "Сохраняет новый объект номенклатуры по запросу json-body")
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<NomenclatureDto> saveDefaultEntity(@RequestBody NomenclatureDto nomenclatureDto) {
         log.info(" DTO object of Nomenclature ({}) will be saved ", nomenclatureDto);

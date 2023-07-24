@@ -2,7 +2,8 @@ package com.education.controller.author;
 
 import com.education.entity.Author;
 import com.education.service.author.AuthorService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.AuthorDto;
@@ -22,12 +23,13 @@ import static com.education.mapper.AuthorMapper.AUTHOR_MAPPER;
 @RestController
 @AllArgsConstructor
 @Log4j2
+@Tag(name = "Rest- контроллер для работы с авторами")
 @RequestMapping("/api/repository/author")
 public class AuthorRestController {
 
     private final AuthorService authorService;
 
-    @ApiOperation(value = "Gets all authors", notes = "Author must exist")
+    @Operation(summary = "Получает всех авторов", description = "Автор должен существовать")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AuthorDto>> getAllAuthors() {
         log.info("Sent GET request to get all authors from the database");
@@ -36,7 +38,7 @@ public class AuthorRestController {
         return new ResponseEntity<>(authorDtoCollection, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Add author", notes = "Author not must exist")
+    @Operation(summary = "Добавляет автора", description = "Новый автор не должен существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> addAuthorAction(@RequestBody AuthorDto authorDto) {
         log.info("Send POST request to add author to databases: {}", authorDto);
@@ -45,7 +47,7 @@ public class AuthorRestController {
         return new ResponseEntity<>(AUTHOR_MAPPER.toDto(save),HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Delete author", notes = "Author must exist")
+    @Operation(summary = "Удаление автора", description = "Автор должен существовать")
     @DeleteMapping("/{id}")
     public ResponseEntity<AuthorDto> deleteAuthor(@PathVariable Long id) {
         log.info("Send DELETE request to delete author with id={} to databases", id);
@@ -54,7 +56,7 @@ public class AuthorRestController {
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
     }
 
-    @ApiOperation(value = "Gets authors by id", notes = "Author must exist")
+    @Operation(summary = "Получание автора по id", description = "Автор должен существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> getAuthorById(@PathVariable Long id) {
         log.info("Sent GET request to get author with id={} from the database", id);

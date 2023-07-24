@@ -1,7 +1,8 @@
 package com.education.controller.resolution;
 
 import com.education.service.resolution.ResolutionService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.ResolutionDto;
@@ -27,12 +28,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @AllArgsConstructor
 @Log4j2
+@Tag(name="Контроллер для связи с сервисом ResolutionService")
 @RequestMapping("api/rest/resolution")
 public class ResolutionController {
 
     private final ResolutionService resolutionService;
 
-    @ApiOperation(value = "Добавление резолюции")
+    @Operation(summary = "Добавление резолюции")
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResolutionDto> saveResolution(@RequestBody ResolutionDto resolutionDto) {
         log.info("POST request has been sent");

@@ -1,7 +1,8 @@
 package com.education.controller.execution;
 
 import com.education.service.execution.ExecutorReportService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.ExecutionReportDto;
@@ -23,10 +24,10 @@ import static com.education.mapper.ExecutionReportMapper.EXECUTION_REPORT_MAPPER
 @RestController
 @RequestMapping("/api/repository/report")
 @AllArgsConstructor
-@ApiOperation("ExecutionReportController в модуле edo-repository")
+@Tag(name = "Rest- контроллер для отправки отчета в edo-repository")
 public class ExecutionReportController {
     private final ExecutorReportService reportService;
-
+    @Operation(summary = "Принимает отчет и сохраняет его в БД")
     @PostMapping
     public ResponseEntity<ExecutionReportDto> submitReport(@RequestBody ExecutionReportDto reportDto) {
         log.info("Отправляем reportDto в service для сохранения в БД");

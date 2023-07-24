@@ -1,7 +1,8 @@
 package com.education.controller.address;
 
 import com.education.service.address.AddressService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -9,13 +10,7 @@ import model.dto.AddressDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
@@ -30,6 +25,7 @@ import static com.education.mapper.AddressMapper.ADDRESS_MAPPER;
 @Log4j2
 @AllArgsConstructor
 @RequestMapping("/api/repository/address")
+@Tag(name = "Rest- контроллер для работы с адресами", description = "Методы для работы с адресами")
 public class AddressController {
 
     /**
@@ -39,7 +35,7 @@ public class AddressController {
     private final AddressService addressService;
 
     //GET ONE /api/repository/address/{id}
-    @ApiOperation(value = "Возвращает адрес по id", notes = "Адрес должен существовать")
+    @Operation(summary = "Возвращает адрес по id", description = "Адрес должен существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AddressDto> findById(@PathVariable("id") long id) {
         log.info("Send a get-request to get Address with id = {} from database", id);
@@ -50,7 +46,7 @@ public class AddressController {
 
 
     //GET ALL /api/repository/address/all
-    @ApiOperation(value = "Возвращает все адреса", notes = "Адреса должны существовать")
+    @Operation(summary = "Возвращает все адреса", description = "Адреса должны существовать")
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AddressDto>> findAll() {
         log.info("Send a get-request to get all Addresses from database");
@@ -60,7 +56,7 @@ public class AddressController {
     }
 
     //POST /api/repository/address
-    @ApiOperation(value = "Создает адрес в БД", notes = "Адрес должен существовать")
+    @Operation(summary = "Создает адрес в БД", description = "Адрес должен существовать")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AddressDto> save(@RequestBody @Valid AddressDto addressDto) {
         log.info("Send a post-request to post new Address to database");
@@ -70,7 +66,7 @@ public class AddressController {
     }
 
     //DELETE /api/repository/address/{id}
-    @ApiOperation(value = "Удаляет адрес из БД", notes = "Адрес должен существовать")
+    @Operation(summary = "Удаляет адрес из БД", description = "Адрес должен существовать")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Long> delete(@PathVariable("id") long id) {
         log.info("Send a delete-request to delete Address with id = {} from database", id);
