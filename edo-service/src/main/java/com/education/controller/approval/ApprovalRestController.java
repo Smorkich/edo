@@ -15,11 +15,13 @@ import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
 
+import static model.constant.Constant.APPROVAL_URL;
+
 @RestController
 @AllArgsConstructor
 @Log4j2
 @Tag(name = "Rest-контроллер для ApprovalDto, который отправляет запросы от клиентов к сервисам edo-repository")
-@RequestMapping("/api/service/approval")
+@RequestMapping(APPROVAL_URL)
 public class ApprovalRestController {
     private final ApprovalService approvalService;
 

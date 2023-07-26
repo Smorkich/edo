@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.education.mapper.ApprovalMapper.APPROVAL_MAPPER;
+import static model.constant.Constant.APPROVAL_URL;
 
 /**
  * Rest-контроллер сущности Approval для отправки запросов от клиентов к БД
@@ -24,7 +25,7 @@ import static com.education.mapper.ApprovalMapper.APPROVAL_MAPPER;
 @RestController
 @AllArgsConstructor
 @Log4j2
-@RequestMapping("/api/repository/approval")
+@RequestMapping(APPROVAL_URL)
 @Tag(name = "Rest-контроллер для ApprovalDto, который отправляет запросы от клиентов к сервисам edo-service")
 public class ApprovalRestController {
     private final ApprovalService approvalService;
