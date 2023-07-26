@@ -20,6 +20,7 @@ public class Constant {
     public static final String NOMENCLATURE_URL = "api/repository/nomenclature";
     public static final String QUESTION_URL = "api/repository/question";
     public static final String RESOLUTION_URL = "api/repository/resolution";
+    public static final String REGION_URL = "api/repository/region";
     public static final String THEME_URL = "api/repository/theme";
 
     public static final String EDO_REPOSITORY_NAME = "edo-repository";

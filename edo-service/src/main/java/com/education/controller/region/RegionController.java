@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.ZonedDateTime;
+import java.util.Collection;
 
 /**
  * Rest-контроллер в "edo-service", служит для отправки запросов
@@ -52,7 +53,7 @@ public class RegionController {
 
     @Operation(summary = "Возвращает регион по id", description = "Регион должен существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> findById(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<RegionDto> findById(@PathVariable(name = "id") long id) {
         log.info("Send a get-request to get Region with id = {} from database", id);
         var regionDto = regionService.findById(id);
         log.info("Response from database: {}", regionDto);
@@ -61,7 +62,7 @@ public class RegionController {
 
     @Operation(summary = "Возвращает все регионы")
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> findAll() {
+    public ResponseEntity<Collection<RegionDto>> findAll() {
         log.info("Send a get-request to get all Regions from database");
         var regionDto = regionService.findAll();
         log.info("Response from database: {}", regionDto);
