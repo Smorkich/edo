@@ -19,7 +19,7 @@ import java.util.Collection;
 import static com.education.mapper.NomenclatureMapper.NOMENCLATURE_MAPPER;
 
 /**
- * RestController of edo-repository. 
+ * RestController of edo-repository.
  */
 @AllArgsConstructor
 @RestController
@@ -34,11 +34,11 @@ public class NomenclatureController {
      */
     @Operation(summary = "Удаляет номенклатуру по id")
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity<NomenclatureDto> delete(@PathVariable Long id) {
+    public HttpStatus delete(@PathVariable Long id) {
         log.info("delete entity with id = {}", id);
         service.deleteById(id);
         log.info("Entity with id = {} was deleted", id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return HttpStatus.ACCEPTED;
     }
 
     /**
@@ -46,22 +46,22 @@ public class NomenclatureController {
      */
     @Operation(summary = "Ищет номенклатуру по id")
     @GetMapping(value = "/find/{id}")
-    public ResponseEntity<NomenclatureDto> findById(@PathVariable Long id) {
+    public NomenclatureDto findById(@PathVariable Long id) {
         log.info("Searching entity with id = {}", id);
         NomenclatureDto nomenclatureDto = NOMENCLATURE_MAPPER.toDto(service.findById(id));
-        log.info("Entity {} has been found",nomenclatureDto);
-        return new ResponseEntity<>(nomenclatureDto, HttpStatus.OK);
+        log.info("Entity {} has been found", nomenclatureDto);
+        return nomenclatureDto;
     }
 
     @Operation(summary = "Ищет номенклатуру по index")
     @GetMapping(value = "/find", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<NomenclatureDto>> findByIndex(@RequestParam("index")  String index) throws UnsupportedEncodingException {
+    public Collection<NomenclatureDto> findByIndex(@RequestParam("index") String index) throws UnsupportedEncodingException {
         log.info("Поиск NomenclatureDto по индексу: {}", index);
-        var decodeParam  = UriUtils.decode(index, "UTF-8");
+        var decodeParam = UriUtils.decode(index, "UTF-8");
         log.info("index after decode {}", decodeParam);
         Collection<NomenclatureDto> nomenclatureDtos = NOMENCLATURE_MAPPER.toDto(service.findByIndex(decodeParam));
         log.info("Entity {} has been found", nomenclatureDtos);
-        return new ResponseEntity<>(nomenclatureDtos, HttpStatus.OK);
+        return nomenclatureDtos;
     }
 
     /**
@@ -69,12 +69,12 @@ public class NomenclatureController {
      */
     @Operation(summary = "Перемещает номенклатуру в архив(Установить дату)")
     @GetMapping("/move/{id}")
-    public ResponseEntity<NomenclatureDto> move(@PathVariable Long id) {
+    public NomenclatureDto move(@PathVariable Long id) {
         log.debug("Set field archived_date with actual datetime");
         service.moveToArchive(id);
         log.debug("Set field archived_date with actual datetime");
         NomenclatureDto nomenclatureDto = NOMENCLATURE_MAPPER.toDto(service.findById(id));
-        return new ResponseEntity<>(nomenclatureDto, HttpStatus.OK);
+        return nomenclatureDto;
     }
 
     /**
@@ -82,11 +82,11 @@ public class NomenclatureController {
      */
     @Operation(summary = "Метод ищет номенклатуру, если она не была заархивирована")
     @GetMapping("/notArch/{id}")
-    public ResponseEntity<NomenclatureDto> findByIdNotArchivedController(@PathVariable Long id) {
+    public NomenclatureDto findByIdNotArchivedController(@PathVariable Long id) {
         log.info("Searching entity with empty archived_date field");
         NomenclatureDto nomenclatureDto = NOMENCLATURE_MAPPER.toDto(service.findByIdNotArchived(id).get());
         log.info("Archived object has been identified: {}", nomenclatureDto);
-        return new ResponseEntity<>(nomenclatureDto, HttpStatus.OK);
+        return nomenclatureDto;
     }
 
     /**
@@ -94,11 +94,11 @@ public class NomenclatureController {
      */
     @Operation(summary = "Ищет список объектов номенклатуру, если они не были заархивированы")
     @GetMapping(value = "/notArchList", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<NomenclatureDto>> findAllByIdNotArchivedController(@RequestParam("id") Collection<Long> listId) {
+    public Collection<NomenclatureDto> findAllByIdNotArchivedController(@RequestParam("id") Collection<Long> listId) {
         log.info("Searching entities with empty archived_date fields");
         Collection<NomenclatureDto> nomenclatureDtoList = NOMENCLATURE_MAPPER.toDto(service.findAllByIdNotArchived(listId));
         log.info("Archived objects has been identified: {}", nomenclatureDtoList);
-        return new ResponseEntity<>(nomenclatureDtoList, HttpStatus.OK);
+        return nomenclatureDtoList;
     }
 
     /**
@@ -106,11 +106,11 @@ public class NomenclatureController {
      */
     @Operation(summary = "Ищет все объекты номенклатуры по id, которые находятся в Collection<Long>")
     @GetMapping(value = "/all")
-    public ResponseEntity<Collection<NomenclatureDto>> findAllByIdController(@RequestParam("id") Collection<Long> listId) {
+    public Collection<NomenclatureDto> findAllByIdController(@RequestParam("id") Collection<Long> listId) {
         log.info("Searching entity with id list = {}", listId);
         Collection<NomenclatureDto> nomenclatureDtoList = NOMENCLATURE_MAPPER.toDto(service.findAllById(listId));
         log.info("List of entities has been identified: {}", nomenclatureDtoList);
-        return new ResponseEntity<>(nomenclatureDtoList, HttpStatus.OK);
+        return nomenclatureDtoList;
     }
 
 
@@ -119,10 +119,10 @@ public class NomenclatureController {
      */
     @Operation(summary = "Сохраняет новый объект номенклатуры по запросу json-body")
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NomenclatureDto> saveDefaultEntity(@RequestBody NomenclatureDto nomenclatureDto) {
+    public NomenclatureDto saveDefaultEntity(@RequestBody NomenclatureDto nomenclatureDto) {
         log.info(" DTO object of Nomenclature ({}) will be saved ", nomenclatureDto);
         Nomenclature save = service.save(NOMENCLATURE_MAPPER.toEntity(nomenclatureDto));
         log.info("DTO object: {} has been saved ", nomenclatureDto);
-        return new ResponseEntity<>(NOMENCLATURE_MAPPER.toDto(save), HttpStatus.CREATED);
+        return nomenclatureDto;
     }
 }

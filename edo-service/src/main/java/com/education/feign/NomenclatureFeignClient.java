@@ -1,15 +1,15 @@
 package com.education.feign;
 
+import com.education.config.FeignConfig;
 import model.dto.NomenclatureDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-import static model.constant.Constant.EDO_REPOSITORY_NAME;
 import static model.constant.Constant.NOMENCLATURE_URL;
 
-@FeignClient(name = EDO_REPOSITORY_NAME)
+@FeignClient(name = "NomenclatureFeignClient", configuration = FeignConfig.class)
 public interface NomenclatureFeignClient {
 
     @DeleteMapping(NOMENCLATURE_URL + "/delete/{id}")
