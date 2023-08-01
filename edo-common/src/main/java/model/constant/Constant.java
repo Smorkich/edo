@@ -10,6 +10,8 @@ public class Constant {
     public static final String ADDRESS_URL = "api/repository/address";
     public static final String APPEAL_URL = "api/repository/appeal";
     public static final String APPROVAL_URL = "/api/service/approval";
+    public static final String APPROVAL_REST_URL = "/api/rest/approval";
+    public static final String APPROVAL_SERVICE_URL = "/api/service/approval";
     public static final String AUTHOR_URL = "api/repository/author";
     public static final String APPEAL_REST_URL = "/api/edo/appeal";
     public static final String SERVICE_APPEAL_URL = "/api/service/appeal";

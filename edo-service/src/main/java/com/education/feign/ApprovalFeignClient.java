@@ -1,5 +1,6 @@
 package com.education.feign;
 
+import com.education.config.FeignConfig;
 import model.dto.ApprovalDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +12,7 @@ import java.util.List;
 import static model.constant.Constant.APPROVAL_URL;
 import static model.constant.Constant.EDO_REPOSITORY_NAME;
 
-@FeignClient(name = EDO_REPOSITORY_NAME)
+@FeignClient(name = "ApprovalFeignClient", configuration = FeignConfig.class)
 public interface ApprovalFeignClient {
 
     @PostMapping(APPROVAL_URL)

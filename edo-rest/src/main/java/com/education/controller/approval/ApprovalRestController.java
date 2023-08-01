@@ -16,7 +16,7 @@ import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.List;
 
-import static model.constant.Constant.APPROVAL_URL;
+import static model.constant.Constant.APPROVAL_REST_URL;
 
 /**
  * Rest-контроллер сущности Approval для отправки запросов от клиентов к БД
@@ -25,7 +25,7 @@ import static model.constant.Constant.APPROVAL_URL;
 @RestController
 @AllArgsConstructor
 @Log4j2
-@RequestMapping(APPROVAL_URL)
+@RequestMapping(APPROVAL_REST_URL)
 public class ApprovalRestController {
     private final ApprovalService approvalService;
     private final ApprovalPublisher approvalPublisher;
