@@ -1,4 +1,4 @@
-package com.education.controller;
+package com.education.controller.department;
 
 import com.education.service.department.DepartmentService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,11 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
+import static model.constant.Constant.DEPARTMENT_SERVICE_URL;
+
 /**
  * @author Usolkin Dmitry
  */
 @RestController
-@RequestMapping("api/service/department")
+@RequestMapping(DEPARTMENT_SERVICE_URL)
 @AllArgsConstructor
 @Log4j2
 @Tag(name = "Rest- контроллер для работы с департаментами")
@@ -62,20 +64,20 @@ public class DepartmentController {
 
     @Operation(summary = "Добавлнение нового департамента")
     @PostMapping
-    private String saveDepartment(@RequestBody DepartmentDto departmentDto) {
+    private ResponseEntity<DepartmentDto> saveDepartment(@RequestBody DepartmentDto departmentDto) {
         log.info("Starting the save operation");
         departmentService.save(departmentDto);
         log.info("saving the department and displaying its full name in the response");
-        return "Добавили " + departmentDto.getFullName();
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Operation(summary = "Архивация департамента с занесением времени архивации")
     @PostMapping("/{id}")
-    private String deleteUser(@PathVariable(name = "id") Long id) {
+    private ResponseEntity<Long> deleteUser(@PathVariable(name = "id") Long id) {
         log.info("Starting the archiving operation");
         departmentService.removeToArchived(id);
         log.info("Archiving a department");
-        return "Удалил " + id;
+        return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
 }
