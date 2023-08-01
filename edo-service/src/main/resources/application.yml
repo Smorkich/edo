@@ -1,8 +1,6 @@
 spring:
   application:
     name: edo-service
-  main:
-    allow-bean-definition-overriding: true
   servlet:
     multipart:
       enabled: true
