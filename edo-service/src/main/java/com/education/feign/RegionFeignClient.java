@@ -1,5 +1,6 @@
 package com.education.feign;
 
+import com.education.config.FeignConfig;
 import jakarta.validation.Valid;
 import model.dto.RegionDto;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -9,10 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
-import static model.constant.Constant.EDO_REPOSITORY_NAME;
-import static model.constant.Constant.REGION_URL;
+import static model.constant.Constant.*;
 
-@FeignClient(name = EDO_REPOSITORY_NAME)
+@FeignClient(name = "RegionFeignClient", configuration = FeignConfig.class)
 public interface RegionFeignClient {
     @PostMapping(REGION_URL)
     ResponseEntity<RegionDto> save(@RequestBody @Valid RegionDto regionDto);
