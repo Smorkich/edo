@@ -1,5 +1,6 @@
 package com.education.feign;
 
+import com.education.config.FeignConfig;
 import jakarta.validation.Valid;
 import model.dto.NotificationDto;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -12,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.Collection;
 import java.util.List;
 
-import static model.constant.Constant.EDO_REPOSITORY_NAME;
+
 import static model.constant.Constant.NOTIFICATION_URL;
 
-@FeignClient(name = EDO_REPOSITORY_NAME)
+@FeignClient(name = "NotificationFeignClient", configuration = FeignConfig.class)
 public interface NotificationFeignClient {
 
     @GetMapping(NOTIFICATION_URL + "{/id}")
