@@ -23,7 +23,6 @@ import static model.constant.Constant.*;
 public class NomenclatureServiceImpl implements NomenclatureService {
 
     private NomenclatureFeignClient nomenclatureFeignClient;
-    private final String NOMEN_REPO_URL = "api/repository/nomenclature/find";
 
 
     @Override
