@@ -26,7 +26,7 @@ public class RabbitConfig {
     @Value("${spring.rabbitmq.port}")
     private Integer port;
 
-    @Bean(name = "SimpleRabbitListener")
+    @Bean
     public SimpleRabbitListenerContainerFactory
     rabbitListenerContainerFactory(ConnectionFactory connectionFactory) {
         SimpleRabbitListenerContainerFactory factory = new
@@ -36,50 +36,50 @@ public class RabbitConfig {
         return factory;
     }
 
-    @Bean(name = "connection")
+    @Bean
     public ConnectionFactory connectionFactory() {
         return new CachingConnectionFactory(host, port);
     }
 
-    @Bean(name = "amqpAdmin")
+    @Bean
     public AmqpAdmin amqpAdmin() {
         return new RabbitAdmin(connectionFactory());
     }
 
-    @Bean(name = "rabbitTemplate")
+    @Bean
     public RabbitTemplate rabbitTemplate() {
         return new RabbitTemplate(connectionFactory());
     }
 
-    @Bean(name = "nomenclature")
+    @Bean
     public Queue nomenclatureQueue() {
         Queue queue = new Queue(REST_TO_SERVICE_NOMENCLATURE_QUEUE);
         amqpAdmin().declareQueue(queue);
         return queue;
     }
 
-    @Bean(name = "approval")
+    @Bean
     public Queue approvalQueue() {
         Queue queue = new Queue(REST_TO_SERVICE_APPROVAL_QUEUE);
         amqpAdmin().declareQueue(queue);
         return queue;
     }
 
-    @Bean(name = "appeal")
+    @Bean
     public Queue appealQueue() {
         Queue queue = new Queue(REST_TO_SERVICE_APPEAL_QUEUE);
         amqpAdmin().declareQueue(queue);
         return queue;
     }
 
-    @Bean(name = "fileRecognition")
+    @Bean
     public Queue fileRecognitionQueue() {
         Queue queue = new Queue(FILE_RECOGNITION_START);
         amqpAdmin().declareQueue(queue);
         return queue;
     }
 
-    @Bean(name = "deadlineChange")
+    @Bean
     public Queue deadlineChangeQueue() {
         Queue queue = new Queue(DEADLINE_CHANGE_QUEUE);
         amqpAdmin().declareQueue(queue);
