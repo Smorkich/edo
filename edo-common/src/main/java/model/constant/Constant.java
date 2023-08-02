@@ -14,6 +14,7 @@ public class Constant {
     public static final String SERVICE_APPEAL_URL = "/api/service/appeal";
     public static final String EXECUTION_REPORT_URL = "api/repository/report";
     public static final String DEPARTMENT_URL = "api/repository/department";
+    public static final String DEPARTMENT_SERVICE_URL = "api/service/department";
     public static final String EMPLOYEE_URL = "api/repository/employee";
     public static final String FILEPOOL_URL = "api/repository/filePool";
     public static final String NOMENCLATURE_URL = "api/repository/nomenclature";
@@ -21,6 +22,7 @@ public class Constant {
     public static final String RESOLUTION_URL = "api/repository/resolution";
     public static final String RESOLUTION_REST_URL = "api/rest/resolution";
     public static final String RESOLUTION_SERVICE_URL = "api/service/resolution";
+    public static final String REGION_URL = "api/repository/region";
     public static final String THEME_URL = "api/repository/theme";
 
     public static final String EDO_REPOSITORY_NAME = "edo-repository";
