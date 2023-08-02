@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static model.constant.Constant.RESOLUTION_REST_URL;
+
 
 /**
  * @author Aleksandr Kostenko
@@ -29,7 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @Log4j2
 @Tag(name="Контроллер для связи с сервисом ResolutionService")
-@RequestMapping("api/rest/resolution")
+@RequestMapping(RESOLUTION_REST_URL)
 public class ResolutionController {
 
     private final ResolutionService resolutionService;
