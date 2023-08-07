@@ -2,6 +2,7 @@ package com.education.service.appeal.impl;
 
 import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
+import com.education.service.facsimile.FacsimileService;
 import com.education.service.filePool.FilePoolService;
 import com.education.service.nomenclature.NomenclatureService;
 import com.education.service.minio.MinioService;
@@ -16,8 +17,10 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -37,6 +40,7 @@ public class AppealServiceImpl implements AppealService {
     private final AuthorService authorService;
     private final QuestionService questionService;
     private final FilePoolService filePoolService;
+    private final FacsimileService facsimileService;
     private final MinioService minioService;
 
     private final NomenclatureService nomenclatureService;
@@ -234,6 +238,11 @@ public class AppealServiceImpl implements AppealService {
     @Override
     public AppealDto upload(Long id, FilePoolDto file) {
         AppealDto appealDto = findById(id);
+        try (InputStream facsimile = new FileInputStream("FacsimilePic.png")) {
+            minioService.overlayFacsimileOnFirstFile(file.getStorageFileId(), file.getExtension(), "application/pdf", facsimile);
+        } catch (IOException e) {
+            System.out.printf("Факсимиле не было наложено на файл");
+        }
         appealDto.getFile().add(file);
         var save = save(appealDto);
         return save;
