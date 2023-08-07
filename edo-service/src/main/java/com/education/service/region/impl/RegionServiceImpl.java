@@ -1,13 +1,12 @@
 package com.education.service.region.impl;
 
+import com.education.feign.RegionFeignClient;
 import com.education.service.region.RegionService;
-import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import model.dto.RegionDto;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import static model.constant.Constant.*;
+import java.util.Collection;
 
 @Service
 @AllArgsConstructor
@@ -17,47 +16,37 @@ public class RegionServiceImpl implements RegionService {
      * Поле "restTemplate" нужно для вызова RestTemplate,
      * который нужен для совершения CRUD-операции по заданному URL
      */
-    private final RestTemplate restTemplate;
-    private static final String REGION_URL = "api/repository/region/";
+    private final RegionFeignClient regionFeignClient;
 
     /**
      * Метод сохранения нового региона в БД
      */
     @Override
     public RegionDto save(RegionDto regionDto) {
-        var builder = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, REGION_URL)
-                .toString();
-        return restTemplate.postForObject(builder, regionDto, RegionDto.class);
+        return regionFeignClient.save(regionDto).getBody();
     }
-
     /**
      * Метод удаления региона из ДБ
      */
     @Override
     public void delete(long id) {
-        var builder = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, REGION_URL + id)
-                .toString();
-        restTemplate.delete(builder);
+        regionFeignClient.delete(id);
     }
 
     /**
      * Метод, который возвращает регионы по его id
      */
     @Override
-    public String findById(long id) {
-        var builder = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, REGION_URL + id)
-                .toString();
-        return restTemplate.getForObject(builder, String.class);
+    public RegionDto findById(long id) {
+        return regionFeignClient.findById(id).getBody();
     }
 
     /**
      * Метод, который возвращает все регионы
      */
     @Override
-    public String findAll() {
-        var builder = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, REGION_URL + "all")
-                .toString();
-        return restTemplate.getForObject(builder, String.class);
+    public Collection<RegionDto> findAll() {
+        return regionFeignClient.findAll().getBody();
     }
 
     /**
@@ -65,8 +54,6 @@ public class RegionServiceImpl implements RegionService {
      */
     @Override
     public void moveToArchive(Long id) {
-        var builder = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, REGION_URL + id)
-                .toString();
-        restTemplate.postForObject(builder, null, String.class);
+        regionFeignClient.moveToArchive(id);
     }
 }

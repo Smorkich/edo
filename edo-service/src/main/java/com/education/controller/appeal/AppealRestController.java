@@ -6,7 +6,8 @@ import com.education.exception_handling.AppealIncorrectData;
 import com.education.publisher.appeal.AppealPublisher;
 import com.education.service.appeal.AppealService;
 import com.education.util.Validator;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.AppealDto;
@@ -23,6 +24,7 @@ import java.util.Collection;
 @RestController
 @AllArgsConstructor
 @Log4j2
+@Tag(name = "Обращения", description = "Методы для работы с обращениями")
 @RequestMapping("/api/service/appeal")
 public class AppealRestController {
 
@@ -30,7 +32,7 @@ public class AppealRestController {
 
     private AppealPublisher appealPublisher;
 
-    @ApiOperation(value = "В строке таблицы Appeal заполняет поле archivedDate", notes = "Строка в Appeal должна существовать")
+    @Operation(summary = "В строке таблицы Appeal заполняет поле archivedDate", description = "Строка в Appeal должна существовать")
     @PutMapping(value = "/move/{id}")
     public ResponseEntity<AppealDto> moveToArchive(@PathVariable Long id) {
         appealService.moveToArchive(id);
@@ -38,7 +40,8 @@ public class AppealRestController {
         return new ResponseEntity<>(appealService.findById(id), HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Находит все строки таблицы Appeal с полем acrhivedDate = null", notes = "Строка в Appeal должна существовать")
+    @Operation(summary = "Находит все строки таблицы Appeal с полем acrhivedDate = null",
+            description = "Строка в Appeal должна существовать")
     @GetMapping(value = "/findAllNotArchived", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AppealDto>> findAllNotArchived() {
         log.info("Getting from database all appeals with field acrhivedDate = null");
@@ -47,7 +50,8 @@ public class AppealRestController {
         return new ResponseEntity<>(appealDtoCollection, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Находит строку таблицы Appeal c полем acrhivedDate = null, по заданному id", notes = "Строка в Appeal должна существовать")
+    @Operation(summary = "Находит строку таблицы Appeal c полем acrhivedDate = null, по заданному id",
+            description = "Строка в Appeal должна существовать")
     @GetMapping(value = "/findByIdNotArchived/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> findByIdNotArchived(@PathVariable Long id) {
         log.info("Getting from database appeal with field acrhivedDate = null, with id: {}", id);
@@ -58,7 +62,7 @@ public class AppealRestController {
         return new ResponseEntity<>(appealDto, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Находит все строки таблицы Appeal", notes = "Строка в Appeal должна существовать")
+    @Operation(summary = "Находит все строки таблицы Appeal", description = "Строка в Appeal должна существовать")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AppealDto>> getAllAppeal() {
         log.info("Getting from database all appeals");
@@ -67,7 +71,7 @@ public class AppealRestController {
         return new ResponseEntity<>(appealDtoCollection, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Удаляет строку таблицы Appeal по id", notes = "Строка в Appeal должна существовать")
+    @Operation(summary = "Удаляет строку таблицы Appeal по id", description = "Строка в Appeal должна существовать")
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> deleteAppeal(@PathVariable(value = "id") Long id) {
         log.info("Deleting from database appeal with id: {}", id);
@@ -76,7 +80,7 @@ public class AppealRestController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Принимает обращение, отправляет на edo-repository", notes = "Обращение должен существовать")
+    @Operation(summary = "Принимает обращение, отправляет на edo-repository", description = "Обращение должно существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> save(@RequestBody AppealDto appealDto) {
         Validator.getValidateAppeal(appealDto);
@@ -88,7 +92,7 @@ public class AppealRestController {
         return new ResponseEntity<>(save, HttpStatus.CREATED);
     }
 
-    @ApiOperation(value = "Находит строку таблицы Appeal по id", notes = "Строка в Appeal должна существовать")
+    @Operation(summary = "Находит строку таблицы Appeal по id", description = "Строка в Appeal должна существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AppealDto> getAppealById(@PathVariable Long id) {
         var mockEmployee = getMockEmployee();
@@ -102,7 +106,8 @@ public class AppealRestController {
         return new ResponseEntity<>(appealDto, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Добавляет файл к выбранному обращению ")
+
+    @Operation(summary = "Добавляет файл к выбранному обращению")
     @PostMapping("/upload")
     public ResponseEntity<AppealDto> uploadFile(@RequestParam(value = "id", required = true) Long id , @RequestParam(value = "file", required = true) FilePoolDto file) {
         log.info("'Appeal/Upload' - сохранение/прикрепление файла за обращением");

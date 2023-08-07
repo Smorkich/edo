@@ -1,23 +1,16 @@
 package com.education.controller.employee;
 
 import com.education.service.emloyee.EmployeeService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.EmployeeDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 
 
@@ -28,13 +21,13 @@ import java.util.Collection;
 @RestController
 @AllArgsConstructor
 @Log4j2
+@Tag(name = "Rest- контроллер для работы с сотрудниками")
 @RequestMapping("/api/service/employee")
-@ApiOperation("EmployeeController in module edo - service ")
 public class EmployeeController {
 
     private final EmployeeService employeeService;
 
-    @ApiOperation(value = "Создает сотрудника")
+    @Operation(summary = "Создает сотрудника")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public EmployeeDto save(@RequestBody EmployeeDto employeeDto) {
         log.info("Starting the save operation");
@@ -43,7 +36,7 @@ public class EmployeeController {
         return employeeDto;
     }
 
-    @ApiOperation(value = "Архивация сотрудника с занесением времени архивации")
+    @Operation(summary = "Архивация сотрудника с занесением времени архивации")
     @PostMapping(value = "/{id}")
     public void moveToArchived(@PathVariable Long id) {
         log.info("Starting the archiving operation");
@@ -51,7 +44,7 @@ public class EmployeeController {
         log.info("Archiving the employee");
     }
 
-    @ApiOperation(value = "Предоставление сотрудника по индентификатору")
+    @Operation(summary = "Предоставление сотрудника по индентификатору")
     @GetMapping(value = "/{id}")
     public EmployeeDto findById(@PathVariable Long id) {
         log.info("Send a response with the employee of the assigned id");
@@ -60,7 +53,7 @@ public class EmployeeController {
         return employeeDto;
     }
 
-    @ApiOperation(value = "Предоставление всех сотрудников")
+    @Operation(summary = "Предоставление всех сотрудников")
     @GetMapping(value = "/all")
     public Collection<EmployeeDto> findAll() {
         log.info("Send a response with the employees");
@@ -69,7 +62,7 @@ public class EmployeeController {
         return employeeDto;
     }
 
-    @ApiOperation(value = "Предоставление сотрудников по назначеным идентификаторам")
+    @Operation(summary = "Предоставление сотрудников по назначеным идентификаторам")
     @GetMapping(value = "/all/{ids}")
     public Collection<EmployeeDto> findAllById(@PathVariable String ids) {
         log.info("Send a response with the employee of the assigned IDs");
@@ -78,7 +71,7 @@ public class EmployeeController {
         return employeeDto;
     }
 
-    @ApiOperation(value = "Предоставление сотрудника без архивирования по идентификатору")
+    @Operation(summary = "Предоставление сотрудника без архивирования по идентификатору")
     @GetMapping(value = "/NotArchived/{id}")
     public EmployeeDto findByIdNotArchived(@PathVariable Long id) {
         log.info("Send a response with the employee not archived of the assigned ID");
@@ -87,7 +80,7 @@ public class EmployeeController {
         return employeeDto;
     }
 
-    @ApiOperation(value = "Предоставление сотрудников без архивирования по идентификатору")
+    @Operation(summary = "Предоставление сотрудников без архивирования по идентификатору")
     @GetMapping(value = "/NotArchivedAll/{ids}")
     public Collection<EmployeeDto> findByAllIdNotArchived(@PathVariable String ids) {
         log.info("Send a response with the employee not archived of the assigned IDs");
@@ -101,7 +94,7 @@ public class EmployeeController {
      *
      * @param employeeDto - Коллекция сотрудников
      */
-    @ApiOperation(value = "Сохраняет коллекцию сотрудников")
+    @Operation(summary = "Сохраняет коллекцию сотрудников")
     @PostMapping(value = "/collection")
     public Collection<EmployeeDto> saveCollection(@RequestBody Collection<EmployeeDto> employeeDto) {
         log.info("Send a response with the collection employee");
@@ -110,6 +103,7 @@ public class EmployeeController {
         return collection;
     }
 
+    @Operation(summary = "Предоставление сотрудников по ФИО")
     @GetMapping("/search")
     public Collection<EmployeeDto> findByFullName(@RequestParam("fullName") String fullName) {
         log.info("Принимает полное имя {} на стороне edo-service", fullName);
