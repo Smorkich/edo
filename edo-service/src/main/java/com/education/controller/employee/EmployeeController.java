@@ -36,65 +36,64 @@ public class EmployeeController {
 
     @ApiOperation(value = "Создает сотрудника")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<EmployeeDto> save(@RequestBody EmployeeDto employeeDto) {
+    public EmployeeDto save(@RequestBody EmployeeDto employeeDto) {
         log.info("Starting the save operation");
         employeeService.save(employeeDto);
         log.info("Saving the employee");
-        return new ResponseEntity<>(employeeDto, HttpStatus.CREATED);
+        return employeeDto;
     }
 
     @ApiOperation(value = "Архивация сотрудника с занесением времени архивации")
     @PostMapping(value = "/{id}")
-    public ResponseEntity<Void> moveToArchived(@PathVariable Long id) {
+    public void moveToArchived(@PathVariable Long id) {
         log.info("Starting the archiving operation");
         employeeService.moveToArchived(id);
         log.info("Archiving the employee");
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ApiOperation(value = "Предоставление сотрудника по индентификатору")
     @GetMapping(value = "/{id}")
-    public ResponseEntity<EmployeeDto> findById(@PathVariable Long id) {
+    public EmployeeDto findById(@PathVariable Long id) {
         log.info("Send a response with the employee of the assigned id");
         var employeeDto = employeeService.findById(id);
         log.info("The operation was successful, we got the employee by id ={}", id);
-        return new ResponseEntity<>(employeeDto, HttpStatus.OK);
+        return employeeDto;
     }
 
     @ApiOperation(value = "Предоставление всех сотрудников")
     @GetMapping(value = "/all")
-    public ResponseEntity<Collection<EmployeeDto>> findAll() {
+    public Collection<EmployeeDto> findAll() {
         log.info("Send a response with the employees");
         var employeeDto = employeeService.findAll();
         log.info("The operation was successful, we got the all employees");
-        return new ResponseEntity<Collection<EmployeeDto>>(employeeDto, HttpStatus.OK);
+        return employeeDto;
     }
 
     @ApiOperation(value = "Предоставление сотрудников по назначеным идентификаторам")
     @GetMapping(value = "/all/{ids}")
-    public ResponseEntity<Collection<EmployeeDto>> findAllById(@PathVariable String ids) {
+    public Collection<EmployeeDto> findAllById(@PathVariable String ids) {
         log.info("Send a response with the employee of the assigned IDs");
         var employeeDto = employeeService.findAllById(ids);
         log.info("The operation was successful, we got the employee by id = {} ", ids);
-        return new ResponseEntity<Collection<EmployeeDto>>(employeeDto, HttpStatus.OK);
+        return employeeDto;
     }
 
     @ApiOperation(value = "Предоставление сотрудника без архивирования по идентификатору")
     @GetMapping(value = "/NotArchived/{id}")
-    public ResponseEntity<EmployeeDto> findByIdNotArchived(@PathVariable Long id) {
+    public EmployeeDto findByIdNotArchived(@PathVariable Long id) {
         log.info("Send a response with the employee not archived of the assigned ID");
         var employeeDto = employeeService.findByIdAndArchivedDateNull(id);
         log.info("The operation was successful, they got the non-archived employee by id ={}", id);
-        return new ResponseEntity<EmployeeDto>(employeeDto, HttpStatus.OK);
+        return employeeDto;
     }
 
     @ApiOperation(value = "Предоставление сотрудников без архивирования по идентификатору")
     @GetMapping(value = "/NotArchivedAll/{ids}")
-    public ResponseEntity<Collection<EmployeeDto>> findByAllIdNotArchived(@PathVariable String ids) {
+    public Collection<EmployeeDto> findByAllIdNotArchived(@PathVariable String ids) {
         log.info("Send a response with the employee not archived of the assigned IDs");
         var employeeDto = employeeService.findByIdInAndArchivedDateNull(ids);
         log.info("The operation was successful, they got the non-archived employee by id ={}", ids);
-        return new ResponseEntity<Collection<EmployeeDto>>(employeeDto, HttpStatus.OK);
+        return employeeDto;
     }
 
     /**
@@ -104,18 +103,18 @@ public class EmployeeController {
      */
     @ApiOperation(value = "Сохраняет коллекцию сотрудников")
     @PostMapping(value = "/collection")
-    public ResponseEntity<Collection<EmployeeDto>> saveCollection(@RequestBody Collection<EmployeeDto> employeeDto) {
+    public Collection<EmployeeDto> saveCollection(@RequestBody Collection<EmployeeDto> employeeDto) {
         log.info("Send a response with the collection employee");
         var collection = employeeService.saveCollection(employeeDto);
         log.info("The operation was successful, they saved the collection");
-        return new ResponseEntity<>(collection, HttpStatus.OK);
+        return collection;
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Collection<EmployeeDto>> findByFullName(@RequestParam("fullName") String fullname) {
-        log.info("Принимает полное имя {} на стороне edo-service", fullname);
-        var emp =  employeeService.findAllByFullName(fullname);
-        return new ResponseEntity<>(emp, HttpStatus.OK);
+    public Collection<EmployeeDto> findByFullName(@RequestParam("fullName") String fullName) {
+        log.info("Принимает полное имя {} на стороне edo-service", fullName);
+        var emp =  employeeService.findAllByFullName(fullName);
+        return emp;
     }
 
 }
