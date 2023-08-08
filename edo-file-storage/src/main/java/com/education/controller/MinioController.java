@@ -1,11 +1,9 @@
 package com.education.controller;
 
 import com.education.component.MinioComponent;
-
 import com.education.exceptions.ExtensionException;
 import com.education.exceptions.MinIOPutException;
 import com.education.exceptions.SizeException;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -15,13 +13,7 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.*;
@@ -29,6 +21,9 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
+
+import static model.dto.EnumFileType.FACSIMILE;
+import static model.dto.EnumFileType.MAIN;
 
 
 /**
@@ -51,13 +46,14 @@ public class MinioController {
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.TEXT_PLAIN_VALUE)
     public String uploadFileToMinIO(@RequestParam("file") MultipartFile file,
-                                                    @RequestParam("key") String key,
-                                    @RequestParam("fileType") String fileType) {
+                                    @RequestParam("key") String key,
+                                    @RequestParam("fileType") EnumFileType fileType) {
 
         String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
 
 
-        if (!((Objects.requireNonNull(extension).equals("jpg")) || (extension.equals("jpeg")) || (extension.equals("png")))) {
+        if (FACSIMILE.equals(fileType) &&
+                !((Objects.requireNonNull(extension).equals("jpg")) || (extension.equals("jpeg")) || (extension.equals("png")))) {
             throw new ExtensionException("Неверное расширение файла!");
         }
 
@@ -67,7 +63,7 @@ public class MinioController {
         }
 
 
-        if (EnumFileType.MAIN.toString().equals(fileType)) {
+        if (MAIN.equals(fileType)) {
 
             try (var convertedFile = minioComponent.convertFileToPDF(file, extension)) {
                 String contentType = minioComponent.getFileContentType(file, extension);
@@ -92,6 +88,7 @@ public class MinioController {
             return contentType;
         }
     }
+
     /**
      * Request to download file from MINIO-server.
      * Request consist of object`s name.
@@ -114,7 +111,7 @@ public class MinioController {
     public ResponseEntity delete(@PathVariable("storageFileId") String storageFileId) {
         log.info("Delete outdated objects in MINIO-server");
         InputStream is = minioComponent.getObject(storageFileId);
-        if(is != null){
+        if (is != null) {
             minioComponent.deleteObjects(storageFileId);
             log.info("Delete outdated objects in MINIO-server successful");
             return ResponseEntity.ok().body("File is deleted");
@@ -133,7 +130,7 @@ public class MinioController {
         log.info("Checking connection");
         try {
             minioComponent.checkConnection();
-        } catch (MinIOPutException e){
+        } catch (MinIOPutException e) {
             log.warn("Connection is not established");
             return ResponseEntity.internalServerError().body("Connection is not established. Reason: " + e.getMessage());
         }

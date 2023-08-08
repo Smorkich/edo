@@ -1,8 +1,3 @@
-create type enum_type_file as enum  (
-    'main', -- общий тип документа
-    'facsimile' -- тип документа факсимиле
-    );
-
 CREATE TABLE IF NOT EXISTS file_pool
 (
     id              BIGSERIAL   NOT NULL PRIMARY KEY,
@@ -13,8 +8,7 @@ CREATE TABLE IF NOT EXISTS file_pool
     page_count      INTEGER     NOT NULL  CHECK (page_count > 0),
     upload_date     timestamptz NOT NULL,
     archived_date   timestamptz,
-    creator_id      BIGINT      NOT NULL,
-    file_type       enum_type_file      NOT NULL
+    creator_id      BIGINT      NOT NULL
 );
 
 
