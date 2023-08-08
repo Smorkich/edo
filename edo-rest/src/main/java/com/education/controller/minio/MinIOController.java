@@ -1,7 +1,8 @@
 package com.education.controller.minio;
 
 import com.education.service.minio.MinioService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.FilePoolDto;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriUtils;
 
-import java.io.IOException;
 import java.util.UUID;
 
 import static org.springframework.http.HttpHeaders.*;
@@ -31,6 +31,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RestController
 @Log4j2
 @AllArgsConstructor
+@Tag(name = "Контроллер для работы с MiniO", description = "Отправляет запрос к MiniO")
 @RequestMapping("/api/rest/minio")
 public class MinIOController {
 
@@ -40,7 +41,7 @@ public class MinIOController {
      * Redirect request to upload file from bucket of MINIO-server.
      * Request consist of object`s name.
      */
-    @ApiOperation("send request to upload file to buckets from source")
+    @Operation(summary = "Отправляет запрос на загрузку файла из исходного кода в корзину")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = APPLICATION_JSON_VALUE)
     public FilePoolDto uploadOneFile(@RequestParam(value = "file", required = false) MultipartFile file) {
@@ -52,7 +53,7 @@ public class MinIOController {
      * Redirect request to download file from MINIO-server.
      * Request consist of object`s name.
      */
-    @ApiOperation("send request to download file from server`s buckets to target folder")
+    @Operation(summary = "Отправляет запрос на загрзку файла из корзины в целевую папку")
     @GetMapping(value = "/download/{name}")
     public ResponseEntity<InputStreamResource> downloadOneFile(@PathVariable("name") String name) {
         log.info("Download file named: {}", name);
@@ -72,7 +73,7 @@ public class MinIOController {
     /**
      * Request to delete old file in the MINIO-server`s bucket
      */
-    @ApiOperation("send request to upload file to bucjets from source")
+    @Operation(summary = "Отправляет запрос на удаление устаревших файлов в корзине")
     @DeleteMapping("/delete/{fileName}")
     public ResponseEntity delete(@PathVariable("fileName") String fileName) {
         log.info("delete file: {}", fileName);

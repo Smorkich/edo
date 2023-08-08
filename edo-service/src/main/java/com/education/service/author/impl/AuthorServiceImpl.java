@@ -46,9 +46,7 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     public void delete(Long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, AUTHOR_URL)
-                .setPath("/")
-                .setPath(String.valueOf(id));
+        var builder = buildURI(EDO_REPOSITORY_NAME, AUTHOR_URL + "/" + id);
         restTemplate.delete(builder.toString());
     }
 
@@ -57,9 +55,7 @@ public class AuthorServiceImpl implements AuthorService {
      */
     @Override
     public AuthorDto findById(Long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, AUTHOR_URL)
-                .setPath("/")
-                .setPath(String.valueOf(id));
+        var builder = buildURI(EDO_REPOSITORY_NAME, AUTHOR_URL + "/" + id);
         return restTemplate.getForObject(builder.toString(), AuthorDto.class);
     }
 

@@ -19,10 +19,10 @@ public class FacsimileDto {
     @ApiModelProperty(value = "Признак архивности")
     private Boolean isArchived;
 
-    @ApiModelProperty(value = "Cвязь с пользователем")
+    @ApiModelProperty(value = "Связь с пользователем")
     private EmployeeDto employee;
 
-    @ApiModelProperty(value = "Cвязь с департаментом")
+    @ApiModelProperty(value = "Связь с департаментом")
     private DepartmentDto department;
 
     @ApiModelProperty(value = "Cвязь с файлом")

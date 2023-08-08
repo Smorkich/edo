@@ -1,4 +1,5 @@
 package com.education.service.filePool;
+
 import model.dto.FilePoolDto;
 
 import java.util.Collection;
@@ -23,7 +24,7 @@ public interface FilePoolService {
     /**
      * findById - находит файл по id
      */
-    String findById(Long id);
+    FilePoolDto findById(Long id);
 
     /**
      * findById - находит файл по uuid
@@ -34,12 +35,7 @@ public interface FilePoolService {
     /**
      * findAll - возвращает все файлы
      */
-    String findAll();
-
-    /**
-     * findAllById - выводит список всех файлов по id
-     */
-    Collection<FilePoolDto> findAllById(String ids);
+    Collection<FilePoolDto> findAll();
 
     /**
      * moveToArchive - заполняет архивную дату

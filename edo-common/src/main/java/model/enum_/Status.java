@@ -13,7 +13,7 @@ public enum Status {
     PERFORMED("Выполнено");
 
     /**
-     * "status" - поле, созданное для того, чтобы можно было перопределить toString()
+     * "status" - поле, созданное для того, чтобы можно было переопределить toString()
      */
     private final String status;
 

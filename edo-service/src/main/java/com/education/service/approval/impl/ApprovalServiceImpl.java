@@ -1,5 +1,6 @@
 package com.education.service.approval.impl;
 
+import com.education.feign.ApprovalFeignClient;
 import com.education.service.approval.ApprovalService;
 import com.education.service.approvalBlock.ApprovalBlockService;
 import com.education.service.emloyee.EmployeeService;
@@ -33,7 +34,7 @@ import static model.constant.Constant.EDO_REPOSITORY_NAME;
 @Service
 @AllArgsConstructor
 public class ApprovalServiceImpl implements ApprovalService {
-    private final RestTemplate restTemplate;
+    private final ApprovalFeignClient approvalFeignClient;
     private final ApprovalBlockService approvalBlockService;
     private final MemberService memberService;
     private final Validator validator;
@@ -46,7 +47,6 @@ public class ApprovalServiceImpl implements ApprovalService {
      */
     @Override
     public ApprovalDto save(ApprovalDto approvalDto) {
-
         // Установка даты создания для нового листа согласования
         if (approvalDto.getCreationDate() == null) {
             approvalDto.setCreationDate(ZonedDateTime.now());
@@ -62,7 +62,6 @@ public class ApprovalServiceImpl implements ApprovalService {
             Collection<ApprovalBlockDto> participantApprovalBlocks = approvalDto.getParticipantApprovalBlocks();
             Collection<ApprovalBlockDto> signatoryApprovalBlocks = approvalDto.getSignatoryApprovalBlocks();
 
-
             // Сохранение инициатора
             if (approvalDto.getInitiator() == null) {
                 approvalDto.setInitiator(memberService.save(MemberDto.builder()
@@ -74,31 +73,25 @@ public class ApprovalServiceImpl implements ApprovalService {
                         .build()));
             }
 
-            // Сохранение листа согласования без блоков
-            approvalDto.setSignatoryApprovalBlocks(new ArrayList<>());
-            approvalDto.setParticipantApprovalBlocks(new ArrayList<>());
-            String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval").toString();
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-            approvalDto = restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(approvalDto, headers), ApprovalDto.class).getBody();
-            ApprovalDto savedApprovalDto = approvalDto;
-            Long approvalId = approvalDto.getId();
+            // Вызов FeignClient для сохранения ApprovalDto
+            approvalDto = approvalFeignClient.save(approvalDto).getBody();
 
             // Сохранение блоков согласования
+            ApprovalDto finalApprovalDto = approvalDto;
             participantApprovalBlocks.forEach(approvalBlockDto -> {
-                approvalBlockDto = approvalBlockService.save(approvalBlockDto, approvalId);
+                approvalBlockDto = approvalBlockService.save(approvalBlockDto, finalApprovalDto.getId());
                 savedApprovalBlocks.add(approvalBlockDto);
-                savedApprovalDto.getParticipantApprovalBlocks().add(approvalBlockDto);
+                finalApprovalDto.getParticipantApprovalBlocks().add(approvalBlockDto);
             });
             signatoryApprovalBlocks.forEach(approvalBlockDto -> {
-                approvalBlockDto = approvalBlockService.save(approvalBlockDto, approvalId);
+                approvalBlockDto = approvalBlockService.save(approvalBlockDto, finalApprovalDto.getId());
                 savedApprovalBlocks.add(approvalBlockDto);
-                savedApprovalDto.getSignatoryApprovalBlocks().add(approvalBlockDto);
+                finalApprovalDto.getSignatoryApprovalBlocks().add(approvalBlockDto);
             });
 
-            return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(savedApprovalDto, headers), ApprovalDto.class).getBody();
+            // Вызов FeignClient для обновления ApprovalDto
+            return approvalFeignClient.save(approvalDto).getBody();
         } catch (Exception e) {
-
             // Удаление сохранённых сущностей
             savedApprovalBlocks.forEach(approvalBlockDto -> approvalBlockService.delete(approvalBlockDto.getId()));
             if (approvalDto.getId() != null) delete(approvalDto.getId());
@@ -112,9 +105,7 @@ public class ApprovalServiceImpl implements ApprovalService {
      */
     @Override
     public ApprovalDto findById(Long id) {
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/" + id).toString();
-
-        return restTemplate.getForObject(uri, ApprovalDto.class);
+        return approvalFeignClient.findById(id).getBody();
     }
 
     /**
@@ -122,9 +113,7 @@ public class ApprovalServiceImpl implements ApprovalService {
      */
     @Override
     public Collection<ApprovalDto> findAll() {
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/all").toString();
-
-        return restTemplate.getForObject(uri, List.class);
+        return approvalFeignClient.findAll().getBody();
     }
 
     /**
@@ -132,9 +121,7 @@ public class ApprovalServiceImpl implements ApprovalService {
      */
     @Override
     public Collection<ApprovalDto> findAllById(Iterable<Long> ids) {
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/all/" + ids).toString();
-
-        return restTemplate.getForObject(uri, List.class);
+        return approvalFeignClient.findAllById((List<Long>) ids).getBody();
     }
 
     /**
@@ -142,9 +129,7 @@ public class ApprovalServiceImpl implements ApprovalService {
      */
     @Override
     public void delete(Long id) {
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/" + id).toString();
-        restTemplate.delete(uri);
-
+        approvalFeignClient.delete(id);
     }
 
     /**
@@ -152,11 +137,7 @@ public class ApprovalServiceImpl implements ApprovalService {
      */
     @Override
     public void moveToArchive(Long id) {
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/move/" + id).toString();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        restTemplate.exchange(uri, HttpMethod.PATCH, new HttpEntity<>(headers), ApprovalDto.class).getBody();
+        approvalFeignClient.moveToArchive(id);
     }
 
     /**
@@ -164,9 +145,7 @@ public class ApprovalServiceImpl implements ApprovalService {
      */
     @Override
     public ApprovalDto findByIdNotArchived(Long id) {
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/findByIdNotArchived/" + id).toString();
-
-        return restTemplate.getForObject(uri, ApprovalDto.class);
+        return approvalFeignClient.findByIdNotArchived(id).getBody();
     }
 
     /**
@@ -174,9 +153,7 @@ public class ApprovalServiceImpl implements ApprovalService {
      */
     @Override
     public Collection<ApprovalDto> findAllNotArchived() {
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/findAllNotArchived").toString();
-
-        return restTemplate.getForObject(uri, List.class);
+        return approvalFeignClient.findAllNotArchived().getBody();
     }
 
     /**
@@ -184,9 +161,7 @@ public class ApprovalServiceImpl implements ApprovalService {
      */
     @Override
     public Collection<ApprovalDto> findByIdInAndArchivedDateNull(Iterable<Long> ids) {
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/archive/all/findByIdInAndArchivedDateNull/" + ids).toString();
-
-        return restTemplate.getForObject(uri, List.class);
+        return approvalFeignClient.findByIdInAndArchivedDateNull((List<Long>) ids).getBody();
     }
 
     /**
@@ -202,11 +177,7 @@ public class ApprovalServiceImpl implements ApprovalService {
      */
     @Override
     public ApprovalDto update(ApprovalDto approvalDto) {
-        String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/approval/update").toString();
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-
-        return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(approvalDto, headers), ApprovalDto.class).getBody();
+        return approvalFeignClient.update(approvalDto).getBody();
     }
 
     /**
@@ -232,6 +203,9 @@ public class ApprovalServiceImpl implements ApprovalService {
             approval.setCurrentMember(currentMember);
 
             update(approval);
+
+            // Вызов FeignClient
+            approvalFeignClient.sendForApproval(id);
         }
     }
 }

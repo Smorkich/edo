@@ -31,17 +31,13 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public void delete(long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
-                .setPath("/")
-                .setPath(String.valueOf(id));
+        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL + "/" + id);
         restTemplate.delete(builder.toString());
     }
 
     @Override
     public String findById(long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
-                .setPath("/")
-                .setPath(String.valueOf(id));
+        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL + "/" + id);
         return restTemplate.getForObject(builder.toString(), String.class);
     }
 
