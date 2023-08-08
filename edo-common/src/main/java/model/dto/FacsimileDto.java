@@ -17,7 +17,7 @@ public class FacsimileDto {
     private Long id;
 
     @ApiModelProperty(value = "Признак архивности")
-    private Boolean IsArchived;
+    private Boolean isArchived;
 
     @ApiModelProperty(value = "Связь с пользователем")
     private EmployeeDto employee;
@@ -25,8 +25,8 @@ public class FacsimileDto {
     @ApiModelProperty(value = "Связь с департаментом")
     private DepartmentDto department;
 
-    @ApiModelProperty(value = "Связь с файлом")
-    private FilePoolDto filePool_id;
+    @ApiModelProperty(value = "Cвязь с файлом")
+    private FilePoolDto filePoolId;
 
 
 
