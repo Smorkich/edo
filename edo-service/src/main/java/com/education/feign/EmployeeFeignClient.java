@@ -1,7 +1,7 @@
 package com.education.feign;
 
+import com.education.config.FeignConfig;
 import model.dto.EmployeeDto;
-import model.dto.FilePoolDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,7 +9,7 @@ import java.util.Collection;
 
 import static model.constant.Constant.*;
 
-@FeignClient(name = EDO_REPOSITORY_NAME)
+@FeignClient(name = EDO_REPOSITORY_NAME, configuration = FeignConfig.class)
 public interface EmployeeFeignClient {
     @PostMapping(EMPLOYEE_URL)
     EmployeeDto save(@RequestBody EmployeeDto employeeDto);
