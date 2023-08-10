@@ -111,5 +111,4 @@ public class EmployeeServiceImpl implements EmployeeService {
         log.info("Sent a request to to save a collection of employees, in edo - repository");
         return restTemplate.postForObject(uriEmployeeSavePath + "/collection", employeeDto, Collection.class);
     }
-
 }

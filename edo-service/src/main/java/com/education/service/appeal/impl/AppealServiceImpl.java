@@ -1,5 +1,7 @@
 package com.education.service.appeal.impl;
 
+import com.education.controller.employee.EmployeeController;
+import com.education.controller.facsimile.FacsimileController;
 import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
 import com.education.service.facsimile.FacsimileService;
@@ -10,6 +12,7 @@ import com.education.service.question.QuestionService;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import model.dto.*;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -18,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.ZonedDateTime;
@@ -40,7 +42,10 @@ public class AppealServiceImpl implements AppealService {
     private final AuthorService authorService;
     private final QuestionService questionService;
     private final FilePoolService filePoolService;
+    private final FacsimileDto facsimileDto;
     private final FacsimileService facsimileService;
+    private final FacsimileController facsimileController;
+    private final EmployeeController employeeController;
     private final MinioService minioService;
 
     private final NomenclatureService nomenclatureService;
@@ -233,13 +238,16 @@ public class AppealServiceImpl implements AppealService {
 
     /**
      * Метод закрепляет файл за обращением
+     * Накладывает факсимиле на файл за обращения
      */
 
     @Override
     public AppealDto upload(Long id, FilePoolDto file) {
         AppealDto appealDto = findById(id);
-        try (InputStream facsimile = new FileInputStream("FacsimilePic.png")) {
-            minioService.overlayFacsimileOnFirstFile(file.getStorageFileId(), file.getExtension(), "application/pdf", facsimile);
+        var employeeId = appealDto.getSigner().iterator().next().getId();
+        Resource facsimileRes = facsimileService.getFacsimile(facsimileController.findFacsimileByEmployeeId(employeeId).getBody());
+        try (InputStream facsimileFile = facsimileRes.getInputStream()) {
+            minioService.overlayFacsimileOnFirstFile(file.getStorageFileId(), file.getExtension(), "application/pdf", facsimileFile);
         } catch (IOException e) {
             System.out.printf("Факсимиле не было наложено на файл");
         }
