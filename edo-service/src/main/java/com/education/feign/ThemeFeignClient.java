@@ -19,12 +19,11 @@ public interface ThemeFeignClient {
     @GetMapping(THEME_URL + "{/ids}")
     Collection<ThemeDto> findByAllId(@PathVariable String ids);
 
-    //
-    //
+
     @GetMapping(THEME_URL + "{/id}")
     ThemeDto findById(@PathVariable Long id);
 
-    @GetMapping(THEME_URL)
+    @PostMapping(THEME_URL)
     ThemeDto save(@RequestBody @Valid ThemeDto notificationDto);
 
     @PostMapping(THEME_URL + "/{id}")
