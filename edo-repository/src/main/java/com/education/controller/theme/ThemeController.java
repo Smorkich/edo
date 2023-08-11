@@ -4,7 +4,6 @@ import com.education.entity.Theme;
 import com.education.service.theme.ThemeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.ThemeDto;
@@ -33,12 +32,11 @@ public class ThemeController {
 
     @Operation(summary = "Создает тему обращения", description = "Тема обращения должна существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    // public ResponseEntity<Theme>  save(@RequestBody ThemeDto themeDto) {
-    public ThemeDto save(@RequestBody @Valid ThemeDto notificationDto) {
+    public ResponseEntity<Theme>  save(@RequestBody ThemeDto themeDto) {
         log.info("Starting the save operation");
-        themeService.save(THEME_MAPPER.toEntity(notificationDto));
+        themeService.save(THEME_MAPPER.toEntity(themeDto));
         log.info("POST request successful");
-        return notificationDto;
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Operation(summary = "Удаляет тему обращения", description = "Тема обращения должна существовать")
@@ -53,11 +51,11 @@ public class ThemeController {
 
     @Operation(summary = "Получение темы по id", description = "Тема обращения должна существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ThemeDto findById(@PathVariable Long id) {
+    public ResponseEntity<ThemeDto> findById(@PathVariable Long id) {
         log.info("Sent GET request to get author with id={} from the database", id);
-        ThemeDto themeDto = THEME_MAPPER.toDto(themeService.findById(id));
+        var themeDto = THEME_MAPPER.toDto(themeService.findById(id));
         log.info("Response from database:{}", themeDto);
-        return themeDto;
+        return new ResponseEntity<>(themeDto, HttpStatus.OK);
     }
 
     @Operation(summary = "Получение всех тем")
@@ -71,17 +69,17 @@ public class ThemeController {
 
     @Operation(summary = "Добавляет в тему дату архивации", description = "Тема должна существовать")
     @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    private String moveToArchive(@PathVariable(name = "id") Long id) {
+    private ResponseEntity<String> moveToArchive(@PathVariable(name = "id") Long id) {
         log.info("Starting the archiving theme");
         themeService.moveToArchive(id);
         log.info("Archiving a theme");
-        return "moveToArchive";
+        return new ResponseEntity<>("The theme is archived", HttpStatus.OK);
     }
 
     @Operation(summary = "Предоставление темы без архивации по id")
     @GetMapping("/noArchived/{id}")
-    private ThemeDto getThemeNotArchived(@PathVariable Long id) {
-        return THEME_MAPPER.toDto(themeService.findByIdAndArchivedDateNull(id));
+    private ResponseEntity<ThemeDto> getThemeNotArchived(@PathVariable Long id) {
+        return new ResponseEntity<>(THEME_MAPPER.toDto(themeService.findByIdAndArchivedDateNull(id)), HttpStatus.OK);
     }
 
     @Operation(summary = "Предоставление тем без архивации по IDs")

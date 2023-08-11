@@ -29,31 +29,30 @@ public class ThemeController {
 
     @Operation(summary = "Создает тему обращения", description = "Тема обращения должна существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ThemeDto save(@RequestBody ThemeDto themeDto) {
+    public ResponseEntity<ThemeDto> save(@RequestBody ThemeDto themeDto) {
         log.info("Starting the save operation");
         themeService.save(themeDto);
         log.info("POST request successful");
-        return themeDto;
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @Operation(summary = "Получение темы по id", description = "Тема обращения должна существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ThemeDto findById(@PathVariable Long id) {
+    public ResponseEntity<ThemeDto> findById(@PathVariable Long id) {
         log.info("Sent GET request to get author with id={} from the database", id);
         var themeDto = themeService.findById(id);
         log.info("Response from database:{}", themeDto);
-        return themeDto;
+        return new ResponseEntity<>(themeDto, HttpStatus.OK);
     }
 
 
     @Operation(summary = "Добавляет в тему дату архивации", description = "Тема должна существовать")
     @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    //private ResponseEntity<String> moveToArchive(@PathVariable(name = "id") Long id) {
-    public String moveToArchive (@PathVariable(name = "id") Long id) {
+    private ResponseEntity<String> moveToArchive(@PathVariable(name = "id") Long id) {
         log.info("Starting the archiving theme");
         themeService.moveToArchived(id);
         log.info("Theme with id = {} has been moved to archive", id);
-        return "Archived OK";
+        return new ResponseEntity<>("The theme is archived", HttpStatus.OK);
     }
 
 
