@@ -47,7 +47,7 @@ public class Employee extends BaseEntity {
     /**
      * address - Адрес
      */
-    @OneToOne(fetch = LAZY,cascade = CascadeType.ALL)
+    @OneToOne(fetch = LAZY)
     @JoinColumn(name = "address")
     private Address address;
 

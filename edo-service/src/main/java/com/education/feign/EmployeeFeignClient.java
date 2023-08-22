@@ -7,7 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
-import static model.constant.Constant.*;
+import static model.constant.Constant.EDO_REPOSITORY_NAME;
+import static model.constant.Constant.EMPLOYEE_URL;
 
 @FeignClient(name = EDO_REPOSITORY_NAME, configuration = FeignConfig.class)
 public interface EmployeeFeignClient {
@@ -31,8 +32,10 @@ public interface EmployeeFeignClient {
 
     @GetMapping(value = EMPLOYEE_URL + "/notArchivedAll/{ids}")
     Collection<EmployeeDto> findByAllIdNotArchived(@PathVariable String ids);
+
     @PostMapping(value = EMPLOYEE_URL + "/collection")
-    Collection<EmployeeDto> saveCollection(@RequestBody Collection<EmployeeDto> employeeDto) ;
+    Collection<EmployeeDto> saveCollection(@RequestBody Collection<EmployeeDto> employeeDto);
+
     @GetMapping(value = EMPLOYEE_URL + "/search")
     Collection<EmployeeDto> findAllByFullName(@RequestParam("fullName") String fullName);
 }

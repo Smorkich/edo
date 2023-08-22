@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import static model.constant.Constant.*;
 @FeignClient(name = EDO_REPOSITORY_NAME, configuration = FeignConfig.class)
 public interface FacsimileFeignClient {
+
     @PostMapping(value = FACSIMILE_URL + "/save",produces = MediaType.APPLICATION_JSON_VALUE)
     FacsimileDto save(@RequestBody FacsimileDto facsimileDto);
 }

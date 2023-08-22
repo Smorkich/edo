@@ -1,6 +1,6 @@
 spring:
-#  profiles:
-#    active: NoAuth
+  profiles:
+    active: NoAuth
   application:
     name: edo-rest
   servlet:

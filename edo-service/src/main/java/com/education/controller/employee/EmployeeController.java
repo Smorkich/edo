@@ -107,8 +107,7 @@ public class EmployeeController {
     @GetMapping("/search")
     public Collection<EmployeeDto> findByFullName(@RequestParam("fullName") String fullName) {
         log.info("Принимает полное имя {} на стороне edo-service", fullName);
-        var emp =  employeeService.findAllByFullName(fullName);
-        return emp;
+        return employeeService.findAllByFullName(fullName);
     }
 
 }

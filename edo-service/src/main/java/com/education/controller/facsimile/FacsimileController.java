@@ -26,7 +26,6 @@ public class FacsimileController  {
     @Operation(summary = "Принимает facsimile, отправляет на edo-repo")
     @PostMapping(value = "/save",produces = MediaType.APPLICATION_JSON_VALUE)
     public FacsimileDto save(@RequestBody FacsimileDto facsimileDto){
-        var save =  facsimileService.save(facsimileDto);
-        return save;
+        return facsimileService.save(facsimileDto);
     }
 }
