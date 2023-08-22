@@ -64,7 +64,7 @@ public class QuestionController {
      * @return ResponseEntity<Collection < QuestionDto> - ResponseEntity коллекции DTO сущности Question (вопросы обращения)
      * @apiNote HTTP Method - POST
      */
-    @ApiOperation(value = "Создает вопросы в БД")
+    @Operation(summary = "Создает вопросы в БД")
     @PostMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<QuestionDto>> saveAll(@RequestBody Collection<QuestionDto> questionDtos) {
         log.info("Send a post-request to edo-repository to post new Questions to database (RestTemplate on edo-service side)");
@@ -121,7 +121,7 @@ public class QuestionController {
      * @return ResponseEntity<QuestionDto> - ResponseEntity DTO сущности Question (вопрос обращения)
      * @apiNote HTTP Method - POST
      */
-    @ApiOperation(value = "Регистрирует вопрос по id", notes = "Вопрос должен существовать")
+    @Operation(summary = "Регистрирует вопрос по id", description = "Вопрос должен существовать")
     @PostMapping(value = "/register/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<QuestionDto> registerById(@PathVariable(name = "id") Long id) {
         log.info("Send a post-request to register Question with id = {} from edo-repository (RestTemplate on edo-service side)", id);
@@ -138,7 +138,7 @@ public class QuestionController {
      * @return ResponseEntity<QuestionDto> - ResponseEntity DTO сущности Question (вопрос обращения)
      * @apiNote HTTP Method - POST
      */
-    @ApiOperation(value = "Регистрирует все вопросы по id", notes = "Вопросы должны существовать")
+    @Operation(summary = "Регистрирует все вопросы по id", description = "Вопросы должны существовать")
     @PostMapping(value = "/registerAll/{ids}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<QuestionDto>> registerAllById(@PathVariable(name = "ids") Iterable<Long> ids) {
         log.info("Send a post-request to register all Questions from edo-repository (RestTemplate on edo-service side)");
@@ -155,7 +155,7 @@ public class QuestionController {
      * @return ResponseEntity<QuestionDto> - ResponseEntity DTO сущности Question (вопрос обращения)
      * @apiNote HTTP Method - POST
      */
-    @ApiOperation(value = "Изменяет статус вопроса по id на 'UPDATED'", notes = "Вопрос должен существовать")
+    @Operation(summary = "Изменяет статус вопроса по id на 'UPDATED'", description = "Вопрос должен существовать")
     @PostMapping(value = "/setUpdatedStatus/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<QuestionDto> setUpdatedStatusById(@PathVariable(name = "id") Long id) {
         log.info("Send a post-request to change Question status on 'UPDATED' from edo-service with id = {}", id);
@@ -172,7 +172,7 @@ public class QuestionController {
      * @return ResponseEntity<Collection < QuestionDto> - коллекция ResponseEntity DTO сущности Question (вопросы обращения)
      * @apiNote HTTP Method - POST
      */
-    @ApiOperation(value = "Изменяет статусы вопросов по id на 'UPDATED'", notes = "Вопросы должны существовать")
+    @Operation(summary = "Изменяет статусы вопросов по id на 'UPDATED'", description = "Вопросы должны существовать")
     @PostMapping(value = "/setUpdatedStatusAll/{ids}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<QuestionDto>> setUpdatedStatusAllByID(@PathVariable(name = "ids") Iterable<Long> ids) {
         log.info("Send a post-request to change list of Question status on 'UPDATED' from edo-service");

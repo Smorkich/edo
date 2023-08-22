@@ -109,7 +109,7 @@ public class AppealRestController {
      * @return ResponseEntity<AppealDto> - ResponseEntity DTO сущности Appeal (обращение)
      * @apiNote HTTP Method - POST
      */
-    @ApiOperation(value = "В строке таблицы Appeal изменяет поле appeals_status на Registered", notes = "Строка в Appeal должна существовать")
+    @Operation(summary = "В строке таблицы Appeal изменяет поле appeals_status на Registered", description = "Строка в Appeal должна существовать")
     @PostMapping("/register")
     public ResponseEntity<AppealDto> registerAppeal(@RequestParam(value = "id") Long id) {
         log.info("Updating field 'appeals_status' on 'Registered' from database appeal with appeal id: {}", id);

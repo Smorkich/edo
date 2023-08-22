@@ -40,7 +40,7 @@ public class FilePoolController {
         log.info("Send a post-request to post new Address to database");
         var saved = filePoolService.save(FILE_POOL_MAPPER.toEntity(filePoolDto));
         log.info("Response: {} was added to database", filePoolDto);
-        return FILE_POOL_MAPPER.toDto(save);
+        return FILE_POOL_MAPPER.toDto(saved);
     }
 
 
@@ -54,11 +54,11 @@ public class FilePoolController {
      */
     @Operation(summary = "Создает информацию о файлах в БД")
     @PostMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<FilePoolDto>> saveAll(@RequestBody Collection<FilePoolDto> filePoolDtos) {
+    public Collection<FilePoolDto> saveAll(@RequestBody Collection<FilePoolDto> filePoolDtos) {
         log.info("Send a query to repository to post new FilePools to database");
         var savedAll = filePoolService.saveAll(FILE_POOL_MAPPER.toEntity(filePoolDtos));
         log.info("Response: {} was added to database", filePoolDtos);
-        return new ResponseEntity<>(FILE_POOL_MAPPER.toDto(savedAll), HttpStatus.CREATED);
+        return FILE_POOL_MAPPER.toDto(savedAll);
     }
 
     @Operation(summary = "Удаление файла", description = "Файл должен существовать")

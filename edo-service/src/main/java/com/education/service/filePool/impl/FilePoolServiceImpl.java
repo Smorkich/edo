@@ -39,14 +39,7 @@ public class FilePoolServiceImpl implements FilePoolService {
      */
     @Override
     public Collection<FilePoolDto> saveAll(Collection<FilePoolDto> filePoolDtos) {
-        var dtos = Stream.ofNullable(filePoolDtos)
-                .flatMap(Collection::stream)
-                .map(this::save).toList();
-        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, FILEPOOL_URL + "/all");
-        HttpEntity<Collection<FilePoolDto>> httpEntity = new HttpEntity<>(dtos);
-        ParameterizedTypeReference<Collection<FilePoolDto>> responseType = new ParameterizedTypeReference<>() {
-        };
-        return restTemplate.exchange(uri.toString(), HttpMethod.POST, httpEntity, responseType).getBody();
+        return filePoolFeignClient.saveAll(filePoolDtos);
     }
 
     @Override

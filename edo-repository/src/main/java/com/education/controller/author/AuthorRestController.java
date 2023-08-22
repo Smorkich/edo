@@ -54,7 +54,7 @@ public class AuthorRestController {
      * @return ResponseEntity<Collection < AuthorDto> - ResponseEntity коллекции DTO сущности Author (авторы обращения)
      * @apiNote HTTP Method - POST
      */
-    @ApiOperation(value = "Создает авторов в БД")
+    @Operation(description = "Создает авторов в БД")
     @PostMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<AuthorDto>> saveAll(@RequestBody Collection<AuthorDto> authorDtos) {
         log.info("Send a query to repository to post new Authors to database");

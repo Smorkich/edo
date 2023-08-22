@@ -124,7 +124,7 @@ public class AppealRestController {
      * @return ResponseEntity<AppealDto> - ResponseEntity DTO сущности Appeal (обращение)
      * @apiNote HTTP Method - POST
      */
-    @Operation(value = "Регистрирует выбранное обращение", notes = "Обращение должно существовать")
+    @Operation(summary = "Регистрирует выбранное обращение", description = "Обращение должно существовать")
     @PostMapping("/register")
     public ResponseEntity<AppealDto> registerAppeal(@RequestParam(value = "id") Long id) {
         log.info("Registration request received on edo-service of appeal № " + id);

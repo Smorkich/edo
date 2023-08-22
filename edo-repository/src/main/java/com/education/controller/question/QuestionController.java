@@ -23,7 +23,7 @@ import static com.education.mapper.QuestionMapper.QUESTION_MAPPER;
 @Log4j2
 @RestController
 @AllArgsConstructor
-@Tag(name ="Rest-контроллер для работы с вопросами")
+@Tag(name = "Rest-контроллер для работы с вопросами")
 @RequestMapping("/api/repository/question")
 public class QuestionController {
 
@@ -67,7 +67,7 @@ public class QuestionController {
      * @return ResponseEntity<Collection < QuestionDto> - ResponseEntity коллекции DTO сущности Question (вопросы обращения)
      * @apiNote HTTP Method - POST
      */
-    @ApiOperation(value = "Создает вопросы в БД")
+    @Operation(summary = "Создает вопросы в БД")
     @PostMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<QuestionDto>> saveAll(@RequestBody Collection<QuestionDto> questionDtos) {
         log.info("Send a query to repository to post new Questions to database");
@@ -94,7 +94,7 @@ public class QuestionController {
      * @return ResponseEntity<QuestionDto> - ResponseEntity DTO сущности Question (вопрос обращения)
      * @apiNote HTTP Method - POST
      */
-    @ApiOperation(value = "Изменяет статус вопросов на 'REGISTERED", notes = "Вопрос должен существовать")
+    @Operation(summary = "Изменяет статус вопросов на 'REGISTERED", description = "Вопрос должен существовать")
     @PostMapping(value = "/register/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<QuestionDto> registerById(@PathVariable(name = "id") Long id) {
         log.info("Send a post-request to change Question status on 'REGISTERED' from edo-repository with id = {}", id);
@@ -111,7 +111,7 @@ public class QuestionController {
      * @return ResponseEntity коллекции DTO сущностей Question (вопросы обращения)
      * @apiNote HTTP Method - POST
      */
-    @ApiOperation(value = "Изменяет статус вопросов на 'REGISTERED' по id", notes = "Вопросы должны существовать")
+    @Operation(summary = "Изменяет статус вопросов на 'REGISTERED' по id", description = "Вопросы должны существовать")
     @PostMapping(value = "/registerAll", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<QuestionDto>> registerAllById(@RequestBody Iterable<Long> ids) {
         log.info("Send a post-request to change list of Question status on 'REGISTERED' from edo-repository");
@@ -128,7 +128,7 @@ public class QuestionController {
      * @return ResponseEntity<QuestionDto> - ResponseEntity DTO сущности Question (вопрос обращения)
      * @apiNote HTTP Method - POST
      */
-    @ApiOperation(value = "Изменяет статус вопроса на 'UPDATED' по id", notes = "Вопрос должен существовать")
+    @Operation(summary = "Изменяет статус вопроса на 'UPDATED' по id", description = "Вопрос должен существовать")
     @PostMapping(value = "/setStatusUpdated/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     private ResponseEntity<QuestionDto> setStatusUpdatedById(@PathVariable(name = "id") Long id) {
         log.info("Send a post-request to change Question status on 'UPDATED' from edo-repository with id = {}", id);
@@ -145,7 +145,7 @@ public class QuestionController {
      * @return ResponseEntity коллекции DTO сущностей Question (вопросы обращения)
      * @apiNote HTTP Method - POST
      */
-    @ApiOperation(value = "Изменяет статус вопросов на 'UPDATED' по id", notes = "Вопросы должны существовать")
+    @Operation(summary = "Изменяет статус вопросов на 'UPDATED' по id", description= "Вопросы должны существовать")
     @PostMapping(value = "/setStatusUpdatedAll", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Collection<QuestionDto>> setStatusUpdatedAllById(@RequestBody Iterable<Long> ids) {
         log.info("Send a post-request to change list of Question status on 'UPDATED' from edo-repository");
@@ -193,7 +193,7 @@ public class QuestionController {
      * @return ResponseEntity списка DTO сущностей Question (вопросы обращения)
      * @apiNote HTTP Method - POST
      */
-    @ApiOperation(value = "Возвращает вопросы по обращению (по id сущности Appeal)", notes = "Вопросы должны существовать")
+    @Operation(summary = "Возвращает вопросы по обращению (по id сущности Appeal)", description = "Вопросы должны существовать")
     @GetMapping("/appeal/{id}")
     private ResponseEntity<List<QuestionDto>> findByAppeal(@PathVariable(name = "id") Long id) {
         log.info("Запрос на получение вопросов из обращения");

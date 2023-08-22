@@ -15,9 +15,11 @@ import java.util.Objects;
 @Setter
 @Builder
 @ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ApiModel(value = "Класс-обертка для взаимодействия с иными модулями и внешними системами")
 public class QuestionDto implements Serializable {
 
+    @EqualsAndHashCode.Include
     @ApiModelProperty(value = "id вопроса", name = "id", dataType = "Long", example = "e58ed763-928c-4155-bee9-fdbaaadc15f3")
     private Long id;
 
@@ -36,17 +38,4 @@ public class QuestionDto implements Serializable {
 
     @ApiModelProperty(value = "Статус вопроса", name = "status", dataType = "Status", example = "REGISTERED")
     private Status status;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        QuestionDto that = (QuestionDto) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }

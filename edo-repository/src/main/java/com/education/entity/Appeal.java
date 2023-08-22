@@ -105,6 +105,9 @@ public class Appeal extends BaseEntity {
      * внутри гневные вопросы недовольных граждан
      */
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "appeal")
+    @JoinTable(name = "appeal_question",
+            joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"))
     private Set<Question> questions = new HashSet<>();
 
     /**

@@ -16,9 +16,11 @@ import java.util.Objects;
 @Setter
 @Builder
 @ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ApiModel(value = "Тема обращения")
 public class ThemeDto {
 
+    @EqualsAndHashCode.Include
     @ApiModelProperty(value = "номер id")
     private Long id;
 
@@ -36,17 +38,4 @@ public class ThemeDto {
 
     @ApiModelProperty(value = "родительская тема")
     private ThemeDto parentTheme;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ThemeDto themeDto = (ThemeDto) o;
-        return Objects.equals(id, themeDto.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
 }
