@@ -1,7 +1,8 @@
 package com.education.controller.execution;
 
 import com.education.service.execution.ExecutionReportService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.ExecutionReportDto;
@@ -22,11 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
 @Log4j2
 @AllArgsConstructor
 @RequestMapping("/api/rest/report")
-@ApiOperation("Контроллер для работы с отчетами по резолюциям")
+@Tag(name = "Отчеты", description = "Методы для работы с отчетами по резолюциям")
 public class ExecutionReportController {
     private final ExecutionReportService reportService;
 
-    @ApiOperation(value = "Добавляет отчет о статусе выполнения резолюции")
+    @Operation(summary = "Добавляет отчет о статусе выполнения резолюции")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ExecutionReportDto> submitReport(@RequestBody ExecutionReportDto reportDto) {
         log.info("Отправить пост запрос в edo-service");

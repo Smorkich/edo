@@ -3,7 +3,8 @@ package com.education.controller.region;
 
 import com.education.entity.Region;
 import com.education.service.region.RegionService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.RegionDto;
@@ -16,6 +17,7 @@ import java.time.ZonedDateTime;
 import java.util.Collection;
 
 import static com.education.mapper.RegionMapper.REGION_MAPPER;
+import static model.constant.Constant.REGION_URL;
 
 /**
  * Rest-контроллер в "edo-repository", служит для отправки запросов
@@ -25,7 +27,8 @@ import static com.education.mapper.RegionMapper.REGION_MAPPER;
 @RestController
 @Log4j2
 @AllArgsConstructor
-@RequestMapping("/api/repository/region")
+@Tag(name = "Rest- контроллер для работы с регионами")
+@RequestMapping(REGION_URL)
 public class RegionController {
 
     /**
@@ -34,48 +37,48 @@ public class RegionController {
      */
     private final RegionService regionService;
 
-    @ApiOperation(value = "Сохраняет регион в базу", notes = "Регион должен существовать")
+    @Operation(summary = "Сохраняет регион в базу", description = "Регион должен существовать")
     @PostMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Region> save(@RequestBody RegionDto regionDto) {
+    public RegionDto save(@RequestBody RegionDto regionDto)  {
         log.info("Send a post-request to save new Region to database");
         regionService.save(REGION_MAPPER.toEntity(regionDto));
         log.info("Response: {} was added to database", regionDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return regionDto;
     }
 
-    @ApiOperation(value = "Удаляет регион по id", notes = "Регион должен существовать")
+    @Operation(summary = "Удаляет регион по id", description = "Регион должен существовать")
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Long> delete(@PathVariable("id") Long id) {
+    public HttpStatus delete(@PathVariable("id") Long id) {
         log.info("Send a delete-request to remove Region with id= {}", id);
         regionService.delete(regionService.findById(id));
         log.info("Response: Region with id = {} was deleted from database", id);
-        return new ResponseEntity<>(id, HttpStatus.OK);
+        return HttpStatus.ACCEPTED;
     }
 
-    @ApiOperation(value = "Возвращает регион по id", notes = "Регион должен существовать")
+    @Operation(summary = "Возвращает регион по id", description = "Регион должен существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RegionDto> findById(@PathVariable("id") Long id) {
+    public RegionDto findById(@PathVariable("id") Long id) {
         log.info("Send a get-request to get Region with id = {} from database", id);
         var regionDto = REGION_MAPPER.toDto(regionService.findById(id));
         log.info("Response from database: {}", regionDto);
-        return new ResponseEntity<>(regionDto, HttpStatus.OK);
+        return regionDto;
     }
 
-    @ApiOperation(value = "Возвращает все регионы")
+    @Operation(summary = "Возвращает все регионы")
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<RegionDto>> findAll() {
+    public Collection<RegionDto> findAll() {
         log.info("Send a get-request to get all Regions from database");
         var regionDtoCollection = REGION_MAPPER.toDto(regionService.findAll());
         log.info("Response from database: {}", regionDtoCollection);
-        return new ResponseEntity<>(regionDtoCollection, HttpStatus.OK);
+        return regionDtoCollection;
     }
 
-    @ApiOperation(value = "Заполняет дату архивации")
+    @Operation(summary = "Заполняет дату архивации")
     @PostMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> moveToArchive(@PathVariable("id") Long id) {
+    public String moveToArchive(@PathVariable("id") Long id) {
         log.info("Adding archived date {} in region with id = {}", ZonedDateTime.now(), id);
         regionService.moveToArchive(id);
         log.info("Response: {} archiving", id);
-        return new ResponseEntity<>("The Region is archived", HttpStatus.OK);
+        return "Файл был архивирован";
     }
 }

@@ -45,8 +45,8 @@ public class FacsimileSaveTest {
         facsimileDto = FacsimileDto.builder()
                 .department(DepartmentDto.builder().id(1l).build())
                 .employee(EmployeeDto.builder().id(1l).build())
-                .filePool_id(FilePoolDto.builder().id(1l).build())
-                .IsArchived(false).build();
+                .filePool(FilePoolDto.builder().id(1l).build())
+                .isArchived(false).build();
     }
 
 

@@ -22,7 +22,7 @@ public class Facsimile extends BaseEntity {
      * Признак архивности
      */
     @Column(name = "isArchived")
-    private Boolean IsArchived;
+    private Boolean isArchived;
 
     /**
      * Связь с пользователем
@@ -46,6 +46,6 @@ public class Facsimile extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "filePool_id", referencedColumnName = "id")
-    private FilePool filePool_id;
+    private FilePool filePool;
 
 }

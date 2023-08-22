@@ -1,7 +1,8 @@
 package com.education.controller.notification;
 
 import com.education.service.notification.NotificationService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.NotificationDto;
@@ -17,11 +18,11 @@ import java.util.List;
 @AllArgsConstructor
 @Log4j2
 @RequestMapping("/api/service/notification")
-@ApiOperation("NotificationController in module edo - service ")
+@Tag(name = "Rest- контрллер для работы с уведомлениями")
 public class NotificationController {
     private final NotificationService notificationService;
 
-    @ApiOperation(value = "Get notification settings by ID")
+    @Operation(summary = "Получить настройки уведомлений по id")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<NotificationDto> findById(@PathVariable Long id) {
         log.info("Sending response with notification of assigned ID");
@@ -30,7 +31,7 @@ public class NotificationController {
         return new ResponseEntity<>(notificationDto, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get all notification settings")
+    @Operation(summary = "Получить все настройки уведомлений")
     @GetMapping("/all")
     public ResponseEntity<Collection<NotificationDto>> findAll() {
         log.info("Sending response with all notifications");
@@ -39,7 +40,7 @@ public class NotificationController {
         return new ResponseEntity<>(notificationDto, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Get notification settings by IDs")
+    @Operation(summary = "Получение настроек уведомлений по IDs")
     @GetMapping("/all/{ids}")
     public ResponseEntity<Collection<NotificationDto>> findAllById(@PathVariable List<Long> ids) {
         log.info("Sending response with notifications of assigned IDs");
@@ -48,7 +49,7 @@ public class NotificationController {
         return new ResponseEntity<>(notificationDto, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Save notification settings")
+    @Operation(summary = "Сохранение настроек уведомлений")
     @PostMapping(value = "/save", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<NotificationDto> save(@RequestBody NotificationDto notificationDto) {
         log.info("Saving notification settings");
@@ -57,7 +58,7 @@ public class NotificationController {
         return new ResponseEntity<>(savedNotificationDto, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "Delete notification settings by ID")
+    @Operation(summary = "Удаление настроек уведомлений по ID")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.info("Deleting notification settings with ID={}", id);

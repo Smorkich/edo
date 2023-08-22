@@ -1,7 +1,8 @@
 package com.education.controller.facsimile;
 
 import com.education.service.facsimile.FacsimileService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.FacsimileDto;
@@ -16,11 +17,12 @@ import org.springframework.web.bind.annotation.RestController;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/rest/facsimile")
+@Tag(name = "Контроллер для работы с FacsimileDto", description = "Метод принимает FacsimileDto, отправляет на edo-service")
 public class FacsimileController {
 
     private FacsimileService facsimileService;
 
-    @ApiOperation(value="Принимает FacsimileDto, отправляет на edo-service")
+    @Operation(summary = "Принимает FacsimileDto, отправляет на edo-service")
     @PostMapping(value = "/save")
     public ResponseEntity<FacsimileDto> save(@RequestBody FacsimileDto facsimileDto){
         log.info("Отправка пост-запроса в edo-service");
