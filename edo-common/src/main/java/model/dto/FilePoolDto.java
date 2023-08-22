@@ -52,4 +52,7 @@ public class FilePoolDto implements Serializable {
     @ApiModelProperty(value = "id создателя файла", name = "creator", dataType = "EmployeeDTO", example = "3")
     private EmployeeDto creator;
 
+    @ApiModelProperty(value = "тип файла", name = "fileType", dataType = "EnumFileType", example = "MAIN")
+    private EnumFileType fileType;
+
 }
