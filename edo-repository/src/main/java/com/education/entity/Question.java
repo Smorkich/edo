@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import model.enum_.Status;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;
@@ -29,29 +30,43 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 public class Question extends BaseEntity {
 
     /**
-     * creationDate - question create date
+     * Дата создания вопроса
      */
     @Column(name = "creation_date", nullable = false)
     private ZonedDateTime creationDate;
 
     /**
-     * archivedDate - question archive date
+     * Дата архивации вопроса
      */
     @Column(name = "archived_date")
     private ZonedDateTime archivedDate;
 
     /**
-     * summary - question description
+     * Описание вопроса
      */
     @Column(name = "summary", nullable = false)
     private String summary;
 
     /**
      * Тема
+     * Статус вопроса
+     */
+    @Column(name = "question_status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+    /**
+     * Тема вопроса
      */
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "theme_id", referencedColumnName = "id")
     private Theme theme;
 
+    /**
+     * Связующее поле с таблицей Appeal (с обращением)
+     */
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "appeal_id")
+    private Appeal appeal;
 
 }

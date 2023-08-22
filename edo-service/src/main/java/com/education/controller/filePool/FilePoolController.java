@@ -1,6 +1,7 @@
 package com.education.controller.filePool;
 
 import com.education.service.filePool.FilePoolService;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -38,6 +39,23 @@ public class FilePoolController {
         filePoolService.delete(id);
         log.info("file was deleted from the database");
         return new ResponseEntity<>(HttpStatus.ACCEPTED);
+    }
+
+    /**
+     * Принимает запрос на создание FilePool'ов, которые передаются в теле HTTP запроса
+     * <p>Вызывает метод saveAll() из интерфейса FilePoolService, микросервиса edo-service
+     *
+     * @param filePoolDtos добавляемые FilePoolDto
+     * @return ResponseEntity<Collection < FilePoolDto> - ResponseEntity коллекции DTO сущности FilePool (файлпулы обращения)
+     * @apiNote HTTP Method - POST
+     */
+    @Operation(summary = "Создает информацию о файле в БД")
+    @PostMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<FilePoolDto>> saveAll(@RequestBody Collection<FilePoolDto> filePoolDtos) {
+        log.info("Send a post-request to edo-repository to post new FilePools to database");
+        filePoolService.saveAll(filePoolDtos);
+        log.info("Response: {} was added to database", filePoolDtos);
+        return new ResponseEntity<>(filePoolDtos, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Получение файла по id", description = "Файл должен существовать")

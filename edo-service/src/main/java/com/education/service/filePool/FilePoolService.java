@@ -17,6 +17,14 @@ public interface FilePoolService {
     FilePoolDto save(FilePoolDto filePool);
 
     /**
+     * Интерфейс для метода, который сохраняет коллекцию сущностей FilePoolDto
+     *
+     * @param filePoolDtos - коллекция сохраняемых dto
+     * @return Collection<FilePoolDto> - коллекция сохранённых dto
+     */
+    Collection<FilePoolDto> saveAll(Collection<FilePoolDto> filePoolDtos);
+
+    /**
      * delete - удаляет файл из бд
      */
     void delete(Long id);

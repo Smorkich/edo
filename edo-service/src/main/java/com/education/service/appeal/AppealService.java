@@ -45,9 +45,19 @@ public interface AppealService {
      */
     Collection<AppealDto> findAllNotArchived();
 
-    public void sendMessage(AppealDto appealDto);
+    void sendMessage(AppealDto appealDto);
 
     AppealDto findAppealByQuestionsId(Long id);
 
     AppealDto upload(Long id, FilePoolDto file);
+
+    /**
+     * Интерфейс для метода, который добавляет статус REGISTERED обращению и вопросам этого обращения.
+     * Отправляет запрос в edo-repository на регистрацию Appeal
+     *
+     * @param id идентификатор регистрируемого Appeal
+     * @return AppealDto - DTO сущности Appeal (обращение)
+     */
+    AppealDto register(Long id);
+
 }

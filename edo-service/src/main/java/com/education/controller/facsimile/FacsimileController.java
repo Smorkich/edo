@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.FacsimileDto;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,9 +23,8 @@ public class FacsimileController  {
 
     @Operation(summary = "Принимает facsimile, отправляет на edo-repo")
     @PostMapping(value = "/save",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<FacsimileDto> save(@RequestBody FacsimileDto facsimileDto){
-        var save =  facsimileService.save(facsimileDto);
-        return new ResponseEntity<>(save, HttpStatus.CREATED);
+    public FacsimileDto save(@RequestBody FacsimileDto facsimileDto){
+        return facsimileService.save(facsimileDto);
     }
 
     @Operation(summary = "Производит поиск Facsimile по EmployeeId")

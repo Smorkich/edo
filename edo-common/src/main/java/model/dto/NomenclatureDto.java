@@ -3,18 +3,22 @@ package model.dto;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
-
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
+import java.util.Objects;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Builder
 @ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ApiModel("Объект хранения элементов")
 public class NomenclatureDto implements Serializable {
 
+    @EqualsAndHashCode.Include
     @ApiModelProperty("ID записи")
     private Long id;
 
@@ -32,5 +36,4 @@ public class NomenclatureDto implements Serializable {
 
     @ApiModelProperty("Индекс элемента")
     private String index;
-
 }

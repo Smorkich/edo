@@ -1,13 +1,14 @@
 package com.education.service.nomenclature;
 
 
+import model.dto.AppealDto;
 import model.dto.NomenclatureDto;
 
 import java.util.List;
 
 /**
-*  Interface for service from edo-service module, calling another service from edo-repository module.
-*/
+ * Interface for service from edo-service module, calling another service from edo-repository module.
+ */
 public interface NomenclatureService {
 
     /**
@@ -46,6 +47,13 @@ public interface NomenclatureService {
      */
     List<NomenclatureDto> findAllByIdNotArchived(String ids);
 
-
     List findByIndex(String index);
+
+    /**
+     * Интерфейс для метода, который генерирует number с использованием индекса, года и номера и назначает его Appeal'у
+     * <p>Вспомогательный метод к методу "save"
+     *
+     * @param appealDto обращение к которому мы хотим прикрепить генерируемый номер в поле number
+     */
+    void generateAppealNumber(AppealDto appealDto);
 }
