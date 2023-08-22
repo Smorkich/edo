@@ -1,6 +1,7 @@
 package com.education.controller.author;
 
 import com.education.service.author.AuthorService;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -46,6 +47,23 @@ public class AuthorRestController {
         authorService.save(authorDto);
         log.info("Author added to database");
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    /**
+     * Принимает запрос на создание Author'ов, которые передаются в теле HTTP запроса
+     * <p>Вызывает метод saveAll() из интерфейса AuthorService, микросервиса edo-service
+     *
+     * @param authorDtos добавляемые AuthorDto
+     * @return ResponseEntity<Collection < AuthorDto> - ResponseEntity коллекции DTO сущности AuthorDto (авторы обращения)
+     * @apiNote HTTP Method - POST
+     */
+    @Operation(summary = "Создает авторов в БД")
+    @PostMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<AuthorDto>> saveAll(@RequestBody Collection<AuthorDto> authorDtos) {
+        log.info("Send a post-request to edo-repository to post new Authors to database");
+        var saved = authorService.saveAll(authorDtos);
+        log.info("Response: {} was added to database", saved);
+        return new ResponseEntity<>(authorDtos, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Удаление автора", description = "Автор должен существовать")

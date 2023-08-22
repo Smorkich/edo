@@ -35,9 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SaveResolution {
 
     private MockMvc mockMvc;
-
     private ObjectMapper objectMapper;
-
     private static ResolutionDto newResolutionDto;
 
     @Before
@@ -83,6 +81,7 @@ public class SaveResolution {
         newResolutionDto.setExecutor(null);
         postRequestToSaveResolution(newResolutionDto);
     }
+
     @Test
     @DisplayName("тест на сохранение резолюции без исполнителей")
     public void seveWithoutSignerTest() throws Exception {

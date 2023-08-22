@@ -17,6 +17,14 @@ public interface FilePoolService {
     FilePool save(FilePool filePool);
 
     /**
+     * Интерфейс метода, который сохраняет коллекцию FilePool в БД через repository
+     *
+     * @param filePools коллекция добавляемых FilePool
+     * @return Collection<FilePool> - коллекция сущности FilePool (информация о файле)
+     */
+    Collection<FilePool> saveAll(Collection<FilePool> filePools);
+
+    /**
      * delete - удаляет файл из бд
      */
     void delete(Long id);
@@ -52,6 +60,5 @@ public interface FilePoolService {
      * findAllByIdNotArchived - находит все файлы без архивной даты по id
      */
     Collection<FilePool> findByIdInAndArchivedDateNull(Iterable<Long> ids);
-
 
 }

@@ -49,4 +49,12 @@ public interface AppealService {
      * Нахождение обращения по Questions id
      */
     Appeal findAppealByQuestionsId(Long id);
+
+    /**
+     * Интерфейс для метода, который изменяет статус строки Appeal в базе данных на REGISTERED
+     * @param id идентификатор регистрируемого Appeal
+     * @return AppealDto - DTO сущности Appeal (обращение)
+     */
+    Appeal register(Long id);
+
 }

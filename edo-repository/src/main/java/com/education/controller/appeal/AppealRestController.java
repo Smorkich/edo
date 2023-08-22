@@ -100,4 +100,22 @@ public class AppealRestController {
         log.info("Appeal: {}", appeal);
         return new ResponseEntity<>(APPEAL_MAPPER.toDto(appeal), HttpStatus.OK);
     }
+
+    /**
+     * Принимает запрос на регистрацию Appeal по id, который передаётся в параметре запроса и
+     * вызывает метод register() из AppealService микросервиса edo-repository
+     *
+     * @param id идентификатор регистрируемого Appeal
+     * @return ResponseEntity<AppealDto> - ResponseEntity DTO сущности Appeal (обращение)
+     * @apiNote HTTP Method - POST
+     */
+    @Operation(summary = "В строке таблицы Appeal изменяет поле appeals_status на Registered", description = "Строка в Appeal должна существовать")
+    @PostMapping("/register")
+    public ResponseEntity<AppealDto> registerAppeal(@RequestParam(value = "id") Long id) {
+        log.info("Updating field 'appeals_status' on 'Registered' from database appeal with appeal id: {}", id);
+        var appeal = appealService.register(id);
+        log.info("Updating field with id {} 'appeals_status' on 'Registered', success!", appeal);
+        return new ResponseEntity<>(APPEAL_MAPPER.toDto(appeal), HttpStatus.OK);
+    }
+
 }
