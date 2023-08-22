@@ -18,7 +18,6 @@ import java.util.Collection;
 @AllArgsConstructor
 public class ThemeServiceImp implements ThemeService {
 
-    //private final RestTemplate restTemplate;
     private final ThemeFeignClient themeFeignClient;
 
 
