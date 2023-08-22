@@ -11,6 +11,7 @@ import com.education.service.nomenclature.NomenclatureService;
 import com.education.service.question.QuestionService;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import model.dto.*;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
@@ -22,20 +23,24 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.education.util.URIBuilderUtil.buildURI;
 import static model.constant.Constant.*;
 import static model.enum_.Status.*;
+import static org.springframework.http.MediaType.APPLICATION_PDF_VALUE;
 
 /**
  * Сервис-слой для Appeal
  */
 @Service
 @AllArgsConstructor
+@Slf4j
 public class AppealServiceImpl implements AppealService {
 
     private final RestTemplate restTemplate;
@@ -197,10 +202,10 @@ public class AppealServiceImpl implements AppealService {
         AppealDto appealDto = findById(id);
         var employeeId = appealDto.getSigner().iterator().next().getId();
         Resource facsimileRes = facsimileService.getFacsimile(facsimileController.findFacsimileByEmployeeId(employeeId).getBody());
-        try (InputStream facsimileFile = facsimileRes.getInputStream()) {
-            minioService.overlayFacsimileOnFirstFile(file.getStorageFileId(), file.getExtension(), "application/pdf", facsimileFile);
+        try (var facsimileFile = facsimileRes.getInputStream()) {
+            minioService.overlayFacsimileOnFirstFile(file.getStorageFileId(), file.getExtension(), APPLICATION_PDF_VALUE, facsimileFile);
         } catch (IOException e) {
-            System.out.printf("Факсимиле не было наложено на файл");
+            log.error("Факсимиле не было наложено на файл");
         }
         appealDto.getFile().add(file);
         return save(appealDto);

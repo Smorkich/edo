@@ -4,6 +4,8 @@ import com.education.config.FeignConfig;
 import model.dto.FacsimileDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -13,4 +15,7 @@ public interface FacsimileFeignClient {
 
     @PostMapping(value = FACSIMILE_URL + "/save",produces = MediaType.APPLICATION_JSON_VALUE)
     FacsimileDto save(@RequestBody FacsimileDto facsimileDto);
+
+    @GetMapping(value = FACSIMILE_URL + "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    FacsimileDto findFacsimileByEmployeeId(@PathVariable("id") Long employeeId);
 }

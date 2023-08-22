@@ -27,6 +27,7 @@ import java.io.InputStream;
 import java.util.UUID;
 
 import static model.constant.Constant.*;
+import static org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject.createFromByteArray;
 
 /**
  * @author Anna Artemyeva
@@ -111,14 +112,14 @@ public class MinioServiceImpl implements MinioService {
             try (var fileInputStream = firstFile.getInputStream();
                  var pddDoc = PDDocument.load(fileInputStream)) {
                 // Создаем страницу с факсимиле изображением
-                PDPage fImage = new PDPage(new PDRectangle(100, 100));
+                var fImage = new PDPage(new PDRectangle(100, 100));
                 try (var contentStream = new PDPageContentStream(pddDoc, fImage)) {
                     // Загружаем факсимиле изображение
-                    PDImageXObject facsimileXImage = PDImageXObject.createFromByteArray(pddDoc, IOUtils.toByteArray(facsimileImage), "Facsimile");
+                    var facsimileXImage = createFromByteArray(pddDoc, IOUtils.toByteArray(facsimileImage), null);
 
                     // Осуществляем наложение факсимиле на первую страницу
-                    PDPage firstPage = pddDoc.getPage(0);
-                    PDExtendedGraphicsState graphicsState = new PDExtendedGraphicsState();
+                    var firstPage = pddDoc.getPage(0);
+                    var graphicsState = new PDExtendedGraphicsState();
                     graphicsState.setNonStrokingAlphaConstant(0.5f); // Установите желаемую прозрачность
                     contentStream.setGraphicsStateParameters(graphicsState);
                     contentStream.drawImage(facsimileXImage, firstPage.getMediaBox().getWidth() - 20, 20, 100, 100); // Внесите необходимые изменения
@@ -128,9 +129,8 @@ public class MinioServiceImpl implements MinioService {
                 }
 
                 // Сохраняем изменения в PDF-файле
-                try (var fileOutputStream = new FileOutputStream(convertedFileName)) {
-                    pddDoc.save(fileOutputStream);
-                }
+                //todo добавить сохранение файла с факсимиле в файловое хранилище
+                // и замену основного файла обращения на файл с факсимиле
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
