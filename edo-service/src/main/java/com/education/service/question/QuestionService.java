@@ -65,12 +65,18 @@ public interface QuestionService {
     /**
      * Метод возвращает вопрос по Id
      */
-    String findById(long id);
+    //String findById(long id);
+    QuestionDto findById(long id);
 
     /**
      * Метод возвращает все вопросы
      */
-    Collection<QuestionDto> findByAllId(String ids);
+    Collection<QuestionDto> findAll();
+
+    /**
+     * Метод возвращает все вопросы по ids
+     */
+    Collection<QuestionDto> findAllById(Iterable<Long> ids);
 
     /**
      * Метод заполняет поле значением и установленной датой

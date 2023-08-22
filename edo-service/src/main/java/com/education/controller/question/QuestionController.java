@@ -29,19 +29,29 @@ public class QuestionController {
     //GET ONE /api/service/question/{id}
     @Operation(summary = "Возвращает вопрос по id", description = "Вопрос должен существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    private ResponseEntity<String> findById(@PathVariable(name = "id") Long id) {
+    private QuestionDto findById(@PathVariable(name = "id") Long id) {
         log.info("Send a get-request to get Question with id = {} from edo-repository (RestTemplate on edo-service side)", id);
         var questionDto = questionService.findById(id);
         log.info("The operation was successful, we got the Question by id ={}", questionDto);
-        return new ResponseEntity<>(questionDto, HttpStatus.OK);
+        return questionDto;
     }
 
     //GET ALL /api/service/question/all
     @Operation(summary = "Возвращает все вопросы", description = "Вопросы должны существовать")
-    @GetMapping(value = "/all/{ids}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<QuestionDto>> findByAllId(@PathVariable(name = "ids") String ids) {
+    @GetMapping(value = "all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<QuestionDto> findAll() {
+        log.info("Send a get-request to get all Questions from edo-repository");
+        var questionDtos = questionService.findAll();
+        log.info("Response from edo-repository - all Questions");
+        return questionDtos;
+    }
+
+    //GET ALL /api/service/question/allById
+    @Operation(summary = "Возвращает все вопросы", description = "Вопросы должны существовать")
+    @PostMapping(value = "/allById", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<QuestionDto>> findByAllId(@RequestBody Collection<Long> ids) {
         log.info("Send a get-request to get all Questions from edo-repository (RestTemplate on edo-service side)");
-        var questionDtos = questionService.findByAllId(ids);
+        var questionDtos = questionService.findAllById(ids);
         log.info("Response from edo-repository: {}", ids);
         return new ResponseEntity<>(questionDtos, HttpStatus.OK);
     }
@@ -49,11 +59,11 @@ public class QuestionController {
     //POST /api/service/question
     @Operation(summary = "Создает вопрос в БД")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<QuestionDto> save(@RequestBody QuestionDto questionDto) {
-        log.info("Send a post-request to edo-repository to post new Question to database (RestTemplate on edo-service side)");
+    public HttpStatus save(@RequestBody QuestionDto questionDto) {
+        log.info("Send a post-request to edo-repository to post new Question to database");
         questionService.save(questionDto);
         log.info("Response: {} was added to database", questionDto);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return HttpStatus.CREATED;
     }
 
     /**
@@ -76,41 +86,41 @@ public class QuestionController {
     //DELETE /api/service/question/{id}
     @Operation(summary = "Удаляет вопрос из БД", description = "Вопрос должен существовать")
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> delete(@PathVariable("id") long id) {
+    public HttpStatus delete(@PathVariable("id") Long id) {
         log.info("Send a delete-request to edo-repository to delete Question with id = {} from database (RestTemplate on edo-service side)", id);
         questionService.delete(id);
         log.info("Response: Question with id = {} was deleted from database", id);
-        return new ResponseEntity<>(id, HttpStatus.OK);
+        return HttpStatus.ACCEPTED;
     }
 
     //POST /api/service/question/{id}
     @Operation(summary = "Добавление в вопрос времени архивации")
     @PostMapping("/{id}")
-    private ResponseEntity<String> moveToArchived(@PathVariable(name = "id") Long id) {
+    private String moveToArchived(@PathVariable(name = "id") Long id) {
         log.info("Starting the archiving operation");
         questionService.moveToArchived(id);
         log.info("Archived date added to question");
-        return new ResponseEntity<>("Archived date added to question", HttpStatus.OK);
+        return "Archived date added to question";
     }
 
     //GET ONE WITHOUT ARCHIVED DATE /api/service/question/notArchived/{id}
     @Operation(summary = "Предоставление вопроса без даты архивации по id")
     @GetMapping("/notArchived/{id}")
-    private ResponseEntity<QuestionDto> findByIdNotArchived(@PathVariable(name = "id") Long id) {
+    private QuestionDto findByIdNotArchived(@PathVariable(name = "id") Long id) {
         log.info("send a response with the Question not archived of the assigned id");
         var questionDto = questionService.findByIdNotArchived(id);
         log.info("The operation was successful, they got the non-archived Question by id ={}", id);
-        return new ResponseEntity<>(questionDto, HttpStatus.OK);
+        return questionDto;
     }
 
     //GET ALL WITHOUT ARCHIVED DATE /api/service/question/notArchivedAll/{id}
     @Operation(summary = "Предоставление вопросов без архивации по IDs")
     @GetMapping("/notArchivedAll/{ids}")
-    private ResponseEntity<Collection<QuestionDto>> findByAllIdNotArchived(@PathVariable(name = "ids") String ids) {
+    private Collection<QuestionDto> findByAllIdNotArchived(@PathVariable(name = "ids") String ids) {
         log.info("send a response with the Question not archived of the assigned IDs");
         var questionDtos = questionService.findByAllIdNotArchived(ids);
         log.info("The operation was successful, they got the non-archived Question by id ={}", ids);
-        return new ResponseEntity<>(questionDtos, HttpStatus.OK);
+        return questionDtos;
     }
 
     /**

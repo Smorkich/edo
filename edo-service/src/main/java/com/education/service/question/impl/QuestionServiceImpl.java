@@ -1,24 +1,14 @@
 package com.education.service.question.impl;
 
+import com.education.feign.QuestionFeignClient;
 import com.education.service.question.QuestionService;
-import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.QuestionDto;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Collection;
 import java.util.stream.Stream;
-
-import static com.education.util.URIBuilderUtil.buildURI;
-import static model.constant.Constant.EDO_REPOSITORY_NAME;
-import static model.constant.Constant.QUESTION_URL;
 
 /**
  * @author Nadezhda Pupina
@@ -29,14 +19,11 @@ import static model.constant.Constant.QUESTION_URL;
 @Log4j2
 public class QuestionServiceImpl implements QuestionService {
 
-    private final RestTemplate restTemplate;
-    private final ParameterizedTypeReference<Collection<QuestionDto>> responseType = new ParameterizedTypeReference<>() {
-    };
+    private final QuestionFeignClient questionFeignClient;
 
     @Override
     public QuestionDto save(QuestionDto questionDto) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL);
-        return restTemplate.postForObject(builder.toString(), questionDto, QuestionDto.class);
+        return questionFeignClient.save(questionDto);
     }
 
     /**
@@ -47,26 +34,20 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public Collection<QuestionDto> saveAll(Collection<QuestionDto> questionDtos) {
-        var dtos = Stream.ofNullable(questionDtos)
+        return Stream.ofNullable(questionDtos)
                 .flatMap(Collection::stream)
-                .map(this::save).toList();
-        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, QUESTION_URL + "/all");
-        HttpEntity<Collection<QuestionDto>> httpEntity = new HttpEntity<>(dtos);
-        ParameterizedTypeReference<Collection<QuestionDto>> responseType = new ParameterizedTypeReference<>() {
-        };
-        return restTemplate.exchange(uri.toString(), HttpMethod.POST, httpEntity, responseType).getBody();
+                .map(this::save)
+                .toList();
     }
 
     @Override
     public void delete(long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL + "/" + id);
-        restTemplate.delete(builder.toString());
+        questionFeignClient.delete(id);
     }
 
     @Override
-    public String findById(long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL + "/" + id);
-        return restTemplate.getForObject(builder.toString(), String.class);
+    public QuestionDto findById(long id) {
+        return questionFeignClient.findById(id);
     }
 
     /**
@@ -79,8 +60,7 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public QuestionDto registerQuestion(Long questionId) {
-        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/question/register/" + questionId);
-        return restTemplate.postForObject(uri.toString(), new HttpEntity<>(new HttpHeaders()), QuestionDto.class);
+        return questionFeignClient.registerQuestion(questionId);
     }
 
     /**
@@ -93,9 +73,7 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public Collection<QuestionDto> registerAllQuestions(Iterable<Long> questionsIds) {
-        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/question/registerAll");
-        HttpEntity<Iterable<Long>> httpEntity = new HttpEntity<>(questionsIds, new HttpHeaders());
-        return restTemplate.exchange(uri.toString(), HttpMethod.POST, httpEntity, responseType).getBody();
+        return questionFeignClient.registerAllQuestions(questionsIds);
     }
 
     /**
@@ -108,8 +86,7 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public QuestionDto setStatusUpdated(Long questionId) {
-        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/question/setStatusUpdated/" + questionId);
-        return restTemplate.postForObject(uri.toString(), new HttpEntity<>(new HttpHeaders()), QuestionDto.class);
+        return questionFeignClient.setStatusUpdated(questionId);
     }
 
     /**
@@ -122,47 +99,37 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public Collection<QuestionDto> setStatusUpdatedAll(Iterable<Long> questionsIds) {
-        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/question/setStatusUpdatedAll");
-        HttpEntity<Iterable<Long>> httpEntity = new HttpEntity<>(questionsIds, new HttpHeaders());
-        return restTemplate.exchange(uri.toString(), HttpMethod.POST, httpEntity, responseType).getBody();
+        return questionFeignClient.setStatusUpdatedAll(questionsIds);
     }
 
     @Override
-    public Collection<QuestionDto> findByAllId(String ids) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
-                .setPath("/all/")
-                .setPath(String.valueOf(ids));
-        return restTemplate.getForObject(builder.toString(), Collection.class);
+    public Collection<QuestionDto> findAll() {
+        return questionFeignClient.findAll();
+
+    }
+
+    @Override
+    public Collection<QuestionDto> findAllById(Iterable<Long> ids) {
+        return questionFeignClient.findAllById(ids);
     }
 
     @Override
     public void moveToArchived(Long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
-                .setPath("/")
-                .setPath(String.valueOf(id));
-        restTemplate.postForObject(builder.toString(), null, String.class);
+        questionFeignClient.moveToArchived(id);
     }
 
     @Override
     public QuestionDto findByIdNotArchived(Long id) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
-                .setPath("/notArchived/")
-                .setPath(String.valueOf(id));
-        return restTemplate.getForObject(builder.toString(), QuestionDto.class);
+        return questionFeignClient.getFileNotArchived(id);
     }
 
     @Override
     public Collection<QuestionDto> findByAllIdNotArchived(String ids) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, QUESTION_URL)
-                .setPath("/notArchivedAll/")
-                .setPath(String.valueOf(ids));
-        return restTemplate.getForObject(builder.toString(), Collection.class);
+        return questionFeignClient.getFilesNotArchived(ids);
     }
 
     @Override
     public Collection<QuestionDto> findByAppealId(Long id) {
-        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/question/appeal/" + id);
-        return restTemplate.exchange(uri.toString(), HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), responseType).getBody();
+        return questionFeignClient.findByAppealId(id);
     }
-
 }
