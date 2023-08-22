@@ -1,14 +1,19 @@
 package com.education.service.appeal.impl;
 
+import com.education.controller.employee.EmployeeController;
+import com.education.controller.facsimile.FacsimileController;
 import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
+import com.education.service.facsimile.FacsimileService;
 import com.education.service.filePool.FilePoolService;
 import com.education.service.minio.MinioService;
 import com.education.service.nomenclature.NomenclatureService;
 import com.education.service.question.QuestionService;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import model.dto.*;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -17,25 +22,35 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static com.education.util.URIBuilderUtil.buildURI;
 import static model.constant.Constant.*;
 import static model.enum_.Status.*;
+import static org.springframework.http.MediaType.APPLICATION_PDF_VALUE;
 
 /**
  * Сервис-слой для Appeal
  */
 @Service
 @AllArgsConstructor
+@Slf4j
 public class AppealServiceImpl implements AppealService {
 
     private final RestTemplate restTemplate;
     private final AuthorService authorService;
     private final QuestionService questionService;
     private final FilePoolService filePoolService;
+    private final FacsimileDto facsimileDto;
+    private final FacsimileService facsimileService;
+    private final FacsimileController facsimileController;
+    private final EmployeeController employeeController;
     private final MinioService minioService;
     private final NomenclatureService nomenclatureService;
 
@@ -180,10 +195,18 @@ public class AppealServiceImpl implements AppealService {
 
     /**
      * Метод закрепляет файл за обращением
+     * Накладывает факсимиле на файл за обращения
      */
     @Override
     public AppealDto upload(Long id, FilePoolDto file) {
         AppealDto appealDto = findById(id);
+        var employeeId = appealDto.getSigner().iterator().next().getId();
+        Resource facsimileRes = facsimileService.getFacsimile(facsimileController.findFacsimileByEmployeeId(employeeId).getBody());
+        try (var facsimileFile = facsimileRes.getInputStream()) {
+            minioService.overlayFacsimileOnFirstFile(file.getStorageFileId(), file.getExtension(), APPLICATION_PDF_VALUE, facsimileFile);
+        } catch (IOException e) {
+            log.error("Факсимиле не было наложено на файл");
+        }
         appealDto.getFile().add(file);
         return save(appealDto);
     }

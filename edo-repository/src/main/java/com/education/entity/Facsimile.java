@@ -46,6 +46,6 @@ public class Facsimile extends BaseEntity {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "filePool_id", referencedColumnName = "id")
-    private FilePool filePoolId;
+    private FilePool filePool;
 
 }

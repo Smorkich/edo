@@ -4,7 +4,13 @@ import com.education.service.minio.MinioService;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
+import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,10 +21,13 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.UUID;
 
 import static model.constant.Constant.*;
+import static org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject.createFromByteArray;
 
 /**
  * @author Anna Artemyeva
@@ -92,4 +101,40 @@ public class MinioServiceImpl implements MinioService {
             return String.format("%s.%s", key, extension);
         }
     }
+
+    @Override
+    public void overlayFacsimileOnFirstFile(UUID UUIDKey, String originalExtension, String convertedContentType, InputStream facsimileImage) {
+        var convertedFileName = getConvertedFilename(UUIDKey.toString(), originalExtension, convertedContentType);
+        var firstFile = downloadOneFile(convertedFileName);
+
+        // Проверяем, что первый файл существует и является PDF-файлом
+        if (firstFile != null && PDF_CONTENT_TYPE.equals(convertedContentType)) {
+            try (var fileInputStream = firstFile.getInputStream();
+                 var pddDoc = PDDocument.load(fileInputStream)) {
+                // Создаем страницу с факсимиле изображением
+                var fImage = new PDPage(new PDRectangle(100, 100));
+                try (var contentStream = new PDPageContentStream(pddDoc, fImage)) {
+                    // Загружаем факсимиле изображение
+                    var facsimileXImage = createFromByteArray(pddDoc, IOUtils.toByteArray(facsimileImage), null);
+
+                    // Осуществляем наложение факсимиле на первую страницу
+                    var firstPage = pddDoc.getPage(0);
+                    var graphicsState = new PDExtendedGraphicsState();
+                    graphicsState.setNonStrokingAlphaConstant(0.5f); // Установите желаемую прозрачность
+                    contentStream.setGraphicsStateParameters(graphicsState);
+                    contentStream.drawImage(facsimileXImage, firstPage.getMediaBox().getWidth() - 20, 20, 100, 100); // Внесите необходимые изменения
+
+                    // Добавляем страницу с факсимиле в начало документа
+                    pddDoc.getDocumentCatalog().getPages().insertBefore(fImage, firstPage);
+                }
+
+                // Сохраняем изменения в PDF-файле
+                //todo добавить сохранение файла с факсимиле в файловое хранилище
+                // и замену основного файла обращения на файл с факсимиле
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
 }

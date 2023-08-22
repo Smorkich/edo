@@ -66,5 +66,4 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Collection<EmployeeDto> saveCollection(Collection<EmployeeDto> employeeDto) {
         return employeeFeignClient.saveCollection(employeeDto);
     }
-
 }

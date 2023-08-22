@@ -7,11 +7,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.FacsimileDto;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @Log4j2
 @RestController
@@ -28,4 +27,14 @@ public class FacsimileController  {
     public FacsimileDto save(@RequestBody FacsimileDto facsimileDto){
         return facsimileService.save(facsimileDto);
     }
+
+    @Operation(summary = "Производит поиск Facsimile по EmployeeId")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FacsimileDto> findFacsimileByEmployeeId(@PathVariable Long id) {
+        log.info("Поиск факсимиле по id Employee");
+        var facsimileDto = facsimileService.findFacsimileByEmployeeId(id);
+        log.info("Операция прошла успешно, был получен факсимиле по EmployeeId = {}", id);
+        return new ResponseEntity<>(facsimileDto, HttpStatus.OK);
+    }
+
 }
