@@ -2,21 +2,13 @@ package com.education.service.question.impl;
 
 import com.education.feign.QuestionFeignClient;
 import com.education.service.question.QuestionService;
-import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.QuestionDto;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Collection;
 import java.util.stream.Stream;
-
-import static com.education.util.URIBuilderUtil.buildURI;
-import static model.constant.Constant.EDO_REPOSITORY_NAME;
-import static model.constant.Constant.QUESTION_URL;
 
 /**
  * @author Nadezhda Pupina
@@ -42,14 +34,10 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public Collection<QuestionDto> saveAll(Collection<QuestionDto> questionDtos) {
-        var dtos = Stream.ofNullable(questionDtos)
+        return Stream.ofNullable(questionDtos)
                 .flatMap(Collection::stream)
-                .map(this::save).toList();
-        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, QUESTION_URL + "/all");
-        HttpEntity<Collection<QuestionDto>> httpEntity = new HttpEntity<>(dtos);
-        ParameterizedTypeReference<Collection<QuestionDto>> responseType = new ParameterizedTypeReference<>() {
-        };
-        return restTemplate.exchange(uri.toString(), HttpMethod.POST, httpEntity, responseType).getBody();
+                .map(this::save)
+                .toList();
     }
 
     @Override
@@ -72,8 +60,7 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public QuestionDto registerQuestion(Long questionId) {
-        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/question/register/" + questionId);
-        return restTemplate.postForObject(uri.toString(), new HttpEntity<>(new HttpHeaders()), QuestionDto.class);
+        return questionFeignClient.registerQuestion(questionId);
     }
 
     /**
@@ -86,9 +73,7 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public Collection<QuestionDto> registerAllQuestions(Iterable<Long> questionsIds) {
-        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/question/registerAll");
-        HttpEntity<Iterable<Long>> httpEntity = new HttpEntity<>(questionsIds, new HttpHeaders());
-        return restTemplate.exchange(uri.toString(), HttpMethod.POST, httpEntity, responseType).getBody();
+        return questionFeignClient.registerAllQuestions(questionsIds);
     }
 
     /**
@@ -101,8 +86,7 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public QuestionDto setStatusUpdated(Long questionId) {
-        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/question/setStatusUpdated/" + questionId);
-        return restTemplate.postForObject(uri.toString(), new HttpEntity<>(new HttpHeaders()), QuestionDto.class);
+        return questionFeignClient.setStatusUpdated(questionId);
     }
 
     /**
@@ -115,9 +99,7 @@ public class QuestionServiceImpl implements QuestionService {
      */
     @Override
     public Collection<QuestionDto> setStatusUpdatedAll(Iterable<Long> questionsIds) {
-        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/question/setStatusUpdatedAll");
-        HttpEntity<Iterable<Long>> httpEntity = new HttpEntity<>(questionsIds, new HttpHeaders());
-        return restTemplate.exchange(uri.toString(), HttpMethod.POST, httpEntity, responseType).getBody();
+        return questionFeignClient.setStatusUpdatedAll(questionsIds);
     }
 
     @Override
@@ -148,8 +130,6 @@ public class QuestionServiceImpl implements QuestionService {
 
     @Override
     public Collection<QuestionDto> findByAppealId(Long id) {
-        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/question/appeal/" + id);
-        return restTemplate.exchange(uri.toString(), HttpMethod.GET, new HttpEntity<>(new HttpHeaders()), responseType).getBody();
+        return questionFeignClient.findByAppealId(id);
     }
-
 }

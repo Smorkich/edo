@@ -39,7 +39,7 @@ public class QuestionController {
     }
 
     //GET ALL /api/repository/question/all/
-    @ApiOperation(value = "Возвращает все вопросы", notes = "Вопросы должны существовать")
+    @Operation(summary = "Возвращает все вопросы", description = "Вопросы должны существовать")
     @GetMapping("/all")
     private List<QuestionDto> findAll() {
         log.info("Send a get-request to get all Question from database");
@@ -79,19 +79,17 @@ public class QuestionController {
      */
     @Operation(summary = "Создает вопросы в БД")
     @PostMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<QuestionDto>> saveAll(@RequestBody Collection<QuestionDto> questionDtos) {
+    public Collection<QuestionDto> saveAll(@RequestBody Collection<QuestionDto> questionDtos) {
         log.info("Send a query to repository to post new Questions to database");
         var savedAll = questionService.saveAll(QUESTION_MAPPER.toEntity(questionDtos));
         log.info("Response: {} was added to database", questionDtos);
-        return new ResponseEntity<>(QUESTION_MAPPER.toDto(savedAll), HttpStatus.CREATED);
+        return QUESTION_MAPPER.toDto(savedAll);
     }
 
     //DELETE /api/repository/question/{id}
     @Operation(summary = "Удаляет вопрос из БД", description = "Вопрос должен существовать")
     @DeleteMapping(value = "/{id}")
     public HttpStatus delete(@PathVariable("id") Long id) {
-        System.err.println(questionService.findById(id));
-
         log.info("Send a delete-request to delete Question with id = {} from database", id);
         questionService.delete(questionService.findById(id));
         log.info("Response: Question with id = {} was deleted from database", id);
@@ -108,11 +106,10 @@ public class QuestionController {
      */
     @Operation(summary = "Изменяет статус вопросов на 'REGISTERED", description = "Вопрос должен существовать")
     @PostMapping(value = "/register/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    private ResponseEntity<QuestionDto> registerById(@PathVariable(name = "id") Long id) {
+    private QuestionDto registerById(@PathVariable(name = "id") Long id) {
         log.info("Send a post-request to change Question status on 'REGISTERED' from edo-repository with id = {}", id);
         var questionDto = questionService.registerQuestion(id);
-        log.info("Success, status of the Question by id ={} has been changed to 'REGISTERED'", questionDto);
-        return new ResponseEntity<>(QUESTION_MAPPER.toDto(questionDto), HttpStatus.OK);
+        return QUESTION_MAPPER.toDto(questionDto);
     }
 
     /**
@@ -125,11 +122,11 @@ public class QuestionController {
      */
     @Operation(summary = "Изменяет статус вопросов на 'REGISTERED' по id", description = "Вопросы должны существовать")
     @PostMapping(value = "/registerAll", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<QuestionDto>> registerAllById(@RequestBody Iterable<Long> ids) {
+    public Collection<QuestionDto> registerAllById(@RequestBody Iterable<Long> ids) {
         log.info("Send a post-request to change list of Question status on 'REGISTERED' from edo-repository");
         var questionDtos = questionService.registerAllQuestions(ids);
         log.info("The operation was successful,status of the Questions has been changed to 'REGISTERED'");
-        return new ResponseEntity<>(QUESTION_MAPPER.toDto(questionDtos), HttpStatus.OK);
+        return QUESTION_MAPPER.toDto(questionDtos);
     }
 
     /**
@@ -142,11 +139,10 @@ public class QuestionController {
      */
     @Operation(summary = "Изменяет статус вопроса на 'UPDATED' по id", description = "Вопрос должен существовать")
     @PostMapping(value = "/setStatusUpdated/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    private ResponseEntity<QuestionDto> setStatusUpdatedById(@PathVariable(name = "id") Long id) {
+    private QuestionDto setStatusUpdatedById(@PathVariable(name = "id") Long id) {
         log.info("Send a post-request to change Question status on 'UPDATED' from edo-repository with id = {}", id);
         var questionDto = questionService.setStatusUpdated(id);
-        log.info("Success, status of the Question by id ={} has been changed to 'UPDATED'", questionDto);
-        return new ResponseEntity<>(QUESTION_MAPPER.toDto(questionDto), HttpStatus.OK);
+        return QUESTION_MAPPER.toDto(questionDto);
     }
 
     /**
@@ -157,13 +153,13 @@ public class QuestionController {
      * @return ResponseEntity коллекции DTO сущностей Question (вопросы обращения)
      * @apiNote HTTP Method - POST
      */
-    @Operation(summary = "Изменяет статус вопросов на 'UPDATED' по id", description= "Вопросы должны существовать")
+    @Operation(summary = "Изменяет статус вопросов на 'UPDATED' по id", description = "Вопросы должны существовать")
     @PostMapping(value = "/setStatusUpdatedAll", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<QuestionDto>> setStatusUpdatedAllById(@RequestBody Iterable<Long> ids) {
+    public Collection<QuestionDto> setStatusUpdatedAllById(@RequestBody Iterable<Long> ids) {
         log.info("Send a post-request to change list of Question status on 'UPDATED' from edo-repository");
         var questionDtos = questionService.setStatusUpdatedAll(ids);
         log.info("The operation was successful,status of the Questions has been changed to 'UPDATED'");
-        return new ResponseEntity<>(QUESTION_MAPPER.toDto(questionDtos), HttpStatus.OK);
+        return QUESTION_MAPPER.toDto(questionDtos);
     }
 
     //POST /api/repository/question/move/{id}
@@ -173,8 +169,7 @@ public class QuestionController {
         log.info("Starting the archiving operation");
         questionService.moveToArchive(id);
         log.info("Added archiving date");
-        QuestionDto questionDto = QUESTION_MAPPER.toDto(questionService.findById(id));
-        return questionDto;
+        return QUESTION_MAPPER.toDto(questionService.findById(id));
     }
 
     //GET ONE WITHOUT ARCHIVED DATE /api/repository/question/notArchived/{id}
@@ -207,11 +202,11 @@ public class QuestionController {
      */
     @Operation(summary = "Возвращает вопросы по обращению (по id сущности Appeal)", description = "Вопросы должны существовать")
     @GetMapping("/appeal/{id}")
-    private ResponseEntity<List<QuestionDto>> findByAppeal(@PathVariable(name = "id") Long id) {
+    private List<QuestionDto> findByAppeal(@PathVariable(name = "id") Long id) {
         log.info("Запрос на получение вопросов из обращения");
         List<QuestionDto> questionDto = (List<QuestionDto>) QUESTION_MAPPER.toDto(questionService.findByAppealId(id));
         log.info("Запрос прошёл успешно, получены все вопросы по Appeal id ={}", id);
-        return new ResponseEntity<>(questionDto, HttpStatus.OK);
+        return questionDto;
     }
 
 }

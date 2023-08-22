@@ -1,7 +1,6 @@
 package com.education.controller.question;
 
 import com.education.service.question.QuestionService;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * @author Nadezhda Pupina
@@ -48,12 +46,12 @@ public class QuestionController {
         return questionDtos;
     }
 
-    //GET ALL /api/service/question/all
+    //GET ALL /api/service/question/allById
     @Operation(summary = "Возвращает все вопросы", description = "Вопросы должны существовать")
-    @GetMapping(value = "/all/{ids}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<QuestionDto>> findByAllId(@PathVariable(name = "ids") String ids) {
+    @PostMapping(value = "/allById", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<QuestionDto>> findByAllId(@RequestBody Collection<Long> ids) {
         log.info("Send a get-request to get all Questions from edo-repository (RestTemplate on edo-service side)");
-        var questionDtos = questionService.findByAllId(ids);
+        var questionDtos = questionService.findAllById(ids);
         log.info("Response from edo-repository: {}", ids);
         return new ResponseEntity<>(questionDtos, HttpStatus.OK);
     }
