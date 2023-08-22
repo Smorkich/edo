@@ -1,1 +1,1 @@
-UPDATE department SET department = 1 WHERE id = 1;
+UPDATE department SET department = null WHERE id = 1;

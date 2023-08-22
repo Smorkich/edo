@@ -1,7 +1,8 @@
 package com.education.controller.address;
 
 import com.education.service.address.AddressService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.AddressDto;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @Log4j2
 @AllArgsConstructor
 @RequestMapping("/api/service/address")
+@Tag(name = "Rest- контроллер для работы с адресами", description = "Методы для работы с адресами")
 public class AddressController {
 
     /**
@@ -30,7 +32,7 @@ public class AddressController {
     AddressService addressService;
 
     //GET ONE /api/service/address/{id}
-    @ApiOperation(value = "Возвращает адрес по id", notes = "Адрес должен существовать")
+    @Operation(summary = "Возвращает адрес по id", description = "Адрес должен существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> findById(@PathVariable("id") long id) {
         log.info("Send a get-request to get Address with id = {} from edo-repository " +
@@ -41,7 +43,7 @@ public class AddressController {
     }
 
     //GET ALL /api/service/address/getAllAdresseRestTemplate
-    @ApiOperation(value = "Возвращает все адреса", notes = "Адреса должны существовать")
+    @Operation(summary = "Возвращает все адреса", description = "Адреса должны существовать")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> findAll() {
         log.info("Send a get-request to get all Addresse from edo-repository" +
@@ -52,7 +54,7 @@ public class AddressController {
     }
 
     //POST /api/service/address
-    @ApiOperation(value = "Создает адрес в БД", notes = "Адрес должен существовать")
+    @Operation(summary = "Создает адрес в БД", description = "Адрес должен существовать")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AddressDto> save(@RequestBody AddressDto addressDto) {
         log.info("Send a post-request to edo-repository to post new Address to database" +
@@ -63,7 +65,7 @@ public class AddressController {
     }
 
     //DELETE /api/service/address/{id}
-    @ApiOperation(value = "Удаляет адрес из БД", notes = "Адрес должен существовать")
+    @Operation(summary = "Удаляет адрес из БД", description = "Адрес должен существовать")
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> delete(@PathVariable("id") long id) {
         log.info("Send a delete-request to edo-repository to delete Address with id = {}" +
