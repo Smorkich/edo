@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 import static com.education.mapper.QuestionMapper.QUESTION_MAPPER;
@@ -22,7 +23,7 @@ import static com.education.mapper.QuestionMapper.QUESTION_MAPPER;
 @Log4j2
 @RestController
 @AllArgsConstructor
-@Tag(name ="Rest-контроллер для работы с вопросами")
+@Tag(name = "Rest-контроллер для работы с вопросами")
 @RequestMapping("/api/repository/question")
 public class QuestionController {
 
@@ -58,6 +59,23 @@ public class QuestionController {
         return new ResponseEntity<>(QUESTION_MAPPER.toDto(saved), HttpStatus.CREATED);
     }
 
+    /**
+     * Принимает запрос на создание вопросов в БД, которые передаются в теле HTTP запроса
+     * <p>Вызывает метод saveAll() из интерфейса QuestionService, микросервиса edo-repository
+     *
+     * @param questionDtos добавляемые QuestionDto
+     * @return ResponseEntity<Collection < QuestionDto> - ResponseEntity коллекции DTO сущности Question (вопросы обращения)
+     * @apiNote HTTP Method - POST
+     */
+    @Operation(summary = "Создает вопросы в БД")
+    @PostMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<QuestionDto>> saveAll(@RequestBody Collection<QuestionDto> questionDtos) {
+        log.info("Send a query to repository to post new Questions to database");
+        var savedAll = questionService.saveAll(QUESTION_MAPPER.toEntity(questionDtos));
+        log.info("Response: {} was added to database", questionDtos);
+        return new ResponseEntity<>(QUESTION_MAPPER.toDto(savedAll), HttpStatus.CREATED);
+    }
+
     //DELETE /api/repository/question/{id}
     @Operation(summary = "Удаляет вопрос из БД", description = "Вопрос должен существовать")
     @DeleteMapping(value = "/{id}")
@@ -66,6 +84,74 @@ public class QuestionController {
         questionService.delete(questionService.findById(id));
         log.info("Response: Question with id = {} was deleted from database", id);
         return new ResponseEntity<>(id, HttpStatus.OK);
+    }
+
+    /**
+     * Принимает запрос на изменение статуса вопроса по id на "REGISTERED", id передаётся в параметре HTTP запроса
+     * <p>Вызывает метод registerQuestion() из интерфейса QuestionService, микросервиса edo-repository
+     *
+     * @param id идентификатор регистрируемого Question
+     * @return ResponseEntity<QuestionDto> - ResponseEntity DTO сущности Question (вопрос обращения)
+     * @apiNote HTTP Method - POST
+     */
+    @Operation(summary = "Изменяет статус вопросов на 'REGISTERED", description = "Вопрос должен существовать")
+    @PostMapping(value = "/register/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    private ResponseEntity<QuestionDto> registerById(@PathVariable(name = "id") Long id) {
+        log.info("Send a post-request to change Question status on 'REGISTERED' from edo-repository with id = {}", id);
+        var questionDto = questionService.registerQuestion(id);
+        log.info("Success, status of the Question by id ={} has been changed to 'REGISTERED'", questionDto);
+        return new ResponseEntity<>(QUESTION_MAPPER.toDto(questionDto), HttpStatus.OK);
+    }
+
+    /**
+     * Принимает запрос на изменение статуса вопросов по id на "REGISTERED", id передаются в параметре HTTP запроса
+     * <p>Вызывает метод registerQuestion() из интерфейса QuestionService, микросервиса edo-repository
+     *
+     * @param ids идентификаторы регистрируемых Question
+     * @return ResponseEntity коллекции DTO сущностей Question (вопросы обращения)
+     * @apiNote HTTP Method - POST
+     */
+    @Operation(summary = "Изменяет статус вопросов на 'REGISTERED' по id", description = "Вопросы должны существовать")
+    @PostMapping(value = "/registerAll", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<QuestionDto>> registerAllById(@RequestBody Iterable<Long> ids) {
+        log.info("Send a post-request to change list of Question status on 'REGISTERED' from edo-repository");
+        var questionDtos = questionService.registerAllQuestions(ids);
+        log.info("The operation was successful,status of the Questions has been changed to 'REGISTERED'");
+        return new ResponseEntity<>(QUESTION_MAPPER.toDto(questionDtos), HttpStatus.OK);
+    }
+
+    /**
+     * Принимает запрос на изменение статуса вопроса по id на "UPDATED", id передаётся в параметре HTTP запроса
+     * <p>Вызывает метод setStatusUpdated() из интерфейса QuestionService, микросервиса edo-repository
+     *
+     * @param id идентификатор Question'a status которого хотим изменить на "UPDATED"
+     * @return ResponseEntity<QuestionDto> - ResponseEntity DTO сущности Question (вопрос обращения)
+     * @apiNote HTTP Method - POST
+     */
+    @Operation(summary = "Изменяет статус вопроса на 'UPDATED' по id", description = "Вопрос должен существовать")
+    @PostMapping(value = "/setStatusUpdated/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    private ResponseEntity<QuestionDto> setStatusUpdatedById(@PathVariable(name = "id") Long id) {
+        log.info("Send a post-request to change Question status on 'UPDATED' from edo-repository with id = {}", id);
+        var questionDto = questionService.setStatusUpdated(id);
+        log.info("Success, status of the Question by id ={} has been changed to 'UPDATED'", questionDto);
+        return new ResponseEntity<>(QUESTION_MAPPER.toDto(questionDto), HttpStatus.OK);
+    }
+
+    /**
+     * Принимает запрос на изменение статуса вопросов по id на "UPDATED", id передаются в параметре HTTP запроса
+     * <p>Вызывает метод setStatusUpdatedAll() из интерфейса QuestionService, микросервиса edo-repository
+     *
+     * @param ids идентификаторы Question's status которых хотим изменить на "UPDATED"
+     * @return ResponseEntity коллекции DTO сущностей Question (вопросы обращения)
+     * @apiNote HTTP Method - POST
+     */
+    @Operation(summary = "Изменяет статус вопросов на 'UPDATED' по id", description= "Вопросы должны существовать")
+    @PostMapping(value = "/setStatusUpdatedAll", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<QuestionDto>> setStatusUpdatedAllById(@RequestBody Iterable<Long> ids) {
+        log.info("Send a post-request to change list of Question status on 'UPDATED' from edo-repository");
+        var questionDtos = questionService.setStatusUpdatedAll(ids);
+        log.info("The operation was successful,status of the Questions has been changed to 'UPDATED'");
+        return new ResponseEntity<>(QUESTION_MAPPER.toDto(questionDtos), HttpStatus.OK);
     }
 
     //POST /api/repository/question/move/{id}
@@ -96,6 +182,23 @@ public class QuestionController {
         log.info("send a response with the Question not archived of the assigned IDs");
         List<QuestionDto> questionDto = (List<QuestionDto>) QUESTION_MAPPER.toDto(questionService.findByAllIdNotArchived(ids));
         log.info("The operation was successful, they got the non-archived Question by id ={}", ids);
+        return new ResponseEntity<>(questionDto, HttpStatus.OK);
+    }
+
+    /**
+     * Принимает запрос на получение вопросов по id Appeal'a, id передаются в параметре HTTP запроса
+     * <p>Вызывает метод findByAppealId() из интерфейса QuestionService, микросервиса edo-repository
+     *
+     * @param id идентификатор Appeal'a, вопросы которого хотим получить
+     * @return ResponseEntity списка DTO сущностей Question (вопросы обращения)
+     * @apiNote HTTP Method - POST
+     */
+    @Operation(summary = "Возвращает вопросы по обращению (по id сущности Appeal)", description = "Вопросы должны существовать")
+    @GetMapping("/appeal/{id}")
+    private ResponseEntity<List<QuestionDto>> findByAppeal(@PathVariable(name = "id") Long id) {
+        log.info("Запрос на получение вопросов из обращения");
+        List<QuestionDto> questionDto = (List<QuestionDto>) QUESTION_MAPPER.toDto(questionService.findByAppealId(id));
+        log.info("Запрос прошёл успешно, получены все вопросы по Appeal id ={}", id);
         return new ResponseEntity<>(questionDto, HttpStatus.OK);
     }
 

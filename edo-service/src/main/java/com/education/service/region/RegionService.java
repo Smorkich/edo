@@ -2,6 +2,8 @@ package com.education.service.region;
 
 import model.dto.RegionDto;
 
+import java.util.Collection;
+
 /**
  * Service в "edo-service", служит для связи контроллера и RestTemplate
  */
@@ -20,12 +22,12 @@ public interface RegionService {
     /**
      * Метод поиска региона по id
      */
-    String findById(long id);
+    RegionDto findById(long id);
 
     /**
      * Метод, который возвращает все регионы
      */
-    String findAll();
+    Collection<RegionDto> findAll();
 
     /**
      * Метод, который заполняет архивную дату

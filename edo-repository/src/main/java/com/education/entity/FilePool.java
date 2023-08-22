@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import model.dto.EnumFileType;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -72,5 +73,8 @@ public class FilePool extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id", referencedColumnName = "id")
     private Employee creator;
+
+    @Column(name = "file_type")
+    private EnumFileType fileType;
 
 }

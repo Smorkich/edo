@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 import static com.education.mapper.ResolutionMapper.RESOLUTION_MAPPER;
+import static model.constant.Constant.RESOLUTION_URL;
 
 /**
  * REST контроллер для отправки запросов к БД
@@ -22,7 +23,7 @@ import static com.education.mapper.ResolutionMapper.RESOLUTION_MAPPER;
 @AllArgsConstructor
 @Log4j2
 @Tag(name = "Rest- контроллер для работы с резолюциями")
-@RequestMapping("api/repository/resolution")
+@RequestMapping(RESOLUTION_URL)
 public class ResolutionRestController {
 
     /**
@@ -32,57 +33,57 @@ public class ResolutionRestController {
 
     @Operation(summary = "Добавление резолюции")
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON)
-    public ResponseEntity<ResolutionDto> saveResolution(@RequestBody ResolutionDto resolutionDto) {
+    public ResolutionDto saveResolution(@RequestBody ResolutionDto resolutionDto) {
         log.info("POST request has been sent");
-        var resolution = resolutionService.save(RESOLUTION_MAPPER.toEntity(resolutionDto));
+        resolutionService.save(RESOLUTION_MAPPER.toEntity(resolutionDto));
         log.info("{} has has been added", resolutionDto);
-        return new ResponseEntity<>(RESOLUTION_MAPPER.toDto(resolutionService.findById(resolution.getId())), HttpStatus.CREATED);
+        return resolutionDto;
     }
 
     @Operation(summary = "Перемещение резолюции в архив")
     @PatchMapping(value = "/move/{id}", produces = MediaType.APPLICATION_JSON)
-    public ResponseEntity<ResolutionDto> moveToArchive(@PathVariable Long id) {
+    public String moveToArchive(@PathVariable Long id) {
         log.info("PATCH request has been sent");
         resolutionService.moveToArchive(id);
         var resolutionDto = RESOLUTION_MAPPER.toDto(resolutionService.findById(id));
         log.info("Resolution with id = {} has been moved to archive", id);
-        return new ResponseEntity<>(resolutionDto, HttpStatus.OK);
+        return "The file is archived";
     }
 
     @Operation(summary = "Поиск резолюции по id")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON)
-    public ResponseEntity<ResolutionDto> getResolutionById(@PathVariable Long id) {
+    public ResolutionDto getResolutionById(@PathVariable Long id) {
         log.info("GET request to search for resolution with id = {} has been sent", id);
         var resolutionDto = RESOLUTION_MAPPER.toDto(resolutionService.findById(id));
         log.info("Resolution with id = {} was found", id);
-        return new ResponseEntity<>(resolutionDto, HttpStatus.OK);
+        return resolutionDto;
     }
 
     @Operation(summary = "Поиск всех резолюций")
     @GetMapping(value = "/all/{id}", produces = MediaType.APPLICATION_JSON)
-    public ResponseEntity<Collection<ResolutionDto>> findAll(@PathVariable Collection <Long> id) {
+    public Collection<ResolutionDto> findAll(@PathVariable Collection <Long> id) {
         log.info("GET request to search for all resolutions has been sent");
         var resolutionDto = RESOLUTION_MAPPER.toDto(resolutionService.findAllById(id));
         log.info("Resolutions was found");
-        return new ResponseEntity<>(resolutionDto, HttpStatus.OK);
+        return resolutionDto;
     }
 
     @Operation(summary = "Поиск не архивированной резолюции по id")
     @GetMapping(value = "/notArchived/{id}")
-    public ResponseEntity<ResolutionDto> findByIdNotArchived(@PathVariable Long id) {
+    public ResolutionDto findByIdNotArchived(@PathVariable Long id) {
         log.info("GET request to search for an unarchived resolution has been sent");
         var resolutionDto = RESOLUTION_MAPPER.toDto(resolutionService.findByIdNotArchived(id));
         log.info("Resolution with id = {} was found", id);
-        return new ResponseEntity<>(resolutionDto, HttpStatus.OK);
+        return resolutionDto;
     }
 
     @Operation(summary = "Поиск всех не архивированных резолюций")
     @GetMapping(value = "/notArchived/all/{id}")
-    public ResponseEntity<Collection<ResolutionDto>> findAllByIdNotArchived(@PathVariable Collection<Long> id) {
+    public Collection<ResolutionDto> findAllByIdNotArchived(@PathVariable Collection<Long> id) {
         log.info("GET request to search for all unarchived resolutions has been sent");
         var resolutionDto = RESOLUTION_MAPPER.toDto(resolutionService.findAllByIdNotArchived(id));
         log.info("Resolutions was found");
-        return new ResponseEntity<>(resolutionDto, HttpStatus.OK);
+        return resolutionDto;
     }
 
 

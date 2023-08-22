@@ -1,5 +1,6 @@
 package com.education.service.nomenclature.impl;
 
+import com.education.feign.NomenclatureFeignClient;
 import com.education.service.nomenclature.NomenclatureService;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
@@ -20,7 +21,7 @@ import static model.constant.Constant.*;
 @Log4j2
 public class NomenclatureServiceImpl implements NomenclatureService {
 
-    private final RestTemplate restTemplate;
+    private final NomenclatureFeignClient nomenclatureFeignClient;
     private final String NOMENCLATURE_URL = "api/service/nomenclature/index";
 
 
@@ -31,16 +32,6 @@ public class NomenclatureServiceImpl implements NomenclatureService {
      */
     @Override
     public List<NomenclatureDto> findByIndex(String index) {
-
-        log.info("передаем index {} в edo-service", index);
-        URL uri = null;
-        try {
-            uri = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, NOMENCLATURE_URL)
-                        .addParameter(NOMENCLATURE_PARAMETER, index).build().toURL();
-            log.info("URL after BUILDER {}", uri);
-            return restTemplate.getForObject(uri.toURI(), List.class);
-        } catch (MalformedURLException | URISyntaxException e) {
-            throw new RuntimeException(e);
-        }
+        return nomenclatureFeignClient.findByIndex(index);
     }
 }

@@ -1,6 +1,5 @@
 package com.education.controller.author;
 
-import com.education.entity.Author;
 import com.education.service.author.AuthorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -42,10 +41,28 @@ public class AuthorRestController {
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDto> addAuthorAction(@RequestBody AuthorDto authorDto) {
         log.info("Send POST request to add author to databases: {}", authorDto);
-        Author save = authorService.save(AUTHOR_MAPPER.toEntity(authorDto));
+        var saved = authorService.save(AUTHOR_MAPPER.toEntity(authorDto));
         log.info("Author added to database");
-        return new ResponseEntity<>(AUTHOR_MAPPER.toDto(save),HttpStatus.CREATED);
+        return new ResponseEntity<>(AUTHOR_MAPPER.toDto(saved), HttpStatus.CREATED);
     }
+
+    /**
+     * Принимает запрос на создание авторов в БД, которые передаются в теле HTTP запроса
+     * <p>Вызывает метод saveAll() из интерфейса AuthorService, микросервиса edo-repository
+     *
+     * @param authorDtos добавляемые AuthorDto
+     * @return ResponseEntity<Collection < AuthorDto> - ResponseEntity коллекции DTO сущности Author (авторы обращения)
+     * @apiNote HTTP Method - POST
+     */
+    @Operation(description = "Создает авторов в БД")
+    @PostMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<AuthorDto>> saveAll(@RequestBody Collection<AuthorDto> authorDtos) {
+        log.info("Send a query to repository to post new Authors to database");
+        var savedAll = authorService.saveAll(AUTHOR_MAPPER.toEntity(authorDtos));
+        log.info("Response: {} was added to database", authorDtos);
+        return new ResponseEntity<>(AUTHOR_MAPPER.toDto(savedAll), HttpStatus.CREATED);
+    }
+
 
     @Operation(summary = "Удаление автора", description = "Автор должен существовать")
     @DeleteMapping("/{id}")

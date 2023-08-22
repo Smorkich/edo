@@ -29,37 +29,37 @@ public class NotificationController {
 
     @Operation(summary = "Получить настройки уведомлений по id")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NotificationDto> findById(@PathVariable Long id) {
+    public NotificationDto findById(@PathVariable Long id) {
         log.info("Send a response with the notification of the assigned id");
         NotificationDto notificationDto = notificationMapper.toDto(notificationService.findById(id));
         log.info("The operation was successful, we got the notification by id ={}", id);
-        return new ResponseEntity<>(notificationDto, HttpStatus.OK);
+        return notificationDto;
     }
 
     @Operation(summary = "Получить все настройки уведомлений")
     @GetMapping("/all")
-    public ResponseEntity<Collection<NotificationDto>> findAll() {
+    public Collection<NotificationDto> findAll() {
         log.info("Send a response with the notifications");
         Collection<NotificationDto> notificationDto = notificationMapper.toDto(notificationService.findAll());
         log.info("The operation was successful, we got the all notifications");
-        return new ResponseEntity<>(notificationDto, HttpStatus.OK);
+        return notificationDto;
     }
 
     @Operation(summary = "Получение настроек уведомлений по IDs")
     @GetMapping("/all/{ids}")
-    public ResponseEntity<Collection<NotificationDto>> findAllById(@PathVariable List<Long> ids) {
+    public Collection<NotificationDto> findAllById(@PathVariable List<Long> ids) {
         log.info("Send a response with the notification of the assigned IDs");
         Collection<NotificationDto> notificationDto = notificationMapper.toDto(notificationService.findAllById(ids));
         log.info("The operation was successful, we got the notification by id = {} ", ids);
-        return new ResponseEntity<>(notificationDto, HttpStatus.OK);
+        return notificationDto;
     }
 
     @Operation(summary = "Сохранение настроек уведомлений")
     @PostMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<NotificationDto> save(@RequestBody NotificationDto notificationDto) {
+    public NotificationDto save(@RequestBody NotificationDto notificationDto) {
         log.info("Starting the save operation");
         notificationService.save(notificationMapper.toEntity(notificationDto));
         log.info("Saving the notification");
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        return notificationDto;
     }
 }

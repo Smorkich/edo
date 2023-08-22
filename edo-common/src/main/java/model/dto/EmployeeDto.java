@@ -8,15 +8,18 @@ import lombok.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
+import java.util.Objects;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ApiModel(value = "объект для передачи данных")
 @ToString
 public class EmployeeDto implements Serializable {
+    @EqualsAndHashCode.Include
     @ApiModelProperty(value = "id")
     private Long id;
 

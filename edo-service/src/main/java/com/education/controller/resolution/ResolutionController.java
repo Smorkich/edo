@@ -1,5 +1,6 @@
 package com.education.controller.resolution;
 
+import com.education.service.email.EmailService;
 import com.education.service.resolution.ResolutionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
+import static model.constant.Constant.RESOLUTION_SERVICE_URL;
+
 /**
  * REST контроллер для отправки запросов к БД
  */
@@ -20,13 +23,14 @@ import java.util.Collection;
 @AllArgsConstructor
 @Log4j2
 @Tag(name = "Rest- контроллер для работы с резолюциями")
-@RequestMapping("api/service/resolution")
+@RequestMapping(RESOLUTION_SERVICE_URL)
 public class ResolutionController {
 
     /**
      * Служит для связи с сервисом ResolutionService
      */
     private ResolutionService resolutionService;
+    private EmailService emailService;
 
     @Operation(summary = "Добавление резолюции")
     @PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON)
@@ -35,7 +39,7 @@ public class ResolutionController {
         var save = resolutionService.save(resolutionDto);
         log.info("{} has has been added", resolutionDto);
         log.info("Sending a message to employees");
-        resolutionService.sendMessage(resolutionDto);
+        emailService.sendMessage(resolutionDto);
         return new ResponseEntity<>(save, HttpStatus.CREATED);
     }
 

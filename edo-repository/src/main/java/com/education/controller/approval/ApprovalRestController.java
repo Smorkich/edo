@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 import static com.education.mapper.ApprovalMapper.APPROVAL_MAPPER;
+import static model.constant.Constant.APPROVAL_URL;
 
 /**
  * Rest-контроллер сущности Approval для отправки запросов от клиентов к БД
@@ -24,99 +25,93 @@ import static com.education.mapper.ApprovalMapper.APPROVAL_MAPPER;
 @RestController
 @AllArgsConstructor
 @Log4j2
-@RequestMapping("/api/repository/approval")
+@RequestMapping(APPROVAL_URL)
 @Tag(name = "Rest-контроллер для ApprovalDto, который отправляет запросы от клиентов к сервисам edo-service")
 public class ApprovalRestController {
     private final ApprovalService approvalService;
 
     @Operation(summary = "Добавляет новую запись в таблицу Approval")
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApprovalDto> save(@RequestBody ApprovalDto approvalDto) {
+    public ApprovalDto save(@RequestBody ApprovalDto approvalDto) {
         log.info("Send a post-request to post new Approval to database");
-        Approval savedApproval = approvalService.save(APPROVAL_MAPPER.toEntity(approvalDto));
+        approvalService.save(APPROVAL_MAPPER.toEntity(approvalDto));
         log.info("Response: {} was added to database", approvalDto);
-        return new ResponseEntity<>(APPROVAL_MAPPER.toDto(savedApproval), HttpStatus.CREATED);
+        return approvalDto;
     }
 
     @Operation(summary = "Возвращает лист согласования по id")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApprovalDto> findById(@PathVariable("id") long id) {
+    public ApprovalDto findById(@PathVariable("id") long id) {
         log.info("Send a get-request to get Approval with id = {} from database", id);
         var approvalDto = APPROVAL_MAPPER.toDto(approvalService.findById(id));
         log.info("Response from database: {}", approvalDto);
-        return new ResponseEntity<>(approvalDto, HttpStatus.OK);
+        return approvalDto;
     }
 
     @Operation(summary = "Возвращает все листы согласования")
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<ApprovalDto>> findAll() {
+    public Collection<ApprovalDto> findAll() {
         log.info("Send a get-request to get all approvals from database");
         var listApprovalDto = APPROVAL_MAPPER.toDto(approvalService.findAll());
         log.info("Response from database: {}", listApprovalDto);
-        return new ResponseEntity<>(listApprovalDto, HttpStatus.OK);
+        return listApprovalDto;
     }
 
     @Operation(summary = "Возвращает все листы согласования по списку id")
     @GetMapping("/all/{ids}")
-    private ResponseEntity<Collection<ApprovalDto>> findAllById(@PathVariable List<Long> ids) {
+    private Collection<ApprovalDto> findAllById(@PathVariable List<Long> ids) {
         log.info("Send a get-request to get all approvals from database by ids");
         var listApprovalDto = APPROVAL_MAPPER.toDto(approvalService.findAllById(ids));
         log.info("Response from database: {}", listApprovalDto);
-        return new ResponseEntity<>(listApprovalDto, HttpStatus.OK);
+        return listApprovalDto;
     }
 
     @Operation(summary = "Удаляет лист согласования")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Long> delete(@PathVariable Long id) {
+    public HttpStatus delete(@PathVariable Long id) {
         log.info("Send a delete-request to delete approval with id = {} from database", id);
         approvalService.delete(id);
         log.info("Response: approval with id = {} was deleted from database", id);
-        return new ResponseEntity<>(id, HttpStatus.ACCEPTED);
+        return HttpStatus.ACCEPTED;
     }
 
     @Operation(summary = "В строке таблицы Approval заполняет поле archived_date")
-    @PatchMapping(value = "/move/{id}")
-    public ResponseEntity<ApprovalDto> moveToArchive(@PathVariable Long id) {
+    @PatchMapping(value = "/move/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public String moveToArchive(@PathVariable Long id) {
         log.info("Adding archived date {} in approval with id: {}", ZonedDateTime.now(), id);
         approvalService.moveToArchive(id);
         log.info("Moving approval with id: {} to archive", id);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return "The file is archived";
     }
 
     @Operation(summary = "Находит строку таблицы Approval c полем acrhivedDate = null, по заданному id")
     @GetMapping(value = "/findByIdNotArchived/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ApprovalDto> findByIdNotArchived(@PathVariable Long id) {
+    public ApprovalDto findByIdNotArchived(@PathVariable Long id) {
         log.info("Getting from database approval with field archived_date = null, with id: {}", id);
-        var approval = approvalService.findByIdNotArchived(id);
-        log.info("Approval: {}", approval);
-        return new ResponseEntity<>(APPROVAL_MAPPER.toDto(approval), HttpStatus.OK);
+        return APPROVAL_MAPPER.toDto(approvalService.findByIdNotArchived(id));
     }
 
     @Operation(summary = "Находит все листы согласования с полем acrhivedDate = null")
     @GetMapping(value = "/findAllNotArchived", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<ApprovalDto>> findAllNotArchived() {
+    public Collection<ApprovalDto> findAllNotArchived() {
         log.info("Getting from database all approvals with field archived_date = null");
-        var listApprovalDto = approvalService.findAllNotArchived();
-        log.info("List of approvals: {}", listApprovalDto);
-        return new ResponseEntity<>(APPROVAL_MAPPER.toDto(listApprovalDto), HttpStatus.OK);
+        return APPROVAL_MAPPER.toDto(approvalService.findAllNotArchived());
     }
 
     // findByIdInAndArchivedDateNull
     @Operation(summary = "Возвращает все не перемещенные в архив листы согласования по списку id")
     @GetMapping(value = "/findByIdInAndArchivedDateNull/{ids}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<ApprovalDto>> findByIdInAndArchivedDateNull(@PathVariable List<Long> ids) {
+    public Collection<ApprovalDto> findByIdInAndArchivedDateNull(@PathVariable List<Long> ids) {
         log.info("Getting from database all approvals with field archived_date = null and with ids");
-        var listApprovalDto = APPROVAL_MAPPER.toDto(approvalService.findByIdInAndArchivedDateNull(ids));
-        log.info("List of approvals: {}", listApprovalDto);
-        return new ResponseEntity<>(listApprovalDto, HttpStatus.OK);
+        return APPROVAL_MAPPER.toDto(approvalService.findByIdInAndArchivedDateNull(ids));
     }
 
     @Operation(summary = "Обновляет запись в таблице Approval")
     @PostMapping(value = "/update")
-    public ResponseEntity<ApprovalDto> update(@RequestBody ApprovalDto approvalDto) {
+    public String update(@RequestBody ApprovalDto approvalDto) {
         log.info("Send a post-request to update Approval from database");
         approvalService.update(APPROVAL_MAPPER.toEntity(approvalDto));
         log.info("Response: {} was updated to database", approvalDto);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return "The file was updated";
     }
 }

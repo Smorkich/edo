@@ -1,0 +1,1 @@
+alter table file_pool add column if not exists file_type text;

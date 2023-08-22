@@ -7,6 +7,7 @@ import lombok.extern.log4j.Log4j2;
 import model.dto.*;
 import model.enum_.Employment;
 import model.enum_.ReceiptMethod;
+import model.enum_.Status;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +42,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SaveNewAppealTest {
 
     private MockMvc mockMvc;
-
     private ObjectMapper objectMapper;
-
     private static AppealDto newAppealDto;
     private static PostgreSQLContainer<?> postgresContainer;
 
@@ -83,6 +82,7 @@ public class SaveNewAppealTest {
         var questions = Set.of(QuestionDto.builder()
                 .theme(ThemeDto.builder().id(1L).build())
                 .summary("Краткое содержание")
+                .status(Status.NEW_STATUS)
                 .build());
 
         Set<FilePoolDto> filePolls = new HashSet<>();
