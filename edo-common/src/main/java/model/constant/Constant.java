@@ -26,6 +26,7 @@ public class Constant {
     public static final String RESOLUTION_REST_URL = "api/rest/resolution";
     public static final String RESOLUTION_SERVICE_URL = "api/service/resolution";
     public static final String REGION_URL = "api/repository/region";
+    public static final String MEMBER_URL = "api/repository/member";
     public static final String THEME_URL = "api/repository/theme";
 
     public static final String EDO_REPOSITORY_NAME = "edo-repository";
