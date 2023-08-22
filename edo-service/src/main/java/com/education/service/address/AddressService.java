@@ -2,6 +2,8 @@ package com.education.service.address;
 
 import model.dto.AddressDto;
 
+import java.util.Collection;
+
 
 /**
  * Service в "edo-service", служит для связи контроллера и RestTemplate
@@ -11,12 +13,13 @@ public interface AddressService {
     /**
      * Метод, который возвращает адрес по Id
      */
-    String findById(long id);
+
+    AddressDto findById(long id);
 
     /**
      * Метод, который возвращает все адреса
      */
-    String findAll();
+    Collection<AddressDto> findAll();
 
     /**
      * Метод сохранения нового адреса в БД

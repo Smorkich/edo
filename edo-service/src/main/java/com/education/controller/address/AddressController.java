@@ -11,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
+
 
 /**
  * Rest-контроллер в "edo-service", служит для отправки запросов
@@ -34,7 +36,7 @@ public class AddressController {
     //GET ONE /api/service/address/{id}
     @Operation(summary = "Возвращает адрес по id", description = "Адрес должен существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> findById(@PathVariable("id") long id) {
+        public ResponseEntity<AddressDto> findById(@PathVariable("id") long id) {
         log.info("Send a get-request to get Address with id = {} from edo-repository " +
                 "(RestTemplate on edo-service side)", id);
         var addressDto = addressService.findById(id);
@@ -45,7 +47,7 @@ public class AddressController {
     //GET ALL /api/service/address/getAllAdresseRestTemplate
     @Operation(summary = "Возвращает все адреса", description = "Адреса должны существовать")
     @GetMapping(value = "", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> findAll() {
+    public ResponseEntity<Collection<AddressDto>> findAll() {
         log.info("Send a get-request to get all Addresse from edo-repository" +
                 " (RestTemplate on edo-service side)");
         var addressDtos = addressService.findAll();
