@@ -32,4 +32,13 @@ public interface MinioService {
     long countPages(UUID UUIDKey, String originalExtension, String ConvertedContentType);
 
     String getConvertedFilename(String key, String extension, String contentType);
+
+    /**
+     * Наложение факсимиле на первую страницу документа
+     * @param UUIDKey - переменная типа UUID, которая представляет ключ (идентификатор) для файла
+     * @param originalExtension - переменная, которая содержит оригинальное расширение файла (pdf/jpeg и тд)
+     * @param convertedContentType - переменная, которая указывает на тип (MIME) преобразованного файла
+     * @param facsimileImage - Стрим самого факсимиле
+     */
+    void overlayFacsimileOnFirstFile(UUID UUIDKey, String originalExtension, String convertedContentType, InputStream facsimileImage);
 }

@@ -39,9 +39,4 @@ public interface ResolutionService {
      */
     public Collection<ResolutionDto> findAllByIdNotArchived(Long id);
 
-    /**
-     * Отправка сообщений (при создании резолюции)
-     */
-    void sendMessage(ResolutionDto resolutionDto);
-
 }

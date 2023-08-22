@@ -1,12 +1,9 @@
 package com.education.controller.minio;
 
-import ch.qos.logback.core.rolling.helper.FileStoreUtil;
-import ch.qos.logback.core.util.FileUtil;
-import com.education.service.emloyee.EmployeeService;
 import com.education.service.filePool.FilePoolService;
 import com.education.service.minio.MinioService;
-import freemarker.cache.FileExtensionMatcher;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.EmployeeDto;
@@ -15,15 +12,8 @@ import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.FileSystemUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -41,6 +31,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @Log4j2
 @RestController
 @AllArgsConstructor
+@Tag(name = "Rest- контроллер для работы с miniO")
 @RequestMapping("/api/service/minio")
 public class MinioController {
 
@@ -53,7 +44,7 @@ public class MinioController {
                 .build();
     }
 
-    @ApiOperation(value = "Uploading file to file storage")
+    @Operation(summary = "Загрузка файла в файловое хранилище")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = APPLICATION_JSON_VALUE)
     public FilePoolDto uploadOneFile(@RequestParam("file") MultipartFile file,
@@ -83,7 +74,7 @@ public class MinioController {
      * Redirect request to download file from MINIO-server.
      * Request consist of object`s name.
      */
-    @ApiOperation("send request to download file from server`s buckets to target folder")
+    @Operation(summary = "Отправляет запрос на загрузку файла из корзины в целевую папку")
     @GetMapping("/download/{name}")
     public ResponseEntity<InputStreamResource> downloadOneFile(@PathVariable("name") String name) throws IOException {
         log.info("Download file named: {}", name);
@@ -94,7 +85,7 @@ public class MinioController {
                 .body(new InputStreamResource(is));
     }
 
-    @ApiOperation("get filePool by uuid")
+    @Operation(summary = "Получить filePool по uuid")
     @GetMapping("/info/{uuid}")
     public ResponseEntity<FilePoolDto> getInfo(@PathVariable UUID uuid) {
         System.out.println(uuid);
@@ -108,7 +99,7 @@ public class MinioController {
     /**
      * Request to delete old file in the MINIO-server`s bucket
      */
-    @ApiOperation("send request to upload file to bucjets from source")
+    @Operation(summary = "Отправляет запрос на загрзку файла в корзину из исходного кода")
     @DeleteMapping("/delete/{fileName}")
     public ResponseEntity delete(@PathVariable("fileName") String fileName) {
         log.info("delete file: {}", fileName);

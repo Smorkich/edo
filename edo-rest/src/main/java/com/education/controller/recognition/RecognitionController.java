@@ -1,10 +1,8 @@
 package com.education.controller.recognition;
 
-import com.education.publisher.recognition.RecognitionPublisher;
-import com.education.service.appeal.AppealService;
-import com.education.service.minio.MinioService;
 import com.education.service.recognition.RecognitionService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
@@ -20,11 +18,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @Log4j2
 @AllArgsConstructor
+@Tag(name ="Контроллер для отправки id обращения для распознования")
 @RequestMapping("/api/rest/recognition")
 public class RecognitionController {
     private final RecognitionService recognitionService;
 
-    @ApiOperation(value = "Принимает id обращения, достает по нему файл из file-storage, отправляет на распознавание в очередь FILE_RECOGNITION_START")
+    @Operation(summary = "Принимает id обращения, достает по нему файл из file-storage, " +
+            "отправляет на распознавание в очередь FILE_RECOGNITION_START")
     @GetMapping("/{id}")
     public ResponseEntity<String> recognition(@PathVariable("id") Long id) {
 

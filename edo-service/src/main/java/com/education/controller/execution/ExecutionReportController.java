@@ -1,7 +1,8 @@
 package com.education.controller.execution;
 
 import com.education.service.execution.ExecutionReportService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.ExecutionReportDto;
@@ -21,11 +22,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/service/report")
 @AllArgsConstructor
-@ApiOperation("ExecutionReportController в модуле edo-service")
+@Tag(name = "Rest- контроллер для отправки отчета в edo-repository")
 public class ExecutionReportController {
     private final ExecutionReportService reportService;
 
-    @ApiOperation(value = "Принимает отчет и отправялет его в edo-repository")
+    @Operation(summary = "Принимает отчет и отправялет его в edo-repository")
     @PostMapping
     public ResponseEntity<ExecutionReportDto> submitReport(@RequestBody ExecutionReportDto reportDto) {
         log.info("Отправляем reportDto в service");
