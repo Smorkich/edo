@@ -150,7 +150,7 @@ public class QuestionController {
      */
     @Operation(summary = "Регистрирует все вопросы по id", description = "Вопросы должны существовать")
     @PostMapping(value = "/registerAll/{ids}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<QuestionDto>> registerAllById(@PathVariable(name = "ids") Iterable<Long> ids) {
+    public ResponseEntity<Collection<QuestionDto>> registerAllById(@PathVariable(name = "ids") Collection<Long> ids) {
         log.info("Send a post-request to register all Questions from edo-repository (RestTemplate on edo-service side)");
         var questionDtos = questionService.registerAllQuestions(ids);
         log.info("The operation was successful, the Questions has been registered");
@@ -184,7 +184,7 @@ public class QuestionController {
      */
     @Operation(summary = "Изменяет статусы вопросов по id на 'UPDATED'", description = "Вопросы должны существовать")
     @PostMapping(value = "/setUpdatedStatusAll/{ids}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<QuestionDto>> setUpdatedStatusAllByID(@PathVariable(name = "ids") Iterable<Long> ids) {
+    public ResponseEntity<Collection<QuestionDto>> setUpdatedStatusAllByID(@PathVariable(name = "ids") Collection<Long> ids) {
         log.info("Send a post-request to change list of Question status on 'UPDATED' from edo-service");
         var questionDtos = questionService.setStatusUpdatedAll(ids);
         log.info("The operation was successful,status of the Questions has been changed to 'UPDATED'");

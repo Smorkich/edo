@@ -20,7 +20,7 @@ public interface QuestionFeignClient {
     Collection<QuestionDto> findAll();
 
     @GetMapping("/all/{ids}")
-    Collection<QuestionDto> findAllById(@PathVariable Iterable<Long> ids);
+    Collection<QuestionDto> findAllById(@PathVariable Collection<Long> ids);
 
     @PostMapping()
     QuestionDto save(@RequestBody QuestionDto questionDto);
@@ -41,13 +41,13 @@ public interface QuestionFeignClient {
     QuestionDto registerQuestion(@PathVariable("questionId") Long questionId);
 
     @PostMapping("/registerAll")
-    Collection<QuestionDto> registerAllQuestions(@RequestBody Iterable<Long> questionsIds);
+    Collection<QuestionDto> registerAllQuestions(@RequestBody Collection<Long> questionsIds);
 
     @PostMapping("/setStatusUpdated/{questionId}")
     QuestionDto setStatusUpdated(@PathVariable("questionId") Long questionId);
 
-    @PostMapping("/setStatusUpdatedAll")
-    Collection<QuestionDto> setStatusUpdatedAll(@RequestBody Iterable<Long> questionsIds);
+//    @PostMapping("/setStatusUpdatedAll")
+//    Collection<QuestionDto> setStatusUpdatedAll(@RequestBody Collection<Long> questionsIds);todo понять, почему не запускается с этим методом
 
     @GetMapping("/appeal/{id}")
     Collection<QuestionDto> findByAppealId(@PathVariable("id") Long appealId);

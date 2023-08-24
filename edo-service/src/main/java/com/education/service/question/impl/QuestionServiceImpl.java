@@ -8,6 +8,7 @@ import model.dto.QuestionDto;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Stream;
 
 /**
@@ -72,7 +73,7 @@ public class QuestionServiceImpl implements QuestionService {
      * @return Collection<QuestionDto> - коллекция из DTO сущности Question (вопросов обращения)
      */
     @Override
-    public Collection<QuestionDto> registerAllQuestions(Iterable<Long> questionsIds) {
+    public Collection<QuestionDto> registerAllQuestions(Collection<Long> questionsIds) {
         return questionFeignClient.registerAllQuestions(questionsIds);
     }
 
@@ -92,14 +93,14 @@ public class QuestionServiceImpl implements QuestionService {
     /**
      * Составляет логику добавления статуса UPDATED (внесены изменения) вопросам по id из параметра
      * <p>Отправляет запрос в edo-repository на добавление статуса UPDATED коллекции Question по ids,
-     * ids передаются в параметре как "Iterable"
+     * ids передаются в параметре как "Collection"
      *
      * @param questionsIds идентификаторы изменяемых Question
      * @return Collection<QuestionDto> - коллекция из DTO сущности Question (вопросов обращения)
      */
     @Override
-    public Collection<QuestionDto> setStatusUpdatedAll(Iterable<Long> questionsIds) {
-        return questionFeignClient.setStatusUpdatedAll(questionsIds);
+    public Collection<QuestionDto> setStatusUpdatedAll(Collection<Long> questionsIds) {
+        return List.of();
     }
 
     @Override
@@ -109,7 +110,7 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Collection<QuestionDto> findAllById(Iterable<Long> ids) {
+    public Collection<QuestionDto> findAllById(Collection<Long> ids) {
         return questionFeignClient.findAllById(ids);
     }
 

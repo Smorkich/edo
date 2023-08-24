@@ -42,7 +42,7 @@ public interface QuestionService {
      * @param questionsIds идентификатор регистрируемого Appeal
      * @return QuestionDto - DTO сущности Question (вопрос обращения)
      */
-    Collection<QuestionDto> registerAllQuestions(Iterable<Long> questionsIds);
+    Collection<QuestionDto> registerAllQuestions(Collection<Long> questionsIds);
 
     /**
      * Интерфейс для метода, отправляющего запрос в edo-repository на изменение поля status
@@ -60,7 +60,7 @@ public interface QuestionService {
      * @param questionsIds идентификаторы изменяемых Question
      * @return QuestionDto - DTO сущности Question (вопрос обращения)
      */
-    Collection<QuestionDto> setStatusUpdatedAll(Iterable<Long> questionsIds);
+    Collection<QuestionDto> setStatusUpdatedAll(Collection<Long> questionsIds);
 
     /**
      * Метод возвращает вопрос по Id
@@ -76,7 +76,7 @@ public interface QuestionService {
     /**
      * Метод возвращает все вопросы по ids
      */
-    Collection<QuestionDto> findAllById(Iterable<Long> ids);
+    Collection<QuestionDto> findAllById(Collection<Long> ids);
 
     /**
      * Метод заполняет поле значением и установленной датой

@@ -1,7 +1,10 @@
 package com.education.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import model.enum_.ReceiptMethod;
 import model.enum_.Status;
@@ -104,7 +107,7 @@ public class Appeal extends BaseEntity {
      * Несколько "questions" - несколько вопросов
      * внутри гневные вопросы недовольных граждан
      */
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "appeal")
+    @OneToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "appeal_question",
             joinColumns = @JoinColumn(name = "appeal_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "question_id", referencedColumnName = "id"))

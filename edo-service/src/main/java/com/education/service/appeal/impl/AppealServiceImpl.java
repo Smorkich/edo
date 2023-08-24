@@ -1,6 +1,5 @@
 package com.education.service.appeal.impl;
 
-import com.education.controller.employee.EmployeeController;
 import com.education.controller.facsimile.FacsimileController;
 import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
@@ -12,7 +11,10 @@ import com.education.service.question.QuestionService;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import model.dto.*;
+import model.dto.AppealDto;
+import model.dto.EmployeeDto;
+import model.dto.FilePoolDto;
+import model.dto.QuestionDto;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -47,10 +49,8 @@ public class AppealServiceImpl implements AppealService {
     private final AuthorService authorService;
     private final QuestionService questionService;
     private final FilePoolService filePoolService;
-    private final FacsimileDto facsimileDto;
     private final FacsimileService facsimileService;
     private final FacsimileController facsimileController;
-    private final EmployeeController employeeController;
     private final MinioService minioService;
     private final NomenclatureService nomenclatureService;
 
