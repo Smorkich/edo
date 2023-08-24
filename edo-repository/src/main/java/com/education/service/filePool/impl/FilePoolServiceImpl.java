@@ -27,6 +27,17 @@ public class FilePoolServiceImpl implements FilePoolService {
         return filePoolRepository.saveAndFlush(filePool);
     }
 
+    /**
+     * Сохраняет коллекцию FilePool в БД через repository
+     *
+     * @param filePools коллекция добавляемых FilePool
+     * @return Collection<FilePool> - коллекция сущности FilePool (информация о файле)
+     */
+    @Override
+    public Collection<FilePool> saveAll(Collection<FilePool> filePools) {
+        return filePoolRepository.saveAll(filePools);
+    }
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delete(Long id) {

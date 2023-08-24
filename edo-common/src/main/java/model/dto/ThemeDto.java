@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.time.ZonedDateTime;
+import java.util.Objects;
 
 /**
  * @author AlexeySpiridonov
@@ -14,9 +15,12 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 @Builder
+@ToString
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ApiModel(value = "Тема обращения")
 public class ThemeDto {
 
+    @EqualsAndHashCode.Include
     @ApiModelProperty(value = "номер id")
     private Long id;
 

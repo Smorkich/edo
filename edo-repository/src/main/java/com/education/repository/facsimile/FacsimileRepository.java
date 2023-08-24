@@ -16,7 +16,15 @@ public interface FacsimileRepository extends JpaRepository<Facsimile,Long> {
     @Query("select a from Facsimile a " +
             "left join fetch a.department " +
             "left join fetch a.employee " +
-            "left join fetch a.filePoolId " +
+            "left join fetch a.filePool " +
             " where a.id = :id")
     Optional<Facsimile> findById(@Param("id") Long id);
+
+    @Query("select a from Facsimile a " +
+            "left join fetch a.department " +
+            "left join fetch a.employee " +
+            "left join fetch a.filePool " +
+            " where a.employee.id = :employeeId")
+    Optional<Facsimile> findFacsimileByEmployeeId(@Param("employeeId") Long employeeId);
+
 }

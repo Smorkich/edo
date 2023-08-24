@@ -26,8 +26,5 @@ public class FacsimileDto {
     private DepartmentDto department;
 
     @ApiModelProperty(value = "Cвязь с файлом")
-    private FilePoolDto filePoolId;
-
-
-
+    private FilePoolDto filePool;
 }

@@ -18,6 +18,9 @@ public interface FilePoolFeignClient {
     @PostMapping(FILEPOOL_URL)
     FilePoolDto save(@RequestBody @Valid FilePoolDto filePoolDto);
 
+    @PostMapping(FILEPOOL_URL + "/all")
+    Collection<FilePoolDto> saveAll(@RequestBody Collection<FilePoolDto> filePoolDto);
+
     @GetMapping(FILEPOOL_URL + "/{id}")
     FilePoolDto findById(@PathVariable Long id);
 

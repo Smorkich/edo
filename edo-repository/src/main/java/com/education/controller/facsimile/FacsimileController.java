@@ -10,10 +10,7 @@ import model.dto.FacsimileDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import static com.education.mapper.FacsimileMapper.FACSIMILE_MAPPER;
 
@@ -33,5 +30,14 @@ public class FacsimileController {
         var save = facsimileService.save(FACSIMILE_MAPPER.toEntity(facsimileDto));
         log.info("facsimile был создан! {}",save);
         return new ResponseEntity<>(FACSIMILE_MAPPER.toDto(facsimileService.findById(save.getId())), HttpStatus.CREATED);
+    }
+
+    @Operation(summary = "Производит поиск Facsimile по EmployeeId")
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<FacsimileDto> findFacsimileByEmployeeId(@PathVariable Long id) {
+        log.info("Поиск факсимиле по id Employee");
+        var facsimileDto = FACSIMILE_MAPPER.toDto(facsimileService.findFacsimileByEmployeeId(id));
+        log.info("Операция прошла успешно, был получен факсимиле по EmployeeId = {}", id);
+        return new ResponseEntity<>(facsimileDto, HttpStatus.OK);
     }
 }

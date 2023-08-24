@@ -24,4 +24,10 @@ public class FacsimileServiceImpl implements FacsimileService {
     public Facsimile findById(Long id) {
         return facsimileRepository.findById(id).orElse(null);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Facsimile findFacsimileByEmployeeId(Long employeeId) {
+        return facsimileRepository.findFacsimileByEmployeeId(employeeId).orElse(null);
+    }
 }

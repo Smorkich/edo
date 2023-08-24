@@ -1,4 +1,10 @@
 spring:
+#  //Добавили rabbitmq
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
   flyway:
     enabled: true
     user: postgres
