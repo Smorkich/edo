@@ -123,4 +123,10 @@ public class Employee extends BaseEntity {
      */
     @Column(name = "email")
     private String email;
+
+    /**
+     * Связь с настройкой оповещений
+     */
+    @ManyToOne
+    private NotificationSettings notificationSettings;
 }

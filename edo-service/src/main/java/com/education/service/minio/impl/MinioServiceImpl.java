@@ -50,6 +50,7 @@ public class MinioServiceImpl implements MinioService {
         body.add("file", currentFile.getResource());
         body.add("key", UUIDKey.toString());
         body.add("fileName", fileName);
+
         var requestEntity = new HttpEntity<>(body, headers);
 
         return restTemplate.postForEntity(getUri("/api/file-storage/upload"),
