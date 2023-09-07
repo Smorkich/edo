@@ -1,9 +1,6 @@
-CREATE TABLE IF NOT EXISTS notification_settings
+create table if not exists notification_settings
 (
-    id                SERIAL PRIMARY KEY,
-    activation_status VARCHAR(100)
+    id bigserial not null primary key,
+    activation_status varchar(100),
+    user_id varchar(255)
 );
-
-ALTER TABLE IF EXISTS employee
-    ADD COLUMN notification_settings_id BIGINT,
-    ADD CONSTRAINT employee_notification_settings_fk FOREIGN KEY (notification_settings_id) REFERENCES notification_settings (id);

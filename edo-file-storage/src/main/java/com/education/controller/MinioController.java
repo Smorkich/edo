@@ -57,11 +57,6 @@ public class MinioController {
             throw new ExtensionException("Неверное расширение файла!");
         }
 
-        //   Image image = new ImageIcon((Image) file).getImage();
-       // if (image.getHeight(null) > 100 || image.getWidth(null) > 100) {
-        //    throw new SizeException("Превышен допустимый размер файла");
-       // }
-
 
         if (MAIN.equals(fileType)) {
 

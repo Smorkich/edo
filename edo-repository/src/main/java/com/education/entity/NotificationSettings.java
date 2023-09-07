@@ -31,7 +31,8 @@ public class NotificationSettings extends BaseEntity {
     /**
      * Связь с пользователем
      */
-    @ManyToOne
-    private Employee employee;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private Employee user;
 
 }
