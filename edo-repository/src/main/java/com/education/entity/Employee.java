@@ -123,4 +123,5 @@ public class Employee extends BaseEntity {
      */
     @Column(name = "email")
     private String email;
+
 }
