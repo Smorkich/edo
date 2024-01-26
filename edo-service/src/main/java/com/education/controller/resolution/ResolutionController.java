@@ -43,6 +43,16 @@ public class ResolutionController {
         return new ResponseEntity<>(save, HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Разорхивирует резолюцию")
+    @PostMapping(value = "/unarchive/{id}", produces = MediaType.APPLICATION_JSON)
+    public ResponseEntity<ResolutionDto> unarchiveResolution(@PathVariable Long id) {
+        log.info("Получен запрос на разархивирование резолюции с id = {}", id);
+        resolutionService.unarchiveResolution(id);
+        var resolutionDto = resolutionService.findById(id);
+        log.info("Резолюция разархивирована");
+        return new ResponseEntity<>(resolutionDto, HttpStatus.OK);
+    }
+
     @Operation(summary = "Перемещение резолюции в архив")
     @PostMapping(value = "/move/{id}", produces = MediaType.APPLICATION_JSON)
     public ResponseEntity<ResolutionDto> moveToArchive(@PathVariable Long id) {

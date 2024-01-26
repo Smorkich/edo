@@ -1,6 +1,5 @@
 package com.education.service.resolution;
 
-import model.dto.AppealDto;
 import model.dto.ResolutionDto;
 
 import java.util.Collection;
@@ -13,6 +12,11 @@ public interface ResolutionService {
      * Сохраняет новую резолюцию
      */
     public ResolutionDto save(ResolutionDto resolutionDto);
+
+    /**
+     * Разархивации резолюции
+     */
+    void unarchiveResolution(Long id);
 
     /**
      * Архивирует резолюцию

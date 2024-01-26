@@ -2,34 +2,16 @@ package com.education.service.resolution.impl;
 
 import com.education.feign.ResolutionFeignClient;
 import com.education.service.appeal.AppealService;
-
-
 import com.education.service.emloyee.EmployeeService;
 import com.education.service.resolution.ResolutionService;
-
-import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
-import model.constant.Constant;
-
-import model.dto.EmployeeDto;
+import lombok.extern.slf4j.Slf4j;
+import model.dto.AppealDto;
 import model.dto.ResolutionDto;
-
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.web.client.RestTemplate;
-import model.dto.AppealDto;
-
-import static com.education.util.URIBuilderUtil.buildURI;
-
 import java.time.ZonedDateTime;
-import java.util.*;
-
-import static model.constant.Constant.*;
+import java.util.Collection;
 
 import static model.enum_.Status.UNDER_CONSIDERATION;
 
@@ -40,6 +22,7 @@ import static model.enum_.Status.UNDER_CONSIDERATION;
 
 @AllArgsConstructor
 @Service
+@Slf4j
 public class ResolutionServiceImpl implements ResolutionService {
 
     private final AppealService appealService;
@@ -60,6 +43,28 @@ public class ResolutionServiceImpl implements ResolutionService {
         appealService.save(appealDto);
 
         return resolutionFeignClient.saveResolution(resolutionDto);
+    }
+
+    /**
+     * Метод разархивации резолюции
+     * Удаляем дату архивации из резолюции
+     * Находим обращение по ID резолюции и получаем список всех резолюций для обращения
+     * Если резолюция становится единственной для обращения и её статус isDraft = false
+     * То меняем статус обращения на UNDER_CONSIDERATION
+     */
+    @Override
+    public void unarchiveResolution(Long id) {
+        ResolutionDto resolutionDto = resolutionFeignClient.findById(id);
+        resolutionDto.setArchivedDate(null);
+        resolutionFeignClient.saveResolution(resolutionDto);
+        AppealDto appealDto = appealService.findById(id);
+        Collection<ResolutionDto> resolutions = resolutionFeignClient.findAll(appealDto.getId());
+        if (resolutions.size() == 1 && !resolutionDto.getIsDraft()) {
+            appealDto.setAppealsStatus(UNDER_CONSIDERATION);
+            appealService.save(appealDto);
+            log.info("Статус обращения id: {} изменен (на расмотрении) ", id);
+        }
+        log.info("Резолюции id: {} успешно разархивирована", id);
     }
 
     @Override
