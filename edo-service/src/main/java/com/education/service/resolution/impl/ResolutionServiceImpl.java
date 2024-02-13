@@ -6,6 +6,7 @@ import com.education.service.emloyee.EmployeeService;
 import com.education.service.resolution.ResolutionService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lombok.extern.slf4j.Slf4j;
 import model.dto.AppealDto;
 import model.dto.ResolutionDto;
 import org.springframework.stereotype.Service;
@@ -31,17 +32,22 @@ public class ResolutionServiceImpl implements ResolutionService {
 
     @Override
     public ResolutionDto save(ResolutionDto resolutionDto) {
+        log.info("Начало метода сохранения резолюции в базе");
+        resolutionDto.setLastActionDate(ZonedDateTime.now());
         if (resolutionDto.getCreationDate() == null) {
             resolutionDto.setCreationDate(ZonedDateTime.now());
         }
-        resolutionDto.setIsDraft(true);
-        resolutionDto.setLastActionDate(ZonedDateTime.now());
-
-        Long questionId = resolutionDto.getQuestion().getId();
-        AppealDto appealDto = appealService.findAppealByQuestionsId(questionId);
-        appealDto.setAppealsStatus(UNDER_CONSIDERATION);
-        appealService.save(appealDto);
-
+        log.info("IsDraft равно: {}", resolutionDto.getIsDraft());
+        if (resolutionDto.getIsDraft() == null) {
+            resolutionDto.setIsDraft(true);
+            log.info("IsDraft изменен на true");
+        }
+        if (!resolutionDto.getIsDraft()) {
+            Long questionId = resolutionDto.getQuestion().getId();
+            AppealDto appealDto = appealService.findAppealByQuestionsId(questionId);
+            appealDto.setAppealsStatus(UNDER_CONSIDERATION);
+            appealService.save(appealDto);
+        }
         return resolutionFeignClient.saveResolution(resolutionDto);
     }
 
