@@ -53,24 +53,16 @@ public class ResolutionServiceImpl implements ResolutionService {
 
     /**
      * Метод разархивации резолюции
-     * Удаляем дату архивации из резолюции
-     * Находим обращение по ID резолюции и получаем список всех резолюций для обращения
      * Если резолюция становится единственной для обращения и её статус isDraft = false
      * То меняем статус обращения на UNDER_CONSIDERATION
      */
     @Override
-    public void unarchiveResolution(Long id) {
-        ResolutionDto resolutionDto = resolutionFeignClient.findById(id);
-        resolutionDto.setArchivedDate(null);
-        resolutionFeignClient.saveResolution(resolutionDto);
-        AppealDto appealDto = appealService.findById(id);
-        Collection<ResolutionDto> resolutions = resolutionFeignClient.findAll(appealDto.getId());
-        if (resolutions.size() == 1 && !resolutionDto.getIsDraft()) {
-            appealDto.setAppealsStatus(UNDER_CONSIDERATION);
-            appealService.save(appealDto);
-            log.info("Статус обращения id: {} изменен (на расмотрении) ", id);
-        }
-        log.info("Резолюции id: {} успешно разархивирована", id);
+    public void unarchiveResolution(Long resolutionId) {
+        ResolutionDto resolution = resolutionFeignClient.findById(resolutionId);
+        Long questionId = resolution.getQuestion().getId();
+        AppealDto appealDto = appealService.findAppealByQuestionsId(questionId);
+        appealService.setNewAppealStatusIfResolutionLastAndIsDraftFalse(appealDto);
+        resolutionFeignClient.unarchiveResolution(resolutionId);
     }
 
     @Override

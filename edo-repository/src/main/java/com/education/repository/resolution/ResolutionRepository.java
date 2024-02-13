@@ -25,11 +25,27 @@ public interface ResolutionRepository extends JpaRepository<Resolution, Long> {
      */
     @Query("SELECT res from Resolution res where res.id =:id and res.archivedDate is null")
     Collection<Resolution> findAllByArchivedDateIsNull(@Param("id") Collection<Long> id);
-
+    /**
+     * Выборка всех резолюций которые не черновики (isDraft = false) у конкретного Обращения
+     */
+    @Query("SELECT res " +
+            "FROM Resolution res " +
+            "JOIN FETCH res.question que " +
+            "JOIN FETCH que.appeal app " +
+            "WHERE app.id IN :appealId " +
+            "AND res.isDraft = false")
+    Collection<Resolution> findAllByAppealIdAndIsDraftFalse(@Param("appealId") Long appealId);
     /**
      * Перемещение резолюции в архив
      */
     @Modifying
     @Query(nativeQuery = true, value = "update resolution set archived_date = now() where id =:id and archived_date is null")
     void movesToArchive(@Param("id") Long id);
+
+    /**
+     * Разархивирование резолюций
+     */
+    @Modifying
+    @Query(nativeQuery = true, value = "UPDATE resolution SET archived_date = NULL WHERE id =:resolutionId")
+    void unarchiveResolution(@Param("resolutionId") Long resolutionId);
 }

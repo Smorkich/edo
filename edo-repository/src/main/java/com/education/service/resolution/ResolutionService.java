@@ -20,6 +20,11 @@ public interface ResolutionService {
     public void moveToArchive(Long id);
 
     /**
+     * Разархивирует резолюцию
+     */
+    void unarchiveResolution(Long resolutionId);
+
+    /**
      * Поиск резолюции по id
      */
     public Resolution findById(Long id);
@@ -28,6 +33,11 @@ public interface ResolutionService {
      * Показать все резолюции
      */
     public Collection<Resolution> findAllById(Collection<Long> id);
+
+    /**
+     * Поиск всех резолюций которые не черновики (isDraft = false) у конкретного Обращения
+     */
+    Collection<Resolution> findAllByAppealIdAndIsDraftFalse(Long appealId);
 
     /**
      * Поиск исключительно не архивированной резолюции по id

@@ -21,6 +21,9 @@ public interface ResolutionFeignClient {
     @PostMapping( RESOLUTION_URL + "/move/{id}")
     ResolutionDto moveToArchive(@PathVariable Long id);
 
+    @PostMapping(RESOLUTION_URL + "/unarchive/{resolutionId}")
+    ResolutionDto unarchiveResolution(@PathVariable Long resolutionId);
+
     @GetMapping(RESOLUTION_URL + "/{id}")
     ResolutionDto findById(@PathVariable Long id);
 
@@ -33,4 +36,6 @@ public interface ResolutionFeignClient {
     @GetMapping(RESOLUTION_URL + "/notArchived/all/{id}")
     Collection<ResolutionDto> findAllByIdNotArchived(@PathVariable Long id);
 
+    @GetMapping(RESOLUTION_URL + "/appealId/all/{appealId}")
+    Collection<ResolutionDto> findAllByAppealIdAndIsDraftFalse(@PathVariable Long appealId);
 }

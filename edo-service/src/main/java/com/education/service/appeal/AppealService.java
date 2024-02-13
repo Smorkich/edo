@@ -60,4 +60,9 @@ public interface AppealService {
      */
     AppealDto register(Long id);
 
+    /**
+     * Если резолюция становится единственной для обращения и её статус isDraft = false
+     * То меняем статус обращения на UNDER_CONSIDERATION
+     */
+    void setNewAppealStatusIfResolutionLastAndIsDraftFalse(AppealDto appealDto);
 }

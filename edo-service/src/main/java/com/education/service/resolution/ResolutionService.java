@@ -16,7 +16,7 @@ public interface ResolutionService {
     /**
      * Разархивации резолюции
      */
-    void unarchiveResolution(Long id);
+    void unarchiveResolution(Long resolutionId);
 
     /**
      * Архивирует резолюцию
