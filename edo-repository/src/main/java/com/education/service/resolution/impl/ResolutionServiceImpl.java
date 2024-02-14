@@ -35,6 +35,11 @@ public class ResolutionServiceImpl implements ResolutionService {
         resolutionRepository.movesToArchive(id);
     }
 
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public void unarchiveResolution(Long resolutionId) {
+        resolutionRepository.unarchiveResolution(resolutionId);
+    }
     @Transactional(readOnly = true)
     @Override
     public Resolution findById(Long id) {
@@ -46,8 +51,11 @@ public class ResolutionServiceImpl implements ResolutionService {
     public List<Resolution> findAllById(Collection<Long> id) {
         return resolutionRepository.findAllById(id);
     }
-
-
+    @Transactional(readOnly = true)
+    @Override
+    public Collection<Resolution> findAllByAppealIdAndIsDraftFalse(Long appealId) {
+        return resolutionRepository.findAllByAppealIdAndIsDraftFalse(appealId);
+    }
     @Transactional(readOnly = true)
     @Override
     public Resolution findByIdNotArchived(Long id) {

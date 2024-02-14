@@ -50,6 +50,14 @@ public class ResolutionRestController {
         return "The file is archived";
     }
 
+    @Operation(summary = "Разорхивирует резолюцию")
+    @PatchMapping(value = "/unarchive/{resolutionId}", produces = MediaType.APPLICATION_JSON)
+    public String unarchiveResolution(@PathVariable Long resolutionId) {
+        log.info("Получен запрос на разархивирование резолюции с id = {}", resolutionId);
+        resolutionService.unarchiveResolution(resolutionId);
+        return "Резолюция разархивирована";
+    }
+
     @Operation(summary = "Поиск резолюции по id")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON)
     public ResolutionDto getResolutionById(@PathVariable Long id) {
@@ -67,7 +75,14 @@ public class ResolutionRestController {
         log.info("Resolutions was found");
         return resolutionDto;
     }
-
+    @Operation(summary = "Поиск всех резолюций")
+    @GetMapping(value = "/appealId/all/{appealId}", produces = MediaType.APPLICATION_JSON)
+    public Collection<ResolutionDto> findAllByAppealIdAndIsDraftFalse(@PathVariable Long appealId) {
+        log.info("Получен запрос на поиск всех резолюций которые не черновики у обращения id = {}", appealId);
+        var resolutionDto = RESOLUTION_MAPPER.toDto(resolutionService.findAllByAppealIdAndIsDraftFalse(appealId));
+        log.info("Резолюции найдены");
+        return resolutionDto;
+    }
     @Operation(summary = "Поиск не архивированной резолюции по id")
     @GetMapping(value = "/notArchived/{id}")
     public ResolutionDto findByIdNotArchived(@PathVariable Long id) {

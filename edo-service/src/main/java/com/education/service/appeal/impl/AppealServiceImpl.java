@@ -1,6 +1,7 @@
 package com.education.service.appeal.impl;
 
 import com.education.controller.facsimile.FacsimileController;
+import com.education.feign.ResolutionFeignClient;
 import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
 import com.education.service.facsimile.FacsimileService;
@@ -15,6 +16,7 @@ import model.dto.AppealDto;
 import model.dto.EmployeeDto;
 import model.dto.FilePoolDto;
 import model.dto.QuestionDto;
+import model.dto.ResolutionDto;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -53,6 +55,7 @@ public class AppealServiceImpl implements AppealService {
     private final FacsimileController facsimileController;
     private final MinioService minioService;
     private final NomenclatureService nomenclatureService;
+    private final ResolutionFeignClient resolutionFeignClient;
 
 
     /**
@@ -275,6 +278,18 @@ public class AppealServiceImpl implements AppealService {
         } else if (!appealFromDb.equals(appealDto) && appealDto.getAppealsStatus().equals(REGISTERED)) {
             setUpdatedStatusQuestionsForAppeal(appealDto);
             appealDto.setAppealsStatus(UPDATED);
+        }
+    }
+
+    /**
+     * Если резолюция становится единственной для обращения и её статус isDraft = false
+     * То меняем статус обращения на UNDER_CONSIDERATION
+     */
+    @Override
+    public void setNewAppealStatusIfResolutionLastAndIsDraftFalse(AppealDto appealDto) {
+        Collection<ResolutionDto> resolutions = resolutionFeignClient.findAllByAppealIdAndIsDraftFalse(appealDto.getId());
+        if (resolutions.size() == 1) {
+            appealDto.setAppealsStatus(UNDER_CONSIDERATION);
         }
     }
 

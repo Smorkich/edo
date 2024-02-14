@@ -2,35 +2,17 @@ package com.education.service.resolution.impl;
 
 import com.education.feign.ResolutionFeignClient;
 import com.education.service.appeal.AppealService;
-
-
 import com.education.service.emloyee.EmployeeService;
 import com.education.service.resolution.ResolutionService;
-
-import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import model.constant.Constant;
-
-import model.dto.EmployeeDto;
+import lombok.extern.slf4j.Slf4j;
+import model.dto.AppealDto;
 import model.dto.ResolutionDto;
-
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.web.client.RestTemplate;
-import model.dto.AppealDto;
-
-import static com.education.util.URIBuilderUtil.buildURI;
-
 import java.time.ZonedDateTime;
-import java.util.*;
-
-import static model.constant.Constant.*;
+import java.util.Collection;
 
 import static model.enum_.Status.UNDER_CONSIDERATION;
 
@@ -67,6 +49,20 @@ public class ResolutionServiceImpl implements ResolutionService {
             appealService.save(appealDto);
         }
         return resolutionFeignClient.saveResolution(resolutionDto);
+    }
+
+    /**
+     * Метод разархивации резолюции
+     * Если резолюция становится единственной для обращения и её статус isDraft = false
+     * То меняем статус обращения на UNDER_CONSIDERATION
+     */
+    @Override
+    public void unarchiveResolution(Long resolutionId) {
+        ResolutionDto resolution = resolutionFeignClient.findById(resolutionId);
+        Long questionId = resolution.getQuestion().getId();
+        AppealDto appealDto = appealService.findAppealByQuestionsId(questionId);
+        appealService.setNewAppealStatusIfResolutionLastAndIsDraftFalse(appealDto);
+        resolutionFeignClient.unarchiveResolution(resolutionId);
     }
 
     @Override
