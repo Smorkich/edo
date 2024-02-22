@@ -44,9 +44,11 @@ public class MinIOController {
     @Operation(summary = "Отправляет запрос на загрузку файла из исходного кода в корзину")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = APPLICATION_JSON_VALUE)
-    public FilePoolDto uploadOneFile(@RequestParam(value = "file", required = false) MultipartFile file) {
+    //добавлен параметр fileType
+    public FilePoolDto uploadOneFile(@RequestParam(value = "file", required = false) MultipartFile file,
+                                     @RequestParam(value = "fileType") String fileType) {
         log.info("Upload file named: {}", file.getOriginalFilename());
-        return service.uploadOneFile(file);
+        return service.uploadOneFile(file, fileType);
     }
 
     /**

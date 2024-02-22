@@ -4,6 +4,7 @@ import com.education.service.minio.MinioService;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import model.dto.EnumFileType;
 import org.apache.pdfbox.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
@@ -42,7 +43,7 @@ public class MinioServiceImpl implements MinioService {
 
     @Override
     public ResponseEntity<String> uploadOneFile(MultipartFile currentFile,
-                                                UUID UUIDKey, String fileName, String contentType) {
+                                                UUID UUIDKey, String fileName, String contentType, String fileType) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -50,6 +51,8 @@ public class MinioServiceImpl implements MinioService {
         body.add("file", currentFile.getResource());
         body.add("key", UUIDKey.toString());
         body.add("fileName", fileName);
+        body.add("fileType", fileType);
+
 
         var requestEntity = new HttpEntity<>(body, headers);
 

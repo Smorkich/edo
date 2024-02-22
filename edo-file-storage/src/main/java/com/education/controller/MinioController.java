@@ -16,6 +16,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -47,7 +48,7 @@ public class MinioController {
             produces = MediaType.TEXT_PLAIN_VALUE)
     public String uploadFileToMinIO(@RequestParam("file") MultipartFile file,
                                     @RequestParam("key") String key,
-                                    @RequestParam("fileType") EnumFileType fileType) {
+                                    @RequestParam("fileType") EnumFileType fileType) throws IOException {
 
         String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
 
@@ -57,9 +58,14 @@ public class MinioController {
             throw new ExtensionException("Неверное расширение файла!");
         }
 
-        Image image = new ImageIcon((Image) file).getImage();
-        if (image.getHeight(null) > 100 || image.getWidth(null) > 100) {
-            throw new SizeException("Превышен допустимый размер файла");
+        //проверка нужна только для файлов с расширениями jpeg jpg png, тк остальные файлы это не изображение
+        if ( (Objects.requireNonNull(extension).equals("jpg")) || (extension.equals("jpeg")) || (extension.equals("png"))){
+           //Изменено получение изображения из файла, тк происходит ошибка
+            // Image image = new ImageIcon((Image) file).getImage();
+            Image image = ImageIO.read(file.getInputStream());
+            if (image.getHeight(null) > 100 || image.getWidth(null) > 100) {
+                throw new SizeException("Превышен допустимый размер файла");
+            }
         }
 
 
@@ -97,6 +103,8 @@ public class MinioController {
     @GetMapping(value = "/download/{id}")
     public ResponseEntity<InputStreamResource> downloadFile(@PathVariable("id") String fileName) {
         log.info("Download file :  {}", fileName);
+        //проверим содержит ли наименование расширение *.pdf и при необходимости добавим его
+        if (!fileName.endsWith(".pdf")){ fileName+=".pdf";};
         InputStream is = minioComponent.getObject(fileName);
         return ResponseEntity.ok()
                 .body(new InputStreamResource(is));
@@ -110,6 +118,8 @@ public class MinioController {
     @DeleteMapping("/delete/{storageFileId}")
     public ResponseEntity delete(@PathVariable("storageFileId") String storageFileId) {
         log.info("Delete outdated objects in MINIO-server");
+        //проверим содержит ли наименование расширение *.pdf и при необходимости добавим его
+        if (!storageFileId.endsWith(".pdf")){ storageFileId+=".pdf";};
         InputStream is = minioComponent.getObject(storageFileId);
         if (is != null) {
             minioComponent.deleteObjects(storageFileId);
