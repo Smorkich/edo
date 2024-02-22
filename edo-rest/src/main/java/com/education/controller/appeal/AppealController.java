@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Log4j2
 @AllArgsConstructor
 @RequestMapping("/api/edo/appeal")
-@Tag(name= "Обращения", description = "Методы для работы с обращениями")
+@Tag(name = "Обращения", description = "Методы для работы с обращениями")
 public class AppealController {
     private final AppealService appealService;
 
@@ -76,9 +76,9 @@ public class AppealController {
      * Принимает запрос на регистрацию Appeal по id, который передаётся в параметре запроса и
      * вызывает метод register() из AppealService микросервиса edo-rest
      *
-     * @apiNote HTTP Method - POST
      * @param id идентификатор регистрируемого Appeal
      * @return ResponseEntity<AppealDto> - ResponseEntity DTO сущности Appeal (обращение)
+     * @apiNote HTTP Method - POST
      */
     @Operation(summary = "Регистрирует обращение, отправляет на edo-service")
     @PostMapping("/register")

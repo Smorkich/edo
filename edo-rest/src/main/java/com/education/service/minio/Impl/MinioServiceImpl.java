@@ -25,7 +25,7 @@ public class MinioServiceImpl implements MinioService {
     private RestTemplate restTemplate;
 
     @Override
-    public FilePoolDto uploadOneFile(MultipartFile currentFile, String fileType){
+    public FilePoolDto uploadOneFile(MultipartFile currentFile, String fileType) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -54,7 +54,7 @@ public class MinioServiceImpl implements MinioService {
     }
 
     @Override
-    public FilePoolDto getFilePool(UUID uuid){
+    public FilePoolDto getFilePool(UUID uuid) {
         String uri = getUri("/api/service/minio/info/") + uuid;
         return restTemplate.getForObject(uri, FilePoolDto.class);
     }

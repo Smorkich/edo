@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
@@ -59,8 +58,8 @@ public class MinioController {
         }
 
         //проверка нужна только для файлов с расширениями jpeg jpg png, тк остальные файлы это не изображение
-        if ( (Objects.requireNonNull(extension).equals("jpg")) || (extension.equals("jpeg")) || (extension.equals("png"))){
-           //Изменено получение изображения из файла, тк происходит ошибка
+        if ((Objects.requireNonNull(extension).equals("jpg")) || (extension.equals("jpeg")) || (extension.equals("png"))) {
+            //Изменено получение изображения из файла, тк происходит ошибка
             // Image image = new ImageIcon((Image) file).getImage();
             Image image = ImageIO.read(file.getInputStream());
             if (image.getHeight(null) > 100 || image.getWidth(null) > 100) {
@@ -104,7 +103,10 @@ public class MinioController {
     public ResponseEntity<InputStreamResource> downloadFile(@PathVariable("id") String fileName) {
         log.info("Download file :  {}", fileName);
         //проверим содержит ли наименование расширение *.pdf и при необходимости добавим его
-        if (!fileName.endsWith(".pdf")){ fileName+=".pdf";};
+        if (!fileName.endsWith(".pdf")) {
+            fileName += ".pdf";
+        }
+        ;
         InputStream is = minioComponent.getObject(fileName);
         return ResponseEntity.ok()
                 .body(new InputStreamResource(is));
@@ -119,7 +121,10 @@ public class MinioController {
     public ResponseEntity delete(@PathVariable("storageFileId") String storageFileId) {
         log.info("Delete outdated objects in MINIO-server");
         //проверим содержит ли наименование расширение *.pdf и при необходимости добавим его
-        if (!storageFileId.endsWith(".pdf")){ storageFileId+=".pdf";};
+        if (!storageFileId.endsWith(".pdf")) {
+            storageFileId += ".pdf";
+        }
+        ;
         InputStream is = minioComponent.getObject(storageFileId);
         if (is != null) {
             minioComponent.deleteObjects(storageFileId);
