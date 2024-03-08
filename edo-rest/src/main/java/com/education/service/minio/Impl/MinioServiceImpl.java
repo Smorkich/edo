@@ -25,7 +25,7 @@ public class MinioServiceImpl implements MinioService {
     private RestTemplate restTemplate;
 
     @Override
-    public FilePoolDto uploadOneFile(MultipartFile currentFile){
+    public FilePoolDto uploadOneFile(MultipartFile currentFile, String fileType) {
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -33,6 +33,7 @@ public class MinioServiceImpl implements MinioService {
         LinkedMultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", currentFile.getResource());
         body.add("name", currentFile.getOriginalFilename());
+        body.add("fileType", fileType);
 
         HttpEntity<LinkedMultiValueMap<String, Object>> requestEntity = new HttpEntity<>(body, headers);
 
@@ -53,7 +54,7 @@ public class MinioServiceImpl implements MinioService {
     }
 
     @Override
-    public FilePoolDto getFilePool(UUID uuid){
+    public FilePoolDto getFilePool(UUID uuid) {
         String uri = getUri("/api/service/minio/info/") + uuid;
         return restTemplate.getForObject(uri, FilePoolDto.class);
     }

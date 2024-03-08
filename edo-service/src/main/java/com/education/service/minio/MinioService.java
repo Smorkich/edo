@@ -13,8 +13,10 @@ public interface MinioService {
      * Method upload the file to server MinIo.
      * Variable "objectName" means name of object, uploadibg to the bucket of minio server.
      */
+
+    //добавлен fileType
     ResponseEntity<String> uploadOneFile(MultipartFile objectName, UUID UUIDKey,
-                                         String fileName, String contentType) throws IOException;
+                                         String fileName, String contentType, String fileType) throws IOException;
 
     /**
      * Method download the file from server MinIo.
@@ -35,10 +37,11 @@ public interface MinioService {
 
     /**
      * Наложение факсимиле на первую страницу документа
-     * @param UUIDKey - переменная типа UUID, которая представляет ключ (идентификатор) для файла
-     * @param originalExtension - переменная, которая содержит оригинальное расширение файла (pdf/jpeg и тд)
+     *
+     * @param UUIDKey              - переменная типа UUID, которая представляет ключ (идентификатор) для файла
+     * @param originalExtension    - переменная, которая содержит оригинальное расширение файла (pdf/jpeg и тд)
      * @param convertedContentType - переменная, которая указывает на тип (MIME) преобразованного файла
-     * @param facsimileImage - Стрим самого факсимиле
+     * @param facsimileImage       - Стрим самого факсимиле
      */
     void overlayFacsimileOnFirstFile(UUID UUIDKey, String originalExtension, String convertedContentType, InputStream facsimileImage);
 }
