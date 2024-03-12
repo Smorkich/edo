@@ -32,6 +32,7 @@ public class Constant {
     public static final String EDO_REPOSITORY_NAME = "edo-repository";
 
     public static final String EDO_SERVICE_NAME = "edo-service";
+    public static final String SERVICE_MINIO_URL = "api/service/minio";
     public static final String EDO_REST_NAME = "edo-rest";
 
     public static final String NOMENCLATURE_PARAMETER = "index";
