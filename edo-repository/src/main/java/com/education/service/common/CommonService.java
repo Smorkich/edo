@@ -16,7 +16,7 @@ public interface CommonService<E extends BaseEntity> {
      *
      * @param entity Сущность для сохранения.
      */
-    void save(E entity);
+    E save(E entity);
 
     /**
      * Удаляет сущность из базы данных.
@@ -39,4 +39,11 @@ public interface CommonService<E extends BaseEntity> {
      * @return Коллекция всех сущностей.
      */
     Collection<E> findAll();
+
+    /**
+     * Возвращает коллекцию всех сущностей.
+     *
+     * @return Коллекция всех сущностей.
+     */
+    Collection<E> findAllById(Iterable<Long> ids);
 }

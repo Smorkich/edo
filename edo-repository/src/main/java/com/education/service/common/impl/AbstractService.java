@@ -1,13 +1,14 @@
-package com.education.service.common;
+package com.education.service.common.impl;
 
 import com.education.entity.BaseEntity;
 import com.education.repository.common.CommonRepository;
+import com.education.service.common.CommonService;
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Абстрактный сервис, предоставляющий базовую функциональность для работы с сущностями,
@@ -18,6 +19,7 @@ import java.util.Optional;
  */
 @Service
 @NoArgsConstructor(force = true)
+@AllArgsConstructor
 public abstract class AbstractService<E extends BaseEntity, R extends CommonRepository<E>> implements CommonService<E> {
 
     /**
@@ -33,8 +35,10 @@ public abstract class AbstractService<E extends BaseEntity, R extends CommonRepo
      */
     @Transactional(readOnly = true)
     public E findById(Long id) {
-        Optional<E> entity = repository.findById(id);
-        return entity.orElse(null);
+        if (repository == null) {
+            throw new IllegalStateException("Repository is not initialized");
+        }
+        return repository.findById(id).orElse(null);
     }
 
     /**
@@ -44,7 +48,23 @@ public abstract class AbstractService<E extends BaseEntity, R extends CommonRepo
      */
     @Transactional(readOnly = true)
     public List<E> findAll() {
+        if (repository == null) {
+            throw new IllegalStateException("Repository is not initialized");
+        }
         return repository.findAll();
+    }
+
+    /**
+     * Возвращает коллекцию всех сущностей.
+     *
+     * @return Коллекция всех сущностей.
+     */
+    @Transactional(readOnly = true)
+    public List<E> findAllById(Iterable<Long> ids) {
+        if (repository == null) {
+            throw new IllegalStateException("Repository is not initialized");
+        }
+        return repository.findAllById(ids);
     }
 
     /**
@@ -53,8 +73,24 @@ public abstract class AbstractService<E extends BaseEntity, R extends CommonRepo
      * @param entity Сущность для сохранения.
      */
     @Transactional(rollbackFor = Exception.class)
-    public void save(E entity) {
-        repository.save(entity);
+    public E save(E entity) {
+        if (repository == null) {
+            throw new IllegalStateException("Repository is not initialized");
+        }
+        return repository.saveAndFlush(entity);
+    }
+
+    /**
+     * Удаляет сущность из базы данных.
+     *
+     * @param id Идентификатор сущности.
+     */
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(Long id) {
+        if (repository == null) {
+            throw new IllegalStateException("Repository is not initialized");
+        }
+        repository.deleteById(id);
     }
 
     /**
@@ -64,6 +100,9 @@ public abstract class AbstractService<E extends BaseEntity, R extends CommonRepo
      */
     @Transactional(rollbackFor = Exception.class)
     public void delete(E entity) {
+        if (repository == null) {
+            throw new IllegalStateException("Repository is not initialized");
+        }
         repository.delete(entity);
     }
 }
