@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import static model.constant.Constant.EDO_SERVICE_NAME;
 import static model.constant.Constant.SERVICE_MINIO_URL;
 
-@FeignClient(name = "MinioFeignClient")
+@FeignClient(name = EDO_SERVICE_NAME, contextId = "MinioFeignClient")
 public interface MinioFeignClient {
 
     @DeleteMapping(SERVICE_MINIO_URL + "/delete/{fileName}")

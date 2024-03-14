@@ -86,4 +86,10 @@ public class FilePoolServiceImpl implements FilePoolService {
         return filePoolRepository.findByIdInAndArchivedDateNull(ids);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Collection<UUID> findAllOldFiles(int filePeriod) {
+        return filePoolRepository.findAllOldFiles(ZonedDateTime.now().minusYears(filePeriod));
+    }
+
 }

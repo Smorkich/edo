@@ -19,6 +19,7 @@ public class Constant {
     public static final String DEPARTMENT_SERVICE_URL = "api/service/department";
     public static final String EMPLOYEE_URL = "api/repository/employee";
     public static final String FILEPOOL_URL = "api/repository/filePool";
+    public static final String FILEPOOL_SERVICE_URL = "/api/service/filePool";
     public static final String FACSIMILE_URL = "/api/service/facsimile";
     public static final String NOMENCLATURE_URL = "api/repository/nomenclature";
     public static final String QUESTION_URL = "api/repository/question";

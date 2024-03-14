@@ -61,4 +61,5 @@ public interface FilePoolService {
      */
     Collection<FilePool> findByIdInAndArchivedDateNull(Iterable<Long> ids);
 
+    Collection<UUID> findAllOldFiles(int filePeriod);
 }

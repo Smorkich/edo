@@ -17,5 +17,5 @@ integration:
 
 interval: PT30M
 
-appeals_check_interval: P1D
+files_check_interval: P1D
 file-lifetime: 5

@@ -60,4 +60,6 @@ public interface FilePoolService {
      */
     Collection<FilePoolDto> findAllByIdNotArchived(String ids);
 
+    Collection<UUID> findAllOldFiles(int filePeriod);
+
 }
