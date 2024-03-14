@@ -1,20 +1,13 @@
 package com.education.service.filePool.impl;
 
-import com.education.service.filePool.FilePoolService;
 import com.education.feign.FilePoolFeignClient;
+import com.education.service.filePool.FilePoolService;
 import lombok.AllArgsConstructor;
 import model.dto.FilePoolDto;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.UUID;
-import java.util.stream.Stream;
-
-import static com.education.util.URIBuilderUtil.buildURI;
-import static model.constant.Constant.*;
 
 /**
  * @author Nadezhda Pupina
@@ -76,6 +69,11 @@ public class FilePoolServiceImpl implements FilePoolService {
     @Override
     public Collection<FilePoolDto> findAllByIdNotArchived(String ids) {
         return filePoolFeignClient.getFilesNotArchived(ids);
+    }
+
+    @Override
+    public Collection<UUID> findAllOldFiles(int filePeriod) {
+        return filePoolFeignClient.getOldFilesForDelete(filePeriod);
     }
 
 }
