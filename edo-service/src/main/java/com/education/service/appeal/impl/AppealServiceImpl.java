@@ -293,4 +293,17 @@ public class AppealServiceImpl implements AppealService {
         }
     }
 
+    /**
+     * Если все резолюции обращения выполнены, то статус обращения меняется на PERFORMED
+     */
+    @Override
+    public void setNewAppealStatusIfExecutionStatusIsPerformed(AppealDto appealDto) {
+        Collection<ResolutionDto> resolutions = resolutionFeignClient
+                .findAllByAppealIdAndExecutionStatusIsNotPerformed(appealDto.getId());
+        if (resolutions.size() == 0) {
+            appealDto.setAppealsStatus(PERFORMED);
+        }
+    }
+
+
 }

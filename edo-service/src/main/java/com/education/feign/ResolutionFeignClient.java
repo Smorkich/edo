@@ -38,4 +38,8 @@ public interface ResolutionFeignClient {
 
     @GetMapping(RESOLUTION_URL + "/appealId/all/{appealId}")
     Collection<ResolutionDto> findAllByAppealIdAndIsDraftFalse(@PathVariable Long appealId);
+
+    @GetMapping(RESOLUTION_URL + "/executionStatusIsNotPerformed/all/{appealId}")
+    Collection<ResolutionDto> findAllByAppealIdAndExecutionStatusIsNotPerformed(@PathVariable Long appealId);
+
 }

@@ -65,4 +65,10 @@ public interface AppealService {
      * То меняем статус обращения на UNDER_CONSIDERATION
      */
     void setNewAppealStatusIfResolutionLastAndIsDraftFalse(AppealDto appealDto);
+
+    /**
+     * Если все резолюции обращения выполнены, то статус обращения меняется на PERFORMED
+     */
+    void setNewAppealStatusIfExecutionStatusIsPerformed(AppealDto appealDto);
+
 }
