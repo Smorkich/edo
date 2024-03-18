@@ -22,7 +22,7 @@ services:
     image: postgres:12.14
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: oog
+      POSTGRES_PASSWORD: root
       POSTGRES_DB: edo_db
     ports:
       - "5432:5432"
@@ -37,7 +37,7 @@ services:
       DB_DATABASE: edo_db
       DB_SCHEMA: public
       DB_USER: postgres
-      DB_PASSWORD: oog
+      DB_PASSWORD: root
       KEYCLOAK_USER: keycloak
       KEYCLOAK_PASSWORD: keycloak
     ports:
@@ -46,3 +46,4 @@ services:
       - postgres
     links:
       - "postgres:postgres"
+

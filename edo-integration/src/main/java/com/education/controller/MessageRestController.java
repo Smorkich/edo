@@ -51,4 +51,14 @@ public class MessageRestController {
         log.info("Messages were send");
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @ApiOperation(value = "Отправляет письма по почтам с текстом")
+    @PostMapping("/deadline")
+    public ResponseEntity<Object> sendDeadlineMessage(@RequestParam("email") String email,
+                                                      @RequestParam("message") String message) {
+        log.info("Creating and sending a message");
+        emailService.createDeadlineEmail(email, message);
+        log.info("Messages were send");
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

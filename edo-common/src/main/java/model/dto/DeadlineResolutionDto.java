@@ -11,6 +11,7 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,4 +33,7 @@ public class DeadlineResolutionDto implements Serializable {
 
     @ApiModelProperty(value = "Резолюция")
     private ResolutionDto resolution;
+
+
+
 }

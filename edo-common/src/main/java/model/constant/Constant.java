@@ -24,6 +24,8 @@ public class Constant {
     public static final String NOMENCLATURE_URL = "api/repository/nomenclature";
     public static final String QUESTION_URL = "api/repository/question";
     public static final String RESOLUTION_URL = "api/repository/resolution";
+    public static final String DEADLINE_RESOLUTION_URL = "api/repository/resolution/deadline";
+    public static final String DEADLINE_RESOLUTION_EMAILS_URL = "api/repository/resolution/deadline/allExecutorEmails";
     public static final String RESOLUTION_REST_URL = "api/rest/resolution";
     public static final String RESOLUTION_SERVICE_URL = "api/service/resolution";
     public static final String REGION_URL = "api/repository/region";
