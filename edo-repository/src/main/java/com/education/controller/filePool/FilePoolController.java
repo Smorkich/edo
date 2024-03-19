@@ -1,8 +1,6 @@
 package com.education.controller.filePool;
 
-import com.education.entity.FilePool;
 import com.education.service.filePool.FilePoolService;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -11,7 +9,6 @@ import lombok.extern.log4j.Log4j2;
 import model.dto.FilePoolDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -115,6 +112,12 @@ public class FilePoolController {
     @GetMapping("/noArchived/{ids}")
     private Collection<FilePoolDto> getFilesNotArchived(@PathVariable List<Long> ids) {
         return FILE_POOL_MAPPER.toDto(filePoolService.findByIdInAndArchivedDateNull(ids));
+    }
+
+    @Operation(summary = "Получение всех устаревших файлов (устаревшими считаются все файлы, чья дата загрузки равна или больше переданной)")
+    @GetMapping("/oldFiles/{filePeriod}")
+    public Collection<UUID> getOldFilesForDelete(@PathVariable int filePeriod) {
+        return filePoolService.findAllOldFiles(filePeriod);
     }
 
 }

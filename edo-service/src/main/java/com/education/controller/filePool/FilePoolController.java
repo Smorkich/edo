@@ -1,7 +1,6 @@
 package com.education.controller.filePool;
 
 import com.education.service.filePool.FilePoolService;
-import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
@@ -13,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
+import java.util.UUID;
 
 @Log4j2
 @RestController
@@ -98,6 +98,13 @@ public class FilePoolController {
     private ResponseEntity<Collection<FilePoolDto>> findAllByIdNotArchived(@PathVariable(name = "ids") String ids) {
         log.info("send a response with the files not archived of the assigned IDs");
         return new ResponseEntity<>(filePoolService.findAllByIdNotArchived(ids), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Получение всех устаревших файлов (устаревшими считаются все файлы, чья дата загрузки равна или больше переданной)")
+    @GetMapping("/oldFiles/{filePeriod}")
+    public ResponseEntity<Collection<UUID>> findAllOldFiles(@PathVariable(name = "filePeriod") int filePeriod) {
+        log.info("send a request to retrieve outdated files");
+        return new ResponseEntity<>(filePoolService.findAllOldFiles(filePeriod), HttpStatus.OK);
     }
 
 }
