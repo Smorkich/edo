@@ -34,7 +34,6 @@ public class DeadlineResolutionServiceImpl implements DeadlineResolutionService 
     @Override
     @Transactional
     public List<EmailAndIdDto> findAllExecutorEmails() {
-        List<Object[]> executorEmails = deadlineResolutionRepository.findAllExecutorEmails();
-        return executorEmails.stream().map(EmailAndIdDto::new).collect(toList());
+        return deadlineResolutionRepository.findAllExecutorEmails();
     }
 }

@@ -31,6 +31,6 @@ public interface DeadlineResolutionRepository extends JpaRepository<DeadlineReso
             "INNER JOIN resolution_executor ON resolution.id = resolution_executor.resolution_id " +
             "INNER JOIN employee ON resolution_executor.employee_id = employee.id " +
             "WHERE deadline_resolution.deadline <= now()")
-    List<Object[]> findAllExecutorEmails();
+    List<EmailAndIdDto> findAllExecutorEmails();
 
 }

@@ -16,10 +16,4 @@ public class EmailAndIdDto {
 
     private Long id;
 
-    public EmailAndIdDto(Object[] objects) {
-        this.email = (String) objects[0];
-        this.id = (Long) objects[1];
-    }
-
-
 }
