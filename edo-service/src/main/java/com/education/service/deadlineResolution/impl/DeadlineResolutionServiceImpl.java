@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.DEADLINE_RESOLUTION_URL;
 import static model.constant.Constant.EDO_REPOSITORY_NAME;
 
 /**
@@ -22,14 +23,13 @@ import static model.constant.Constant.EDO_REPOSITORY_NAME;
 public class DeadlineResolutionServiceImpl implements DeadlineResolutionService {
 
     private RestTemplate restTemplate;
-    public static final String RESOLUTION_URL_DEADLINE = "api/repository/resolution/deadline";
 
     /**
      * метод получает DeadlineResolutionDto и отправляет его в api/repository/resolution/deadline, с помощью restTemplate
      */
     @Override
     public void reasonForTransferDeadline(DeadlineResolutionDto deadlineResolutionDto) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, RESOLUTION_URL_DEADLINE);
+        var builder = buildURI(EDO_REPOSITORY_NAME, DEADLINE_RESOLUTION_URL);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         restTemplate.exchange(builder.toString(),

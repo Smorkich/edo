@@ -32,7 +32,6 @@ public class ServiceDeadlineResolutionImpl implements ServiceDeadlineResolution 
      * Этот метод выполняется с заданным интервалом времени и отправляет уведомления по электронной почте.
      */
     @Override
-    //@Scheduled(fixedDelayString = "${interval2}")
     @Scheduled(fixedDelayString = "${interval2}")
     public void deadlineNotification() {
         log.info("The data synchronization method has started, it starts every day");
