@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class Constant {
+    public static final String BASE_URL = "api/repository/base";
+    public static final String BASE_REST_URL = "api/rest/base";
     public static final String ADDRESS_URL = "api/repository/address";
     public static final String APPEAL_URL = "api/repository/appeal";
     public static final String APPROVAL_URL = "/api/service/approval";

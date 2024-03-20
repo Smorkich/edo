@@ -1,10 +1,9 @@
-package com.education.service.common.impl;
+package com.education.service.common;
 
 import com.education.entity.BaseEntity;
-import com.education.repository.common.CommonRepository;
-import com.education.service.common.CommonService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,15 +11,15 @@ import java.util.List;
 
 /**
  * Абстрактный сервис, предоставляющий базовую функциональность для работы с сущностями,
- * расширяющими {@link BaseEntity}, и репозиториями, реализующими {@link CommonRepository}.
+ * расширяющими {@link BaseEntity}, и репозиториями, реализующими {@link JpaRepository}.
  *
  * @param <E> Тип сущности, с которой работает сервис. Должен расширять {@link BaseEntity}.
- * @param <R> Тип репозитория, используемого сервисом. Должен расширять {@link CommonRepository}.
+ * @param <R> Тип репозитория, используемого сервисом. Должен расширять {@link JpaRepository}.
  */
 @Service
 @NoArgsConstructor(force = true)
 @AllArgsConstructor
-public abstract class AbstractService<E extends BaseEntity, R extends CommonRepository<E>> implements CommonService<E> {
+public abstract class AbstractService<E extends BaseEntity, R extends JpaRepository<E, Long>> implements CommonService<E> {
 
     /**
      * Репозиторий, используемый сервисом для взаимодействия с базой данных.

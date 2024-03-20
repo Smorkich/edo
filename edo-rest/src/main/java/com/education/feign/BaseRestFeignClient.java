@@ -18,13 +18,14 @@ import static model.constant.Constant.*;
  * переопределены в конкретных Feign клиентах для добавления специфической логики
  * или настройки.
  *
- * <p>Используйте аннотацию {@link FeignClient} с атрибутом {@code name} для указания имени сервиса
- * и {@code url} для указания базового URL сервиса, с которым будет взаимодействовать Feign клиент.
+ * <p>Используйте аннотацию {@link FeignClient} с атрибутом {@code name} или {@code url}
+ * для указания имени или базового URL сервиса, с которым будет взаимодействовать
+ * Feign клиент.
  *
  * @param <T> Тип сущности, с которой работает Feign клиент.
  */
-@FeignClient(name = EDO_REPOSITORY_NAME, url = BASE_URL)
-public interface BaseFeignClient<T> {
+@FeignClient(name = EDO_REPOSITORY_NAME, url = BASE_REST_URL)
+public interface BaseRestFeignClient<T> {
 
     /**
      * Сохраняет сущность типа T в базе данных через HTTP API.
@@ -61,3 +62,4 @@ public interface BaseFeignClient<T> {
     @GetMapping
     ResponseEntity<Collection<T>> findAll();
 }
+

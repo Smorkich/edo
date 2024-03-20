@@ -1,29 +1,27 @@
-package com.education.service.common.impl;
+package com.education.service.common;
 
-import com.education.feign.BaseFeignClient;
-import com.education.service.common.CommonService;
+import com.education.feign.BaseRestFeignClient;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
+import service.CommonService;
 
 import java.util.Collection;
 
 /**
  * Абстрактный сервис, предоставляющий базовую функциональность для работы с сущностями типа T
- * через Feign клиент.
+ * через RestTemplate.
  *
  * <p>Этот класс реализует интерфейс {@link CommonService}, предоставляя методы для сохранения,
  * поиска, удаления и получения всех сущностей типа T. Реализация этих методов использует
- * {@link BaseFeignClient} для взаимодействия с удаленным сервисом через HTTP API.
+ * {@link BaseRestFeignClient} для взаимодействия с удаленным сервисом через HTTP API.
  *
  * @param <T> Тип сущности, с которой работает сервис.
  */
 @Service
-@NoArgsConstructor(force = true)
 @AllArgsConstructor
-public class AbstractService<T> implements CommonService<T> {
+public abstract class AbstractRestService<T> implements CommonService<T> {
 
-    private final BaseFeignClient<T> feignClient;
+    private final BaseRestFeignClient<T> feignClient;
 
     /**
      * Сохраняет сущность типа T в базе данных через Feign клиент.

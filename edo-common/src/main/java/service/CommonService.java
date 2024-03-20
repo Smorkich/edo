@@ -1,8 +1,9 @@
-package com.education.service.common;
+package service;
 
 import java.util.Collection;
 
 public interface CommonService<T> {
+
     /**
      * Сохраняет сущность в базе данных.
      *
@@ -31,4 +32,5 @@ public interface CommonService<T> {
      * @return Коллекция всех сущностей.
      */
     Collection<T> findAll();
+
 }
