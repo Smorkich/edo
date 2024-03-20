@@ -67,6 +67,10 @@ public class ResolutionServiceImpl implements ResolutionService {
 
     @Override
     public void moveToArchive(Long id) {
+        ResolutionDto resolution = resolutionFeignClient.findById(id);
+        Long questionId = resolution.getQuestion().getId();
+        AppealDto appealDto = appealService.findAppealByQuestionsId(questionId);
+        appealService.setNewAppealStatusIfExecutionStatusIsPerformed(appealDto);
         resolutionFeignClient.moveToArchive(id);
     }
 

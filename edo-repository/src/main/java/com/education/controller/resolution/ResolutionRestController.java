@@ -101,7 +101,7 @@ public class ResolutionRestController {
         return resolutionDto;
     }
 
-    @Operation(summary = "Поиск всех резолюций")
+    @Operation(summary = "Поиск всех не выполненных резолюций")
     @GetMapping(value = "/executionStatusIsNotPerformed/all/{appealId}", produces = MediaType.APPLICATION_JSON)
     public Collection<ResolutionDto> findAllByAppealIdAndExecutionStatusIsNotPerformed(@PathVariable Long appealId) {
         log.info("Получен запрос на поиск всех не выполненных резолюций у обращения id = {}", appealId);
