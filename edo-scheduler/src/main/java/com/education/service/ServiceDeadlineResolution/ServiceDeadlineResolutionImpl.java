@@ -35,9 +35,9 @@ public class ServiceDeadlineResolutionImpl implements ServiceDeadlineResolution 
     @Scheduled(fixedDelayString = "${interval2}")
     public void deadlineNotification() {
         log.info("The data synchronization method has started, it starts every day");
-        Collection<EmailAndIdDto> employeeEmailsWithResolutionId = deadlineResolutionFeignClient.getEmailAndId();
-        for (EmailAndIdDto emailAndIdDto : employeeEmailsWithResolutionId) {
-            sendDeadlineNotificationFeignClient.sendEmail(emailAndIdDto.getEmail(), "" + emailAndIdDto.getId());
+        Collection<EmailAndIdDto> emailsAndIds = deadlineResolutionFeignClient.getEmailAndId();
+        for (EmailAndIdDto emailAndIdDto : emailsAndIds) {
+            sendDeadlineNotificationFeignClient.sendEmail(emailAndIdDto.getEmail(), String.valueOf(emailAndIdDto.getId()));
             log.info("email: " + emailAndIdDto.getEmail());
             log.info("id: " + emailAndIdDto.getId());
         }

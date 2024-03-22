@@ -12,9 +12,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.Collection;
-import java.util.List;
 
 import static com.education.mapper.DeadlineResolutionMapper.DEADLINE_RESOLUTION_MAPPER;
 import static model.constant.Constant.DEADLINE_RESOLUTION_URL;
@@ -54,10 +52,12 @@ public class DeadlineResolutionController {
 
     @Operation(summary = "Ищет все email исполнителей которым нужно отправить сообщение о достижении дедлайна")
     @GetMapping(value = "/allExecutorEmails", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<EmailAndIdDto> findAllExecutorEmails() {
+    public Collection<EmailAndIdDto> findAllExecutorEmails() {
         log.info("Received request to find all executor emails for date ");
-        List<EmailAndIdDto> executorEmails = deadlineResolutionService.findAllExecutorEmails();
+        Collection<EmailAndIdDto> executorEmails = deadlineResolutionService.findAllExecutorEmails();
         log.info("Found {} executor emails for date ", executorEmails.size());
         return executorEmails;
     }
+
+
 }

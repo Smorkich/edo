@@ -22,5 +22,5 @@ public interface DeadlineResolutionService {
     /**
      * Получаем список email всех исполнителей
      */
-    List<EmailAndIdDto> findAllExecutorEmails();
+    Collection<EmailAndIdDto> findAllExecutorEmails();
 }

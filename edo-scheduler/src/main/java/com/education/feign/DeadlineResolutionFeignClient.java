@@ -4,6 +4,7 @@ import model.dto.EmailAndIdDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Collection;
 import java.util.List;
 
 import static model.constant.Constant.DEADLINE_RESOLUTION_EMAILS_URL;
@@ -24,6 +25,6 @@ public interface DeadlineResolutionFeignClient {
      * id резолюций дедлай которых уже наступил.
      */
     @GetMapping(DEADLINE_RESOLUTION_EMAILS_URL)
-    List<EmailAndIdDto> getEmailAndId();
+    Collection<EmailAndIdDto> getEmailAndId();
 
 }

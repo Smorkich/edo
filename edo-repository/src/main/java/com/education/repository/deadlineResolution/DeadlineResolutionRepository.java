@@ -8,11 +8,11 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Repository
 public interface DeadlineResolutionRepository extends JpaRepository<DeadlineResolution, Long> {
+
 
     /**
      * Ищем все переносы крайнего срока, по id резолюции
@@ -24,13 +24,13 @@ public interface DeadlineResolutionRepository extends JpaRepository<DeadlineReso
     /**
      * Получаем список email всех исполнителей и id резолюци у которых наступил дедлайн
      */
-    @Query(nativeQuery = true,
-            value = "SELECT employee.email, deadline_resolution.resolution_id " +
-                    "FROM deadline_resolution " +
-            "INNER JOIN resolution ON deadline_resolution.resolution_id = resolution.id " +
-            "INNER JOIN resolution_executor ON resolution.id = resolution_executor.resolution_id " +
-            "INNER JOIN employee ON resolution_executor.employee_id = employee.id " +
-            "WHERE deadline_resolution.deadline <= now()")
+    @Query("SELECT new model.dto.EmailAndIdDto(e.email, dr.resolution.id) FROM DeadlineResolution dr " +
+            "JOIN dr.resolution r " +
+            "JOIN ResolutionExecutor re ON r.id = re.resolution.id " +
+            "JOIN re.employee e " +
+            "WHERE dr.deadline <= current_timestamp")
     List<EmailAndIdDto> findAllExecutorEmails();
 
+
 }
+
