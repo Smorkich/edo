@@ -30,4 +30,6 @@ public interface EmployeeService {
     Collection<Employee> findAllByFullName(String fullName);
 
     Collection<Employee> saveCollection(Collection<Employee> employees);
+
+    Employee findByEmailAndUsername(String email, String username);
 }
