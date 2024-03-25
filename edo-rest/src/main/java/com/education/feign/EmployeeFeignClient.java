@@ -12,7 +12,7 @@ import static model.constant.Constant.*;
 public interface EmployeeFeignClient {
 
     @GetMapping(value = EMPLOYEE_URL + "/searchByEmailAndUsername")
-    EmployeeDto findByEmailAndUsername(@RequestParam("email") String email,
+    EmployeeDto findByEmailOrUsername(@RequestParam("email") String email,
                                        @RequestParam ("username") String username);
 
 

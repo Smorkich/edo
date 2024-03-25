@@ -166,12 +166,12 @@ public class EmployeeController {
      */
     @Operation(summary = "Нахождение сотрудника по email и username")
     @GetMapping(value = "/searchByEmailAndUsername")
-    public ResponseEntity<EmployeeDto> findByEmailAndUsername(@RequestParam("email") String email,
+    public ResponseEntity<EmployeeDto> findByEmailOrUsername(@RequestParam("email") String email,
                                                               @RequestParam("username") String username) {
         var decodeEmail = UriUtils.decode(email, "UTF-8");
         var decodeUsername = UriUtils.decode(username, "UTF-8");
         EmployeeDto employeeDto = EMPLOYEE_MAPPER.toDto(employeeService
-                .findByEmailAndUsername(decodeEmail, decodeUsername));
+                .findByEmailOrUsername(decodeEmail, decodeUsername));
         return new ResponseEntity<>(employeeDto, HttpStatus.OK);
     }
 

@@ -31,5 +31,5 @@ public interface EmployeeService {
 
     Collection<Employee> saveCollection(Collection<Employee> employees);
 
-    Employee findByEmailAndUsername(String email, String username);
+    Employee findByEmailOrUsername(String email, String username);
 }

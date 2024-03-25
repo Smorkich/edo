@@ -199,8 +199,8 @@ public class EmployeeServiceImpl implements EmployeeService {
      * Нахождение employee по email и username
      */
     @Override
-    public Employee findByEmailAndUsername(String email, String username) {
-        return employeeRepository.findByEmailAndUsername(email, username);
+    public Employee findByEmailOrUsername(String email, String username) {
+        return employeeRepository.findByEmailOrUsername(email, username);
     }
 
 

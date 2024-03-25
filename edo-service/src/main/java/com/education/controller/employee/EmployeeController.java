@@ -111,10 +111,10 @@ public class EmployeeController {
     }
     @Operation(summary = "Предоставление сотрудника по email и username")
     @GetMapping("/searchByEmailAndUsername")
-    public EmployeeDto findByEmailAndUsername(@RequestParam("email") String email,
+    public EmployeeDto findByEmailOrUsername(@RequestParam("email") String email,
                                               @RequestParam("username") String username) {
         log.info("Принимает username {} и email {} на стороне edo-service", username, email);
-        return employeeService.findByEmailAndUsername(email, username);
+        return employeeService.findByEmailOrUsername(email, username);
     }
 
 }

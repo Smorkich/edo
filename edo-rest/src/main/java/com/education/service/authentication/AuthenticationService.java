@@ -4,5 +4,5 @@ import model.dto.EmployeeDto;
 
 public interface AuthenticationService {
 
-    EmployeeDto getEmployeeByUsernameAndEmail();
+    EmployeeDto getEmployeeByUsernameOrEmail();
 }

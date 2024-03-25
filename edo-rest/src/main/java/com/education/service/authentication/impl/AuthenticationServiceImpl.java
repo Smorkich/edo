@@ -22,7 +22,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
 
     @Override
-    public EmployeeDto getEmployeeByUsernameAndEmail() {
+    public EmployeeDto getEmployeeByUsernameOrEmail() {
         JwtAuthenticationToken token = (JwtAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
 
         Map<String, Object> attributes = new HashMap<>();
@@ -40,6 +40,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String email = (String) attributes.get("email");
 
 
-        return employeeFeignClient.findByEmailAndUsername(email, username);
+        return employeeFeignClient.findByEmailOrUsername(email, username);
     }
 }

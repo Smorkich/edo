@@ -27,6 +27,6 @@ public interface EmployeeService {
     Collection<EmployeeDto> findAllByFullName(String fullName);
 
     Collection<EmployeeDto> saveCollection(Collection<EmployeeDto> employeeDto);
-    EmployeeDto findByEmailAndUsername(String email, String username);
+    EmployeeDto findByEmailOrUsername(String email, String username);
 
 }

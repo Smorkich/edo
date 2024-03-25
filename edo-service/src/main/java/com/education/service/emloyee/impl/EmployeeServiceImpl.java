@@ -68,7 +68,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeDto findByEmailAndUsername(String email, String username) {
-        return employeeFeignClient.findByEmailAndUsername(email, username);
+    public EmployeeDto findByEmailOrUsername(String email, String username) {
+        return employeeFeignClient.findByEmailOrUsername(email, username);
     }
 }

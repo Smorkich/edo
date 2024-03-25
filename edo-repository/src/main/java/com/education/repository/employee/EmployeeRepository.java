@@ -35,7 +35,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Override
     Optional<Employee> findById(Long aLong);
 
-    @Query("SELECT emp FROM Employee emp WHERE emp.email = :email AND emp.username = :username")
-    Employee findByEmailAndUsername(@Param(value = "email") String email,
+    @Query("SELECT emp FROM Employee emp WHERE emp.email = :email OR emp.username = :username")
+    Employee findByEmailOrUsername(@Param(value = "email") String email,
                                        @Param(value = "username") String username);
 }
