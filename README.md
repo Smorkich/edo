@@ -347,6 +347,10 @@ https://hub.docker.com/r/minio/minio.
 
 - VALUE: **(ключ в формате UUID)**
 
+- KEY: **fileType**
+
+- VALUE: **MAIN**
+
 После чего нажимаем send для отправки запроса, в ответе должны получить код статуса 200.
 
 3)	**downloadFile**
@@ -386,7 +390,7 @@ https://hub.docker.com/r/minio/minio.
 
 Для запуска сервера MinIO и установки логина и пароля используйте следующую команду в консоли:
 
-<code>docker run -p 9000:9000 -d -p 9001:9001 -e "MINIO_ROOT_USER=login" -e "MINIO_ROOT_PASSWORD=password" quay.io/minio/minio server /data --console-address ":9001"</code>
+<code>docker run -p 9000:9000 -d -p 9001:9001 -e "MINIO_ROOT_USER=admin" -e "MINIO_ROOT_PASSWORD=password" quay.io/minio/minio server /data --console-address ":9001"</code>
 
 Для успешной работы приложения необходимо установить следующие логин и пароль для MinIO:
 
@@ -428,7 +432,9 @@ https://hub.docker.com/r/minio/minio.
 После чего переходим во вкладку body и указываем следующие параметры:
 - KEY: **file**
 - VALUE: **(файл, который мы хотим загрузить)**
-
+- KEY: **fileType**
+- VALUE: **MAIN**
+- 
 После чего нажимаем send для отправки запроса, в ответе должны получить код статуса 200, File uploaded. **(Информация о файле)**.
 
 **Название в формате UUID хранится в корзине minIO**

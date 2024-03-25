@@ -47,11 +47,14 @@ public class MinioController {
     @Operation(summary = "Загрузка файла в файловое хранилище")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = APPLICATION_JSON_VALUE)
+    //добавлен параметр fileType
     public FilePoolDto uploadOneFile(@RequestParam("file") MultipartFile file,
-                                     @RequestParam("name") String fileName) throws IOException {
+                                     @RequestParam("name") String fileName,
+                                     @RequestParam("fileType") String fileType) throws IOException {
         log.info("Upload file named: {}", fileName);
         var UUIDKey = UUID.randomUUID();
-        var convertedContentType = minioService.uploadOneFile(file, UUIDKey, fileName, file.getContentType()).getBody();
+        //добавлен fileType
+        var convertedContentType = minioService.uploadOneFile(file, UUIDKey, fileName, file.getContentType(), fileType).getBody();
         var extension = StringUtils.getFilenameExtension(fileName);
         var numberOfPages = minioService.countPages(UUIDKey, extension, convertedContentType);
 

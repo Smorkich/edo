@@ -9,7 +9,6 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.pdmodel.graphics.state.PDExtendedGraphicsState;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
@@ -21,7 +20,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.UUID;
@@ -42,7 +40,7 @@ public class MinioServiceImpl implements MinioService {
 
     @Override
     public ResponseEntity<String> uploadOneFile(MultipartFile currentFile,
-                                                UUID UUIDKey, String fileName, String contentType) {
+                                                UUID UUIDKey, String fileName, String contentType, String fileType) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
@@ -50,6 +48,8 @@ public class MinioServiceImpl implements MinioService {
         body.add("file", currentFile.getResource());
         body.add("key", UUIDKey.toString());
         body.add("fileName", fileName);
+        body.add("fileType", fileType);
+
 
         var requestEntity = new HttpEntity<>(body, headers);
 

@@ -17,4 +17,5 @@ integration:
 
 interval: PT30M
 
-
+files_check_interval: P1D
+file-lifetime: 5

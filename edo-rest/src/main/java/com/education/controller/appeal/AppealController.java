@@ -22,7 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Log4j2
 @AllArgsConstructor
 @RequestMapping("/api/edo/appeal")
-@Tag(name= "Обращения", description = "Методы для работы с обращениями")
+@Tag(name = "Обращения", description = "Методы для работы с обращениями")
 public class AppealController {
     private final AppealService appealService;
 
@@ -56,11 +56,15 @@ public class AppealController {
         return new ResponseEntity<>(appealDto, HttpStatus.OK);
     }
 
+
+    //добавлен параметр fileType
     @Operation(summary = "Добавляет файл к выбранному обращению")
     @PostMapping("/upload")
-    public ResponseEntity<AppealDto> uploadFile(@RequestParam(value = "id") Long id, @RequestParam(value = "file") MultipartFile file) {
+    public ResponseEntity<AppealDto> uploadFile(@RequestParam(value = "id") Long id, @RequestParam(value = "file") MultipartFile file,
+                                                @RequestParam(value = "fileType") String fileType) {
         log.info("Получаем объект FilePoolDto");
-        FilePoolDto filePoolDto = minioService.uploadOneFile(file);
+        //добавлен FileType
+        FilePoolDto filePoolDto = minioService.uploadOneFile(file, fileType);
         log.info("Файл получен - " + filePoolDto.getName());
         log.info("Прикрепление файла к обращению");
         var save = appealService.upload(id, filePoolDto);
@@ -72,9 +76,9 @@ public class AppealController {
      * Принимает запрос на регистрацию Appeal по id, который передаётся в параметре запроса и
      * вызывает метод register() из AppealService микросервиса edo-rest
      *
-     * @apiNote HTTP Method - POST
      * @param id идентификатор регистрируемого Appeal
      * @return ResponseEntity<AppealDto> - ResponseEntity DTO сущности Appeal (обращение)
+     * @apiNote HTTP Method - POST
      */
     @Operation(summary = "Регистрирует обращение, отправляет на edo-service")
     @PostMapping("/register")
