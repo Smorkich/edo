@@ -17,11 +17,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriUtils;
 
+import java.io.IOException;
 import java.util.UUID;
 
+import static model.constant.Constant.EDO_FILE_STORAGE_FILE_MAX_SIZE;
 import static org.springframework.http.HttpHeaders.*;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 /**
@@ -38,17 +38,34 @@ public class MinIOController {
     private MinioService service;
 
     /**
-     * Redirect request to upload file from bucket of MINIO-server.
-     * Request consist of object`s name.
+     * Redirect request to upload file from a source to a bucket.
+     * Request consists of the object`s name.
      */
-    @Operation(summary = "Отправляет запрос на загрузку файла из исходного кода в корзину")
+    @Operation(summary = "Sends a request to upload a file from the source code to the bucket")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
-            produces = APPLICATION_JSON_VALUE)
-    //добавлен параметр fileType
-    public FilePoolDto uploadOneFile(@RequestParam(value = "file", required = false) MultipartFile file,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public FilePoolDto uploadOneFile(@RequestParam(value = "file") MultipartFile file,
                                      @RequestParam(value = "fileType") String fileType) {
+        if (file == null || file.isEmpty()) {
+            throw new IllegalArgumentException("The file parameter is missing");
+        }
+
+        if (!file.getContentType().equalsIgnoreCase(fileType)) {
+            throw new IllegalArgumentException("Mismatch between actual file type and specified file type");
+        }
         log.info("Upload file named: {}", file.getOriginalFilename());
-        return service.uploadOneFile(file, fileType);
+        if (file.getSize() > EDO_FILE_STORAGE_FILE_MAX_SIZE) {
+            throw new IllegalArgumentException("Uploaded file size exceeds maximum allowed size of " + EDO_FILE_STORAGE_FILE_MAX_SIZE + " bytes");
+        }
+
+        FilePoolDto result;
+        try {
+            result = service.uploadOneFile(file, fileType);
+        } catch (Exception e) {
+            log.error("File upload failed", e);
+            throw e;
+        }
+        return result;
     }
 
     /**
@@ -59,16 +76,36 @@ public class MinIOController {
     @GetMapping(value = "/download/{name}")
     public ResponseEntity<InputStreamResource> downloadOneFile(@PathVariable("name") String name) {
         log.info("Download file named: {}", name);
-        var uuid = UUID.fromString(name);
+        UUID uuid;
+        try {
+            uuid = UUID.fromString(name);
+        } catch (IllegalArgumentException e) {
+            log.error("Invalid UUID string: {}", name);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
         var filePoolDto = service.getFilePool(uuid);
-        try (var is = service.downloadOneFile(name).getInputStream();
+        if (filePoolDto == null) {
+            log.error("File Pool DTO not found for UUID: {}", uuid);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        var downloadedFile = service.downloadOneFile(name);
+        if (downloadedFile == null) {
+            log.error("File not found: {}", name);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        try (var is = downloadedFile.getInputStream();
              var file = new ByteArrayFileContainer(is.readAllBytes(), filePoolDto.getName())) {
             final var octetStreamHeaders = createOctetStreamHeaders(filePoolDto.getName());
             final var fileResource = new InputStreamResource(file.getInputStream());
             return new ResponseEntity<>(fileResource, octetStreamHeaders, HttpStatus.OK);
+        } catch (IOException e) {
+            log.error("Exception while reading file: {}", e.getMessage());
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         } catch (Exception e) {
-            log.error("Exception while downloading: ", e);
-            return new ResponseEntity<>(BAD_REQUEST);
+            throw new RuntimeException(e);
         }
     }
 
@@ -93,4 +130,5 @@ public class MinIOController {
         headers.add(SET_COOKIE, "fileDownload=true; path=/");
         return headers;
     }
+
 }

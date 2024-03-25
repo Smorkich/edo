@@ -42,7 +42,6 @@ public class MinioController {
      * Request to upload file from bucket of MINIO-server.
      * Request consist of object`s name.
      */
-    @Operation(summary = "Отправляет запрос на загрузку файла в корзину из исходного кода")
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
             produces = MediaType.TEXT_PLAIN_VALUE)
     public String uploadFileToMinIO(@RequestParam("file") MultipartFile file,
@@ -57,19 +56,16 @@ public class MinioController {
             throw new ExtensionException("Неверное расширение файла!");
         }
 
-        //проверка нужна только для файлов с расширениями jpeg jpg png, тк остальные файлы это не изображение
+        // Проверка размера только для определенных форматов, потому что остальные файлы не являются изображениями
         if ((Objects.requireNonNull(extension).equals("jpg")) || (extension.equals("jpeg")) || (extension.equals("png"))) {
-            //Изменено получение изображения из файла, тк происходит ошибка
-            // Image image = new ImageIcon((Image) file).getImage();
             Image image = ImageIO.read(file.getInputStream());
-            if (image.getHeight(null) > 100 || image.getWidth(null) > 100) {
+            if (image.getHeight(null) > 10500 || image.getWidth(null) > 10500) {
                 throw new SizeException("Превышен допустимый размер файла");
             }
         }
 
 
         if (MAIN.equals(fileType)) {
-
             try (var convertedFile = minioComponent.convertFileToPDF(file, extension)) {
                 String contentType = minioComponent.getFileContentType(file, extension);
                 log.info("Uploading file with key: {}; And type: {}", key, contentType);
@@ -79,7 +75,7 @@ public class MinioController {
                         contentType);
                 return contentType;
             } catch (IOException e) {
-                log.error("bed request");
+                log.error("bad request");
                 return "Something wrong.";
             }
 
