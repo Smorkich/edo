@@ -297,11 +297,7 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public void setAppealStatusIfLastResolutionArchived(Long resolutionId) {
-        Long appealId = appealFeignClient.isLastAppealResolutionArchived(resolutionId);
-
-        if (appealId != null) {
-            appealFeignClient.setAppealStatusIfLastResolutionArchived(appealId);
-        }
+            appealFeignClient.setAppealStatusIfLastResolutionArchived(resolutionId);
     }
 
 }

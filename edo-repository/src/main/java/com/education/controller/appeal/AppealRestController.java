@@ -119,28 +119,18 @@ public class AppealRestController {
     }
 
     /**
-     * Check that the appeal associated with the resolution with resolutionId has all resolutions completed
+     * Check that the appeal associated with the resolution with resolutionId has all resolutions completed and
+     * change the appeal status depending on the registrationDate field
      * @param resolutionId - id of the archived resolution
-     * @return long - if all resolution over for appeal return appeal id
-     * @apiNote HTTP Method - GET
-     */
-    @Operation(summary = "Проверяет, что все резолюции связанные с Appeal завершены", description = "Строка в Appeal должна существовать")
-    @GetMapping(value = "/isAllResolutionsOver/{resolutionId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> isLastAppealResolutionArchived(@PathVariable Long resolutionId) {
-        log.info("Check that the appeal associated with the resolution with id: {}  has all resolutions completed", resolutionId);
-        return new ResponseEntity<>(appealService.isLastAppealResolutionArchived(resolutionId), HttpStatus.OK);
-    }
-
-    /**
-     * Change the appeal status depending on the registrationDate field
-     * @param id - appeal id
      * @apiNote HTTP Method - PATCH
      */
-    @Operation(summary = "Изменяет статус appeal в зависимости от поля registrationDate", description = "Строка в Appeal должна существовать")
-    @PatchMapping(value = "/setAppealStatusIfLastResolutionArchived/{id}")
-    public ResponseEntity<Void> setAppealStatusIfLastResolutionArchived(@PathVariable Long id) {
-        log.info("Changing the appealStatus of appeal with id: {}", id);
-        appealService.setAppealStatusIfLastResolutionArchived(id);
+    @Operation(summary = "Проверяет, что все резолюции связанные с Appeal завершены и изменяет ее appeals_status" +
+            " в зависимости от registration_date", description = "Строка в Appeal должна существовать")
+    @PatchMapping(value = "/setAppealStatusIfLastResolutionArchived/{resolutionId}")
+    public ResponseEntity<Void> setAppealStatusIfLastResolutionArchived(@PathVariable Long resolutionId) {
+        appealService.setAppealStatusIfLastResolutionArchived(resolutionId);
+        log.info("Check that the appeal associated with the resolution with id: {}  has all resolutions completed" +
+                "and if true, change appeals_status", resolutionId);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

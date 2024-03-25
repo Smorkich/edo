@@ -111,15 +111,9 @@ public class AppealServiceImpl implements AppealService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public Long isLastAppealResolutionArchived(Long resolutionId) {
-        return appealRepository.isLastAppealResolutionArchived(resolutionId).orElse(null);
-    }
-
-    @Override
     @Transactional(rollbackFor = Exception.class)
-    public void setAppealStatusIfLastResolutionArchived(Long id) {
-        appealRepository.setAppealStatusIfLastResolutionArchived(id);
+    public void setAppealStatusIfLastResolutionArchived(Long resolutionId) {
+        appealRepository.setAppealStatusIfLastResolutionArchived(resolutionId);
     }
 
 }
