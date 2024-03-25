@@ -50,20 +50,17 @@ public class MinioController {
 
         String extension = StringUtils.getFilenameExtension(file.getOriginalFilename());
 
+        if (FACSIMILE.equals(fileType)) {
 
-        if (FACSIMILE.equals(fileType) &&
-                !((Objects.requireNonNull(extension).equals("jpg")) || (extension.equals("jpeg")) || (extension.equals("png")))) {
-            throw new ExtensionException("Неверное расширение файла!");
-        }
+            if (!(Objects.requireNonNull(extension).equals("jpg") || extension.equals("jpeg") || extension.equals("png"))) {
+                throw new ExtensionException("Invalid file extension!");
+            }
 
-        // Проверка размера только для определенных форматов, потому что остальные файлы не являются изображениями
-        if ((Objects.requireNonNull(extension).equals("jpg")) || (extension.equals("jpeg")) || (extension.equals("png"))) {
             Image image = ImageIO.read(file.getInputStream());
-            if (image.getHeight(null) > 10500 || image.getWidth(null) > 10500) {
-                throw new SizeException("Превышен допустимый размер файла");
+            if (image.getHeight(null) > 100 || image.getWidth(null) > 100) {
+                throw new SizeException("File size exceeded");
             }
         }
-
 
         if (MAIN.equals(fileType)) {
             try (var convertedFile = minioComponent.convertFileToPDF(file, extension)) {
