@@ -10,6 +10,7 @@ import com.education.service.minio.MinioService;
 import com.education.service.nomenclature.NomenclatureService;
 import com.education.service.question.QuestionService;
 import com.education.util.URIBuilderUtil;
+import com.education.util.Validator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import model.dto.AppealDto;
@@ -86,6 +87,8 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public AppealDto save(AppealDto appealDto) {
+        // Вызываем валидацию перед сохранением обращения
+        Validator.getValidateAppeal(appealDto);
         // Назначение статуса и времени создания
         setNewAppealStatusAndCreationDate(appealDto);
         // Генерация и назначения number Appeal'у
