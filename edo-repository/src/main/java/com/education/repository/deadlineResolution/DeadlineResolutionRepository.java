@@ -24,10 +24,9 @@ public interface DeadlineResolutionRepository extends JpaRepository<DeadlineReso
     /**
      * Получаем список email всех исполнителей и id резолюци у которых наступил дедлайн
      */
-    @Query("SELECT new model.dto.EmailAndIdDto(e.email, dr.resolution.id) FROM DeadlineResolution dr " +
+    @Query("SELECT new model.dto.EmailAndIdDto(e.email, r.id) FROM DeadlineResolution dr " +
             "JOIN dr.resolution r " +
-            "JOIN ResolutionExecutor re ON r.id = re.resolution.id " +
-            "JOIN re.employee e " +
+            "JOIN r.executor e " +
             "WHERE dr.deadline <= current_timestamp")
     List<EmailAndIdDto> findAllExecutorEmails();
 
