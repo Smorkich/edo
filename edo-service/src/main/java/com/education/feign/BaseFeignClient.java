@@ -33,7 +33,7 @@ public interface BaseFeignClient<T> {
      * @return Ответ от сервера, содержащий сохраненную сущность.
      */
     @PostMapping()
-    ResponseEntity<T> save(@RequestBody @Valid T entity);
+    T save(@RequestBody @Valid T entity);
 
     /**
      * Находит сущность типа T по ее идентификатору через HTTP API.
@@ -42,16 +42,15 @@ public interface BaseFeignClient<T> {
      * @return Ответ от сервера, содержащий найденную сущность.
      */
     @GetMapping("/{id}")
-    ResponseEntity<T> findById(@PathVariable Long id);
+    T findById(@PathVariable Long id);
 
     /**
      * Удаляет сущность типа T по ее идентификатору через HTTP API.
      *
      * @param id Идентификатор сущности для удаления.
-     * @return Ответ от сервера, подтверждающий удаление сущности.
      */
     @DeleteMapping("/{id}")
-    ResponseEntity<T> delete(@PathVariable Long id);
+    void delete(@PathVariable Long id);
 
     /**
      * Возвращает список всех сущностей типа T через HTTP API.
@@ -59,5 +58,5 @@ public interface BaseFeignClient<T> {
      * @return Ответ от сервера, содержащий список всех сущностей.
      */
     @GetMapping
-    ResponseEntity<Collection<T>> findAll();
+    Collection<T> findAll();
 }

@@ -35,7 +35,7 @@ public abstract class AbstractService<T> implements CommonService<T> {
         if (feignClient == null) {
             throw new IllegalStateException("Repository is not initialized");
         }
-        return feignClient.save(entity).getBody();
+        return feignClient.save(entity);
     }
 
     /**
@@ -50,7 +50,7 @@ public abstract class AbstractService<T> implements CommonService<T> {
         if (feignClient == null) {
             throw new IllegalStateException("Repository is not initialized");
         }
-        return feignClient.findById(id).getBody();
+        return feignClient.findById(id);
     }
 
     /**
@@ -78,6 +78,6 @@ public abstract class AbstractService<T> implements CommonService<T> {
         if (feignClient == null) {
             throw new IllegalStateException("Repository is not initialized");
         }
-        return feignClient.findAll().getBody();
+        return feignClient.findAll();
     }
 }
