@@ -11,7 +11,7 @@ import static model.constant.Constant.*;
 @FeignClient(name = EDO_SERVICE_NAME)
 public interface EmployeeFeignClient {
 
-    @GetMapping(value = EMPLOYEE_URL + "/searchByEmailAndUsername")
+    @GetMapping(value = SERVICE_EMPLOYEE_URL + "/searchByEmailAndUsername")
     EmployeeDto findByEmailOrUsername(@RequestParam("email") String email,
                                        @RequestParam ("username") String username);
 
