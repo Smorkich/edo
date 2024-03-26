@@ -49,16 +49,5 @@ public interface ResolutionRepository extends JpaRepository<Resolution, Long> {
     @Query(nativeQuery = true, value = "UPDATE resolution SET archived_date = NULL WHERE id =:resolutionId")
     void unarchiveResolution(@Param("resolutionId") Long resolutionId);
 
-    /**
-     * Нахождение всех резолюций, у которых статус ExecutionReport не "Выполнено"
-     */
-    @Query("SELECT res " +
-            "FROM Resolution res " +
-            "JOIN FETCH res.question que " +
-            "JOIN FETCH que.appeal app " +
-            "JOIN ExecutionReport er ON res = er.resolution " +
-            "WHERE app.id IN :appealId " +
-            "AND er.status != 'PERFORMED'")
-    Collection<Resolution> findAllByAppealIdAndExecutionStatusIsNotPerformed(@Param("appealId") Long appealId);
 
 }

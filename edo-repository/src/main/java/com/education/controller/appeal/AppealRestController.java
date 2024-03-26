@@ -118,4 +118,14 @@ public class AppealRestController {
         return new ResponseEntity<>(APPEAL_MAPPER.toDto(appeal), HttpStatus.OK);
     }
 
+    @Operation(summary = "В строке таблицы Appeal изменяет поле appeals_status на Performed, если все резолюции исполнены",
+            description = "Строка в Appeal должна существовать")
+    @PatchMapping("/updateAppealStatusWhereExecutionStatusIsPerformed/{appealId}")
+    public ResponseEntity<Void> updateAppealStatusWhereExecutionStatusIsPerformed(@PathVariable Long appealId) {
+        appealService.updateAppealStatusWhereExecutionStatusIsPerformed(appealId);
+        log.info("The status of appeals with id: {} that have fulfilled all resolutions has been changed!",
+                appealId);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

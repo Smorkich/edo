@@ -14,6 +14,7 @@ public class Constant {
     public static final String AUTHOR_URL = "api/repository/author";
     public static final String APPEAL_REST_URL = "/api/edo/appeal";
     public static final String SERVICE_APPEAL_URL = "/api/service/appeal";
+    public static final String REPOSITORY_APPEAL_URL = "/api/repository/appeal";
     public static final String EXECUTION_REPORT_URL = "api/repository/report";
     public static final String DEPARTMENT_URL = "api/repository/department";
     public static final String DEPARTMENT_SERVICE_URL = "api/service/department";

@@ -49,9 +49,6 @@ public interface ResolutionService {
      */
     public Collection<Resolution> findAllByIdNotArchived(Collection<Long> id);
 
-    /**
-     * Поиск всех не выполненных резолюций
-     */
-    Collection<Resolution> findAllByAppealIdAndExecutionStatusIsNotPerformed(Long appealId);
+
 
 }

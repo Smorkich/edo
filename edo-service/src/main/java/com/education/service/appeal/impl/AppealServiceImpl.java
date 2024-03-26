@@ -1,6 +1,7 @@
 package com.education.service.appeal.impl;
 
 import com.education.controller.facsimile.FacsimileController;
+import com.education.feign.AppealFeignClient;
 import com.education.feign.ResolutionFeignClient;
 import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
@@ -47,6 +48,7 @@ import static org.springframework.http.MediaType.APPLICATION_PDF_VALUE;
 @Slf4j
 public class AppealServiceImpl implements AppealService {
 
+    private final AppealFeignClient appealFeignClient;
     private final RestTemplate restTemplate;
     private final AuthorService authorService;
     private final QuestionService questionService;
@@ -296,13 +298,10 @@ public class AppealServiceImpl implements AppealService {
     /**
      * Если все резолюции обращения выполнены, то статус обращения меняется на PERFORMED
      */
+
     @Override
-    public void setNewAppealStatusIfExecutionStatusIsPerformed(AppealDto appealDto) {
-        Collection<ResolutionDto> resolutions = resolutionFeignClient
-                .findAllByAppealIdAndExecutionStatusIsNotPerformed(appealDto.getId());
-        if (resolutions.size() == 0) {
-            appealDto.setAppealsStatus(PERFORMED);
-        }
+    public void updateAppealStatusWhereExecutionStatusIsPerformed(Long appealId) {
+        appealFeignClient.updateAppealStatusWhereExecutionStatusIsPerformed(appealId);
     }
 
 

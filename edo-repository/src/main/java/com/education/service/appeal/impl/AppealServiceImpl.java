@@ -111,4 +111,15 @@ public class AppealServiceImpl implements AppealService {
         return appeal;
     }
 
+    /**
+     * Изменяет статус Appeal в базе данных на PERFORMED по id обращения, если все резолюции исполнены
+     *
+     */
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateAppealStatusWhereExecutionStatusIsPerformed(Long appealId) {
+        appealRepository.updateAppealStatusWhereExecutionStatusIsPerformed(appealId);
+    };
+
 }

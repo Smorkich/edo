@@ -57,4 +57,6 @@ public interface AppealService {
      */
     Appeal register(Long id);
 
+    void updateAppealStatusWhereExecutionStatusIsPerformed(Long appealId);
+
 }

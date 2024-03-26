@@ -69,6 +69,7 @@ public interface AppealService {
     /**
      * Если все резолюции обращения выполнены, то статус обращения меняется на PERFORMED
      */
-    void setNewAppealStatusIfExecutionStatusIsPerformed(AppealDto appealDto);
+
+    void updateAppealStatusWhereExecutionStatusIsPerformed(Long appealId);
 
 }
