@@ -6,6 +6,7 @@ import com.education.feign.AppealFeignClientToIntegrationEdo;
 import com.education.feign.ResolutionFeignClient;
 import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
+import com.education.service.common.AbstractService;
 import com.education.service.facsimile.FacsimileService;
 import com.education.service.filePool.FilePoolService;
 import com.education.service.minio.MinioService;
@@ -37,10 +38,10 @@ import static org.springframework.http.MediaType.APPLICATION_PDF_VALUE;
 /**
  * Сервис-слой для Appeal
  */
+@Slf4j
 @Service
 @AllArgsConstructor
-@Slf4j
-public class AppealServiceImpl implements AppealService {
+public class AppealServiceImpl extends AbstractService<AppealDto> implements AppealService {
 
     private final AppealFeignClient appealFeignClient;
     private final AppealFeignClientToIntegrationEdo massageFeignClient;
@@ -54,22 +55,6 @@ public class AppealServiceImpl implements AppealService {
     private final NomenclatureService nomenclatureService;
     private final ResolutionFeignClient resolutionFeignClient;
 
-
-    /**
-     * Нахождение обращения по id
-     */
-    @Override
-    public AppealDto findById(Long id) {
-        return appealFeignClient.findById(id);
-    }
-
-    /**
-     * Нахождение всех обращений
-     */
-    @Override
-    public Collection<AppealDto> findAll() {
-        return appealFeignClient.findAll();
-    }
 
     /**
      * Метод сохраняет или изменяет AppealDto передаваемый в параметре
@@ -120,14 +105,6 @@ public class AppealServiceImpl implements AppealService {
             }
             throw e;
         }
-    }
-
-    /**
-     * Удаления обращения по Id
-     */
-    @Override
-    public void delete(Long id) {
-        appealFeignClient.delete(id);
     }
 
     /**
