@@ -65,4 +65,13 @@ public class EmailServiceImpl implements EmailService {
                 " Вы являетесь " + post +
                 endMessage;
     }
+
+
+    /**
+     * Собирает текст письма для отправки в SendEmailService
+     */
+    @Override
+    public void createDeadlineEmail(String email, String message) {
+        sendEmailService.sendDeadlineEmail(email, message);
+    }
 }

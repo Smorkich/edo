@@ -1,4 +1,4 @@
-package com.education.service;
+package com.education.service.ServiceExternalEmployee;
 /**
  * @author Usolkin Dmitry
  * Интерфейс с методом dataSyncMethodIsRunningItRunsEveryHour

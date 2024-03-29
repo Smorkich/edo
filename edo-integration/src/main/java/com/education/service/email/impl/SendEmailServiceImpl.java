@@ -22,6 +22,7 @@ public class SendEmailServiceImpl implements SendEmailService {
 
     /**
      * Отправляет письмо с переданными параметрами
+     *
      * @param to
      * @param subject
      * @param text
@@ -37,5 +38,21 @@ public class SendEmailServiceImpl implements SendEmailService {
         log.info("Message object is formed");
         mailSender.send(message);
         log.info("The email has been sent");
+    }
+
+    /**
+     * Отправляет письмо с переданными параметрами
+     *
+     * @param email
+     * @param message
+     */
+    @Override
+    public void sendDeadlineEmail(String email, String message) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom(property.getEmailUsername());
+        mailMessage.setTo(email);
+        mailMessage.setSubject("Наступил дедлайн резолюции");
+        mailMessage.setText("Резолюции по которым наступил дедлайн: " + message);
+        mailSender.send(mailMessage);
     }
 }
