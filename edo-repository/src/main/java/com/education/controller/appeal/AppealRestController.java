@@ -127,11 +127,10 @@ public class AppealRestController {
     @Operation(summary = "Проверяет, что все резолюции связанные с Appeal завершены и изменяет ее appeals_status" +
             " в зависимости от registration_date", description = "Строка в Appeal должна существовать")
     @PatchMapping(value = "/setAppealStatusIfLastResolutionArchived/{resolutionId}")
-    public ResponseEntity<Void> setAppealStatusIfLastResolutionArchived(@PathVariable Long resolutionId) {
+    public void setAppealStatusIfLastResolutionArchived(@PathVariable Long resolutionId) {
         appealService.setAppealStatusIfLastResolutionArchived(resolutionId);
         log.info("Check that the appeal associated with the resolution with id: {}  has all resolutions completed" +
                 "and if true, change appeals_status", resolutionId);
-        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

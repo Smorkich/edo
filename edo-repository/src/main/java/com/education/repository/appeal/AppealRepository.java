@@ -100,15 +100,17 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
      * @param resolutionId - id of the archived resolution
      */
     @Modifying
-    @Query("UPDATE Appeal a SET a.appealsStatus = " +
-            "CASE " +
-            "WHEN a.registrationDate IS NOT NULL THEN model.enum_.Status.REGISTERED " +
-            "ELSE model.enum_.Status.NEW_STATUS " +
-            "END " +
-            "WHERE a.id = (SELECT a.id FROM Appeal a WHERE a.id = " +
-            "(SELECT appeal.id FROM Appeal appeal JOIN appeal.questions q JOIN Resolution r WHERE r.question = q AND r.id = :resolutionId) " +
+    @Query("UPDATE Appeal a " +
+            "SET a.appealsStatus = " +
+                "CASE " +
+                    "WHEN a.registrationDate IS NOT NULL " +
+                    "THEN model.enum_.Status.REGISTERED " +
+                    "ELSE model.enum_.Status.NEW_STATUS " +
+                "END " +
+            "WHERE a.id = (SELECT appeal.id FROM Appeal appeal JOIN appeal.questions q JOIN Resolution r " +
+                "WHERE r.question = q AND r.id = :resolutionId) " +
             "AND NOT EXISTS " +
-            "(SELECT r FROM Resolution r JOIN r.question q WHERE q.appeal = a AND r.archivedDate IS NULL))")
+                "(SELECT r FROM Resolution r JOIN r.question q WHERE q.appeal = a AND r.archivedDate IS NULL)")
     void setAppealStatusIfLastResolutionArchived(Long resolutionId);
 }
 
