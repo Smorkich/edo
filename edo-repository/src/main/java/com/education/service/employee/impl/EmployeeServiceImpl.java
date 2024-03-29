@@ -195,6 +195,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return employeeRepository.saveAll(employees);
     }
+    /**
+     * Нахождение employee по email и username
+     */
+    @Override
+    public Employee findByEmailOrUsername(String email, String username) {
+        return employeeRepository.findByEmailOrUsername(email, username);
+    }
 
 
     /**
