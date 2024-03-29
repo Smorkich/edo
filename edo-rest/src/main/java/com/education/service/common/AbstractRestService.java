@@ -1,9 +1,7 @@
 package com.education.service.common;
 
 import com.education.feign.BaseRestFeignClient;
-import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import service.CommonService;
 
