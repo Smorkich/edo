@@ -42,6 +42,8 @@ public class Constant {
     public static final String NOMENCLATURE_PARAMETER = "index";
     public static final String EMPLOYEE_FIO_SEARCH_PARAMETER = "fullName";
     public static final String EDO_FILE_STORAGE_NAME = "edo-file-storage";
+    public static final Long EDO_FILE_STORAGE_FILE_MAX_SIZE = 25*1024000L;
+
     public static final String NOTIFICATION_URL = "api/repository/notification";
     public static final String EDO_INTEGRATION_NAME = "edo-integration";
     public static final String MESSAGE_URL = "api/integration/message";
