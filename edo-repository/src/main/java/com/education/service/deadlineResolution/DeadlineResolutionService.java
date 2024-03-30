@@ -3,10 +3,8 @@ package com.education.service.deadlineResolution;
 import com.education.entity.DeadlineResolution;
 import model.dto.EmailAndIdDto;
 
-import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.List;
 
 public interface DeadlineResolutionService {
 
