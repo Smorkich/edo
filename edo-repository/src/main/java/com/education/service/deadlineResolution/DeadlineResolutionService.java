@@ -1,9 +1,12 @@
 package com.education.service.deadlineResolution;
 
 import com.education.entity.DeadlineResolution;
+import model.dto.EmailAndIdDto;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Optional;
+import java.util.List;
 
 public interface DeadlineResolutionService {
 
@@ -21,4 +24,9 @@ public interface DeadlineResolutionService {
      * Receive last deadline associated with resolution
      */
     Optional<DeadlineResolution> findLastDeadlineByResolutionId(Long resolutionId);
+
+    /**
+     * Получаем список email всех исполнителей
+     */
+    Collection<EmailAndIdDto> findAllExecutorEmails();
 }

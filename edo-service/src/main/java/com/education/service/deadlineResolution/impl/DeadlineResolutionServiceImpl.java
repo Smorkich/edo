@@ -12,8 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import static com.education.util.URIBuilderUtil.buildURI;
+import static model.constant.Constant.DEADLINE_RESOLUTION_URL;
 import static model.constant.Constant.EDO_REPOSITORY_NAME;
-import static model.constant.Constant.REPOSITORY_DEADLINE_RESOLUTION_URL;
 
 /**
  * Сервис-слой для DeadlineResolution
@@ -29,7 +29,7 @@ public class DeadlineResolutionServiceImpl implements DeadlineResolutionService 
      */
     @Override
     public void reasonForTransferDeadline(DeadlineResolutionDto deadlineResolutionDto) {
-        var builder = buildURI(EDO_REPOSITORY_NAME, REPOSITORY_DEADLINE_RESOLUTION_URL);
+        var builder = buildURI(EDO_REPOSITORY_NAME, DEADLINE_RESOLUTION_URL);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         restTemplate.exchange(builder.toString(),

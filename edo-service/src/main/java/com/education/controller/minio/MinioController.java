@@ -10,6 +10,7 @@ import model.dto.EmployeeDto;
 import model.dto.FilePoolDto;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -91,13 +92,14 @@ public class MinioController {
     @Operation(summary = "Получить filePool по uuid")
     @GetMapping("/info/{uuid}")
     public ResponseEntity<FilePoolDto> getInfo(@PathVariable UUID uuid) {
-        System.out.println(uuid);
-        log.info("getting a filePool by uuid");
+        log.info("Getting a FilePool by uuid: {}", uuid);
         FilePoolDto filePoolByUuid = filePoolService.findByUuid(uuid);
-        System.out.println(filePoolByUuid);
+        if (filePoolByUuid == null) {
+            log.info("FilePool with uuid: {} not found", uuid);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
         return ResponseEntity.ok().body(filePoolByUuid);
     }
-
 
     /**
      * Request to delete old file in the MINIO-server`s bucket

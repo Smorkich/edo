@@ -4,10 +4,14 @@ import com.education.entity.DeadlineResolution;
 import com.education.repository.deadlineResolution.DeadlineResolutionRepository;
 import com.education.service.deadlineResolution.DeadlineResolutionService;
 import lombok.AllArgsConstructor;
+import model.dto.EmailAndIdDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -26,6 +30,12 @@ public class DeadlineResolutionServiceImpl implements DeadlineResolutionService 
     @Override
     public void saveDeadlineResolution(DeadlineResolution deadlineResolution) {
         deadlineResolutionRepository.save(deadlineResolution);
+    }
+
+    @Override
+    @Transactional
+    public List<EmailAndIdDto> findAllExecutorEmails() {
+        return deadlineResolutionRepository.findAllExecutorEmails();
     }
 
     @Transactional(readOnly = true)

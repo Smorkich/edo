@@ -66,4 +66,9 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Collection<EmployeeDto> saveCollection(Collection<EmployeeDto> employeeDto) {
         return employeeFeignClient.saveCollection(employeeDto);
     }
+
+    @Override
+    public EmployeeDto findByEmailOrUsername(String email, String username) {
+        return employeeFeignClient.findByEmailOrUsername(email, username);
+    }
 }
