@@ -25,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 @Tag(name = "Обращения", description = "Методы для работы с обращениями")
 public class AppealController {
     private final AppealService appealService;
-
     private final MinioService minioService;
     private final NomenclaturePublisher nomenclaturePublisher;
 
@@ -39,7 +38,7 @@ public class AppealController {
         return new ResponseEntity<>(save, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Заполняет поле archivedDate в таблице Appeal", description = "")
+    @Operation(summary = "Заполняет поле archivedDate в таблице Appeal")
     @PutMapping(value = "/move/{id}")
     public ResponseEntity<AppealDto> moveToArchive(@PathVariable Long id) {
         appealService.moveToArchive(id);
@@ -87,6 +86,22 @@ public class AppealController {
         var register = appealService.register(id);
         log.info("Appeal with id " + id + " has been registered on edo-rest");
         return new ResponseEntity<>(register, HttpStatus.OK);
+    }
+
+    /**
+     * Request for receive an appeal file in xlsx format
+     *
+     * @param appealId - id of appeal
+     * @return ResponseEntity<byte[]> - ResponseEntity with XLSX file
+     * @apiNote HTTP Method - GET
+     */
+    @Operation(summary = "Выгрузка данных о резолюциях связанных с обращением в формате XLSX")
+    @GetMapping("/download/xlsx/{appealId}")
+    public ResponseEntity<byte[]> downloadAppealResolutionsFileXLSX(@PathVariable Long appealId) {
+        log.info("Request to receive a XLSX file");
+        var appealFile = appealService.downloadAppealFile(appealId);
+        log.info("File for appeal with id {} has been received", appealId);
+        return appealFile;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.education.service.resolution;
 
+import model.dto.AppealFileDto;
 import model.dto.ResolutionDto;
 
 import java.util.Collection;
@@ -11,7 +12,7 @@ public interface ResolutionService {
     /**
      * Сохраняет новую резолюцию
      */
-    public ResolutionDto save(ResolutionDto resolutionDto);
+    ResolutionDto save(ResolutionDto resolutionDto);
 
     /**
      * Разархивации резолюции
@@ -21,26 +22,31 @@ public interface ResolutionService {
     /**
      * Архивирует резолюцию
      */
-    public void moveToArchive(Long id);
+    void moveToArchive(Long id);
 
     /**
      * Поиск резолюции по id
      */
-    public ResolutionDto findById(Long id);
+    ResolutionDto findById(Long id);
 
     /**
      * Показать все резолюции
      */
-    public Collection<ResolutionDto> findAllById(Long id);
+    Collection<ResolutionDto> findAllById(Long id);
 
     /**
      * Поиск исключительно не архивированной резолюции по id
      */
-    public ResolutionDto findByIdNotArchived(Long id);
+    ResolutionDto findByIdNotArchived(Long id);
 
     /**
      * Показать все актуальные, не помещенные в архив резолюции
      */
-    public Collection<ResolutionDto> findAllByIdNotArchived(Long id);
+    Collection<ResolutionDto> findAllByIdNotArchived(Long id);
+
+    /**
+     * Receive all needed information about appeal resolutions
+     */
+    Collection<AppealFileDto> findAllByAppealIdForXLSX(Long appealId);
 
 }

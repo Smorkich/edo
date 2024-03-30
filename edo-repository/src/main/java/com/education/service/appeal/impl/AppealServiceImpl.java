@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.NoSuchElementException;
-import java.util.Random;
 
 /**
  * Сервис-слой для сущности Appeal

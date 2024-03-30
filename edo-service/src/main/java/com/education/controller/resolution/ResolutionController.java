@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.core.MediaType;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import model.dto.AppealFileDto;
 import model.dto.ResolutionDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -87,6 +88,15 @@ public class ResolutionController {
         var resolutionDto = resolutionService.findAllByIdNotArchived(id);
         log.info("Resolutions was found");
         return new ResponseEntity<>(resolutionDto, HttpStatus.OK);
+    }
+
+    @Operation(summary = "Получение всей информации для генерации файла обращения")
+    @GetMapping(value = "/appeal/xlsx/{appealId}")
+    public Collection<AppealFileDto> findAllByAppealId(@PathVariable Long appealId) {
+        log.info("Request to get all information about appeal resolutions");
+        var appealInfo = resolutionService.findAllByAppealIdForXLSX(appealId);
+        log.info("Data has been received");
+        return appealInfo;
     }
 
 

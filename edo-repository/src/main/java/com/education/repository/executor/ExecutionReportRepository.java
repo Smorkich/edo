@@ -18,5 +18,12 @@ public interface ExecutionReportRepository extends JpaRepository<ExecutionReport
             "WHERE e.id =:id")
     Optional<ExecutionReport> findById(@Param("id") Long id);
 
+    /**
+     * Receive resolution status
+     */
+    @Query("SELECT CASE WHEN COUNT(e) > 0 THEN 'Исполнено' ELSE 'Не исполнено' END FROM ExecutionReport e " +
+            "WHERE e.resolution.id = :resolutionId AND e.status = model.enum_.Status.PERFORMED")
+    String resolutionStatus(@Param("resolutionId") Long resolutionId);
+
 
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -22,7 +23,14 @@ public class DeadlineResolutionServiceImpl implements DeadlineResolutionService 
     }
 
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public void saveDeadlineResolution(DeadlineResolution deadlineResolution) {
         deadlineResolutionRepository.save(deadlineResolution);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Optional<DeadlineResolution> findLastDeadlineByResolutionId(Long resolutionId) {
+        return deadlineResolutionRepository.findLastDeadlineByResolutionId(resolutionId);
     }
 }

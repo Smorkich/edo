@@ -1,5 +1,6 @@
 package com.education.service.appeal.impl;
 
+import com.education.feign.AppealFileFeignClient;
 import com.education.service.appeal.AppealService;
 import com.education.util.URIBuilderUtil;
 import lombok.AllArgsConstructor;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.multipart.MultipartFile;
 
 import static model.constant.Constant.EDO_SERVICE_NAME;
 
@@ -21,6 +21,7 @@ public class AppealServiceImpl implements AppealService {
     private static final String SERVICE_URL = "api/service/appeal";
 
     private final RestTemplate restTemplate;
+    private final AppealFileFeignClient appealFileFeignClient;
 
     /**
      * Отправляет запрос в edo-service на сохранение AppealDTO
@@ -67,6 +68,16 @@ public class AppealServiceImpl implements AppealService {
         var uri = URIBuilderUtil.buildURI(EDO_SERVICE_NAME, "/api/service/appeal/register");
         uri.setParameter("id", String.valueOf(id));
         return restTemplate.postForObject(uri.toString(), new HttpEntity<>(new HttpHeaders()), AppealDto.class);
+    }
+
+    /**
+     * Request for receive an appeal file in xlsx format
+     *
+     * @param appealId - id of appeal
+     */
+    @Override
+    public ResponseEntity<byte[]> downloadAppealFile(Long appealId) {
+        return appealFileFeignClient.downloadAppealResolutionsFileXLSX(appealId);
     }
 
     private static String getUri(String path) {

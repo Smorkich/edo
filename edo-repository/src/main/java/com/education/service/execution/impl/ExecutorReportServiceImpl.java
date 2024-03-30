@@ -20,12 +20,21 @@ public class ExecutorReportServiceImpl implements ExecutorReportService {
     /**
      * Метод отправляющий ExecutionReportDto в edo-repository на сохранение
      *
-     * @param executionReport
+     * @param executionReport - отчет по резолюции
      * @return ExecutionReport
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public ExecutionReport submitReport(ExecutionReport executionReport) {
         return repository.saveAndFlush(executionReport);
+    }
+
+    /**
+     * Receive resolution status
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public String resolutionStatus(Long resolutionId) {
+        return repository.resolutionStatus(resolutionId);
     }
 }

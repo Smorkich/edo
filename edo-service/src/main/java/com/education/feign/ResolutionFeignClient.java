@@ -1,6 +1,7 @@
 package com.education.feign;
 
 import com.education.config.FeignConfig;
+import model.dto.AppealFileDto;
 import model.dto.ResolutionDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,4 +39,7 @@ public interface ResolutionFeignClient {
 
     @GetMapping(RESOLUTION_URL + "/appealId/all/{appealId}")
     Collection<ResolutionDto> findAllByAppealIdAndIsDraftFalse(@PathVariable Long appealId);
+
+    @GetMapping(RESOLUTION_URL + "/appeal/xlsx/{appealId}")
+    Collection<AppealFileDto> findAllByAppealIdForXLSX(@PathVariable Long appealId);
 }

@@ -6,8 +6,8 @@ import com.education.service.emloyee.EmployeeService;
 import com.education.service.resolution.ResolutionService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import lombok.extern.slf4j.Slf4j;
 import model.dto.AppealDto;
+import model.dto.AppealFileDto;
 import model.dto.ResolutionDto;
 import org.springframework.stereotype.Service;
 
@@ -88,6 +88,11 @@ public class ResolutionServiceImpl implements ResolutionService {
     @Override
     public Collection<ResolutionDto> findAllByIdNotArchived(Long id) {
         return resolutionFeignClient.findAllByIdNotArchived(id);
+    }
+
+    @Override
+    public Collection<AppealFileDto> findAllByAppealIdForXLSX(Long appealId) {
+        return resolutionFeignClient.findAllByAppealIdForXLSX(appealId);
     }
 
 }
