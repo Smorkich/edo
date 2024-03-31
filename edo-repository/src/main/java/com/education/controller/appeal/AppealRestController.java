@@ -120,7 +120,7 @@ public class AppealRestController {
 
     @Operation(summary = "В строке таблицы Appeal изменяет поле appeals_status на Performed, если все резолюции исполнены",
             description = "Строка в Appeal должна существовать")
-    @PatchMapping("/updateAppealStatusWhereExecutionStatusIsPerformed/{appealId}")
+    @PatchMapping("/updateAppealStatusWhereExecutionStatusIsPerformed/{resolutionId}")
     public ResponseEntity<Void> updateAppealStatusWhereExecutionStatusIsPerformed(@PathVariable Long resolutionId) {
         appealService.updateAppealStatusWhereExecutionStatusIsPerformed(resolutionId);
         log.info("The status of appeals that have fulfilled all resolutions has been changed!");

@@ -105,7 +105,7 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
             "AND NOT EXISTS (SELECT 1 FROM ExecutionReport er " +
             "JOIN er.resolution r " +
             "WHERE r.id = :resolutionId AND er.status != model.enum_.Status.PERFORMED)")
-    void updateAppealStatusWhereExecutionStatusIsPerformed(@Param("appealId") Long resolutionId);
+    void updateAppealStatusWhereExecutionStatusIsPerformed(@Param("resolutionId") Long resolutionId);
 
 
 
