@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.ZonedDateTime;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 /**
@@ -43,6 +44,7 @@ public class ConvertEmployee {
         }
         return  employeeDto;
     }
+
 
     private static DepartmentDto.DepartmentDtoBuilder departmentToDto(ExternalEmployeeDto.Company company) {
         return DepartmentDto.builder()

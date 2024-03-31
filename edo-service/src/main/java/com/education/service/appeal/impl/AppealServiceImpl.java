@@ -300,8 +300,8 @@ public class AppealServiceImpl implements AppealService {
      */
 
     @Override
-    public void updateAppealStatusWhereExecutionStatusIsPerformed(Long appealId) {
-        appealFeignClient.updateAppealStatusWhereExecutionStatusIsPerformed(appealId);
+    public void updateAppealStatusWhereExecutionStatusIsPerformed(Long resolutionId) {
+        appealFeignClient.updateAppealStatusWhereExecutionStatusIsPerformed(resolutionId);
     }
 
 

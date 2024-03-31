@@ -118,8 +118,8 @@ public class AppealServiceImpl implements AppealService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void updateAppealStatusWhereExecutionStatusIsPerformed(Long appealId) {
-        appealRepository.updateAppealStatusWhereExecutionStatusIsPerformed(appealId);
+    public void updateAppealStatusWhereExecutionStatusIsPerformed(Long resolutionId) {
+        appealRepository.updateAppealStatusWhereExecutionStatusIsPerformed(resolutionId);
     };
 
 }

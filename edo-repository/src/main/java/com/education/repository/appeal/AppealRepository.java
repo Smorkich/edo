@@ -100,11 +100,12 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
      */
 
     @Modifying
-    @Query("UPDATE Appeal a SET a.appealsStatus = model.enum_.Status.PERFORMED  " +
-            "WHERE a.id = :appealId " +
+    @Query("UPDATE Appeal a SET a.appealsStatus = model.enum_.Status.PERFORMED " +
+            "WHERE EXISTS (SELECT 1 FROM Question q WHERE q.appeal.id = a.id) " +
             "AND NOT EXISTS (SELECT 1 FROM ExecutionReport er " +
-            "WHERE er.resolution.question.appeal = a AND er.status != model.enum_.Status.PERFORMED)")
-    void updateAppealStatusWhereExecutionStatusIsPerformed(@Param("appealId") Long appealId);
+            "JOIN er.resolution r " +
+            "WHERE r.id = :resolutionId AND er.status != model.enum_.Status.PERFORMED)")
+    void updateAppealStatusWhereExecutionStatusIsPerformed(@Param("appealId") Long resolutionId);
 
 
 

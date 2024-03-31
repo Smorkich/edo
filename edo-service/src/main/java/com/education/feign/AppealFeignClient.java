@@ -12,6 +12,6 @@ import static model.constant.Constant.REPOSITORY_APPEAL_URL;
 public interface AppealFeignClient {
 
 
-    @PatchMapping(REPOSITORY_APPEAL_URL + "/updateAppealStatusWhereExecutionStatusIsPerformed/{appealId}")
-    ResponseEntity<Void> updateAppealStatusWhereExecutionStatusIsPerformed(@PathVariable Long appealId);
+    @PatchMapping(REPOSITORY_APPEAL_URL + "/updateAppealStatusWhereExecutionStatusIsPerformed/{resolutionId}")
+    Void updateAppealStatusWhereExecutionStatusIsPerformed(@PathVariable Long resolutionId);
 }
