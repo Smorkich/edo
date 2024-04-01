@@ -32,7 +32,7 @@ public class AppealFileController {
     /**
      * Generates an appeal file in xlsx format
      */
-    @Operation(summary = "Отправляет запрос на загрузку файла из корзины в целевую папку")
+    @Operation(summary = "Генерация файла обращения в xlsx формате")
     @GetMapping(value = "/xlsx/{appealId}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable("appealId") Long appealId) {
         log.info("Received a request to generate a XLSX file");

@@ -21,7 +21,6 @@ public interface DeadlineResolutionRepository extends JpaRepository<DeadlineReso
     @Query(nativeQuery = true, value = "SELECT * FROM deadline_resolution WHERE resolution_id = :resolutionId")
     List<DeadlineResolution> findByResolutionId(@Param("resolutionId") Long resolutionId);
 
-
     /**
      * Получаем список email всех исполнителей и id резолюци у которых наступил дедлайн
      */
@@ -30,8 +29,6 @@ public interface DeadlineResolutionRepository extends JpaRepository<DeadlineReso
             "JOIN r.executor e " +
             "WHERE dr.deadline <= current_timestamp")
     List<EmailAndIdDto> findAllExecutorEmails();
-
-
 
     /**
      * Receive last deadline associated with resolution

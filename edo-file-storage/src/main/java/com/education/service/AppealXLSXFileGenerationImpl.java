@@ -56,19 +56,16 @@ public class AppealXLSXFileGenerationImpl implements AppealXLSXFileGeneration {
                             "Крайний срок резолюции", "Статус резолюции"));
                 } else {
                     AppealFileDto appealfiledto = appealFileDto.get(i - 1);
+                    String deadline = appealfiledto.getDeadlineResolution().format(formatterForLocalDate);
                     fileInformation.addAll(Arrays.asList(String.valueOf(i),
                             appealfiledto.getCreationDate().format(formatterForZonedDateTime),
                             String.join(", ", appealfiledto.getExecutorFIOs()),
-                            appealfiledto.getDeadlineResolution().format(formatterForLocalDate),
+                            deadline.equals("01.01.0001") ? "Нет крайнего срока" : deadline,
                             appealfiledto.getResolutionStatus()));
                 }
                 int cellId = 0;
                 for (String fileInfo : fileInformation) {
                     Cell cell = row.createCell(cellId++);
-                    if (fileInfo.equals("01.01.0001")) {
-                        cell.setCellValue("Нет крайнего срока");
-                        continue;
-                    }
                     cell.setCellValue(fileInfo);
                 }
                 fileInformation.clear();
@@ -88,7 +85,7 @@ public class AppealXLSXFileGenerationImpl implements AppealXLSXFileGeneration {
                         .body(outputStream.toByteArray());
             }
         } catch (IOException e) {
-            log.error("Can't create workbook for XLSX file");
+            log.error("Can't create workbook for XLSX file", e);
         }
 
         return null;
