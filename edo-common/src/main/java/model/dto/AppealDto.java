@@ -10,7 +10,6 @@ import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Objects;
 
 @Setter
 @Getter
@@ -31,6 +30,9 @@ public class AppealDto implements Serializable {
 
     @ApiModelProperty(value = "Дата отработанного обращения")
     private ZonedDateTime archivedDate;
+
+    @ApiModelProperty(value = "Дата регистрации обращения")
+    private ZonedDateTime registrationDate;
 
     @ApiModelProperty(value = "Номер обращения")
     private String number;
