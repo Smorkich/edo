@@ -40,8 +40,6 @@ import static org.springframework.http.MediaType.APPLICATION_PDF_VALUE;
 public class AppealServiceImpl extends AbstractService<AppealDto> implements AppealService {
 
     private final AppealFeignClient appealFeignClient;
-    private final RestTemplate restTemplate;
-    private final AppealFeignClient appealFeignClient;
     private final AppealFeignClientToIntegrationEdo massageFeignClient;
 
     private final AuthorService authorService;
