@@ -1,19 +1,16 @@
 package com.education.service.appeal.impl;
 
 import com.education.controller.facsimile.FacsimileController;
-import com.education.feign.AppealFeignClient;
-import com.education.feign.AppealFeignClientToIntegrationEdo;
 import com.education.feign.ResolutionFeignClient;
 import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
-import com.education.service.common.AbstractService;
 import com.education.service.facsimile.FacsimileService;
 import com.education.service.filePool.FilePoolService;
 import com.education.service.minio.MinioService;
 import com.education.service.nomenclature.NomenclatureService;
 import com.education.service.question.QuestionService;
+import com.education.util.URIBuilderUtil;
 import com.education.util.Validator;
-import jakarta.ws.rs.NotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import model.dto.AppealDto;
@@ -22,13 +19,21 @@ import model.dto.FilePoolDto;
 import model.dto.QuestionDto;
 import model.dto.ResolutionDto;
 import org.springframework.core.io.Resource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.education.util.URIBuilderUtil.buildURI;
 import static model.constant.Constant.*;
@@ -38,14 +43,12 @@ import static org.springframework.http.MediaType.APPLICATION_PDF_VALUE;
 /**
  * Сервис-слой для Appeal
  */
-@Slf4j
 @Service
 @AllArgsConstructor
-public class AppealServiceImpl extends AbstractService<AppealDto> implements AppealService {
+@Slf4j
+public class AppealServiceImpl implements AppealService {
 
-    private final AppealFeignClient appealFeignClient;
-    private final AppealFeignClientToIntegrationEdo massageFeignClient;
-
+    private final RestTemplate restTemplate;
     private final AuthorService authorService;
     private final QuestionService questionService;
     private final FilePoolService filePoolService;
@@ -57,54 +60,73 @@ public class AppealServiceImpl extends AbstractService<AppealDto> implements App
 
 
     /**
+     * Нахождение обращения по id
+     */
+    @Override
+    public AppealDto findById(Long id) {
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL + "/" + id);
+        return restTemplate.getForObject(builder.toString(), AppealDto.class);
+    }
+
+    /**
+     * Нахождение всех обращений
+     */
+    @Override
+    public Collection<AppealDto> findAll() {
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL);
+        return restTemplate.getForObject(builder.toString(), Collection.class);
+    }
+
+    /**
      * Метод сохраняет или изменяет AppealDto передаваемый в параметре
      * <p> Назначает статус, время создания и number. Если произошли изменения меняет статус
      * обращения и всех его вопросов на "UPDATED". После всего этого передаёт appeal в контроллер edo-repository
      *
      * @param appealDto - DTO который нужно сохранить или изменить
-     * @return - DTO который сохранили или изменили
+     * @return AppealDto - DTO который сохранили или изменили
      */
     @Override
     public AppealDto save(AppealDto appealDto) {
-
         // Вызываем валидацию перед сохранением обращения
         Validator.getValidateAppeal(appealDto);
-
         // Назначение статуса и времени создания
         setNewAppealStatusAndCreationDate(appealDto);
-
         // Генерация и назначения number Appeal'у
         nomenclatureService.generateAppealNumber(appealDto);
-
         // Сохранение или редактирование новых сущностей Appeal'a
         try {
-            if (appealDto.getAuthors() != null) {
+            if (appealDto.getAuthors() == null) {
                 appealDto.setAuthors(authorService.saveAll(appealDto.getAuthors()));
             }
-            if (appealDto.getQuestions() != null) {
+            if (appealDto.getQuestions() == null) {
                 appealDto.setQuestions(questionService.saveAll(appealDto.getQuestions()));
             }
-            if (appealDto.getFile() != null) {
+            if (appealDto.getFile() == null) {
                 appealDto.setFile(filePoolService.saveAll(appealDto.getFile()));
             }
-
-            return appealFeignClient.save(appealDto);
+            // Отправление пост запроса в репозиторий
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+            String uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "api/repository/appeal").toString();
+            return restTemplate.exchange(uri, HttpMethod.POST, new HttpEntity<>(appealDto, headers), AppealDto.class).getBody();
         } catch (Exception e) {
             // Удаление сохранённых вложенных сущностей если возникла ошибка
-            if (appealDto.getAuthors() != null) {
-                appealDto.getAuthors().stream().filter(authorDto -> authorDto.getId() != null)
-                        .forEach(authorDto -> authorService.delete(authorDto.getId()));
-            }
-            if (appealDto.getQuestions() != null) {
-                appealDto.getQuestions().stream().filter(questionDto -> questionDto.getId() != null)
-                        .forEach(filePoolDto -> filePoolService.delete(filePoolDto.getId()));
-            }
-            if (appealDto.getFile() != null) {
-                appealDto.getFile().stream().filter(filePoolDto -> filePoolDto.getId() != null)
-                        .forEach(questionDto -> questionService.delete(questionDto.getId()));
-            }
+            appealDto.getAuthors().stream().filter(authorDto -> authorDto.getId() != null).forEach(authorDto -> authorService.delete(authorDto.getId()));
+            appealDto.getQuestions().stream().filter(questionDto -> questionDto.getId() != null).forEach(filePoolDto -> filePoolService.delete(filePoolDto.getId()));
+            appealDto.getFile().stream().filter(filePoolDto -> filePoolDto.getId() != null).forEach(questionDto -> questionService.delete(questionDto.getId()));
             throw e;
         }
+    }
+
+    /**
+     * Удаления обращения по Id
+     */
+    @Override
+    public void delete(Long id) {
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
+                .setPath("/")
+                .setPath(String.valueOf(id));
+        restTemplate.delete(builder.toString());
     }
 
     /**
@@ -113,11 +135,11 @@ public class AppealServiceImpl extends AbstractService<AppealDto> implements App
     @Override
     public void moveToArchive(Long id) {
         AppealDto appeal = findById(id);
-        if (appeal == null) {
-            throw new NotFoundException("Appeal with ID " + id + " not found");
-        }
         appeal.setArchivedDate(ZonedDateTime.now());
-        appealFeignClient.moveToArchive(id);
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
+                .setPath("/move/")
+                .setPath(String.valueOf(id));
+        restTemplate.put(builder.toString(), appeal);
     }
 
     /**
@@ -125,11 +147,10 @@ public class AppealServiceImpl extends AbstractService<AppealDto> implements App
      */
     @Override
     public AppealDto findByIdNotArchived(Long id) {
-        AppealDto appeal = appealFeignClient.findByIdNotArchived(id);
-        if (appeal == null || appeal.getAppealsStatus() == ARCHIVE) {
-            throw new NotFoundException("Appeal with ID " + id + " not found or already archived");
-        }
-        return appeal;
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
+                .setPath("/findByIdNotArchived/")
+                .setPath(String.valueOf(id));
+        return restTemplate.getForObject(builder.toString(), AppealDto.class);
     }
 
     /**
@@ -137,13 +158,9 @@ public class AppealServiceImpl extends AbstractService<AppealDto> implements App
      */
     @Override
     public Collection<AppealDto> findAllNotArchived() {
-        try {
-            return appealFeignClient.findAllNotArchived();
-        } catch (Exception e) {
-            log.error("Unexpected error fetching not archived appeals: " + e.getMessage());
-            return Collections.emptyList();
-        }
-
+        var builder = buildURI(EDO_REPOSITORY_NAME, APPEAL_URL)
+                .setPath("/findByIdNotArchived");
+        return restTemplate.getForObject(builder.toString(), Collection.class);
     }
 
     /**
@@ -152,25 +169,25 @@ public class AppealServiceImpl extends AbstractService<AppealDto> implements App
      */
     @Override
     public void sendMessage(AppealDto appealDto) {
-        try {
-            //Сбор всех emails для отправки
-            List<String> emails = new ArrayList<>();
-            emails.addAll(getEmployeesEmails(appealDto.getAddressee()));
-            emails.addAll(getEmployeesEmails(appealDto.getSigner()));
+        var builder = buildURI(EDO_INTEGRATION_NAME, MESSAGE_URL);
+        var valueMapForSendingObjects = new LinkedMultiValueMap<>();
 
-            //Получение URL
-            var builderForAppealUrl = buildURI(EDO_REST_NAME, APPEAL_REST_URL + "/" + appealDto.getId());
+        //Сбор всех emails для отправки
+        List<String> emails = new ArrayList<>();
+        emails.addAll(getEmployeesEmails(appealDto.getAddressee()));
+        emails.addAll(getEmployeesEmails(appealDto.getSigner()));
 
-            //Заполнение мапы данными
-            MultiValueMap<String, Object> valueMapForSendingObjects = new LinkedMultiValueMap<>();
-            valueMapForSendingObjects.add("appealURL", builderForAppealUrl.toString());
-            valueMapForSendingObjects.addAll("emails", emails);
-            valueMapForSendingObjects.add("appealNumber", appealDto.getNumber());
+        //Получение URL
+        var builderForAppealUrl = buildURI(EDO_REST_NAME, APPEAL_REST_URL + "/" + appealDto.getId());
 
-            massageFeignClient.sendMessage(valueMapForSendingObjects.toSingleValueMap());
-        } catch (Exception e) {
-            log.error("Failed to send message", e);
-        }
+        //Заполнение мапы данными
+        valueMapForSendingObjects.add("appealURL", builderForAppealUrl.toString());
+        valueMapForSendingObjects.addAll("emails", emails);
+        valueMapForSendingObjects.add("appealNumber", appealDto.getNumber());
+        HttpHeaders headers = new HttpHeaders();
+        var requestEntity = new HttpEntity<>(valueMapForSendingObjects, headers);
+
+        restTemplate.postForEntity(builder.toString(), requestEntity, Object.class);
     }
 
     /**
@@ -178,22 +195,21 @@ public class AppealServiceImpl extends AbstractService<AppealDto> implements App
      */
     @Override
     public AppealDto findAppealByQuestionsId(Long id) {
-        return appealFeignClient.findAppealByQuestionsId(id);
+        String URL = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "api/repository/appeal/findAppealByQuestionsId/" + id).toString();
+        return restTemplate.getForObject(URL, AppealDto.class);
     }
 
     /**
-     * Метод закрепляет файл за обращением.
-     * Накладывает факсимиле на файл обращения
+     * Метод закрепляет файл за обращением
+     * Накладывает факсимиле на файл за обращения
      */
     @Override
     public AppealDto upload(Long id, FilePoolDto file) {
         AppealDto appealDto = findById(id);
         var employeeId = appealDto.getSigner().iterator().next().getId();
-        Resource facsimileRes = facsimileService.getFacsimile(
-                facsimileController.findFacsimileByEmployeeId(employeeId).getBody());
+        Resource facsimileRes = facsimileService.getFacsimile(facsimileController.findFacsimileByEmployeeId(employeeId).getBody());
         try (var facsimileFile = facsimileRes.getInputStream()) {
-            minioService.overlayFacsimileOnFirstFile(file.getStorageFileId(), file.getExtension(),
-                    APPLICATION_PDF_VALUE, facsimileFile);
+            minioService.overlayFacsimileOnFirstFile(file.getStorageFileId(), file.getExtension(), APPLICATION_PDF_VALUE, facsimileFile);
         } catch (IOException e) {
             log.error("Факсимиле не было наложено на файл");
         }
@@ -219,19 +235,24 @@ public class AppealServiceImpl extends AbstractService<AppealDto> implements App
         var appealQuestions = questionService.findByAppealId(id);
         var questionsIds = appealQuestions.stream()
                 .map(QuestionDto::getId)
-                .toList();
+                .collect(Collectors.toList());
         questionService.registerAllQuestions(questionsIds);
-        return appealFeignClient.register(id);
+        var uri = URIBuilderUtil.buildURI(EDO_REPOSITORY_NAME, "/api/repository/appeal/register");
+        uri.setParameter("id", String.valueOf(id));
+        return restTemplate.postForObject(uri.toString(), new HttpEntity<>(new HttpHeaders()), AppealDto.class);
     }
 
-    /**w
+    /**
      * Метод достает emails из коллекции EmployeeDto
      */
     private Collection<String> getEmployeesEmails(Collection<EmployeeDto> employees) {
-        return employees.stream()
-                .filter(Objects::nonNull)
-                .map(EmployeeDto::getEmail)
-                .toList();
+        return employees.stream().filter(Objects::nonNull)
+                .map(emp -> {
+                    var builderEmployee = buildURI(EDO_REPOSITORY_NAME, EMPLOYEE_URL + "/" + emp.getId());
+                    var employeeDto = restTemplate.getForObject(builderEmployee.toString(), EmployeeDto.class);
+                    return employeeDto.getEmail();
+                })
+                .collect(Collectors.toList());
     }
 
     /**
@@ -269,8 +290,7 @@ public class AppealServiceImpl extends AbstractService<AppealDto> implements App
      */
     @Override
     public void setNewAppealStatusIfResolutionLastAndIsDraftFalse(AppealDto appealDto) {
-        Collection<ResolutionDto> resolutions = resolutionFeignClient.findAllByAppealIdAndIsDraftFalse(
-                appealDto.getId());
+        Collection<ResolutionDto> resolutions = resolutionFeignClient.findAllByAppealIdAndIsDraftFalse(appealDto.getId());
         if (resolutions.size() == 1) {
             appealDto.setAppealsStatus(UNDER_CONSIDERATION);
         }
