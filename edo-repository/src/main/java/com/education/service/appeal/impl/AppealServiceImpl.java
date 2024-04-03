@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.NoSuchElementException;
-import java.util.Random;
 
 /**
  * Сервис-слой для сущности Appeal
@@ -109,6 +108,12 @@ public class AppealServiceImpl implements AppealService {
         Appeal appeal = appealRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Обращение с id + " + id + " не найдено"));
         appeal.setAppealsStatus(Status.REGISTERED);
         return appeal;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void setAppealStatusIfLastResolutionArchived(Long resolutionId) {
+        appealRepository.setAppealStatusIfLastResolutionArchived(resolutionId);
     }
 
 }

@@ -16,11 +16,7 @@ import com.education.util.Validator;
 import jakarta.ws.rs.NotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import model.dto.AppealDto;
-import model.dto.EmployeeDto;
-import model.dto.FilePoolDto;
-import model.dto.QuestionDto;
-import model.dto.ResolutionDto;
+import model.dto.*;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
@@ -43,6 +39,8 @@ import static org.springframework.http.MediaType.APPLICATION_PDF_VALUE;
 @AllArgsConstructor
 public class AppealServiceImpl extends AbstractService<AppealDto> implements AppealService {
 
+    private final AppealFeignClient appealFeignClient;
+    private final RestTemplate restTemplate;
     private final AppealFeignClient appealFeignClient;
     private final AppealFeignClientToIntegrationEdo massageFeignClient;
 
@@ -274,6 +272,15 @@ public class AppealServiceImpl extends AbstractService<AppealDto> implements App
         if (resolutions.size() == 1) {
             appealDto.setAppealsStatus(UNDER_CONSIDERATION);
         }
+    }
+
+    /**
+     * First it checks that the resolution was the last one to appeal, then it changes the appealStatus of appeal
+     * @param resolutionId - id of the archived resolution
+     */
+    @Override
+    public void setAppealStatusIfLastResolutionArchived(Long resolutionId) {
+            appealFeignClient.setAppealStatusIfLastResolutionArchived(resolutionId);
     }
 
 }
