@@ -29,7 +29,7 @@ public class AppealServiceImpl extends AbstractRestService<AppealDto> implements
 
     @Override
     public AppealDto upload(Long id, FilePoolDto file) {
-        return appealFeignClient.upload(id, file).getBody();
+        return appealFeignClient.uploadFile(id, file).getBody();
     }
 
     /**
@@ -39,7 +39,7 @@ public class AppealServiceImpl extends AbstractRestService<AppealDto> implements
      */
     @Override
     public AppealDto register(Long id) {
-        return appealFeignClient.register(id);
+        return appealFeignClient.registerAppeal(id);
     }
 
 }

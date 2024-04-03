@@ -63,7 +63,7 @@ public class AppealRestController {
 
     @Operation(summary = "Находит все строки таблицы Appeal", description = "Строка в Appeal должна существовать")
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Collection<AppealDto>> getAllAppeal() {
+    public ResponseEntity<Collection<AppealDto>> findAll() {
         log.info("Getting from database all appeals");
         var appealDtoCollection = appealService.findAll();
         log.info("Response from database: {}", appealDtoCollection);
@@ -72,7 +72,7 @@ public class AppealRestController {
 
     @Operation(summary = "Удаляет строку таблицы Appeal по id", description = "Строка в Appeal должна существовать")
     @DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> deleteAppeal(@PathVariable(value = "id") Long id) {
+    public ResponseEntity<Long> delete(@PathVariable(value = "id") Long id) {
         log.info("Deleting from database appeal with id: {}", id);
         appealService.delete(id);
         log.info("Deleting from database appeal with id: {}, success!", id);
@@ -93,7 +93,7 @@ public class AppealRestController {
 
     @Operation(summary = "Находит строку таблицы Appeal по id", description = "Строка в Appeal должна существовать")
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<AppealDto> getAppealById(@PathVariable Long id) {
+    public ResponseEntity<AppealDto> findById(@PathVariable Long id) {
         log.info("Getting from database employee mock field with id: 1");
         var mockEmployee = getMockEmployee();
         log.info("Getting from database appeal with id: {}", id);
