@@ -105,9 +105,24 @@ public class Validator {
     }
     /**
      * Проверяет Appeal
+     *
+     * Добавили в валидацию проверку на регион
      */
     public static void getValidateAppeal(AppealDto appeal) throws RuntimeException {
         List<String> err = new ArrayList<>();
+
+        if (appeal.getRegion() == null ||
+                (appeal.getRegion().getId() == null &&
+                        appeal.getRegion().getExternalId() == null &&
+                        appeal.getRegion().getNameSubjectRussianFederation() == null &&
+                        appeal.getRegion().getArchivingDate() == null &&
+                        appeal.getRegion().getQuantity() == null &&
+                        appeal.getRegion().getFederalDistrict() == null &&
+                        appeal.getRegion().getPrimaryBranches() == null &&
+                        appeal.getRegion().getLocalBranches() == null)) {
+            err.add(String.format("Appeal with ID %s has null or empty Region", appeal.getId()));
+        }
+
         if (appeal.getQuestions().size() > 0) {
             appeal.getQuestions().forEach(question -> {
                 if (question.getTheme() == null) {
@@ -170,6 +185,7 @@ public class Validator {
                 }
             });
         }
+
         if (!err.isEmpty()) {
             throw new AppealCustomException(err.toString());
         }

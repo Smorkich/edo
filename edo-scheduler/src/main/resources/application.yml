@@ -16,5 +16,17 @@ integration:
     employee: http://xn--d1ab2a.space/mock/employees
 
 interval: PT30M
+interval2: P1D
 
+feign:
+  client:
+    config:
+      auth:
+        logger-level: FULL
 
+logging:
+  level:
+    me.bvn13.openfeign.logger.NormalizedFeignLogger: DEBUG
+
+files_check_interval: P1D
+file-lifetime: 5

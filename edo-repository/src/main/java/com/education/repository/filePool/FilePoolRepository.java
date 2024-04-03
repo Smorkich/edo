@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -37,5 +38,8 @@ public interface FilePoolRepository extends JpaRepository<FilePool, Long> {
 
 
     FilePool getFilePoolByStorageFileId(UUID uuid);
+
+    @Query("select fp.storageFileId from FilePool fp where fp.uploadDate <= :givenDate")
+    List<UUID> findAllOldFiles(ZonedDateTime givenDate);
 }
 

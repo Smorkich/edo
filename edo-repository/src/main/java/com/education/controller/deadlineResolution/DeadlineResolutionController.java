@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.DeadlineResolutionDto;
+import model.dto.EmailAndIdDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 
 import static com.education.mapper.DeadlineResolutionMapper.DEADLINE_RESOLUTION_MAPPER;
+import static model.constant.Constant.DEADLINE_RESOLUTION_URL;
 
 /**
  * REST контроллер для отправки запросов к БД
@@ -22,7 +24,7 @@ import static com.education.mapper.DeadlineResolutionMapper.DEADLINE_RESOLUTION_
 @AllArgsConstructor
 @Log4j2
 @Tag(name = "Rest-контроллер для работы с дедлайнами резолюции")
-@RequestMapping("api/repository/resolution/deadline")
+@RequestMapping(DEADLINE_RESOLUTION_URL)
 public class DeadlineResolutionController {
 
     /**
@@ -47,4 +49,15 @@ public class DeadlineResolutionController {
         log.info("Response from database: {}", deadlineResolutionDto);
         return new ResponseEntity<>(deadlineResolutionDto, HttpStatus.OK);
     }
+
+    @Operation(summary = "Ищет все email исполнителей которым нужно отправить сообщение о достижении дедлайна")
+    @GetMapping(value = "/allExecutorEmails", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Collection<EmailAndIdDto> findAllExecutorEmails() {
+        log.info("Received request to find all executor emails for date ");
+        Collection<EmailAndIdDto> executorEmails = deadlineResolutionService.findAllExecutorEmails();
+        log.info("Found {} executor emails for date ", executorEmails.size());
+        return executorEmails;
+    }
+
+
 }

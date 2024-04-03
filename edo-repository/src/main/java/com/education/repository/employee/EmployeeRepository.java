@@ -1,6 +1,7 @@
 package com.education.repository.employee;
 
 import com.education.entity.Employee;
+import model.dto.EmployeeDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -33,4 +34,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     @Override
     Optional<Employee> findById(Long aLong);
+
+    @Query("SELECT emp FROM Employee emp WHERE emp.email = :email OR emp.username = :username")
+    Employee findByEmailOrUsername(@Param(value = "email") String email,
+                                       @Param(value = "username") String username);
 }

@@ -3,10 +3,7 @@ package com.education.feign;
 import com.education.config.FeignConfig;
 import model.dto.ResolutionDto;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
@@ -18,8 +15,8 @@ public interface ResolutionFeignClient {
     @PostMapping(RESOLUTION_URL + "/add")
     ResolutionDto saveResolution(@RequestBody ResolutionDto resolutionDto);
 
-    @PostMapping( RESOLUTION_URL + "/move/{id}")
-    ResolutionDto moveToArchive(@PathVariable Long id);
+    @PatchMapping( RESOLUTION_URL + "/move/{id}")
+    String moveToArchive(@PathVariable Long id);
 
     @PostMapping(RESOLUTION_URL + "/unarchive/{resolutionId}")
     ResolutionDto unarchiveResolution(@PathVariable Long resolutionId);

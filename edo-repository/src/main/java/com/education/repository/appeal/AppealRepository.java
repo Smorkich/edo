@@ -40,7 +40,6 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
     List<Appeal> findByCreatorId(@Param("creatorId") Long creatorId, @Param("offset") int off, @Param("limit") int lim);
 
 
-
     /**
      * Метод достает Appeal, у которого поле archivedDate = null
      */
@@ -88,6 +87,7 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
             "where q.id = :id " +
             "order by a.id asc ")
     Optional<Appeal> findAppealByQuestionsId(@Param("id") Long id);
+
     /**
      * изменяет статус обращения на "на рассмотрении"
      */
@@ -107,7 +107,22 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
             "WHERE r.id = :resolutionId AND er.status != model.enum_.Status.PERFORMED)")
     void updateAppealStatusWhereExecutionStatusIsPerformed(@Param("resolutionId") Long resolutionId);
 
-
-
+    /**
+     * changes the appealsStatus of an appeal depending on its registrationDate field
+     * @param resolutionId - id of the archived resolution
+     */
+    @Modifying
+    @Query("UPDATE Appeal a " +
+            "SET a.appealsStatus = " +
+                "CASE " +
+                    "WHEN a.registrationDate IS NOT NULL " +
+                    "THEN model.enum_.Status.REGISTERED " +
+                    "ELSE model.enum_.Status.NEW_STATUS " +
+                "END " +
+            "WHERE a.id = (SELECT appeal.id FROM Appeal appeal JOIN appeal.questions q JOIN Resolution r " +
+                "WHERE r.question = q AND r.id = :resolutionId) " +
+            "AND NOT EXISTS " +
+                "(SELECT r FROM Resolution r JOIN r.question q WHERE q.appeal = a AND r.archivedDate IS NULL)")
+    void setAppealStatusIfLastResolutionArchived(Long resolutionId);
 }
 

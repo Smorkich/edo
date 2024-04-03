@@ -11,13 +11,10 @@ import com.education.service.minio.MinioService;
 import com.education.service.nomenclature.NomenclatureService;
 import com.education.service.question.QuestionService;
 import com.education.util.URIBuilderUtil;
+import com.education.util.Validator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import model.dto.AppealDto;
-import model.dto.EmployeeDto;
-import model.dto.FilePoolDto;
-import model.dto.QuestionDto;
-import model.dto.ResolutionDto;
+import model.dto.*;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -88,6 +85,8 @@ public class AppealServiceImpl implements AppealService {
      */
     @Override
     public AppealDto save(AppealDto appealDto) {
+        // Вызываем валидацию перед сохранением обращения
+        Validator.getValidateAppeal(appealDto);
         // Назначение статуса и времени создания
         setNewAppealStatusAndCreationDate(appealDto);
         // Генерация и назначения number Appeal'у
@@ -304,5 +303,13 @@ public class AppealServiceImpl implements AppealService {
         appealFeignClient.updateAppealStatusWhereExecutionStatusIsPerformed(resolutionId);
     }
 
+    /**
+     * First it checks that the resolution was the last one to appeal, then it changes the appealStatus of appeal
+     * @param resolutionId - id of the archived resolution
+     */
+    @Override
+    public void setAppealStatusIfLastResolutionArchived(Long resolutionId) {
+            appealFeignClient.setAppealStatusIfLastResolutionArchived(resolutionId);
+    }
 
 }

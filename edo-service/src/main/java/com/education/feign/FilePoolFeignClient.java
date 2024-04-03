@@ -41,4 +41,7 @@ public interface FilePoolFeignClient {
 
     @GetMapping(FILEPOOL_URL + "/noArchived/{ids}")
     Collection<FilePoolDto> getFilesNotArchived(@PathVariable String ids);
+
+    @GetMapping(FILEPOOL_URL + "/oldFiles/{filePeriod}")
+    Collection<UUID> getOldFilesForDelete(@PathVariable int filePeriod);
 }

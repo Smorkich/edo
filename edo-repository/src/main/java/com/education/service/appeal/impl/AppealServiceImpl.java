@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.ZonedDateTime;
 import java.util.Collection;
 import java.util.NoSuchElementException;
-import java.util.Random;
 
 /**
  * Сервис-слой для сущности Appeal
@@ -111,6 +110,7 @@ public class AppealServiceImpl implements AppealService {
         return appeal;
     }
 
+
     /**
      * Изменяет статус Appeal в базе данных на PERFORMED по id обращения, если все резолюции исполнены
      *
@@ -121,5 +121,11 @@ public class AppealServiceImpl implements AppealService {
     public void updateAppealStatusWhereExecutionStatusIsPerformed(Long resolutionId) {
         appealRepository.updateAppealStatusWhereExecutionStatusIsPerformed(resolutionId);
     };
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void setAppealStatusIfLastResolutionArchived(Long resolutionId) {
+        appealRepository.setAppealStatusIfLastResolutionArchived(resolutionId);
+    }
 
 }

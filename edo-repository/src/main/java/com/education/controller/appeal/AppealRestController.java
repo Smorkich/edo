@@ -118,6 +118,7 @@ public class AppealRestController {
         return new ResponseEntity<>(APPEAL_MAPPER.toDto(appeal), HttpStatus.OK);
     }
 
+
     @Operation(summary = "В строке таблицы Appeal изменяет поле appeals_status на Performed, если все резолюции исполнены",
             description = "Строка в Appeal должна существовать")
     @PatchMapping("/updateAppealStatusWhereExecutionStatusIsPerformed/{resolutionId}")
@@ -125,6 +126,21 @@ public class AppealRestController {
         appealService.updateAppealStatusWhereExecutionStatusIsPerformed(resolutionId);
         log.info("The status of appeals that have fulfilled all resolutions has been changed!");
         return new ResponseEntity<>(HttpStatus.OK);
+    }    
+    /**
+     * Check that the appeal associated with the resolution with resolutionId has all resolutions completed and
+     * change the appeal status depending on the registrationDate field
+     * @param resolutionId - id of the archived resolution
+     * @apiNote HTTP Method - PATCH
+     */
+    @Operation(summary = "Проверяет, что все резолюции связанные с Appeal завершены и изменяет ее appeals_status" +
+            " в зависимости от registration_date", description = "Строка в Appeal должна существовать")
+    @PatchMapping(value = "/setAppealStatusIfLastResolutionArchived/{resolutionId}")
+    public void setAppealStatusIfLastResolutionArchived(@PathVariable Long resolutionId) {
+        appealService.setAppealStatusIfLastResolutionArchived(resolutionId);
+        log.info("Check that the appeal associated with the resolution with id: {}  has all resolutions completed" +
+                "and if true, change appeals_status", resolutionId);
+
     }
 
 }

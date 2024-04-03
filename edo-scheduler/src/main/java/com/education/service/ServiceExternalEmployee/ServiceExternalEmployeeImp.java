@@ -1,9 +1,10 @@
-package com.education.service;
+package com.education.service.ServiceExternalEmployee;
 
 
 import com.education.job.JobScheduler;
 import com.education.mapper.ConvertEmployee;
 
+import com.education.service.ServiceExternalEmployee.ServiceExternalEmployee;
 import com.education.util.URIBuilderUtil;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

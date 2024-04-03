@@ -8,7 +8,7 @@ spring:
   flyway:
     enabled: true
     user: postgres
-    password: oog
+    password: root
     url: jdbc:postgresql://localhost:5432/edo_db?currentSchema=${spring.flyway.default-schema}
     default-schema: edo
     locations: db/migration
@@ -19,6 +19,10 @@ spring:
         default_schema: edo
   application:
     name: edo-repository
+  mvc:
+    hidden-method:
+      filter:
+        enabled: true
 server:
 #  enableSelfPreservation: fasle
   port: 0
