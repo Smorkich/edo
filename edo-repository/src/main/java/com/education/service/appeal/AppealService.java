@@ -1,7 +1,7 @@
 package com.education.service.appeal;
 
 import com.education.entity.Appeal;
-import org.springframework.transaction.annotation.Transactional;
+import model.dto.AppealFileDto;
 
 import java.util.Collection;
 
@@ -56,5 +56,10 @@ public interface AppealService {
      * @return AppealDto - DTO сущности Appeal (обращение)
      */
     Appeal register(Long id);
+
+    /**
+     * Receive all needed information about appeal resolutions
+     */
+    Collection<AppealFileDto> findAllForAppealFileById(Long appealId);
 
 }

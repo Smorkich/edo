@@ -1,6 +1,7 @@
 package com.education.service.appeal;
 
 import model.dto.AppealDto;
+import model.dto.AppealFileDto;
 import model.dto.FilePoolDto;
 
 import java.util.Collection;
@@ -65,4 +66,9 @@ public interface AppealService {
      * То меняем статус обращения на UNDER_CONSIDERATION
      */
     void setNewAppealStatusIfResolutionLastAndIsDraftFalse(AppealDto appealDto);
+
+    /**
+     * Receive all needed information about appeal resolutions
+     */
+    Collection<AppealFileDto> findAllByAppealIdForXLSX(Long appealId);
 }

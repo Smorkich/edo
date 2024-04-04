@@ -27,6 +27,7 @@ public interface ResolutionRepository extends JpaRepository<Resolution, Long> {
      */
     @Query("SELECT res from Resolution res where res.id =:id and res.archivedDate is null")
     Collection<Resolution> findAllByArchivedDateIsNull(@Param("id") Collection<Long> id);
+
     /**
      * Выборка всех резолюций которые не черновики (isDraft = false) у конкретного Обращения
      */
@@ -37,6 +38,7 @@ public interface ResolutionRepository extends JpaRepository<Resolution, Long> {
             "WHERE app.id IN :appealId " +
             "AND res.isDraft = false")
     Collection<Resolution> findAllByAppealIdAndIsDraftFalse(@Param("appealId") Long appealId);
+
     /**
      * Перемещение резолюции в архив
      */
@@ -61,4 +63,5 @@ public interface ResolutionRepository extends JpaRepository<Resolution, Long> {
             "JOIN que.appeal app " +
             "WHERE app.id = :appealId")
     Collection<ResolutionProjectionForAppealFile> findAllByAppealId(@Param("appealId") Long appealId);
+
 }

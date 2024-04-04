@@ -1,6 +1,7 @@
 package com.education.service.appeal.impl;
 
 import com.education.controller.facsimile.FacsimileController;
+import com.education.feign.AppealFeignClient;
 import com.education.feign.ResolutionFeignClient;
 import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
@@ -13,11 +14,7 @@ import com.education.util.URIBuilderUtil;
 import com.education.util.Validator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import model.dto.AppealDto;
-import model.dto.EmployeeDto;
-import model.dto.FilePoolDto;
-import model.dto.QuestionDto;
-import model.dto.ResolutionDto;
+import model.dto.*;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -57,6 +54,7 @@ public class AppealServiceImpl implements AppealService {
     private final MinioService minioService;
     private final NomenclatureService nomenclatureService;
     private final ResolutionFeignClient resolutionFeignClient;
+    private final AppealFeignClient appealFeignClient;
 
 
     /**
@@ -294,6 +292,11 @@ public class AppealServiceImpl implements AppealService {
         if (resolutions.size() == 1) {
             appealDto.setAppealsStatus(UNDER_CONSIDERATION);
         }
+    }
+
+    @Override
+    public Collection<AppealFileDto> findAllByAppealIdForXLSX(Long appealId) {
+        return appealFeignClient.findAllByAppealIdForXLSX(appealId);
     }
 
 }

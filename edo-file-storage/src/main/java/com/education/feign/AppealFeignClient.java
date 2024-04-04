@@ -7,13 +7,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.Collection;
 
-import static model.constant.Constant.EDO_SERVICE_NAME;
-import static model.constant.Constant.RESOLUTION_SERVICE_URL;
+import static model.constant.Constant.*;
 
-@FeignClient(name = EDO_SERVICE_NAME, contextId = "ResolutionFeignClient")
-public interface ResolutionFeignClient {
+@FeignClient(name = EDO_SERVICE_NAME, contextId = "AppealFeignClient")
+public interface AppealFeignClient {
 
-    @GetMapping(RESOLUTION_SERVICE_URL + "/appeal/xlsx/{appealId}")
+    @GetMapping(SERVICE_APPEAL_URL + "/download/xlsx/{appealId}")
     Collection<AppealFileDto> findAllByAppealIdForXLSX(@PathVariable("appealId") Long appealId);
 
 }

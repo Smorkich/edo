@@ -1,12 +1,14 @@
 package com.education.controller.appeal;
 
 
+import com.education.repository.resolution.ResolutionRepository;
 import com.education.service.appeal.AppealService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.AppealDto;
+import model.dto.AppealFileDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,7 @@ import static com.education.mapper.AppealMapper.APPEAL_MAPPER;
 public class AppealRestController {
 
     private AppealService appealService;
+    private ResolutionRepository resolutionRepository;
 
     @Operation(summary = "В строке таблицы Appeal заполняет поле archivedDate,изменяет поле status",
             description = "Строка в Appeal должна существовать")
@@ -116,6 +119,15 @@ public class AppealRestController {
         var appeal = appealService.register(id);
         log.info("Updating field with id {} 'appeals_status' on 'Registered', success!", appeal);
         return new ResponseEntity<>(APPEAL_MAPPER.toDto(appeal), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Получение всей информации для генерации файла обращения")
+    @GetMapping(value = "/download/xlsx/{appealId}")
+    public Collection<AppealFileDto> findAllByAppealId(@PathVariable Long appealId) {
+        log.info("Request to get all information about appeal resolutions");
+        var appealInfo = appealService.findAllForAppealFileById(appealId);
+        log.info("Data has been received");
+        return appealInfo;
     }
 
 }

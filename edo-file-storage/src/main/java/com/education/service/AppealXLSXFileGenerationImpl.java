@@ -1,7 +1,8 @@
 package com.education.service;
 
-import com.education.feign.ResolutionFeignClient;
+import com.education.feign.AppealFeignClient;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import model.dto.AppealFileDto;
 import org.apache.poi.ss.usermodel.Cell;
@@ -15,60 +16,46 @@ import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+
+import static com.education.constant.Constant.*;
 
 @AllArgsConstructor
 @Service
 @Slf4j
 public class AppealXLSXFileGenerationImpl implements AppealXLSXFileGeneration {
 
-    private final ResolutionFeignClient resolutionFeignClient;
+    private AppealFeignClient appealFeignClient;
 
     /**
      * Generates an appeal file in xlsx format
      */
     @Override
     public ResponseEntity<byte[]> generateXLSXFile(Long appealId) {
-        var appealFileDto = resolutionFeignClient.findAllByAppealIdForXLSX(appealId).stream().toList();
+        var appealFileDtos = appealFeignClient.findAllByAppealIdForXLSX(appealId);
         log.info("Received information about appeal resolutions for file generation");
 
         try (Workbook workbook = new XSSFWorkbook()) {
             log.info("File creation started");
             Sheet sheet = workbook.createSheet("Резолюции по обращению");
-            sheet.setColumnWidth(0, 11 * 256);
-            sheet.setColumnWidth(1, 18 * 256);
-            sheet.setColumnWidth(2, 100 * 256);
-            sheet.setColumnWidth(3, 23 * 256);
-            sheet.setColumnWidth(4, 17 * 256);
+            initializeXLSXFile(sheet);
 
             Row row;
-            List<String> fileInformation = new ArrayList<>();
-            DateTimeFormatter formatterForZonedDateTime = DateTimeFormatter.ofPattern("HH:mm:ss dd.MM.yyyy");
-            DateTimeFormatter formatterForLocalDate = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
-            for (int i = 0; i <= appealFileDto.size(); i++) {
-                row = sheet.createRow(i);
-                if (i == 0) {
-                    fileInformation.addAll(Arrays.asList("Резолюции", "Дата создания", "Исполнители",
-                            "Крайний срок резолюции", "Статус резолюции"));
-                } else {
-                    AppealFileDto appealfiledto = appealFileDto.get(i - 1);
-                    String deadline = appealfiledto.getDeadlineResolution().format(formatterForLocalDate);
-                    fileInformation.addAll(Arrays.asList(String.valueOf(i),
-                            appealfiledto.getCreationDate().format(formatterForZonedDateTime),
-                            String.join(", ", appealfiledto.getExecutorFIOs()),
-                            deadline.equals("01.01.0001") ? "Нет крайнего срока" : deadline,
-                            appealfiledto.getResolutionStatus()));
-                }
+            Cell cell;
+            int rowId = 1;
+            for (AppealFileDto appealFileDto : appealFileDtos) {
+                row = sheet.createRow(rowId);
+                var fileInformation = List.of(String.valueOf(rowId++),
+                        appealFileDto.getCreationDate().format(APPEAL_FILE_ZDT_FORMATTER),
+                        String.join(", ", appealFileDto.getExecutorFIOs()),
+                        appealFileDto.getDeadlineResolution() != null ? appealFileDto.getDeadlineResolution()
+                                .format(APPEAL_FILE_LD_FORMATTER) : "Нет крайнего срока",
+                        appealFileDto.getResolutionStatus());
                 int cellId = 0;
                 for (String fileInfo : fileInformation) {
-                    Cell cell = row.createCell(cellId++);
+                    cell = row.createCell(cellId++);
                     cell.setCellValue(fileInfo);
                 }
-                fileInformation.clear();
             }
 
             try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
@@ -89,5 +76,21 @@ public class AppealXLSXFileGenerationImpl implements AppealXLSXFileGeneration {
         }
 
         return null;
+    }
+
+    private void initializeXLSXFile(Sheet sheet) {
+        sheet.setColumnWidth(0, 11 * 256);
+        sheet.setColumnWidth(1, 18 * 256);
+        sheet.setColumnWidth(2, 100 * 256);
+        sheet.setColumnWidth(3, 23 * 256);
+        sheet.setColumnWidth(4, 17 * 256);
+
+        Row row = sheet.createRow(0);
+        Cell cell;
+        for (int i = 0; i < 5; i++) {
+            cell = row.createCell(i);
+            cell.setCellValue(APPEAL_XLSX_FILE_HEADERS.get(i));
+        }
+
     }
 }

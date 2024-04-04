@@ -1,7 +1,7 @@
 package com.education.service.resolution;
 
 import com.education.entity.Resolution;
-import model.dto.AppealFileDto;
+import com.education.projection.ResolutionProjectionForAppealFile;
 
 import java.util.Collection;
 
@@ -51,9 +51,8 @@ public interface ResolutionService {
     Collection<Resolution> findAllByIdNotArchived(Collection<Long> id);
 
     /**
-     * Receive all needed information about appeal resolutions
+     * Receive information about appeal resolutions
      */
-    Collection<AppealFileDto> findAllByAppealId(Long appealId);
-
+    Collection<ResolutionProjectionForAppealFile> findAllByAppealId(Long appealId);
 
 }

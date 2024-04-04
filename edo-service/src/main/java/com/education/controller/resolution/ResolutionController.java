@@ -90,14 +90,4 @@ public class ResolutionController {
         return new ResponseEntity<>(resolutionDto, HttpStatus.OK);
     }
 
-    @Operation(summary = "Получение всей информации для генерации файла обращения")
-    @GetMapping(value = "/appeal/xlsx/{appealId}")
-    public Collection<AppealFileDto> findAllByAppealId(@PathVariable Long appealId) {
-        log.info("Request to get all information about appeal resolutions");
-        var appealInfo = resolutionService.findAllByAppealIdForXLSX(appealId);
-        log.info("Data has been received");
-        return appealInfo;
-    }
-
-
 }

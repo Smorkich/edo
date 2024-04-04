@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Objects;
+import java.util.Optional;
 
 import static model.constant.Constant.FILE_STORAGE_APPEAL_FILE_URL;
 
@@ -36,8 +36,8 @@ public class AppealFileController {
     @GetMapping(value = "/xlsx/{appealId}")
     public ResponseEntity<byte[]> downloadFile(@PathVariable("appealId") Long appealId) {
         log.info("Received a request to generate a XLSX file");
-        return Objects.requireNonNullElseGet(appealService.generateXLSXFile(appealId),
-                () -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+        return Optional.of(appealService.generateXLSXFile(appealId))
+                .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
 }

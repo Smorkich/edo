@@ -1,6 +1,5 @@
 package com.education.service.resolution;
 
-import model.dto.AppealFileDto;
 import model.dto.ResolutionDto;
 
 import java.util.Collection;
@@ -43,10 +42,5 @@ public interface ResolutionService {
      * Показать все актуальные, не помещенные в архив резолюции
      */
     Collection<ResolutionDto> findAllByIdNotArchived(Long id);
-
-    /**
-     * Receive all needed information about appeal resolutions
-     */
-    Collection<AppealFileDto> findAllByAppealIdForXLSX(Long appealId);
 
 }

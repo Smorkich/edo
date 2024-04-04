@@ -1,9 +1,15 @@
 package com.education.service.appeal.impl;
 
 import com.education.entity.Appeal;
+import com.education.entity.Employee;
+import com.education.projection.ResolutionProjectionForAppealFile;
 import com.education.repository.appeal.AppealRepository;
 import com.education.service.appeal.AppealService;
+import com.education.service.deadlineResolution.DeadlineResolutionService;
+import com.education.service.execution.ExecutorReportService;
+import com.education.service.resolution.ResolutionService;
 import lombok.AllArgsConstructor;
+import model.dto.AppealFileDto;
 import model.enum_.Status;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +26,9 @@ import java.util.NoSuchElementException;
 public class AppealServiceImpl implements AppealService {
 
     private AppealRepository appealRepository;
+    private ResolutionService resolutionService;
+    private DeadlineResolutionService deadlineResolutionService;
+    private ExecutorReportService executorReportService;
 
     /**
      * Сохранение нового сообщения
@@ -108,6 +117,22 @@ public class AppealServiceImpl implements AppealService {
         Appeal appeal = appealRepository.findById(id).orElseThrow(() -> new NoSuchElementException("Обращение с id + " + id + " не найдено"));
         appeal.setAppealsStatus(Status.REGISTERED);
         return appeal;
+    }
+
+    @Override
+    public Collection<AppealFileDto> findAllForAppealFileById(Long appealId) {
+        var appealResolutions =  resolutionService.findAllByAppealId(appealId);
+        var appealResolutionsId = appealResolutions.stream().map(ResolutionProjectionForAppealFile::getId).toList();
+        var resolutionExecutorReports = executorReportService.getResolutionStatuses(appealResolutionsId);
+        var resolutionDeadlines = deadlineResolutionService.findLastDeadlinesByResolutionsId(appealResolutionsId);
+        return appealResolutions.stream()
+                .map(res -> AppealFileDto.builder()
+                        .id(res.getId())
+                        .creationDate(res.getCreationDate())
+                        .executorFIOs(res.getExecutor().stream().map(Employee::getFioNominative).toList())
+                        .resolutionStatus(resolutionExecutorReports.get(res.getId()) != null ? "Исполнена" : "Не исполнена")
+                        .deadlineResolution(resolutionDeadlines.get(res.getId()))
+                        .build()).toList();
     }
 
 }

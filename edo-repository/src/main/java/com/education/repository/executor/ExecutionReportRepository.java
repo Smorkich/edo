@@ -1,11 +1,14 @@
 package com.education.repository.executor;
 
 import com.education.entity.ExecutionReport;
+import com.education.projection.ExecutionReportProjectionForAppealFile;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -19,11 +22,10 @@ public interface ExecutionReportRepository extends JpaRepository<ExecutionReport
     Optional<ExecutionReport> findById(@Param("id") Long id);
 
     /**
-     * Receive resolution status
+     * Receive resolution statuses
      */
-    @Query("SELECT CASE WHEN COUNT(e) > 0 THEN 'Исполнено' ELSE 'Не исполнено' END FROM ExecutionReport e " +
-            "WHERE e.resolution.id = :resolutionId AND e.status = model.enum_.Status.PERFORMED")
-    String resolutionStatus(@Param("resolutionId") Long resolutionId);
-
+    @Query("SELECT e FROM ExecutionReport e " +
+            "WHERE e.resolution.id IN :resolutionId")
+    Collection<ExecutionReportProjectionForAppealFile> getResolutionStatus(@Param("resolutionId") List<Long> resolutionId);
 
 }
