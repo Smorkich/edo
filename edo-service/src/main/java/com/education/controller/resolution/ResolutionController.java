@@ -44,7 +44,7 @@ public class ResolutionController {
     }
 
     @Operation(summary = "Перемещение резолюции в архив")
-    @PostMapping(value = "/move/{id}", produces = MediaType.APPLICATION_JSON)
+    @PatchMapping(value = "/move/{id}", produces = MediaType.APPLICATION_JSON)
     public ResponseEntity<ResolutionDto> moveToArchive(@PathVariable Long id) {
         log.info("PATCH request has been sent");
         resolutionService.moveToArchive(id);

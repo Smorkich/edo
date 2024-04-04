@@ -7,8 +7,6 @@ import jakarta.ws.rs.core.MediaType;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.ResolutionDto;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
@@ -41,11 +39,10 @@ public class ResolutionRestController {
     }
 
     @Operation(summary = "Перемещение резолюции в архив")
-    @PatchMapping(value = "/move/{id}", produces = MediaType.APPLICATION_JSON)
+    @PatchMapping(value = "/move/{id}", produces = MediaType.TEXT_PLAIN)
     public String moveToArchive(@PathVariable Long id) {
         log.info("PATCH request has been sent");
         resolutionService.moveToArchive(id);
-        var resolutionDto = RESOLUTION_MAPPER.toDto(resolutionService.findById(id));
         log.info("Resolution with id = {} has been moved to archive", id);
         return "The file is archived";
     }

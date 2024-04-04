@@ -1,6 +1,7 @@
 package com.education.service.appeal.impl;
 
 import com.education.controller.facsimile.FacsimileController;
+import com.education.feign.AppealFeignClient;
 import com.education.feign.ResolutionFeignClient;
 import com.education.service.appeal.AppealService;
 import com.education.service.author.AuthorService;
@@ -13,11 +14,7 @@ import com.education.util.URIBuilderUtil;
 import com.education.util.Validator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import model.dto.AppealDto;
-import model.dto.EmployeeDto;
-import model.dto.FilePoolDto;
-import model.dto.QuestionDto;
-import model.dto.ResolutionDto;
+import model.dto.*;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -48,6 +45,7 @@ import static org.springframework.http.MediaType.APPLICATION_PDF_VALUE;
 @Slf4j
 public class AppealServiceImpl implements AppealService {
 
+    private final AppealFeignClient appealFeignClient;
     private final RestTemplate restTemplate;
     private final AuthorService authorService;
     private final QuestionService questionService;
@@ -294,6 +292,15 @@ public class AppealServiceImpl implements AppealService {
         if (resolutions.size() == 1) {
             appealDto.setAppealsStatus(UNDER_CONSIDERATION);
         }
+    }
+
+    /**
+     * First it checks that the resolution was the last one to appeal, then it changes the appealStatus of appeal
+     * @param resolutionId - id of the archived resolution
+     */
+    @Override
+    public void setAppealStatusIfLastResolutionArchived(Long resolutionId) {
+            appealFeignClient.setAppealStatusIfLastResolutionArchived(resolutionId);
     }
 
 }

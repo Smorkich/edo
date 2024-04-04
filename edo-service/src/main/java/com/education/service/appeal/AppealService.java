@@ -65,4 +65,11 @@ public interface AppealService {
      * То меняем статус обращения на UNDER_CONSIDERATION
      */
     void setNewAppealStatusIfResolutionLastAndIsDraftFalse(AppealDto appealDto);
+
+    /**
+     * Check that the appeal associated with the resolution with resolutionId has all resolutions completed
+     * and if that right, change the appeal status depending on the registrationDate field
+     * @param resolutionId - id of the archived resolution
+     */
+    void setAppealStatusIfLastResolutionArchived(Long resolutionId);
 }
