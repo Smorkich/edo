@@ -61,5 +61,6 @@ public class Constant {
     public static final String REST_TO_SERVICE_NOMENCLATURE_QUEUE = "RestToServiceNomenclatureQueue";
 
     public static final String PDF_CONTENT_TYPE = "application/pdf";
+    public static final String TASKFORM_TEMPLATE_PATH = "templates/template.pdf";
     public static final String PDF = "pdf";
 }
