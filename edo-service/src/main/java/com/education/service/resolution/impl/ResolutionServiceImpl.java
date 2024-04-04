@@ -2,7 +2,6 @@ package com.education.service.resolution.impl;
 
 import com.education.feign.ResolutionFeignClient;
 import com.education.service.appeal.AppealService;
-import com.education.service.emloyee.EmployeeService;
 import com.education.service.resolution.ResolutionService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,7 +25,6 @@ import static model.enum_.Status.UNDER_CONSIDERATION;
 public class ResolutionServiceImpl implements ResolutionService {
 
     private final AppealService appealService;
-    private final EmployeeService employeeService;
     private final ResolutionFeignClient resolutionFeignClient;
 
     @Override
@@ -67,6 +65,7 @@ public class ResolutionServiceImpl implements ResolutionService {
     @Override
     public void moveToArchive(Long id) {
         resolutionFeignClient.moveToArchive(id);
+        appealService.setAppealStatusIfLastResolutionArchived(id);
     }
 
     @Override

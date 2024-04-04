@@ -58,6 +58,13 @@ public interface AppealService {
     Appeal register(Long id);
 
     /**
+     * Check that the appeal associated with the resolution with resolutionId has all resolutions completed and
+     * change the appeal status depending on the registrationDate field
+     * @param resolutionId - id of the archived resolution
+     */
+    void setAppealStatusIfLastResolutionArchived(Long resolutionId);
+
+    /**
      * Receive all needed information about appeal resolutions
      */
     Collection<AppealFileDto> findAllForAppealFileById(Long appealId);

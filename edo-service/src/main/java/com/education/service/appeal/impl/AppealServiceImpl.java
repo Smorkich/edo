@@ -294,6 +294,15 @@ public class AppealServiceImpl implements AppealService {
         }
     }
 
+    /**
+     * First it checks that the resolution was the last one to appeal, then it changes the appealStatus of appeal
+     * @param resolutionId - id of the archived resolution
+     */
+    @Override
+    public void setAppealStatusIfLastResolutionArchived(Long resolutionId) {
+            appealFeignClient.setAppealStatusIfLastResolutionArchived(resolutionId);
+    }
+
     @Override
     public Collection<AppealFileDto> findAllByAppealIdForXLSX(Long appealId) {
         return appealFeignClient.findAllByAppealIdForXLSX(appealId);

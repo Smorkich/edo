@@ -39,6 +39,12 @@ public class Appeal extends BaseEntity {
     private ZonedDateTime archivedDate;
 
     /**
+     * Дата регистрации обращения
+     */
+    @Column(name = "registration_date")
+    private ZonedDateTime registrationDate;
+
+    /**
      * Номер обращения
      */
     @Column(name = "number")

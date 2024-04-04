@@ -19,6 +19,10 @@ spring:
         default_schema: edo
   application:
     name: edo-repository
+  mvc:
+    hidden-method:
+      filter:
+        enabled: true
 server:
 #  enableSelfPreservation: fasle
   port: 0

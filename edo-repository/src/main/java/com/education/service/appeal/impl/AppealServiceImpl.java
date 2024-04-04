@@ -120,6 +120,12 @@ public class AppealServiceImpl implements AppealService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void setAppealStatusIfLastResolutionArchived(Long resolutionId) {
+        appealRepository.setAppealStatusIfLastResolutionArchived(resolutionId);
+    }
+
+    @Override
     public Collection<AppealFileDto> findAllForAppealFileById(Long appealId) {
         var appealResolutions =  resolutionService.findAllByAppealId(appealId);
         var appealResolutionsId = appealResolutions.stream().map(ResolutionProjectionForAppealFile::getId).toList();
