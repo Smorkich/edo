@@ -295,6 +295,15 @@ public class AppealServiceImpl implements AppealService {
     }
 
     /**
+     * Если все резолюции обращения выполнены, то статус обращения меняется на PERFORMED
+     */
+
+    @Override
+    public void updateAppealStatusWhereExecutionStatusIsPerformed(Long resolutionId) {
+        appealFeignClient.updateAppealStatusWhereExecutionStatusIsPerformed(resolutionId);
+    }
+
+    /**
      * First it checks that the resolution was the last one to appeal, then it changes the appealStatus of appeal
      * @param resolutionId - id of the archived resolution
      */

@@ -11,6 +11,12 @@ import static model.constant.Constant.REPOSITORY_APPEAL_URL;
 @FeignClient(name = EDO_REPOSITORY_NAME, contextId = "AppealFeignClient")
 public interface AppealFeignClient {
 
+
+
+    @PatchMapping(REPOSITORY_APPEAL_URL + "/updateAppealStatusWhereExecutionStatusIsPerformed/{resolutionId}")
+    Void updateAppealStatusWhereExecutionStatusIsPerformed(@PathVariable Long resolutionId);
+
     @PatchMapping(REPOSITORY_APPEAL_URL + "/setAppealStatusIfLastResolutionArchived/{resolutionId}")
     ResponseEntity<Void> setAppealStatusIfLastResolutionArchived(@PathVariable Long resolutionId);
+
 }

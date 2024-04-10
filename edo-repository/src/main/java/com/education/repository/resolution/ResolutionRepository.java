@@ -48,4 +48,6 @@ public interface ResolutionRepository extends JpaRepository<Resolution, Long> {
     @Modifying
     @Query(nativeQuery = true, value = "UPDATE resolution SET archived_date = NULL WHERE id =:resolutionId")
     void unarchiveResolution(@Param("resolutionId") Long resolutionId);
+
+
 }

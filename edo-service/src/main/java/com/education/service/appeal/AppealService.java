@@ -67,6 +67,12 @@ public interface AppealService {
     void setNewAppealStatusIfResolutionLastAndIsDraftFalse(AppealDto appealDto);
 
     /**
+     * Если все резолюции обращения выполнены, то статус обращения меняется на PERFORMED
+     */
+
+    void updateAppealStatusWhereExecutionStatusIsPerformed(Long resolutionId);
+
+    /**
      * Check that the appeal associated with the resolution with resolutionId has all resolutions completed
      * and if that right, change the appeal status depending on the registrationDate field
      * @param resolutionId - id of the archived resolution

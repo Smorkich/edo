@@ -50,4 +50,5 @@ public interface ResolutionService {
     public Collection<Resolution> findAllByIdNotArchived(Collection<Long> id);
 
 
+
 }

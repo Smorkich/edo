@@ -68,4 +68,5 @@ public class ResolutionServiceImpl implements ResolutionService {
     public Collection<Resolution> findAllByIdNotArchived(Collection<Long> id) {
         return resolutionRepository.findAllByArchivedDateIsNull(id);
     }
+
 }
