@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 public class Constant {
     public static final String BASE_URL = "api/repository/base";
     public static final String BASE_REST_URL = "api/rest/base";
+    public static final String CURRENT_USER_REST_URL = "api/rest/currentUser";
     public static final String ADDRESS_URL = "api/repository/address";
     public static final String APPEAL_URL = "api/repository/appeal";
     public static final String APPROVAL_URL = "/api/service/approval";
@@ -49,6 +50,7 @@ public class Constant {
     public static final String EDO_FILE_STORAGE_NAME = "edo-file-storage";
     public static final Long EDO_FILE_STORAGE_FILE_MAX_SIZE = 25*1024000L;
 
+    public static final String FILE_STORAGE_RESOLUTION_URL = "api/fileStorage/resolution";
     public static final String NOTIFICATION_URL = "api/repository/notification";
     public static final String EDO_INTEGRATION_NAME = "edo-integration";
     public static final String MESSAGE_URL = "api/integration/message";
@@ -61,5 +63,6 @@ public class Constant {
     public static final String REST_TO_SERVICE_NOMENCLATURE_QUEUE = "RestToServiceNomenclatureQueue";
 
     public static final String PDF_CONTENT_TYPE = "application/pdf";
+    public static final String TASKFORM_TEMPLATE_PATH = "templates/template.pdf";
     public static final String PDF = "pdf";
 }
