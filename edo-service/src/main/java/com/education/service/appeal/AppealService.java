@@ -1,6 +1,7 @@
 package com.education.service.appeal;
 
 import model.dto.AppealDto;
+import model.dto.AppealFileDto;
 import model.dto.FilePoolDto;
 
 import java.util.Collection;
@@ -78,4 +79,9 @@ public interface AppealService {
      * @param resolutionId - id of the archived resolution
      */
     void setAppealStatusIfLastResolutionArchived(Long resolutionId);
+
+    /**
+     * Receive all needed information about appeal resolutions
+     */
+    Collection<AppealFileDto> findAllByAppealIdForXLSX(Long appealId);
 }

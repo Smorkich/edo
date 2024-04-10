@@ -1,6 +1,7 @@
 package com.education.service.resolution;
 
 import com.education.entity.Resolution;
+import com.education.projection.ResolutionProjectionForAppealFile;
 
 import java.util.Collection;
 
@@ -12,12 +13,12 @@ public interface ResolutionService {
     /**
      * Сохраняет новую резолюцию
      */
-    public Resolution save(Resolution resolution);
+    Resolution save(Resolution resolution);
 
     /**
      * Архивирует резолюцию
      */
-    public void moveToArchive(Long id);
+    void moveToArchive(Long id);
 
     /**
      * Разархивирует резолюцию
@@ -27,12 +28,12 @@ public interface ResolutionService {
     /**
      * Поиск резолюции по id
      */
-    public Resolution findById(Long id);
+    Resolution findById(Long id);
 
     /**
      * Показать все резолюции
      */
-    public Collection<Resolution> findAllById(Collection<Long> id);
+    Collection<Resolution> findAllById(Collection<Long> id);
 
     /**
      * Поиск всех резолюций которые не черновики (isDraft = false) у конкретного Обращения
@@ -42,13 +43,17 @@ public interface ResolutionService {
     /**
      * Поиск исключительно не архивированной резолюции по id
      */
-    public Resolution findByIdNotArchived(Long id);
+    Resolution findByIdNotArchived(Long id);
 
     /**
      * Показать все актуальные, не помещенные в архив резолюции
      */
-    public Collection<Resolution> findAllByIdNotArchived(Collection<Long> id);
+    Collection<Resolution> findAllByIdNotArchived(Collection<Long> id);
 
+    /**
+     * Receive information about appeal resolutions
+     */
+    Collection<ResolutionProjectionForAppealFile> findAllByAppealId(Long appealId);
 
 
 }

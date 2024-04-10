@@ -23,7 +23,7 @@ import static model.constant.Constant.*;
  *
  * @param <T> Тип сущности, с которой работает Feign клиент.
  */
-@FeignClient(name = EDO_SERVICE_NAME, url = BASE_REST_URL)
+@FeignClient(name = EDO_SERVICE_NAME, url = BASE_REST_URL, contextId = "BaseRestFeignClient")
 public interface BaseRestFeignClient<T> {
 
     /**

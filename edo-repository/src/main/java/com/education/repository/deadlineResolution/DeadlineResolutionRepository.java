@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 
+import java.util.Collection;
 import java.util.List;
 
 @Repository
@@ -20,7 +21,6 @@ public interface DeadlineResolutionRepository extends JpaRepository<DeadlineReso
     @Query(nativeQuery = true, value = "SELECT * FROM deadline_resolution WHERE resolution_id = :resolutionId")
     List<DeadlineResolution> findByResolutionId(@Param("resolutionId") Long resolutionId);
 
-
     /**
      * Получаем список email всех исполнителей и id резолюци у которых наступил дедлайн
      */
@@ -30,6 +30,12 @@ public interface DeadlineResolutionRepository extends JpaRepository<DeadlineReso
             "WHERE dr.deadline <= current_timestamp")
     List<EmailAndIdDto> findAllExecutorEmails();
 
+    /**
+     * Receive last deadlines associated with resolution collections
+     */
+    @Query(nativeQuery = true, value = "SELECT * FROM deadline_resolution dl " +
+            "WHERE dl.resolution_id IN :resolutionId")
+    Collection<DeadlineResolution> findLastDeadlineByResolutionId(@Param("resolutionId") List<Long> resolutionId);
 
 }
 

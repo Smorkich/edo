@@ -11,7 +11,7 @@ import java.util.Collection;
 
 import static model.constant.Constant.*;
 
-@FeignClient(name = EDO_SERVICE_NAME, url = SERVICE_APPEAL_URL)
+@FeignClient(name = EDO_SERVICE_NAME, url = SERVICE_APPEAL_URL, contextId = "AppealFeignClient")
 public interface AppealFeignClient extends BaseRestFeignClient<AppealDto> {
     @PutMapping("/move/{id}")
     void moveToArchive(@PathVariable("id") Long id);

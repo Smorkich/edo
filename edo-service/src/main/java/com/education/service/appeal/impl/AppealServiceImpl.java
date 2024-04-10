@@ -34,14 +34,13 @@ import static org.springframework.http.MediaType.APPLICATION_PDF_VALUE;
 /**
  * Сервис-слой для Appeal
  */
-@Slf4j
 @Service
 @AllArgsConstructor
+@Slf4j
 public class AppealServiceImpl extends AbstractService<AppealDto> implements AppealService {
 
     private final AppealFeignClient appealFeignClient;
     private final AppealFeignClientToIntegrationEdo massageFeignClient;
-
     private final AuthorService authorService;
     private final QuestionService questionService;
     private final FilePoolService filePoolService;
@@ -288,6 +287,11 @@ public class AppealServiceImpl extends AbstractService<AppealDto> implements App
     @Override
     public void setAppealStatusIfLastResolutionArchived(Long resolutionId) {
             appealFeignClient.setAppealStatusIfLastResolutionArchived(resolutionId);
+    }
+
+    @Override
+    public Collection<AppealFileDto> findAllByAppealIdForXLSX(Long appealId) {
+        return appealFeignClient.findAllByAppealIdForXLSX(appealId);
     }
 
 }

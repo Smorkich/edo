@@ -1,6 +1,12 @@
 package com.education.feign;
 
 import model.dto.AppealDto;
+import jakarta.validation.Valid;
+import model.dto.AddressDto;
+import model.dto.AppealFileDto;
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,8 +17,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import java.util.Collection;
 
-import static model.constant.Constant.EDO_REPOSITORY_NAME;
-import static model.constant.Constant.REPOSITORY_APPEAL_URL;
+import java.util.Collection;
+
+import static model.constant.Constant.*;
 
 @FeignClient(name = EDO_REPOSITORY_NAME, contextId = "AppealFeignClient")
 public interface AppealFeignClient extends BaseFeignClient<AppealDto> {
@@ -32,12 +39,12 @@ public interface AppealFeignClient extends BaseFeignClient<AppealDto> {
     @PostMapping(REPOSITORY_APPEAL_URL + "/register")
     AppealDto register(Long id);
 
-
-
     @PatchMapping(REPOSITORY_APPEAL_URL + "/updateAppealStatusWhereExecutionStatusIsPerformed/{resolutionId}")
     Void updateAppealStatusWhereExecutionStatusIsPerformed(@PathVariable Long resolutionId);
 
     @PatchMapping(REPOSITORY_APPEAL_URL + "/setAppealStatusIfLastResolutionArchived/{resolutionId}")
     ResponseEntity<Void> setAppealStatusIfLastResolutionArchived(@PathVariable Long resolutionId);
 
+    @GetMapping(APPEAL_URL + "/download/xlsx/{appealId}")
+    Collection<AppealFileDto> findAllByAppealIdForXLSX(@PathVariable Long appealId);
 }

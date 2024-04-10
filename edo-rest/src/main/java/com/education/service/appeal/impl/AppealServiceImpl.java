@@ -1,12 +1,14 @@
 package com.education.service.appeal.impl;
 
 import com.education.feign.AppealFeignClient;
+import com.education.feign.AppealFileFeignClient;
 import com.education.service.appeal.AppealService;
 import com.education.service.common.AbstractRestService;
 import jakarta.ws.rs.NotFoundException;
 import lombok.AllArgsConstructor;
 import model.dto.AppealDto;
 import model.dto.FilePoolDto;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -16,6 +18,7 @@ import java.time.ZonedDateTime;
 public class AppealServiceImpl extends AbstractRestService<AppealDto> implements AppealService {
 
     private final AppealFeignClient appealFeignClient;
+    private final AppealFileFeignClient appealFileFeignClient;
 
     @Override
     public void moveToArchive(Long id) {
@@ -42,4 +45,13 @@ public class AppealServiceImpl extends AbstractRestService<AppealDto> implements
         return appealFeignClient.registerAppeal(id);
     }
 
+    /**
+     * Request for receive an appeal file in xlsx format
+     *
+     * @param appealId - id of appeal
+     */
+    @Override
+    public ResponseEntity<byte[]> downloadAppealFile(Long appealId) {
+        return appealFileFeignClient.downloadAppealResolutionsFileXLSX(appealId);
+    }
 }

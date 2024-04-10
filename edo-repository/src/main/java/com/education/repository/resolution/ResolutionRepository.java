@@ -1,6 +1,8 @@
 package com.education.repository.resolution;
 
 import com.education.entity.Resolution;
+import com.education.projection.ResolutionProjectionForAppealFile;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,6 +27,7 @@ public interface ResolutionRepository extends JpaRepository<Resolution, Long> {
      */
     @Query("SELECT res from Resolution res where res.id =:id and res.archivedDate is null")
     Collection<Resolution> findAllByArchivedDateIsNull(@Param("id") Collection<Long> id);
+
     /**
      * Выборка всех резолюций которые не черновики (isDraft = false) у конкретного Обращения
      */
@@ -35,6 +38,7 @@ public interface ResolutionRepository extends JpaRepository<Resolution, Long> {
             "WHERE app.id IN :appealId " +
             "AND res.isDraft = false")
     Collection<Resolution> findAllByAppealIdAndIsDraftFalse(@Param("appealId") Long appealId);
+
     /**
      * Перемещение резолюции в архив
      */
@@ -49,5 +53,15 @@ public interface ResolutionRepository extends JpaRepository<Resolution, Long> {
     @Query(nativeQuery = true, value = "UPDATE resolution SET archived_date = NULL WHERE id =:resolutionId")
     void unarchiveResolution(@Param("resolutionId") Long resolutionId);
 
+    /**
+     * Search all resolutions associated with appeal and save part of data to projection
+     */
+    @EntityGraph(attributePaths = {"executor"})
+    @Query("SELECT res " +
+            "FROM Resolution res " +
+            "JOIN res.question que " +
+            "JOIN que.appeal app " +
+            "WHERE app.id = :appealId")
+    Collection<ResolutionProjectionForAppealFile> findAllByAppealId(@Param("appealId") Long appealId);
 
 }

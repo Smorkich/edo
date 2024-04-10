@@ -2,7 +2,7 @@ package com.education.service.appeal;
 
 import model.dto.AppealDto;
 import model.dto.FilePoolDto;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.http.ResponseEntity;
 
 public interface AppealService {
     AppealDto save(AppealDto appealDto);
@@ -28,5 +28,12 @@ public interface AppealService {
      * @return AppealDto - DTO сущности Appeal (обращение)
      */
     AppealDto register(Long id);
+
+    /**
+     * Request for receive an appeal file in xlsx format
+     *
+     * @param appealId - id of appeal
+     */
+    ResponseEntity<byte[]> downloadAppealFile(Long appealId);
 
 }

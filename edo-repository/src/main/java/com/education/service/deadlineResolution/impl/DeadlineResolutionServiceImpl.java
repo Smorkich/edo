@@ -8,10 +8,9 @@ import model.dto.EmailAndIdDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.List;
-
-import static java.util.stream.Collectors.toList;
+import java.time.LocalDate;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Service
@@ -26,6 +25,7 @@ public class DeadlineResolutionServiceImpl implements DeadlineResolutionService 
     }
 
     @Transactional(rollbackFor = Exception.class)
+    @Override
     public void saveDeadlineResolution(DeadlineResolution deadlineResolution) {
         deadlineResolutionRepository.save(deadlineResolution);
     }
@@ -34,5 +34,16 @@ public class DeadlineResolutionServiceImpl implements DeadlineResolutionService 
     @Transactional
     public List<EmailAndIdDto> findAllExecutorEmails() {
         return deadlineResolutionRepository.findAllExecutorEmails();
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Map<Long, LocalDate> findLastDeadlinesByResolutionsId(List<Long> resolutionId) {
+        return deadlineResolutionRepository.findLastDeadlineByResolutionId(resolutionId).stream()
+                .collect(Collectors.toMap(
+                        dl -> dl.getResolution().getId(),
+                        DeadlineResolution::getDeadline,
+                        (dl1, dl2) -> dl1.compareTo(dl2) >= 1 ? dl1 : dl2
+                ));
     }
 }

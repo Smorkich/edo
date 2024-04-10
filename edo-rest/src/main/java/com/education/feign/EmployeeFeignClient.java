@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import static model.constant.Constant.*;
 
-@FeignClient(name = EDO_SERVICE_NAME)
+@FeignClient(name = EDO_SERVICE_NAME, contextId = "EmployeeFeignClient")
 public interface EmployeeFeignClient {
 
     @GetMapping(value = SERVICE_EMPLOYEE_URL + "/searchByEmailAndUsername")

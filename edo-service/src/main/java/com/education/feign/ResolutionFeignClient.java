@@ -1,6 +1,7 @@
 package com.education.feign;
 
 import com.education.config.FeignConfig;
+import model.dto.AppealFileDto;
 import model.dto.ResolutionDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
