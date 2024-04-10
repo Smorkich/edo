@@ -96,6 +96,18 @@ public interface AppealRepository extends JpaRepository<Appeal, Long> {
     void setStatusUnderConsideration(@Param("id") Long id);
 
     /**
+     * изменяет статус обращения на "PERFORMED", если все резолюции исполнены
+     */
+
+    @Modifying
+    @Query("UPDATE Appeal a SET a.appealsStatus = model.enum_.Status.PERFORMED " +
+            "WHERE EXISTS (SELECT 1 FROM Question q WHERE q.appeal.id = a.id) " +
+            "AND NOT EXISTS (SELECT 1 FROM ExecutionReport er " +
+            "JOIN er.resolution r " +
+            "WHERE r.id = :resolutionId AND er.status != model.enum_.Status.PERFORMED)")
+    void updateAppealStatusWhereExecutionStatusIsPerformed(@Param("resolutionId") Long resolutionId);
+
+    /**
      * changes the appealsStatus of an appeal depending on its registrationDate field
      * @param resolutionId - id of the archived resolution
      */

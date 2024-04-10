@@ -57,6 +57,9 @@ public interface AppealService {
      */
     Appeal register(Long id);
 
+
+    void updateAppealStatusWhereExecutionStatusIsPerformed(Long resolutionId);
+
     /**
      * Check that the appeal associated with the resolution with resolutionId has all resolutions completed and
      * change the appeal status depending on the registrationDate field

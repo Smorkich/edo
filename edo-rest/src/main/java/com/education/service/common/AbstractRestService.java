@@ -1,7 +1,6 @@
 package com.education.service.common;
 
-import com.education.feign.BaseRestFeignClient;
-import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 import service.CommonService;
 
@@ -18,7 +17,7 @@ import java.util.Collection;
  * @param <T> Тип сущности, с которой работает сервис.
  */
 @Service
-@AllArgsConstructor
+@NoArgsConstructor(force = true)
 public abstract class AbstractRestService<T> implements CommonService<T> {
 
     private final BaseRestFeignClient<T> feignClient;

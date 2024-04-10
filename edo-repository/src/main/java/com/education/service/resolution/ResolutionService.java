@@ -55,4 +55,5 @@ public interface ResolutionService {
      */
     Collection<ResolutionProjectionForAppealFile> findAllByAppealId(Long appealId);
 
+
 }

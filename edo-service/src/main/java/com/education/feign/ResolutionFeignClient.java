@@ -36,4 +36,6 @@ public interface ResolutionFeignClient {
 
     @GetMapping(RESOLUTION_URL + "/appealId/all/{appealId}")
     Collection<ResolutionDto> findAllByAppealIdAndIsDraftFalse(@PathVariable Long appealId);
+
+
 }
