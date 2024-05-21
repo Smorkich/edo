@@ -2,6 +2,7 @@ package com.education.service.resolution;
 
 import com.education.entity.Resolution;
 import com.education.projection.ResolutionProjectionForAppealFile;
+import model.dto.ResolutionDto;
 
 import java.util.Collection;
 
@@ -34,6 +35,11 @@ public interface ResolutionService {
      * Показать все резолюции
      */
     Collection<Resolution> findAllById(Collection<Long> id);
+
+    /**
+     * Retrieve all resolutions associated with a specific executor.
+     */
+    Collection<Resolution> findAllByExecutor(Long id);
 
     /**
      * Поиск всех резолюций которые не черновики (isDraft = false) у конкретного Обращения

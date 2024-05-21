@@ -77,4 +77,10 @@ public class ResolutionServiceImpl implements ResolutionService {
     public Collection<ResolutionProjectionForAppealFile> findAllByAppealId(Long appealId) {
         return resolutionRepository.findAllByAppealId(appealId);
     }
+
+    @Transactional(readOnly = true)
+    @Override
+    public Collection<Resolution> findAllByExecutor(Long id) {
+        return resolutionRepository.findByExecutorId(id);
+    }
 }
