@@ -6,7 +6,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.ws.rs.core.MediaType;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import model.dto.AppealFileDto;
 import model.dto.ResolutionDto;
 import org.springframework.web.bind.annotation.*;
 
@@ -74,6 +73,16 @@ public class ResolutionRestController {
         return resolutionDto;
     }
 
+    @Operation(summary = "Поиск всех резолюций по исполнителю")
+    @GetMapping(value = "/allByExecutor/{id}", produces = MediaType.APPLICATION_JSON)
+    public Collection<ResolutionDto> findAllByExecutor(@PathVariable Long id) {
+        log.info("GET request to search for all resolutions by executor with id = {} has been sent", id);
+        var resolutionDto = RESOLUTION_MAPPER.toDto(resolutionService.findAllByExecutor(id));
+        log.info("Resolutions for executor with id = {} were found", id);
+        return resolutionDto;
+    }
+
+
     @Operation(summary = "Поиск всех резолюций")
     @GetMapping(value = "/appealId/all/{appealId}", produces = MediaType.APPLICATION_JSON)
     public Collection<ResolutionDto> findAllByAppealIdAndIsDraftFalse(@PathVariable Long appealId) {
@@ -100,5 +109,6 @@ public class ResolutionRestController {
         log.info("Resolutions was found");
         return resolutionDto;
     }
+
 
 }
