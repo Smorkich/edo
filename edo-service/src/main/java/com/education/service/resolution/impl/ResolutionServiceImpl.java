@@ -3,12 +3,12 @@ package com.education.service.resolution.impl;
 import com.education.feign.ResolutionFeignClient;
 import com.education.service.appeal.AppealService;
 import com.education.service.resolution.ResolutionService;
+import com.education.util.Validator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import model.dto.AppealDto;
 import model.dto.ResolutionDto;
 import org.springframework.stereotype.Service;
-
 import java.time.ZonedDateTime;
 import java.util.Collection;
 
@@ -26,6 +26,7 @@ public class ResolutionServiceImpl implements ResolutionService {
 
     private final AppealService appealService;
     private final ResolutionFeignClient resolutionFeignClient;
+    private final Validator validator;
 
     @Override
     public ResolutionDto save(ResolutionDto resolutionDto) {
@@ -34,7 +35,12 @@ public class ResolutionServiceImpl implements ResolutionService {
         if (resolutionDto.getCreationDate() == null) {
             resolutionDto.setCreationDate(ZonedDateTime.now());
         }
+
+        log.info("Starting resolution validation");
+        validator.validateResolutions(resolutionDto, resolutionFeignClient);
+
         log.info("IsDraft равно: {}", resolutionDto.getIsDraft());
+
         if (resolutionDto.getIsDraft() == null) {
             resolutionDto.setIsDraft(true);
             log.info("IsDraft изменен на true");
@@ -47,6 +53,7 @@ public class ResolutionServiceImpl implements ResolutionService {
         }
         return resolutionFeignClient.saveResolution(resolutionDto);
     }
+
 
     /**
      * Метод разархивации резолюции
