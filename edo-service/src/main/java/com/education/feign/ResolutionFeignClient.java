@@ -1,7 +1,6 @@
 package com.education.feign;
 
 import com.education.config.FeignConfig;
-import model.dto.AppealFileDto;
 import model.dto.ResolutionDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +26,9 @@ public interface ResolutionFeignClient {
 
     @GetMapping(RESOLUTION_URL + "/all/{id}")
     Collection<ResolutionDto> findAll(@PathVariable Long id);
+
+    @GetMapping(RESOLUTION_URL + "/allByExecutor/{id}")
+    Collection<ResolutionDto> findByExecutorId(@PathVariable Long id);
 
     @GetMapping(RESOLUTION_URL + "/notArchived/{id}")
     ResolutionDto findByIdNotArchived(@PathVariable Long id);
