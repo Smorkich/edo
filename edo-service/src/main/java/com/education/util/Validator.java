@@ -2,12 +2,15 @@ package com.education.util;
 
 import com.education.exception_handling.AppealAccessDeniedException;
 import com.education.exception_handling.AppealCustomException;
+import com.education.exception_handling.ResolutionValidationException;
+import com.education.feign.ResolutionFeignClient;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import model.dto.*;
 import model.enum_.ApprovalBlockType;
 import org.springframework.stereotype.Component;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -198,5 +201,26 @@ public class Validator {
                 .filter(e -> e.getId().equals(employeeDto.getId()))
                 .findAny()
                 .orElseThrow(() -> new AppealAccessDeniedException("Access denied"));
+    }
+
+    /**
+     * Метод для валидации, бросает исключение сли резолюции невалидны
+     * (у сотрудника 10 или больше резолюций за последние 5 дней)
+     */
+    public void validateResolutions(ResolutionDto resolutionDto,
+                                    ResolutionFeignClient resolutionFeignClient) {
+
+        ZonedDateTime date = ZonedDateTime.now().minusDays(7);
+        var res = resolutionDto.getExecutor().stream()
+                .map(EmployeeDto::getId)
+                .map(resolutionFeignClient::findByExecutorId)
+                .map(resolutions -> resolutions.stream()
+                        .filter(resolution -> resolution.getCreationDate().isAfter(date) &&
+                                resolution.getCreationDate().getDayOfWeek().getValue() < 6)
+                        .count())
+                .noneMatch(count -> count >= 10);
+        if (!res) {
+            throw new ResolutionValidationException("One or more executors have created more than 10 resolutions in the last 5 days");
+        }
     }
 }
