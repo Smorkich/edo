@@ -64,4 +64,12 @@ public interface ResolutionRepository extends JpaRepository<Resolution, Long> {
             "WHERE app.id = :appealId")
     Collection<ResolutionProjectionForAppealFile> findAllByAppealId(@Param("appealId") Long appealId);
 
+    /**
+     * Retrieve all resolutions associated with a specific executor.
+     */
+    @Query("SELECT res " +
+            "FROM Resolution res " +
+            "JOIN res.executor emp " +
+            "WHERE emp.id = :executorId")
+    Collection<Resolution> findByExecutorId(@Param("executorId") Long executorId);
 }
