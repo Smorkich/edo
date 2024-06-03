@@ -1,5 +1,6 @@
 package com.education.controller.resolution;
 
+import com.education.exception_handling.ResolutionValidationException;
 import com.education.service.email.EmailService;
 import com.education.service.resolution.ResolutionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -88,6 +89,12 @@ public class ResolutionController {
         var resolutionDto = resolutionService.findAllByIdNotArchived(id);
         log.info("Resolutions was found");
         return new ResponseEntity<>(resolutionDto, HttpStatus.OK);
+    }
+
+    @ExceptionHandler(ResolutionValidationException.class)
+    public ResponseEntity<String> handleException(ResolutionValidationException ex) {
+        log.warn(ex.toString());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.toString());
     }
 
 }
