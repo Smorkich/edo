@@ -77,7 +77,7 @@ public class ResolutionRestController {
     @GetMapping(value = "/allByExecutor/{id}", produces = MediaType.APPLICATION_JSON)
     public Collection<ResolutionDto> findAllByExecutor(@PathVariable Long id) {
         log.info("GET request to search for all resolutions by executor with id = {} has been sent", id);
-        var resolutionDto = RESOLUTION_MAPPER.toDto(resolutionService.findAllByExecutor(id));
+        var resolutionDto = RESOLUTION_MAPPER.toDto(resolutionService.findAllByExecutorId(id));
         log.info("Resolutions for executor with id = {} were found", id);
         return resolutionDto;
     }
@@ -109,6 +109,4 @@ public class ResolutionRestController {
         log.info("Resolutions was found");
         return resolutionDto;
     }
-
-
 }

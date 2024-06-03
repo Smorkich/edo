@@ -80,7 +80,7 @@ public class ResolutionServiceImpl implements ResolutionService {
 
     @Transactional(readOnly = true)
     @Override
-    public Collection<Resolution> findAllByExecutor(Long id) {
-        return resolutionRepository.findByExecutorId(id);
+    public Collection<Resolution> findAllByExecutorId(Long executorId) {
+        return resolutionRepository.findByExecutorId(executorId);
     }
 }

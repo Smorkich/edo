@@ -39,7 +39,7 @@ public interface ResolutionService {
     /**
      * Retrieve all resolutions associated with a specific executor.
      */
-    Collection<Resolution> findAllByExecutor(Long id);
+    Collection<Resolution> findAllByExecutorId(Long executorId);
 
     /**
      * Поиск всех резолюций которые не черновики (isDraft = false) у конкретного Обращения
